@@ -1,0 +1,39 @@
+<h4 class="hblock_content">Управление администраторами на сервере</h4>
+
+<div class="block_content">
+	<form method="POST" action="[home]servers/id/[id]/section/settings/subsection/admins/go" id="form">
+		<table class="table_pad input_pad">
+			<tbody id="forms">
+				<tr>
+					<td align="center" width="7%"></td>
+					<td align="center" width="21%">Ник / Steam / Ip</td>
+					<td align="center" width="17%">Пароль</td>
+					<td align="center" width="17%">Флаги доступа</td>
+					<td align="center" width="10%">Иммунитет</td>
+					<td align="center" width="10%">Истекает</td>
+					<td align="center" width="10%">Примечание</td>
+					<td align="center" width="7%"><button class="btn-success btn-max" onclick="return addform();">Добавить</button></td>
+				</tr>
+				[admins]
+			</tbody>
+		</table>
+		<button type="submit" class="btn-success btn-max">Сохранить</button>
+	</form>
+</div>
+
+<link rel="stylesheet" type="text/css" href="[css]date.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="[css]switch.css" media="screen" />
+
+<script src="[js]switch.js" type="text/javascript"></script>
+<script src="[js]ace-elements.js" type="text/javascript"></script>
+<script src="[js]ace.js" type="text/javascript"></script>
+<script src="[js]date.js" type="text/javascript"></script>
+<script src="[js]sections/servers/settings.js" type="text/javascript"></script>
+<script type="text/javascript">
+var index = [index];
+$(function(){
+	$('.date-picker').datepicker();
+});
+$(document).ready(function(e){$('input').lc_switch();});
+</script>
+<script src="[js]sections/servers/settings/admins_css.js" type="text/javascript"></script>

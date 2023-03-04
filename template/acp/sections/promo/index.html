@@ -1,0 +1,37 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="promo_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="trh">
+	<thead>
+		<tr>
+			<th class="w5p"></th>
+			<th class="w15p">Промо-код</th>
+			<th class="w5p text-center">Значение</th>
+			<th class="w15p text-center">Тариф</th>
+			<th class="w15p text-center">Акция</th>
+			<th class="w5p text-center">Тип</th>
+			<th class="w10p text-center">Лимит</th>
+			<th class="w20p text-center">Окончание</th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	$('#search').keyup(function(){
+		promo_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]promo.js"></script>

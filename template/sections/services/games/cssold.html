@@ -1,0 +1,121 @@
+<h4 class="hblock_content">Аренда игрового сервера</h4>
+
+|!informer|
+<div class="block_content">
+	<form action="[home]services/section/cssold/go/" method="POST" id="cssold">
+		<table class="table_pad form">
+			<tbody>
+				<tr>
+					<td colspan="2">
+						<label for="unit">Локация:</label>
+						<select id="unit" name="unit" onchange="change_data('tarifs')">
+							[units]
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="tarifs">Тариф:</label>
+						<select id="tarifs" name="tarif" onchange="change_data('data')">
+							[tarifs]
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="packs">Сборка:</label>
+						<select id="packs" name="pack">
+							[packs]
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="tickrate">TickRate:</label>
+						<select id="tickrate" name="tickrate" onchange="upd_price()">
+							[tickrate]
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="fps">FPS:</label>
+						<select id="fps" name="fps" onchange="upd_price()">
+							[fps]
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="slots">Слоты:</label>
+						<select id="slots" name="slots" onchange="upd_price()">
+							[slots]
+						</select>
+					</td>
+				</tr>
+				|!settlement_period|
+				<tr>
+					<td colspan="2">
+						<label for="time">Период:</label>
+						<select id="time" name="time" onchange="upd_price()">
+							[time]
+						</select>
+					</td>
+				</tr>
+				|_!settlement_period|
+				<tr>
+					<td>
+						<label for="time">Промо-код:</label>
+						<input id="promo" name="promo" placeholder="Введите имеющийся промо-код">
+					</td>
+					<td width="5%" class="vbot">
+						<div class="btn margin-bottom" onclick="promo()">Проверить</div>
+					</td>
+				</tr>
+				<tr id="promo_tr" class="none">
+					<td colspan="2" id="promo_info"></td>
+				</tr>
+				|!settlement_period|
+				<tr>
+					<td colspan="2" id="sum_info">Цена за выбранный период: <span id="sum">...</span> [cur]</td>
+				</tr>
+				|_!settlement_period|
+				|settlement_period|
+				<tr>
+					<td colspan="2">
+						<p>Текущая дата: [date]</p>
+						<p id="sum_info">Итого к оплате: <span id="sum">...</span> [cur]</p>
+						
+						<br>
+						<div class="informer blue">
+							<p>Система оплаты работает по расчетному периоду.</p>
+							<p>При оплате до 15-го числа взымается плата за остаток текущего месяца.</p>
+							<p>При оплате после 15-го числа взымается плата за остаток текущего месяца + следующий месяц.</p>
+						</div>
+					</td>
+				</tr>
+				|_settlement_period|
+				<tr>
+					<td colspan="2">
+						<button onclick="loading(1)" class="btn-success right">Арендовать игровой сервер</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<div class="space"></div>
+
+<p>Внимание: заказывая сервер, вы соглашаетесь с условиями <a href="[home]agreement"><u>договора</u></a>.</p>
+|_!informer|
+|informer|
+<div class="space"></div>
+<div class="informer blue"><center>К сожалению, в данный момент нет свободного места на оборудовании для предоставления аренды нового игрового сервера.</center></div>
+|_informer|
+
+<script src="[js]sections/services/cssold.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){upd_price();});
+</script>

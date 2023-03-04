@@ -1,0 +1,19 @@
+<div class="plugin_block">
+	<div class="plugin_info">
+		<b>[name]</b>|install| <i>(Установлен: [time])</i>|_install|
+		<p>[desc]</p>
+		|stable|<span class="plugin_status_stable"><i class="fa fa-heartbeat"></i> Стабильный</i></span>|_stable|
+		|unstable|<span class="plugin_status_unstable"><i class="fa fa-heartbeat"></i> Нестабильный</i></span>|_unstable|
+		|testing|<span class="plugin_status_testing"><i class="fa fa-heartbeat"></i> Тестируемый</i></span>|_testing|
+		|install|
+			|update|<u onclick="plugin_confirm('update', '[plugin]')" class="plugin_update"><i class="fa fa-info-circle"></i><i> Есть обновление</i></u>|_update|
+		|_install|
+	</div>
+	<div class="plugin_action" id="act_[plugin]">
+		|!install|<div onclick="plugin_confirm('install', '[plugin]')" class="btn btn-success btn-fix btn-short">Установить</div>|_!install|
+		|install|
+			|config|<a href="[home]servers/id/[id]/section/plugins/subsection/plugin/plugin/[plugin]"><div class="btn btn-info btn-fix btn-short">Настроить</div></a>|_config|
+			<div onclick="plugin_confirm('delete', '[plugin]')" class="btn btn-error btn-fix btn-short margin-top">Удалить</div>
+		|_install|
+	</div>
+</div>

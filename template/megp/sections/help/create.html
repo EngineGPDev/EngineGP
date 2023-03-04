@@ -1,0 +1,24 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Создание вопроса</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>
+
+<form action="[home]help/section/create/go" method="POST" id="create">
+	<h5 class="smaller-text">Услуга</h5>
+	<select id="service" name="service" class="text-field">
+		<option value="0">Выберете услугу связанную с вопросом</option>
+		<option value="none">Вопрос не связан с конкретной услугой</option>
+		[services]
+	</select>
+	<h5 class="smaller-text">Заголовок</h5>
+	<input name="title" placeholder="Введите заголовок вопроса" class="text-field">
+	<h5 class="smaller-text">Сообщение</h5>
+	<textarea rows="5" id="text" name="text" class="text-field"></textarea>
+	<center><button class="btn btn-success">Создать</button></center>
+</form>
+
+<div class="decoration"></div>
+
+<!-- scripts !-->
+<script type="text/javascript" src="[js]help.js"></script>

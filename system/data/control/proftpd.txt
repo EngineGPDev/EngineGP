@@ -1,0 +1,89 @@
+Include /etc/proftpd/modules.conf
+
+UseIPv6 on
+IdentLookups off
+
+ServerName "Debian"
+ServerType standalone
+DeferWelcome off
+
+MultilineRFC2228 on
+DefaultServer on
+ShowSymlinks on
+
+TimeoutNoTransfer 600
+TimeoutStalled 600
+TimeoutIdle 1200
+
+DisplayLogin welcome.msg
+DisplayChdir .message true
+ListOptions "-l"
+
+DenyFilter \*.*/
+
+DefaultRoot ~
+
+Port 21
+UseReverseDNS off
+PassivePorts 49152 65534
+
+
+MaxInstances 30
+
+User proftpd
+Group nogroup
+
+Umask 022  022
+
+AllowOverwrite on
+
+TransferLog /var/log/proftpd/xferlog
+SystemLog   /var/log/proftpd/proftpd.log
+
+<IfModule mod_quotatab.c>
+  QuotaEngine off
+</IfModule>
+
+<IfModule mod_ratio.c>
+  Ratios off
+</IfModule>
+
+<IfModule mod_delay.c>
+  DelayEngine on
+</IfModule>
+
+<IfModule mod_ctrls.c>
+  ControlsEngine off
+  ControlsMaxClients 2
+  ControlsLog /var/log/proftpd/controls.log
+  ControlsInterval 5
+  ControlsSocket /var/run/proftpd/proftpd.sock
+</IfModule>
+
+<IfModule mod_ctrls_admin.c>
+  AdminControlsEngine off
+</IfModule>
+
+Include /etc/proftpd/conf.d/
+
+Include /etc/proftpd/sql.conf
+
+AuthOrder mod_sql.c
+
+<Directory ~/>
+  AllowOverwrite on
+
+  <Limit Write>
+    AllowAll
+  </Limit>
+
+  <Limit READ>
+    AllowAll
+  </Limit>
+
+  DenyFilter  ^(\..+|samp.+|server\.properties|srcds_.+|steam|.+\.sh|hlds_.+|hltv.*|.+\.cmds|usermodel\.amxx|console\.log|start\.jar)$
+  HideFiles  ^(\..+|samp.+|server\.properties|srcds_.+|steam|.+\.sh|hlds_.+|hltv.*|.+\.cmds|usermodel\.amxx|console\.log|start\.jar)$
+  PathDenyFilter ^(\..+|samp.+|server\.properties|srcds_.+|steam|.+\.sh|hlds_.+|hltv.*|.+\.cmds|usermodel\.amxx|start\.jar)$
+</Directory>
+
+RequireValidShell off

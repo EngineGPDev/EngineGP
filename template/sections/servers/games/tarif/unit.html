@@ -1,0 +1,36 @@
+<h4 class="hblock_content">Смена физического расположения</h4>
+
+<div class="block_content">
+	<table class="table_pad form">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					Текущая локация: <u>[unit]</u> / Слот: [slots]шт. / Тариф: [tarif] / [info]
+					<span class="right" id="info_unit"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="unit">Локация:</label>
+					<select id="unit" name="unit" onchange="upd_unit()">
+						[options]
+					</select>
+				</td>
+			</tr>
+			<tr id="packs" class="none">
+				<td colspan="2">
+					<label for="pack">Сборка:</label>
+					<select id="pack" name="pack"></select>
+				</td>
+			</tr>
+			<tr>
+				<td><u>Внимание</u>: при смене локации, вычитается один дополнительный день аренды. <p><u>Меняется</u> полностью <u>адрес сервера</u>, <u>все файлы будут удалены</u>.</p></td>
+				<td align="right">
+					<div onclick="upd_unit_go()" class="btn btn-success">Сменить локацию</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>

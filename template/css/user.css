@@ -1,0 +1,69 @@
+#drop-files
+{
+	position: relative;
+    width: 99%;
+    height: 56px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 2px dashed #dcdcdc;
+    text-align: center;
+    font: 15px 'Open Sans';
+}
+#drop-files p
+{
+	clear: none;
+	padding: 0;
+	margin: 0;
+}
+#uploaded-holder
+{
+	display: none;
+	position: relative;
+	margin: 0 auto 10px;
+	width: 100%;
+}
+#dropped-files
+{
+	display: block;
+	margin: 0 auto;
+	width: 100%
+}
+#upload-button
+{
+	z-index: 9999;
+	display: none;
+	margin: 5px 0;
+}
+#loading-content 
+{
+	position: relative;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	width: 100%;
+}
+#file-name-holder
+{
+	width: 100%;
+	float: left;
+}
+#file-name-holder h1
+{
+    padding: 5px 0;
+    font-size: 13px;
+    margin: 0;
+}
+
+#drop-files input
+{
+	border: 0;
+    background-color: #ffffff;
+    width: initial;
+}
+
+.image
+{
+	width: 140px;
+    height: 140px;
+	background-repeat: no-repeat !important
+}

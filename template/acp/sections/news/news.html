@@ -1,0 +1,43 @@
+<form action="[acp]news/id/[id]/go" method="POST" id="news">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Заголовок:</td>
+				<td class="w50p">
+					<input name="name" placeholder="Введите заголовок новости" value="[name]" type="text">
+				</td>
+				<td class="w5p text-right">Теги:</td>
+				<td>
+					<input name="tags" placeholder="Введите теги новости" value="[tags]" type="text">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<div onclick="bbcode('[spoiler]', '[/spoiler]', 'text')" class="btn btn-red right">Спойлер</div>
+					<div onclick="bbcode('[code]', '[/code]', 'text')" class="btn btn-red right">Подсветка</div>
+					<div onclick="bbcode('[quote]', '[/quote]', 'text')" class="btn btn-red right">Цитата</div>
+					<div onclick="bbcode('[url=', ']ссылка[/url]', 'text')" class="btn btn-red right">Ссылка</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4"><textarea id="text" name="text" rows="3" placeholder="Введите краткое сообщение новости" style="margin-top: 0px; margin-bottom: 0px; height: 233px;">[text]</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<div onclick="bbcode('[spoiler]', '[/spoiler]', 'full')" class="btn btn-red right">Спойлер</div>
+					<div onclick="bbcode('[code]', '[/code]', 'full')" class="btn btn-red right">Подсветка</div>
+					<div onclick="bbcode('[quote]', '[/quote]', 'full')" class="btn btn-red right">Цитата</div>
+					<div onclick="bbcode('[url=', ']ссылка[/url]', 'full')" class="btn btn-red right">Ссылка</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4"><textarea id="full" name="full" rows="5" placeholder="Введите полное сообщение новости" style="margin-top: 0px; margin-bottom: 0px; height: 233px;">[full]</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript" src="[js]news.js"></script>

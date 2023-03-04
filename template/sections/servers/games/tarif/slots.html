@@ -1,0 +1,30 @@
+<h4 class="hblock_content">Смена количества слот</h4>
+
+<div class="block_content">
+	<table class="table_pad form">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					Текущее количество слот: <u>[slots]шт.</u>
+					<span class="right" id="info_slots"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="slots">Сменить на:</label>
+					<select id="slots" name="slots" onchange="upd_slots()">
+						[options]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><u>Внимание</u>: при смене количества игровых слот, вычитается один дополнительный день аренды.</td>
+				<td align="right">
+					<div onclick="upd_slots_go()" class="btn btn-success">Сменить слоты</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>

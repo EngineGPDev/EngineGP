@@ -1,0 +1,106 @@
+<h4 class="hblock_content">Параметры запуска</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<!-- Стартовая карта !-->
+			<tr>
+				<td align="center" colspan="2"><b>Стартовая карта</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="map">
+						<option value="[map]">[map]</option>
+					</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('map')">Сохранить</button>
+				</td>
+			</tr>
+			<!-- Количество слот !-->
+			<tr>
+				<td align="center" colspan="2"><b>Количество слот</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="slots">[slots]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('slots')">Сохранить</button>
+				</td>
+			</tr>
+			<!-- VAC !-->
+			<tr>
+				<td align="center" colspan="2"><b>Античит VAC</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="vac">[vac]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('vac')">Сохранить</button>
+				</td>
+			</tr>
+			<!-- Быстрая скачка файлов с сервера (FastDL) !-->
+			<tr>
+				<td align="center" colspan="2"><b>Быстрая скачка файлов с сервера (FastDL)</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="fastdl">[fastdl]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('fastdl')">Сохранить</button>
+				</td>
+			</tr>
+			<!-- Авторестарт игрового сервера при зависании !-->
+			<tr>
+				<td align="center" colspan="2"><b>Авторестарт при зависании</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="autorestart">[autorestart]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('autorestart')">Сохранить</button>
+				</td>
+			</tr>
+			|tickrate|
+			<!-- Параметр tickrate игрового сервера !-->
+			<tr>
+				<td align="center" colspan="2"><b>Значение TickRate</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="tickrate">[tickrate]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('tickrate')">Сохранить</button>
+				</td>
+			</tr>
+			|_tickrate|
+			|fps|
+			<!-- Параметр fps игрового сервера !-->
+			<tr>
+				<td align="center" colspan="2"><b>Значение FPS</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="fps">[fps]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('fps')">Сохранить</button>
+				</td>
+			</tr>
+			|_fps|
+		</tbody>
+	</table>
+</div>
+
+<script src="[js]sections/servers/settings/start.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = '[id]';
+	$(document).ready(function(){
+		maplist();
+	});
+</script>

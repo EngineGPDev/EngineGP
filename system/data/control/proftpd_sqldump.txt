@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS `users` (
+  `username` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL DEFAULT '1000',
+  `homedir` varchar(255) NOT NULL,
+  `shell` varchar(255) NOT NULL DEFAULT '/bin/false',
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+		
+CREATE TABLE IF NOT EXISTS `quotalimits` (
+  `name` varchar(30) DEFAULT NULL,
+  `quota_type` enum('user','group','class','all') NOT NULL,
+  `per_session` enum('false','true') NOT NULL,
+  `limit_type` enum('soft','hard') NOT NULL,
+  `bytes_in_avail` float NOT NULL DEFAULT '0',
+  `bytes_out_avail` float NOT NULL DEFAULT '0',
+  `bytes_xfer_avail` float NOT NULL DEFAULT '0',
+  `files_in_avail` int(10) unsigned NOT NULL DEFAULT '0',
+  `files_out_avail` int(10) unsigned NOT NULL DEFAULT '0',
+  `files_xfer_avail` int(10) unsigned NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `quotatallies` (
+  `name` varchar(30) NOT NULL,
+  `quota_type` enum('user','group','class','all') NOT NULL,
+  `bytes_in_used` float NOT NULL DEFAULT '0',
+  `bytes_out_used` float NOT NULL DEFAULT '0',
+  `bytes_xfer_used` float NOT NULL DEFAULT '0',
+  `files_in_used` int(10) unsigned NOT NULL DEFAULT '0',
+  `files_out_used` int(10) unsigned NOT NULL DEFAULT '0',
+  `files_xfer_used` int(10) unsigned NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

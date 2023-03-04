@@ -1,0 +1,51 @@
+<h4 class="hblock_content">Продление аренды сервера</h4>
+
+<div class="block_content">
+	<form action="[home]servers/id/[id]/section/tarif/subsection/extend/go" method="POST" id="extend">
+		<table class="table_pad form">
+			<tbody>
+				<tr>
+					<td colspan="2">
+						Слот: [slots]шт. / Тариф: [tarif] / Осталось: [time] / [info]
+						<span class="right">Цена за выбранный период: <span id="info_extend">0</span> [cur]</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="time">Период:</label>
+						<select id="time" name="time" onchange="upd_extend()">
+							[options]
+						</select>
+					</td>
+				</tr>
+				|extend_address|
+					[extend_address]
+				|_extend_address|
+				<tr>
+					<td>
+						<label for="promo">Промо-код:</label>
+						<input id="promo" name="promo" placeholder="Введите имеющийся промо-код">
+					</td>
+					<td width="5%" class="vbottom">
+						<div class="btn" onclick="promo()">Проверить</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<span id="info_promo" class="btn btn-none"></span>
+						<button onclick="loading(1)" class="btn-success right">Продлить аренду</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<div class="space"></div>
+
+|extend_address|
+<link rel="stylesheet" type="text/css" href="[css]switch.css" media="screen" />
+
+<script src="[js]switch.js" type="text/javascript"></script>
+<script type="text/javascript">$(document).ready(function(){$('input').lc_switch('Вкл', 'Выкл');});</script>
+|_extend_address|

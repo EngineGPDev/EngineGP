@@ -1,0 +1,81 @@
+<h4 class="hblock_content">Поиск по плагинам</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td><input placeholder="Введите критерии поиска" id="search"></td>
+				<td width="1%"><div class="btn btn-success" onclick="plugins_search(true)">Найти</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<div id="search_block">
+	<h4 class="hblock_content">Результаты поиска</h4>
+	<div class="block_content" id="search_result"></div>
+	<div class="space"></div>
+</div>
+
+<h4 class="hblock_content">Доступные плагины</h4>
+
+<div class="block_content">
+	<div class="spoilers">
+		<div class="spoilerblock">[addons]</div>
+	</div>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Установленные плагины</h4>
+
+<div class="block_content">[install]</div>
+
+<link href="[css]img.css" rel="stylesheet" type="text/css" media="screen">
+
+<script src="[js]sections/servers/plugins.js" type="text/javascript"></script>
+
+<script src="[js]img.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	var server = '[id]';
+
+	$(document).ready(function(){
+		$('.spoiler_links').click(function()
+		{
+			var $other_spoilers = $('a.spoiler_links').not(this);
+			$other_spoilers.siblings().hide('fast');
+			
+			$other_spoilers.find('span').html('<i class="fa fa-plus"></i>');
+
+			$(this).siblings().toggle('fast', function(){
+				var $icon = $(this).siblings('a.spoiler_links').find('span');
+
+				if($icon.html() == '<i class="fa fa-plus"></i>')
+					$icon.html('<i class="fa fa-minus"></i>');
+				else
+					$icon.html('<i class="fa fa-plus"></i>');    
+			});
+
+			return false;
+		});
+	});
+
+	jQuery(function()
+	{
+		$("a#single_image").fancybox();
+		$(".plugin_images a.image-zoom").fancybox();
+		$("a#inline").fancybox({'hideOnContentClick': true});
+		$("a.group").fancybox({
+			'speedIn': 350, 
+			'speedOut': 150, 
+			'overlayShow': false
+		});
+	});
+
+	$('#search').keyup(function(){
+		plugins_search(false);
+	});
+</script>

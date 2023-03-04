@@ -1,0 +1,23 @@
+<div class="chat-message clearfix">
+    <a href="/profile/id/[userid]"><img src="[ava]" alt="" width="32" height="32"></a>
+    <div class="chat-message-content clearfix">
+        <span |date|data-tooltip="Отредактировано [ndate]"|_date| class="chat-time" style="margin-left: 5px">[date]</span>
+        <span class="chat-time">
+            |me|<span data-tooltip="Удалить"><i class="fa fa-close" onclick="minichat_msg_del([id], [userid])" style="font-size: 12px;color: indianred;cursor: pointer;"></i></span>|_me| 
+            |!me||adm|<span data-tooltip="Удалить"><i class="fa fa-close" onclick="minichat_msg_del([id], [userid])" style="font-size: 12px;color: indianred;cursor: pointer;"></i></span>|_adm||_!me| 
+            |me|<span data-tooltip="Редактировать"><i class="fa fa-edit" style="font-size: 12px;color: gray;cursor: pointer;" onclick="minichat_msg_edit([id], 'edit')"></i></span>|_me|
+            |!me|<span data-tooltip="Ответить"><i class="fa fa-comment" onclick="chat_reply('[login]')" style="font-size: 12px;color: green;cursor: pointer;"></i></span>|_!me|
+        </span>
+        <h5>|me|<span><a href="/profile/id/[userid]" target="_blank">Я</a></span>|_me| |!me|[name]|_!me|</h5>
+        <p>[msg]</p>|date|<span style="font-size: 11px;color: gray;float: right;" data-tooltip="Отредактировано">(ред.)</span>|_date|
+        |img|
+        <div class="help_data_foot">
+            Прикрепленные изображения:
+            <div>
+                [img]
+            </div>
+        </div>
+        |_img|
+    </div>
+</div>
+<hr>

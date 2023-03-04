@@ -1,0 +1,37 @@
+<h4 class="hblock_content">Параметры запуска</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<!-- Количество слот !-->
+			<tr>
+				<td align="center" colspan="2"><b>Количество слот</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="slots">[slots]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('slots')">Сохранить</button>
+				</td>
+			</tr>
+			<!-- Авторестарт игрового сервера при зависании !-->
+			<tr>
+				<td align="center" colspan="2"><b>Авторестарт при зависании</b></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="autorestart">[autorestart]</select>
+				</td>
+				<td width="5">
+					<button class="btn-success" onclick="settings_save('autorestart')">Сохранить</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script src="[js]sections/servers/settings/start.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = '[id]';
+</script>

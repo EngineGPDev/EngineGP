@@ -1,0 +1,56 @@
+<form action="[acp]notice/section/add/go" method="POST" id="notice">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Кому:</td>
+				<td>
+					<select name="type" id="type" onchange="change_notice_type()">
+						<option value="unit">Всем на локации</option>
+						<option value="server">Определенному серверу</option>
+					</select>
+				</td>
+				<td class="w5p text-right">Значение:</td>
+				<td>
+					<div id="notice_unit">
+						<select name="unit">[units]</select>
+					</div>
+					<div id="notice_server" class="none">
+						<input name="server" placeholder="Введите ID" type="text">
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Цвет:</td>
+				<td>
+					<select name="color">
+						<option value="red">Красный</option>
+						<option value="green">Зеленый</option>
+						<option value="blue">Синий</option>
+					</select>
+				</td>
+				<td class="w5p text-right">Завершение:</td>
+				<td><input name="time" id="datetimepicker" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="4"><textarea name="text" rows="6" placeholder="Введите сообщение"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="4" class="text-center"><button class="btn btn-green" onclick="loading(1)">Добавить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<link rel="stylesheet" type="text/css" href="[css]jquery.datetimepicker.css" media="screen">
+
+<script type="text/javascript" src="[js]date/jquery.datetimepicker.full.js"></script>
+
+<script type="text/javascript">  
+    jQuery(document).ready(function($){
+		$.datetimepicker.setLocale('ru');
+
+		$('#datetimepicker').datetimepicker({value: '0', format: 'd/m/Y H:i'});
+	});  
+</script>
+
+<script type="text/javascript" src="[js]notice.js"></script>

@@ -1,0 +1,110 @@
+<style>
+	.block__jobs {
+		display: block;
+	    padding: 303px;
+	    width: 38%;
+	    height: 160px;
+	    background: #55626d94;
+	    color: white;
+	    border-radius: 4px;
+	}
+.block__jobs_name {
+    text-align: left;
+    text-transform: uppercase;
+}
+	
+.block__job {
+		padding: 2px;
+		font-size: 10px;
+		margin-top: -5px;
+	}
+
+.block_jobs__btn {
+    position: relative;
+    margin-top: 1.3%;
+    margin-left: 804px;
+    border-radius: 5px;
+}
+
+.block__jobs__desc {
+    padding: 5px;
+    /* font-size: 16px; */
+}
+.block__jobs__desc2 {
+    /* background: #fd8a8a26; */
+    /* font-size: 15px; */
+    /* border: dotted; */
+    /* border-color: darkgrey; */
+    /* padding: 5px; */
+    /* text-align: center; */
+    /* width: 350px; */
+    /* margin-left: 420px; */
+    /* border-radius: 7px; */
+    /* text-transform: uppercase; */
+}
+</style>
+<div class="main">
+<div class="full_screen">
+	<table class="server_nav">
+		<tbody>
+			<tr>
+				<td><a href="/contacts"><i class="fa fa-phone-square"></i>Контакты</a></td>
+				<td><a href="/about"><i class="fa fa-commenting"></i>О нас</a></td>
+				<td><a href="/agreement"><i class="fa fa-pencil-square-o"></i>Договор</a></td>
+				<td><a href="/partners"><i class="fa fa-users"></i>Партнеры</a></td>
+				<td><a class="active" href="/jobs"><i class="fa fa-user-plus"></i>Вакансии</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="hblock_content" style="text-transform: none;"><div class="block__jobs_name center">[job]</div></div>
+<div class="block_content">
+	<div class="block__jobs__desc">[desc]</div>
+	<div class="space"></div>
+	|answer|<div class="informer blue"><center>Ответ от администрации: [text]</center></div>|_answer|
+	<div class="space"></div>
+	<center><div class="btn btn-info btn-full" onclick="jobs('[id]')">Подать заявку</div></center>
+</div>
+</div>
+<script type="text/javascript">
+	function jobs(id)
+	{
+		bootbox.dialog('<h3 class="green">Внимание!</h3>Укажите контакт по которым можно с Вами связаться.<div class="input_pad table_pad"><input id="jobs_[id]" type="text" placeholder="вацап, телеграм, скайп, вконтакте"></div>',
+			[{
+				"label" : "Подать заявку",
+				callback : function(){jobs_go(id)}
+			},{
+				"label" : "Отменить"
+			}]
+		);
+	}
+
+	function jobs_go(id)
+	{
+		$.ajax({
+			type: 'POST',
+			url: home+'jobs/id/'+id+'/go',
+			data: 'contact='+$('#jobs_[id]').val(),
+			dataType: 'json',
+			success: function(data){
+				$.each(data, function(i, val)
+				{
+					if(i == 'e')
+						bootbox.dialog('<h3 class="red">Внимание!</h3>'+val,
+							[{
+								"label" : "Продолжить"
+							}]
+						);
+
+					if(i == 's')
+						bootbox.dialog('<h3 class="green">Внимание!</h3> Заявка отправлена, ожидайте, ответа от Администрации.',
+							[{
+								"label" : "Продолжить"
+							}]
+						);
+				})
+			}
+		})
+	}
+</script>

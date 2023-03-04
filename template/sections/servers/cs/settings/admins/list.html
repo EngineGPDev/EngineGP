@@ -1,0 +1,13 @@
+<tr id="[id]">
+	<td align="center"><input type="checkbox" name="active['[id]']" class="lcs_check left" |active|checked|_active| /></td>
+	<td align="center"><input name="value['[id]']" value="[value]" placeholder="Ник / Steam / Ip"></td>
+	<td align="center"><input name="passwd['[id]']" value="[passwd]" placeholder="Введите пароль"></td>
+	<td align="center" class="adminflags">
+		<input name="flags['[id]']" value="[flags]" id="flags_[id]">
+		<div onclick="flags_admin('[id]')"><i class="fa fa-pencil-square-o"></i></div>
+	</td>
+	<td align="center"><select name="type['[id]']">[type]</select></td>
+	<td align="center"><input name="time['[id]']" value="[time]" class="date-picker" data-date-format="dd.mm.yy"></td>
+	<td align="center"><input name="info['[id]']" value="[info]"></td>
+	<td align="center"><button class="btn-error btn-max" onclick="return delete_admin('[id]');">Удалить</button></td>
+</tr>

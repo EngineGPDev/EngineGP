@@ -1,0 +1,29 @@
+<h4 class="hblock_content">Параметры установки</h4>
+
+<div class="block_content">
+	<form action="[home]servers/id/[id]/section/web/subsection/mysql/action/install/go" method="POST" id="install">
+		<table class="table_pad input_pad">
+			<tbody>
+				<tr>
+					<td width="5%" align="right">Пароль:</td>
+					<td>
+						<input name="passwd" placeholder="Введите пароль">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div class="btn btn-none">Если не указывать пароль, то система сгенерирует его автоматически.</div>
+
+						<button onclick="loading(1)" class="btn-success margin-top btn-short right">Установить</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<script type="text/javascript">
+	var server = '[id]';
+</script>
+
+<script src="[js]sections/web/mysql.js" type="text/javascript"></script>

@@ -1,0 +1,40 @@
+<h4 class="hblock_content">Игровой сервер: #[id]</h4>
+
+<div class="block_content">
+	<div class="server_list">
+		<div class="server_img" id="image_[id]"><img src="[img]"></div>
+		<table>
+			<tbody>
+				<tr>
+					<td width="32%"><div class="server_name">[name]</div></td>
+					<td width="33%">Игра: [game] <u>(id: [id])</u></td>
+					<td width="35%">Создан: [date]</td>
+				</tr>
+				<tr>
+					<td>Адрес: [address]</td>
+					<td>Локация: [unit]</td>
+					<td id="time_[id]">Арендован до: [time]</td>
+				</tr>
+				<tr>
+					<td id="status_[id]">[status]</td>
+					<td>Сборка: [pack]</td>
+					<td id="time_end_[id]">[time_end]</td>
+				</tr>
+				<tr>
+					<td>
+						Онлайн: <span id="online_[id]">[online]</span> / [slots]
+						<div class="change_close" id="maps_close_[id]" onclick="server_change_close('[id]')">x</div>
+						<div class="change_map" id="maps_list_[id]"></div>
+					</td>
+					<td colspan="2">Тариф: [tarif]</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="buttons_[id]">[btn]</td>
+					<td><a href="[home]servers/id/[id]"><div class="btn btn-short btn-max">Управление сервером</div></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="space"></div>

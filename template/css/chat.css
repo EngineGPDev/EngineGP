@@ -1,0 +1,234 @@
+.chat_main_head span.chat_sender > a
+{
+	display: none;
+}
+.chat_main_head:hover span.chat_sender > a
+{
+	display: initial;
+}
+.chat_data a
+{
+	
+	text-decoration: underline;
+}
+.chat_data_foot
+{
+	padding: 5px 5px 0 5px;
+    font-size: 10px;
+}
+.chat_data_foot > div
+{
+	display: inline-block;
+    width: 100%;
+    margin: 5px 0;
+}
+.chat_data_foot > div > div
+{
+	width: 88px;
+    float: left;
+    margin-right: 5px;
+}
+.chat_data_foot > div > div > a .image
+{
+	position: relative;
+    height: 80px;
+    width: 80px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    float: left;
+    overflow: hidden;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    text-align: center;
+}
+.chat_msg
+{
+    position: relative;
+    display: block;
+    margin-bottom: 15px;
+}
+.chat_msg_ava
+{
+    height: 57px;
+    width: 57px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 1px 1px #DDD;
+    overflow: hidden;
+    margin-top: 5px;
+    border-radius: 50%;
+	float: left;
+}
+.chat_msg > .chat_main
+{
+    margin-left: 80px;
+}
+.chat_msg > .chat_main
+{
+    padding-right: 5px;
+    display: block;
+}
+.chat_main_head
+{
+    padding: 0 5px;
+    line-height: 22px;
+}
+.chat_main_head > span.chat_sender
+{
+    color: #597da3;
+    font-size: 11px;
+    font-family: 'Roboto Medium';
+}
+.chat_date
+{
+	color: #888;
+    float: right;
+    font-size: 10px;
+    margin-top: 2px;
+}
+.chat_body
+{
+    position: relative;
+}
+.chat_msg > .chat_main .chat_body span.chat_sprite
+{
+    background: url(../images/chat_sprite.png) no-repeat 0px 0px;
+    width: 25px;
+    height: 17px;
+    display: block;
+    position: absolute;
+    left: -11px;
+    top: 8px;
+}
+.chat_data
+{
+	background: #fff;
+    border: 1px solid rgba(196, 196, 196, 0.47);
+    padding: 10px;
+    color: #000;
+    font-size: 12px;
+    z-index: 0;
+    display: block;
+    font-family: 'Exo 2', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+	word-wrap: break-word;
+}
+.chat_msg_ava img
+{
+    width: 110%;
+    min-height: 112%;
+    margin-top: -3px;
+    margin-left: -2px;
+}
+
+#dialog {
+	height: 500px;
+	overflow-y: scroll;
+}
+
+.emoji {
+	display: inline-block;
+	background: url(../images/emoji.png) no-repeat 0px 0px;
+	height: 16px;
+	width: 16px;
+}
+.emoji_1 {
+	background-position: 0px 0px;
+}
+.emoji_2 {
+	background-position: 0px -17px;
+}
+.emoji_3 {
+	background-position: 0px -34px;
+}
+.emoji_4 {
+	background-position: 0px -51px;
+}
+.emoji_5 {
+	background-position: 0px -68px;
+}
+.emoji_6 {
+	background-position: 0px -85px;
+}
+.emoji_7 {
+	background-position: 0px -102px;
+}
+.emoji_8 {
+	background-position: 0px -119px;
+}
+.emoji_9 {
+	background-position: 0px -136px;
+}
+.emoji_10 {
+	background-position: 0px -153px;
+}
+.emoji_11 {
+	background-position: 0px -170px;
+}
+.emoji_12 {
+	background-position: 0px -187px;
+}
+.emoji_13 {
+	background-position: 0px -204px;
+}
+.emoji_14 {
+	background-position: 0px -221px;
+}
+.emoji_15 {
+	background-position: 0px -238px;
+}
+.emoji_16 {
+	background-position: 0px -255px;
+}
+.emoji_17 {
+	background-position: 0px -272px;
+}
+.emoji_18 {
+	background-position: 0px -289px;
+}
+.emoji_19 {
+	background-position: 0px -306px;
+}
+.emoji_20 {
+	background-position: 0px -323px;
+}
+.emoji_21 {
+	background-position: 0px -340px;
+}
+.emoji_22 {
+	background-position: 0px -357px;
+}
+.emoji_23 {
+	background-position: 0px -374px;
+}
+.emoji_24 {
+	background-position: 0px -391px;
+}
+.emoji_25 {
+	background-position: 0px -408px;
+}
+.emoji_26 {
+	background-position: 0px -425px;
+}
+.emoji_27 {
+	background-position: 0px -442px;
+}
+.emoji_28 {
+	background-position: 0px -459px;
+}
+.emoji_29 {
+	background-position: 0px -476px;
+}
+.emoji_30 {
+	background-position: 0px -493px;
+}
+.emoji_31 {
+	background-position: 0px -510px;
+}
+.emoji_32 {
+	background-position: 0px -527px;
+}

@@ -1,0 +1,30 @@
+<div class="heading-style-1 container">
+	<h5>Продление аренды сервера</h5>
+	<div class="heading-decoration bg-blue-dark"></div>
+</div>
+
+<li>Слот: [slots]шт.</li>
+<li>Тариф: [tarif]</li>
+<li>Осталось: [time]</li>
+<li>[info]</li>
+
+<div class="decoration"></div>
+
+<form action="[home]servers/id/[id]/section/tarif/subsection/extend/go" method="POST" id="extend">
+	<div>[date]</div>
+	<u>Цена за месяц: [sum] [cur]</u>
+	<div class="static-notification">
+		<p>Система оплаты работает по расчетному периоду.</p>
+		<p>При оплате до 15-го числа взымается плата за остаток текущего месяца.</p>
+		<p>При оплате после 15-го числа взымается плата за остаток текущего месяца + следующий месяц.</p>
+	</div>
+	<h5 class="smaller-text">Промо-код <a href="#" class="right" onclick="return promo()">Проверить</a></h5>
+	<input class="text-field" id="promo" name="promo" placeholder="Введите имеющийся промо-код">
+	<div class="smaller-text"><b>К оплате: <span id="info_extend">0</span> [cur]</b></div>
+	<div class="smaller-text" id="info_promo"></div>
+	<center><button class="btn btn-success">Продлить</button></center>
+</form>
+
+<div class="decoration"></div>
+
+<script type="text/javascript">$(document).ready(upd_extend());</script>

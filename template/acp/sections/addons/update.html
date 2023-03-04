@@ -1,0 +1,130 @@
+<a href="[acp]addons/id/[plugin]">Назад к плагину</a>
+
+<div class="space"></div>
+
+<form enctype="multipart/form-data" action="[acp]addons/section/update/id/[id]/go" method="POST" id="addons">
+	<div class="informer">Основные настройки</div>
+
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Название:</td>
+				<td class="w25p"><input name="name" value="[name]" type="text"></td>
+				<td class="w5p text-right">Требования:</td>
+				<td><input name="required" value="[required]" type="text"></td>
+				<td class="w5p text-right">Несовместимости:</td>
+				<td><input name="incompatible" value="[incompatible]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Выборка:</td>
+				<td colspan="3"><input name="choice"  value="[choice]" placeholder="Введите ID плагинов: id:id:id id:id" type="text"></td>
+				<td class="w5p text-right"><b>Цена</b>:</td>
+				<td><input name="price" placeholder="Введите цену плагина" type="text" value="[price]"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Статус:</td>
+				<td><select name="status">[status]</select></td>
+				<td class="w5p text-right">Положение:</td>
+				<td><input name="sort" value="[sort]" type="text"></td>
+				<td class="w5p text-right">Сборки:</td>
+				<td><input name="packs" value="[packs]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right vtop">Описание:</td>
+				<td colspan="5"><textarea rows="3" name="desc">[desc]</textarea></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right vtop">Информация:</td>
+				<td colspan="5"><textarea rows="3" name="info">[info]</textarea></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right vtop">Картинки:</td>
+				<td colspan="3"><textarea rows="3" name="images">[images]</textarea></td>
+				<td class="w5p text-right"><b>Цена</b>:</td>
+				<td><input name="price" placeholder="Введите цену плагина" type="text" value="[price]"></td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<div class="informer">Редактируемые файлы</div>
+
+	<table class="inputs inputs-max">
+		<thead>
+			<tr>
+				<th>Файл</td>
+				<th class="w5p">Положение</td>
+				<th class="w5p text-center"><div class="btn" onclick="config_files_add()">Добавить</div></td>
+			</tr>
+		</thead>
+		<tbody>[config_files_all]</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<div class="informer">Удаление текста из файлов</div>
+
+	<table class="inputs inputs-max">
+		<thead>
+			<tr>
+				<th>Файл</td>
+				<th>Текст</td>
+				<th class="w5p text-center">Regex</td>
+				<th class="w5p text-center"><div class="btn" onclick="config_clear_add()">Добавить</div></td>
+			</tr>
+		</thead>
+		<tbody id="config_clear_all">[config_clear_all]</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<div class="informer">Добавление текста в файлы после <u>установки</u> плагина</div>
+
+	<table class="inputs inputs-max">
+		<thead>
+			<tr>
+				<th>Файл</td>
+				<th>Текст</td>
+				<th class="w5p text-center">TOP</td>
+				<th class="w5p text-center"><div class="btn" onclick="config_write_add()">Добавить</div></td>
+			</tr>
+		</thead>
+		<tbody id="config_write_all">[config_write_all]</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<div class="informer">Добавление текста в файлы после <u>удаления</u> плагина</div>
+
+	<table class="inputs inputs-max">
+		<thead>
+			<tr>
+				<th>Файл</td>
+				<th>Текст</td>
+				<th class="w5p text-center">TOP</td>
+				<th class="w5p text-center"><div class="btn" onclick="config_write_del_add()">Добавить</div></td>
+			</tr>
+		</thead>
+		<tbody id="config_write_del_all">[config_write_del_all]</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<div class="informer">Удаление файлов после <u>установки</u> плагина</div>
+
+	<table class="inputs inputs-max">
+		<thead>
+			<tr>
+				<th>Файл</td>
+				<th class="w5p text-center"><div class="btn" onclick="files_delete_add()">Добавить</div></td>
+			</tr>
+		</thead>
+		<tbody id="files_delete_all">[files_delete_all]</tbody>
+	</table>
+</form>
+
+<script type="text/javascript" src="[js]addons.js"></script>

@@ -1,0 +1,64 @@
+<div class="width50p">
+	<h4 class="hblock_content">Добавление совладельца</h4>
+
+	<div class="block_content">
+		<form action="[home]servers/id/[id]/section/owners/go" method="POST" id="add">
+			<table class="table_pad input_pad">
+				<tbody>
+					<tr>
+						<td>Логин / Ид</td>
+						<td><input name="owner['user']" placeholder="Введите логин или ид совладельца"></td>
+					</tr>
+					[access]
+					<tr>
+						<td>Доступ выдан до</td>
+						<td align="center">
+							<input name="owner['time']" value="[time]" class="date-picker width50p" data-date-format="dd.mm.yy">
+							<div class="btn btn-none">+ 60 мин.</div>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" colspan="2"><button class="btn-success">Добавить совладельца</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+
+<div class="width50p right">
+	<h4 class="hblock_content">Список совладельцев</h4>
+
+	<div class="block_content">
+		<table class="table_pad input_pad">
+			<tbody>
+				[owners]
+			</tbody>
+		</table>
+	</div>
+
+	<div class="none" id="rights_block">
+		<div class="space"></div>
+
+		<h4 class="hblock_content">Выданные права</h4>
+
+		<div class="block_content" id="rights"></div>
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="[css]date.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="[css]switch.css" media="screen" />
+
+<script src="[js]switch.js" type="text/javascript"></script>
+<script src="[js]ace-elements.js" type="text/javascript"></script>
+<script src="[js]ace.js" type="text/javascript"></script>
+<script src="[js]date.js" type="text/javascript"></script>
+<script src="[js]sections/servers/owners.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$(function(){
+		$('.date-picker').datepicker();
+	});
+
+	$(document).ready(function(e){$('input').lc_switch();});
+</script>

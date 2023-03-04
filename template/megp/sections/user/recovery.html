@@ -1,0 +1,25 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Восстановление доступа</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>    
+
+<form action="recovery/go" method="POST" id="recovery">
+	<h5 class="smaller-text">Логин</h5>
+	<div class="heading-style-1 container">
+		<input name="login" placeholder="Введите логин или почту" class="text-field blue-field">
+	</div>
+	<div class="heading-style-1 container">
+		<center><img id="captcha_img" src="[home]recovery/captcha" title="Обновить код" onclick="this.src = '[home]recovery/captcha?'+Math.random();"></center>
+	</div>
+	<div class="heading-style-1 container">
+		<input name="captcha" placeholder="Введите код с картинки" class="text-field blue-field">
+	</div>
+	<center><button class="btn btn-success" onclick="loading(1)">Восстановить</button></center>
+	<center><a href="[home]auth">Перейти к авторизации</a></center>
+</form>
+
+<div class="decoration"></div>
+
+<!-- scripts !-->
+<script src="[js]recovery.js" type="text/javascript"></script>

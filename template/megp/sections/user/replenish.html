@@ -1,0 +1,53 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Пополнение баланса</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>    
+
+<form onsubmit="return replenish(false);" action="https://merchant.webmoney.ru/lmi/payment.asp" method="POST">
+	<h5 class="smaller-text">Сумма</h5>
+	<div class="heading-style-1 container">
+		<input id="sum" pattern="[0-9]{1,20}" placeholder="Введите сумму" class="text-field blue-field">
+	</div>
+	<!--<center><button class="btn btn-info">WebMoney</button></center>-->
+	<center><div onclick="return replenish(true);" class="btn btn-success">UnitPay</div></center>
+
+	<input type="hidden" name="LMI_PAYMENT_NO" value="1">
+	<input type="hidden" name="LMI_PAYMENT_AMOUNT" id="amount">
+	<input type="hidden" name="LMI_PAYMENT_DESC_BASE64" value="0J/QvtC/0L7Qu9C90LXQvdC40LUg0YHRh9C10YLQsA==">
+	<input type="hidden" name="LMI_PAYEE_PURSE" value="[wmr]">
+	<input type="hidden" name="us_user" value="[id]">
+</form>
+
+<div class="decoration"></div>
+
+<script type="text/javascript">
+	function replenish(free)
+	{
+		sum = $('#sum').val();
+
+		if(sum < 1)
+			bootbox.dialog('Необходимо указань сумму',
+				[{
+					"label" : "OK",
+					"class" : "btn-small btn-primary",
+				}]
+			);
+		else{
+			if(free)
+				location.href='https://unitpay.ru/pay/[unitpay]?sum='+sum+'&account=[id]&desc=Пополнение+счета';
+				/* freekassa
+				$.get(home+'user/section/replenish/key/get/sum/'+sum, function(data){
+					location.href='http://www.free-kassa.ru/merchant/cash.php?m=[freekassa]&o=1&us_user=[id]&lang=ru&pay=Пополнение счета&oa='+sum+'&s='+data;
+				});
+				*/
+			else{
+				$('#amount').val(sum);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+</script>

@@ -1,0 +1,58 @@
+<div class="width50p left">
+	<h4 class="hblock_content">Файл: banned_user.cfg</h4>
+
+	<div class="block_content">
+		<div class="height200">
+			<table class="table_pad">
+				<tbody>
+					[banned]
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="width50p right">
+	<h4 class="hblock_content">Файл: banned_ip.cfg</h4>
+
+	<div class="block_content">
+		<div class="height200">
+			<table class="table_pad">
+				<tbody>
+					[listip]
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Инструменты</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td><input placeholder="Введит SteamID или IP" id="ban_val"></td>
+				<td width="1%"><div class="btn btn-success" onclick="ban_action('unban', false)">Разбанить</div></td>
+				<td width="1%"><div class="btn btn-error" onclick="ban_action('ban', false)">Забанить</div></td>
+				<td width="1%"><div class="btn" onclick="ban_action('info', false)">Проверить</div></td>
+				<td align="right"><div class="btn btn-none">SourceBans</div></td>
+				<td width="1%"><input type="checkbox" id="webbans" class="lcs_check left" checked/></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<link rel="stylesheet" type="text/css" href="[css]switch.css" media="screen" />
+
+<script src="[js]switch.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	var server = '[id]';
+	
+	$(document).ready(function(e){$('input').lc_switch();});
+</script>
+
+<script src="[js]sections/servers/settings/bans.js" type="text/javascript"></script>

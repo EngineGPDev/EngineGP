@@ -1,0 +1,30 @@
+<h4 class="hblock_content">Аренда выделенного адреса</h4>
+
+<div class="block_content">
+	<table class="table_pad form">
+		<tbody>
+			<tr>
+				<td>
+					Текущий адрес: <u>[address]</u>
+					<span class="right">Цена аренды выделенного адреса |mounth|за 30 дней|_mounth|: <span id="info_address">0</span> [cur]</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="address">Адрес:</label>
+					<select id="address" name="address" onchange="upd_address()">
+						[options]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">
+					|!mounth|<span class="btn btn-none left">Выделенный адрес будет установлен на весь период аренды игрового сервера.</span>|_!mounth|
+					<div onclick="upd_address_go()" class="btn btn-success">Арендовать адрес</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>

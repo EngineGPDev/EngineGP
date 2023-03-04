@@ -1,0 +1,76 @@
+<a href="[home]servers/id/[id]/section/maps/subsection/listing"><div class="btn margin-right">Настроить списки</div></a>
+
+<a href="[home]servers/id/[id]/section/maps"><div class="btn btn-success right">Карты на сервере</div></a>
+
+<div class="space"></div>
+
+[types]
+
+<h4 class="hblock_content">Поиск по картам</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td><input placeholder="Введите критерии поиска" id="search"></td>
+				<td width="1%"><div class="btn btn-success" onclick="maps_search(true)">Найти</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<div id="search_block">
+	<form action="[home]servers/id/[id]/section/maps/subsection/install/go" method="POST" class="install">
+
+		<div class="btn btn-info margin-right" onclick="select_map_all('search')">Выделить все</div>
+
+		<div class="btn btn-gray" onclick="diselect_map_all('search')">Отменить выделение</div>
+
+		<button class="btn btn-success right" onclick="loading(1)">Установить выбранные карты</button>
+
+		<div class="space"></div>
+
+		<h4 class="hblock_content">Результаты поиска</h4>
+
+		<div class="block_content maps" id="search_result"></div>
+
+		<div class="space"></div>
+
+	</form>
+</div>
+
+<div class="space"></div>
+
+<form action="[home]servers/id/[id]/section/maps/subsection/install/go" method="POST" class="install">
+
+<div class="btn btn-info margin-right" onclick="select_map_all()">Выделить все</div>
+
+<div class="btn btn-gray" onclick="diselect_map_all()">Отменить выделение</div>
+
+<button class="btn btn-success right" onclick="loading(1)">Установить выбранные карты</button>
+
+[pages]
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Список карт</h4>
+
+<div class="block_content maps">[maps]</div>
+
+</form>
+
+[pages]
+
+<script type="text/javascript">
+	var server = '[id]';
+	var maps = {[amaps]};
+	var install;
+
+	$('#search').keyup(function(){
+		maps_search(false);
+	});
+</script>
+
+<script src="[js]sections/servers/maps.js" type="text/javascript"></script>

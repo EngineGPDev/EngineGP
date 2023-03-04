@@ -1,0 +1,48 @@
+<h4 class="hblock_content">Информация</h4>
+
+<div class="block_content">
+	Плагин: <b>[name]</b>
+	<p>[info]</p>
+
+	|images|
+		<div class="space"></div>
+
+		<div class="plugin_images">[images]</div>
+	|_images|
+</div>
+
+|configs|
+<div class="space"></div>
+
+<h4 class="hblock_content">Редактируемые файлы</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			[configs]
+		<tbody>
+	</table>
+</div>
+|_configs|
+
+<div class="space"></div>
+
+<a href="[home]servers/id/[id]/section/plugins"><div class="btn">Вернуться к плагинам</div></a>
+
+<link href="[css]img.css" rel="stylesheet" type="text/css" media="screen">
+
+<script src="[js]img.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	jQuery(function()
+	{
+		$("a#single_image").fancybox();
+		$(".plugin_images a.image-zoom").fancybox();
+		$("a#inline").fancybox({'hideOnContentClick': true});
+		$("a.group").fancybox({
+			'speedIn': 350, 
+			'speedOut': 150, 
+			'overlayShow': false
+		});
+	});
+</script>

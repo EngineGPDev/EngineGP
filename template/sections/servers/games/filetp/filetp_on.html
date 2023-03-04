@@ -1,0 +1,140 @@
+<h4 class="hblock_content">Информация</h4>
+
+<div class="block_content">
+	<table class="table_pad">
+		<tbody>
+			<tr>
+				<td width="5%" align="right">Сервер:</td>
+				<td>[server]:21</td>
+				<td width="5%"><a href="[home]servers/id/[id]/section/filetp/action/off/go"><div class="btn btn-error btn-short">Выключить</div></a></td>
+			</tr>
+			<tr>
+				<td align="right">Логин:</td>
+				<td colspan="2">[login]</td>
+			</tr>
+			<tr>
+				<td align="right">Пароль:</td>
+				<td colspan="2">
+					<span class="pointer" id="select-passwd">[passwd]</span>
+					<a href="[home]servers/id/[id]/section/filetp/action/change/go"><u>сменить</u></a>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Адрес:</td>
+				<td colspan="2">
+					<a href="[address]:21" target="_blank">[address]:21</a>
+
+					<u class="pointer right" onclick="logs()" id="show_logs">показать логи операций</u>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="none" id="filetp_logs">
+	<div class="space"></div>
+
+	<h4 class="hblock_content">Последние операции</h4>
+
+	<div class="block_content filetp">
+		<table class="table_pad">
+			<thead>
+				<tr>
+					<td>Файл</td>
+					<td>Размер</td>
+					<td>Действие</td>
+					<td></td>
+					<td>Инициатор</td>
+					<td>Дата</td>
+				</tr>
+			</thead>
+			<tbody id="filetp_logs_data"></tbody>
+		</table>
+	</div>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Файловый менеджер</h4>
+
+<div class="block_content filetp">
+	<div class="btn btn-short" onclick="open_path(path_open)">Обновить</div>
+
+	<div class="btn btn-short right margin-right" onclick="create('folder')">Создать папку</div>
+	<div class="btn btn-short right margin-right" onclick="create('file')">Создать файл</div>
+
+	<div class="filetp_find margin-right">
+		<input placeholder="Введите критерии поиска" id="filetp_find">
+	</div>
+
+	<div id="filetp_block">
+		<table class="table_pad">
+			<tbody>
+				<tr>
+					<td width="30%">Название</td>
+					<td width="10%">Размер</td>
+					<td width="14%">Права</td>
+					<td width="17%">Владелец / Группа</td>
+					<td width="17%">Последнее изменение</td>
+					<td width="12%"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="filetp_block">
+			<table class="table_pad">
+				<tbody id="filetp"></tbody>
+			</table>
+		</div>
+
+		<div id="infopath"></div>
+	</div>
+
+	<div class="none input_pad" id="filetp_edit">
+		<div class="space"></div>
+
+		<table class="table_pad">
+				<tbody>
+					<tr>
+						<td>Файл: <span id="filetp_file_name"></span></td>
+					</tr>
+					<tr>
+						<td>
+							<textarea id="filetp_data" rows="30"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<button class="btn-short btn-success margin-right" onclick="edit_go()">Сохранить</button>
+							<div class="btn btn-short" onclick="cancel()">Отмена</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="hidden" id="filetp_path">
+			<input type="hidden" id="filetp_file">
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="[js]plugins/codemirror.css" media="screen">
+
+<script src="[js]plugins/codemirror.js" type="text/javascript"></script>
+
+<script src="[js]sections/servers/filetp.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = '[id]';
+	var path_open = '[path]';
+	$(document).ready(function(){
+		setTimeout(function() {open_path('[path]')}, 1000);
+	});
+
+	document.getElementById('select-passwd').addEventListener('click', function(){
+		var r = document.createRange();
+		r.selectNode(this);
+		document.getSelection().addRange(r);
+	});
+
+	var editor = CodeMirror.fromTextArea(document.getElementById('filetp_data'), {
+        lineNumbers: true,
+    });
+</script>

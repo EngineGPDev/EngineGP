@@ -1,0 +1,30 @@
+<h4 class="hblock_content">Смена тарифного плана</h4>
+
+<div class="block_content">
+	<table class="table_pad form">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					Текущий тарифный план: <u>[tarif] / [info]</u>
+					<span class="right" id="info_plan"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="tarif">План:</label>
+					<select id="tarif" name="tarif" onchange="upd_plan()">
+						[options]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><u>Внимание</u>: при смене тарифного плана, вычитается дополнительный день.</td>
+				<td align="right">
+					<div onclick="upd_plan_go()" class="btn btn-success">Сменить план</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>

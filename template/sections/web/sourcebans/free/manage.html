@@ -1,0 +1,59 @@
+<h4 class="hblock_content">Информация</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td>
+					<b>Адрес услуги</b>
+					<p><a href="http://[url]/" target="_blank">http://[url]/</a></p>
+				</td>
+				<td width="33%">
+					<b>Логин</b>
+					<p>admin</p>
+				</td>
+				<td width="33%">
+					<b>Пароль</b>
+					<div>
+						[passwd]
+						<div class="btn btn-short right" onclick="passwd()">Сменить пароль</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<b>Данные для sql.cfg</b>
+					<textarea rows="6">[config]</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<b>Автоподключение игрового сервера</b>
+					<select id="server">
+						[servers]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="btn btn-none btn-short">После автоподключения игровой сервер необходимо перезапустить, если он запущен.</div>
+				</td>
+				<td align="right">
+					<div class="btn btn-success btn-short" onclick="connect()">Подключить</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					|update|<div class="btn btn-short margin-right" onclick="update()">Обновить</div>|_update|
+					<div class="btn btn-error btn-short" onclick="delweb()">Удалить</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	var server = '[id]';
+</script>
+
+<script src="[js]sections/web/sourcebans.js" type="text/javascript"></script>

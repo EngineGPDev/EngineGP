@@ -1,0 +1,271 @@
+#drop-files
+{
+	position: relative;
+    width: 99%;
+    height: 56px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 2px dashed #dcdcdc;
+    text-align: center;
+    font: 15px 'Open Sans';
+}
+#drop-files p
+{
+	clear: none;
+	padding: 0;
+	margin: 0;
+}
+#uploaded-holder
+{
+	display: none;
+	position: relative;
+	margin: 0 auto 10px;
+	width: 100%;
+}
+#dropped-files
+{
+	display: block;
+	margin: 0 auto;
+	width: 100%
+}
+#upload-button
+{
+	z-index: 9999;
+	display: none;
+	margin: 5px 0;
+}
+.drop-button, .success-button
+{
+    display: inline-block;
+    padding: 0px;
+    width: 100%;
+    font-size: 13px;
+    bottom: 0;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff !important
+}
+.drop-button
+{
+	background-color: #b07474
+}
+.success-button
+{
+    background-color: #74b084
+}
+#dropped-files .image, #uploaded-files .image
+{
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    background-color: #fff;
+    float: left;
+    overflow: hidden;
+    background-size: contain !important;
+	background-repeat: no-repeat !important;
+    text-align: center;
+}
+#upload-button .ss-upload
+{
+	font-size: 0.7em;
+}
+
+#upload-button span
+{
+	position: relative;
+	text-align: center;
+	background: white;
+	font-size: 15px;
+	padding: 5px;
+	margin-right: 8px;
+}
+#loading
+{
+	width: 100%;
+	position: relative;
+	margin: 5px 0;
+}
+#loading-bar
+{
+	width: 100%;
+	height: 16px;
+	background: #fff;
+	box-shadow: 0 0 15px rgba(0,0,0,0.1);
+	border-radius: 5px;
+	padding: 2px;
+}
+.loading-color
+{
+	width: 0%;
+	height: 100%;
+	-webkit-transition: all 0.1s ease-in;
+	-moz-transition: all 0.1s ease-in;
+	-ms-transition: all 0.1s ease-in;
+	-o-transition: all 0.1s ease-in;
+	transition: all 0.1s ease-in;
+	border-radius: inherit;
+	background-color: #4edbf1;
+}
+#loading-content 
+{
+	position: relative;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+	width: 100%;
+}
+#file-name-holder
+{
+	width: 100%;
+	float: left;
+}
+#file-name-holder h1
+{
+    padding: 5px 0;
+    font-size: 13px;
+    margin: 0;
+}
+
+#drop-files input
+{
+	border: 0;
+    background-color: #ffffff;
+    width: initial;
+}
+#uploaded-files .img-block:nth-child(8), #dropped-files .img-block:nth-child(9)
+{
+	margin-right: 0px;
+}
+.img-block
+{
+	width: 108px;
+    float: left;
+	margin-right: 12px
+}
+.help_main_head span.help_sender > a
+{
+	display: none;
+}
+.help_main_head:hover span.help_sender > a
+{
+	display: initial;
+}
+.help_data a
+{
+	text-decoration: underline;
+}
+.help_data_foot
+{
+	padding: 5px 5px 0 5px;
+    font-size: 10px;
+}
+.help_data_foot > div
+{
+	display: inline-block;
+    width: 100%;
+    margin: 5px 0;
+}
+.help_data_foot > div > div
+{
+	width: 88px;
+    float: left;
+    margin-right: 5px;
+}
+.help_data_foot > div > div > a .image
+{
+	position: relative;
+    height: 80px;
+    width: 80px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    float: left;
+    overflow: hidden;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    text-align: center;
+}
+.help_msg
+{
+    position: relative;
+    display: block;
+    margin-bottom: 15px;
+}
+.help_msg_ava
+{
+    height: 57px;
+    width: 57px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 1px 1px #DDD;
+    overflow: hidden;
+    margin-top: 5px;
+    border-radius: 50%;
+	float: right;
+}
+.help_msg > .help_main
+{
+    margin-right: 73px;
+}
+.help_msg > .help_main
+{
+    padding-right: 5px;
+    display: block;
+}
+.help_main_head
+{
+    padding: 0 5px;
+    line-height: 22px;
+}
+.help_main_head > span.help_sender
+{
+    color: #597da3;
+    font-size: 11px;
+    font-family: 'Roboto Medium';
+}
+.help_date
+{
+	color: #888;
+    float: right;
+    font-size: 10px;
+    margin-top: 2px;
+}
+.help_body
+{
+    position: relative;
+}
+.help_msg > .help_main .help_body span.help_sprite
+{
+    background: url(../images/help_sprite.png) no-repeat 0px 0px;
+    width: 25px;
+    height: 17px;
+    display: block;
+    position: absolute;
+    right: -22px;
+    top: 8px;
+}
+.help_data
+{
+	background: #fff;
+    border: 1px solid rgba(196, 196, 196, 0.47);
+    padding: 10px;
+    color: #555;
+    font-size: 12px;
+    z-index: 0;
+    display: block;
+    font-family: 'Exo 2', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+	word-wrap: break-word;
+}
+.help_msg_ava img
+{
+    width: 110%;
+    min-height: 112%;
+    margin-top: -3px;
+    margin-left: -2px;
+}

@@ -1,0 +1,31 @@
+<form action="[home]user/section/recovery/go/1" method="post" id="recovery">
+	<table class="form" width="450px">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<label for="login">Логин:</label>
+					<input id="login" name="login" type="text" placeholder="Введите логин или почту" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="captha">Введите код:</label>
+					<input name="captcha" id="captcha">
+				</td>
+				<td width="100">
+					<img id="captcha_img" src="[home]user/section/recovery/captcha" title="Обновить код" onclick="this.src = '[home]user/section/recovery/captcha?'+Math.random();">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right">
+					<a href="[home]user/section/auth"><div class="btn left">Авторизоваться</div></a>
+					<a href="[home]user/section/signup"><div class="btn left margin-left">Зарегистрироваться</div></a>
+					<button class="btn btn-success" onclick="loading(1)">Восстановить доступ</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<!-- scripts !-->
+<script src="[js]sections/user/recovery.js" type="text/javascript"></script>

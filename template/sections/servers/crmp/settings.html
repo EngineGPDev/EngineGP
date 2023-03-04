@@ -1,0 +1,66 @@
+<h4 class="hblock_content">Основное</h4>
+
+<div class="block_content">
+	<table width="100%" class="table_pad">
+		<tbody>
+			<tr>
+				<td>Параметры запуска игрового сервера</td>
+				<td width="5"><a href="[home]servers/id/[id]/section/settings/subsection/start"><div class="btn btn-short btn-max">Настроить</div></a></td>
+			</tr>
+			<tr>
+				<td>Основные настройки (<u>SERVER.CFG</u>)</td>
+				<td><a href="[home]servers/id/[id]/section/settings/subsection/server"><div class="btn btn-short btn-max">Настроить</div></a></td>
+			</tr>
+			<tr>
+				<td>Блокировка на оборудовании (<u>FireWall</u>)</td>
+				<td><a href="[home]servers/id/[id]/section/settings/subsection/firewall"><div class="btn btn-short btn-max">Настроить</div></a></td>
+			</tr>
+			<tr>
+				<td>Планировщик задач (<u>CronTab</u>)</td>
+				<td><a href="[home]servers/id/[id]/section/settings/subsection/crontab"><div class="btn btn-short btn-max">Настроить</div></a></td>
+			</tr>
+			<tr>
+				<td colspan="2"><h4>Сборка игрового сервера</h4> <i class="right">(После изменения сборки, сервер необходимо переустановить, чтобы все изменения вступили в силу)</i></td>
+			</tr>
+			<tr>
+				<td class="input_pad">
+					<select id="packs">
+						[packs]
+					</select>
+				</td>
+				<td><div class="btn btn-short btn-max" onclick="repack('[id]')">Сохранить</div></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Логи</h4>
+
+<div class="block_content">
+	<table width="100%" class="table_pad">
+		<tbody>
+			<tr>
+				<td>Снимки консоли (<u>StartLogs</u>)</td>
+				<td width="5"><a href="[home]servers/id/[id]/section/settings/subsection/startlogs"><div class="btn btn-short btn-max">Посмотреть</div></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+|edits|
+<div class="space"></div>
+
+<h4 class="hblock_content">Редактируемые файлы</h4>
+
+<div class="block_content">
+	<table width="100%" class="table_pad">
+		<tbody>
+			[edits]
+		</tbody>
+	</table>
+</div>
+|_edits|
+
+<script src="[js]sections/servers/settings.js" type="text/javascript"></script>

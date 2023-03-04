@@ -1,0 +1,108 @@
+<h4 class="hblock_content">Категории серверов</h4>
+<div class="block_content">
+		<div class="server_list">
+			<div class="service_block_mon">
+			<a href="/monitoring/game/cs">
+				<img src="[img]services/cs.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">CS: 1.6</div>
+			</a>
+			</div>
+			<div class="service_block_mon">
+			<a href="/monitoring/game/css">
+				<img src="[img]services/css.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">CS: Source</div>
+			</a>
+			</div>
+			<div class="service_block_mon">
+			<a href="/monitoring/game/cssold">
+				<img src="[img]services/cssold.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">CS: Source v34</div>
+			</a>
+			</div>
+			<div class="service_block_mon">
+			<a href="/monitoring/game/csgo">
+				<img src="[img]services/csgo.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">CS: GO</div>
+			</a>
+			</div>
+			<div class="service_block_mon">
+			<a href="/monitoring/game/samp">
+				<img src="[img]services/samp.png" class="poster animated zoomIn" alt="">
+				<div class="service_game ctxt">GTA: SA-MP</div>
+			</a>
+			</div>	
+			<div class="service_block_mon">
+			<a href="/monitoring/game/crmp">
+				<img src="[img]services/crmp.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">GTA: CR-MP</div>
+			</a>
+			</div>
+			<div class="service_block_mon">
+			<a href="/monitoring/game/mta">
+				<img src="[img]services/mta.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">GTA: MTA</div>
+			</a>
+			</div>
+			<div class="service_block_mon">
+			<a href="/monitoring/game/mc">
+				<img src="[img]services/mc.png" class="poster animated zoomIn" alt="">
+				<div class="service_game">Minecraft</div>
+			</a>
+			</div>
+		</div>
+	</div>
+
+<div class="space"></div> 
+
+<h4 class="hblock_content">Список игровых серверов</h4>
+<div class="block_content">
+    <table class="table_pad">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th style="text-align: left;">Название сервера</th>
+                <th style="text-align: left;">Карта</th>
+                <th style="text-align: right;">Онлайн</th>
+                <th style="text-align: left;"></th>
+                <th style="text-align: left;"><i class="fa fa-steam"></i></th>
+                <th style="text-align: left;">IP адрес</th>
+            </tr>
+        </thead>
+        <tbody>
+            [list]
+        </tbody>
+    </table>
+</div>
+<div class="space"></div> 
+[pages]
+<style type="text/css">
+	.service_block_mon:hover {
+		background-color: #ededed;
+	}
+        .service_block_mon {
+             float: left;
+    	    width: 113px;
+            height: 145px;
+            border-radius: 5px;
+            margin: 0 0 6px 5px;
+            background-color: #f0f2f2;
+        }	
+	.service_block_mon .poster {
+   	  width: 100px;
+    	  height: 100px;
+    	  margin: 9px auto 10px auto;
+          display: block;
+          border: 1px solid #3a365e!important;
+        }
+	.service_block_mon .service_game {
+		text-align:center;
+		font:12px 'tahoma';
+		text-transform:uppercase;
+		color: #000;
+	}
+</style>
+<script> 
+$(document).ready(function() {
+  $('img').addClass('animated zoomIn'); 
+})
+</script>

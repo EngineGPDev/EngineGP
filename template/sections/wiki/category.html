@@ -1,0 +1,29 @@
+<h4 class="hblock_content">Поиск</h4>
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td><input placeholder="Введите критерии поиска" id="search"></td>
+				<td width="1%"><div class="btn btn-success" onclick="wiki_search(true)">Найти</div></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div id="search_result"></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Категории часто задаваемых вопросов</h4>
+<div class="block_content">[list]</div>
+
+<script type="text/javascript">
+	$('#search').keyup(function(){
+		wiki_search(false);
+	});
+</script>
+
+<script src="[js]wiki.js" type="text/javascript"></script>

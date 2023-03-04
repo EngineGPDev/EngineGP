@@ -1,0 +1,118 @@
+<h4 class="hblock_content">Защита по IP</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td width="25%" style="vertical-align: top;">
+					<table>
+						<tbody>[security]</tbody>
+					</table>
+				</td>
+				<td style="vertical-align: top; background-color: #fff;">
+					<table>
+						<tbody>
+							<tr>
+								<td width="1%">Защита:</td>
+								<td>
+									<b>
+										|security_ip|включена|_security_ip|
+										|!security_ip|выключена|_!security_ip|
+									</b>
+								</td>
+								<td width="1%">
+									|security_ip|<div onclick="security('off')" class="btn btn-error btn-max">Выключить</div>|_security_ip|
+									|!security_ip|<div onclick="security('on')" class="btn btn-success btn-max">Включить</div>|_!security_ip|
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div class="informer blue">Если включена защита, то авторизоваться можно только с указанных одиночных ip или подсетей.</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<p>Ваш ip адрес: [ip]
+									<p>Ваша подсеть: [subnetwork]
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									Добавление одиночного адреса
+								</td>
+							</tr>
+							<tr>
+								<td align="center"><div class="btn"><i class="fa fa-globe"></i></div></td>
+								<td><input id="addip" placeholder="Введите адрес"></td>
+								<td><div onclick="security('add')" class="btn btn-max">Добавить</div></td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									Добавление подсети (автоопределение)
+								</td>
+							</tr>
+							<tr>
+								<td align="center"><div class="btn"><i class="fa fa-globe"></i></div></td>
+								<td><input id="addsubip" placeholder="Введите адрес"></td>
+								<td><div onclick="security('addsub')" class="btn btn-max">Добавить</div></td>
+							</tr>
+							<tr>
+								<td colspan="3"><div class="space"></div></td>
+							</tr>
+							<tr>
+								<td align="center"><div class="btn"><i class="fa fa-globe"></i></div></td>
+								<td><input id="delip" placeholder="Введите адрес"></td>
+								<td><div onclick="security('del')" class="btn btn-error btn-max">Удалить</div></td>
+							</tr>
+							<tr>
+								<td align="center"><div class="btn"><i class="fa fa-globe"></i></div></td>
+								<td><input id="infoip" placeholder="Введите адрес"></td>
+								<td><div onclick="security('info')" class="btn btn-max">Информация</div></td>
+							</tr>
+							<tr>
+								<td colspan="3" id="whois">
+									Вывод информации об указанном адресе
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Защита по коду</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td width="1%">Защита:</td>
+				<td>
+					<b>
+						|security_code|включена|_security_code|
+						|!security_code|выключена|_!security_code|
+					</b>
+				</td>
+				<td width="1%">
+					|security_code|<div onclick="security('off_code')" class="btn btn-error btn-max">Выключить</div>|_security_code|
+					|!security_code|<div onclick="security('on_code')" class="btn btn-success btn-max">Включить</div>|_!security_code|
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div class="informer blue">Если включена защита по коду, то при каждой авторизации нужно вводить код, который будет отправлен на почту.</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	var user = '[id]';
+</script>
+
+<script src="[js]sections/user/lk.js" type="text/javascript"></script>

@@ -1,0 +1,75 @@
+<h4 class="hblock_content">Онлайн чат</h4>
+<div class="block_content help_dialog">
+    <div id="dialog">[dialog]</div>
+    <form method="POST" action="[home]chat/section/send" id="send">
+        <table class="table_pad form">
+            <tr>
+                <td colspan="2">
+                        <textarea rows="4" id="text" name="text"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Настройки: 
+                    <a class="pointer btn btn-short" id="chat_scroll" onclick="chat_scroll_change()" style="margin-top: 1px;">отключить скроллинг </a>
+                    <a class="pointer btn btn-short" id="chat_notice" onclick="chat_notice_change()" style="margin-top: 1px;">отключить уведомления </a>
+                    <a class="pointer btn btn-short" id="chat_sound" onclick="chat_sound_change()" style="margin-top: 1px;">отключить звуки</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="emoji emoji_1 pointer" data-value="emoji_1" onclick="chat_emoji('1')"></span>
+                    <span class="emoji emoji_2 pointer" onclick="chat_emoji('2')"></span>
+                    <span class="emoji emoji_3 pointer" onclick="chat_emoji('3')"></span>
+                    <span class="emoji emoji_4 pointer" onclick="chat_emoji('4')"></span>
+                    <span class="emoji emoji_5 pointer" onclick="chat_emoji('5')"></span>
+                    <span class="emoji emoji_6 pointer" onclick="chat_emoji('6')"></span>
+                    <span class="emoji emoji_7 pointer" onclick="chat_emoji('7')"></span>
+                    <span class="emoji emoji_8 pointer" onclick="chat_emoji('8')"></span>
+                    <span class="emoji emoji_9 pointer" onclick="chat_emoji('9')"></span>
+                    <span class="emoji emoji_10 pointer" onclick="chat_emoji('10')"></span>
+                    <span class="emoji emoji_11 pointer" onclick="chat_emoji('11')"></span>
+                    <span class="emoji emoji_12 pointer" onclick="chat_emoji('12')"></span>
+                    <span class="emoji emoji_13 pointer" onclick="chat_emoji('13')"></span>
+                    <span class="emoji emoji_14 pointer" onclick="chat_emoji('14')"></span>
+                    <span class="emoji emoji_15 pointer" onclick="chat_emoji('15')"></span>
+                    <span class="emoji emoji_16 pointer" onclick="chat_emoji('16')"></span>
+                    <span class="emoji emoji_17 pointer" onclick="chat_emoji('17')"></span>
+                    <span class="emoji emoji_18 pointer" onclick="chat_emoji('18')"></span>
+                    <span class="emoji emoji_19 pointer" onclick="chat_emoji('19')"></span>
+                    <span class="emoji emoji_20 pointer" onclick="chat_emoji('20')"></span>
+                    <span class="emoji emoji_21 pointer" onclick="chat_emoji('21')"></span>
+                    <span class="emoji emoji_22 pointer" onclick="chat_emoji('22')"></span>
+                    <span class="emoji emoji_23 pointer" onclick="chat_emoji('23')"></span>
+                    <span class="emoji emoji_24 pointer" onclick="chat_emoji('24')"></span>
+                    <span class="emoji emoji_25 pointer" onclick="chat_emoji('25')"></span>
+                    <span class="emoji emoji_26 pointer" onclick="chat_emoji('26')"></span>
+                    <span class="emoji emoji_27 pointer" onclick="chat_emoji('27')"></span>
+                    <span class="emoji emoji_28 pointer" onclick="chat_emoji('28')"></span>
+                    <span class="emoji emoji_29 pointer" onclick="chat_emoji('29')"></span>
+                    <span class="emoji emoji_30 pointer" onclick="chat_emoji('30')"></span>
+                    <span class="emoji emoji_31 pointer" onclick="chat_emoji('31')"></span>
+                    <span class="emoji emoji_32 pointer" onclick="chat_emoji('32')"></span>
+                </td>
+                <td width="5%">
+                    <button class="btn btn-success right" onclick="return chat_msg_send()">Отправить</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<link rel="stylesheet" type="text/css" href="[css]help.css" media="screen">
+<link rel="stylesheet" href="[css]chat.css">
+
+<script type="text/javascript" src="[js]chat.js"></script>
+<script>
+    var chat_sound_ativate = true;
+    var chat_notice_ativate = true;
+    var chat_scroll_ativate = true;
+    var chat_dialog_id = '[id]';
+
+    $(document).ready(function(){
+        chat_dialog(true)
+    });
+</script>

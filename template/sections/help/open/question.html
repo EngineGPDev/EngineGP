@@ -1,0 +1,25 @@
+<tr>
+	<td>№[id]</td>
+	<td>
+		<a href="[home]help/section/dialog/id/[id]"><u>[name]</u></a>
+		<p>Создан: [date]</p>
+	</td>
+	|support|
+	<td>
+		<u>#[uid] [login]</u>
+		<p>Активность: [time]</p>
+	</td>
+	|_support|
+	<td align="center">
+		[status]
+	</td>
+	<td align="center">
+		|user|
+			<div class="btn btn-short margin-right" onclick="help_close('[id]')">Закрыть</div>
+		|_user|
+		|admin|
+			<div class="btn btn-short margin-right" onclick="help_close('[id]')">Закрыть</div>
+			<div class="btn btn-error btn-short" onclick="help_delete('[id]')">Удалить</div>
+		|_admin|
+	</td>
+</tr>

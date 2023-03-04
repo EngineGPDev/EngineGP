@@ -1,0 +1,52 @@
+<form action="[acp]jobs/section/request/id/[id]/go" method="POST" id="edit" class="inputs inputs-max">
+	<table>
+		<tbody>
+			<tr>
+				<td>Пользователь</td>
+				<td><input type="text" name="user" value="[user]"></td>
+				<td>Контакты</td>
+				<td><input type="text" name="contact" value="[contact]"></td>
+			</tr>
+			<tr>
+				<td>Ответ</td>
+				<td colspan="3"><textarea name="text" id="text" cols="30" rows="10">[text]</textarea></td>
+			</tr>
+			<tr>
+				<td>Вакансия</td>
+				<td><input type="text" name="job" value="[job]"></td>
+				<td colspan="2">
+					<button class="btn btn-green" onclick="loading(1)">Сохранить</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript">
+	$('#edit').ajaxForm({
+		dataType: 'json',
+		success: function(data)
+		{
+			$.each(data, function(i, val){
+				if(i == 'e')
+					bootbox.dialog('<h3>Внимание!</h3>'+val,
+						[{
+							"label" : "Продолжить"
+						}]
+					);
+
+				if(i == 's')
+					bootbox.dialog('<h3>Внимание!</h3> Изменение успешно сохранены!',
+						[{
+							"label" : "Продолжить",
+							callback : function(){
+								location.reload();
+							}
+						}]
+					);
+				
+				loading(0);
+			});
+		}
+	});
+</script>

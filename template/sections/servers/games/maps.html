@@ -1,0 +1,29 @@
+<a href="[home]servers/id/[id]/section/maps/subsection/listing"><div class="btn margin-right">Настроить списки</div></a>
+
+<a href="[home]servers/id/[id]/section/maps/subsection/list"><div class="btn btn-success right">Установить карты</div></a>
+
+<div class="space"></div>
+
+<form action="[home]servers/id/[id]/section/maps/subsection/delete/go" method="POST" id="maps">
+
+	<div class="btn btn-info margin-right" onclick="select_map_all()">Выделить все</div>
+
+	<div class="btn btn-gray" onclick="diselect_map_all()">Отменить выделение</div>
+
+	<button class="btn-error right" onclick="loading(1)">Удалить выбранные карты</button>
+
+	<div class="space"></div>
+
+	<h4 class="hblock_content">Список установленных карт</h4>
+
+	<div class="block_content maps">[maps]</div>
+
+</form>
+
+<script type="text/javascript">
+	var server = '[id]';
+	var maps = {[mapsjs]};
+	var install;
+</script>
+
+<script src="[js]sections/servers/maps.js" type="text/javascript"></script>

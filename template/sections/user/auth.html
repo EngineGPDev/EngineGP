@@ -1,0 +1,46 @@
+<form action="[home]user/section/auth/go/1" method="post" id="auth">
+	<table class="form" width="450px">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<label for="login">Логин:</label>
+					<input id="login" name="login" type="text" placeholder="Введите логин или почту" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="passwd">Пароль:</label>
+					<input id="passwd" name="passwd" type="password" placeholder="Введите пароль" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="captha">Введите код:</label>
+					<input name="captcha" id="captcha">
+				</td>
+				<td width="100">
+					<img id="captcha_img" src="[home]user/section/auth/captcha" title="Обновить код" onclick="this.src = '[home]user/section/auth/captcha?'+Math.random();">
+				</td>
+			</tr>
+			<tr id="security_code" class="none">
+				<td colspan="2">
+					<label for="code">Код подтверждения:</label>
+					<input id="code" name="code" placeholder="Введите код подтверждения">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right">
+				<button class="btn left btn-success" onclick="loading(1)">Войти</button>
+					<a href="[home]user/section/recovery"><div class="btn right">Восстановить пароль</div></a>
+					<a href="[home]user/section/signup"><div class="btn right margin-right">Зарегистрироваться</div></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<!-- styles !-->
+<link rel="stylesheet" type="text/css" href="[css]pointer.css" media="screen" />
+
+<!-- scripts !-->
+<script src="[js]sections/user/auth.js" type="text/javascript"></script>

@@ -1,0 +1,94 @@
+<h4 class="hblock_content">Форма пополнения баланса</h4>
+
+<div class="block_content">
+	<form onsubmit="return replenish(false);" action="https://merchant.webmoney.ru/lmi/payment.asp" method="POST">
+		<table class="table_pad input_pad">
+			<tbody>
+				<tr>
+					<td colspan="7">
+						<div class="informer blue">Вы будете перенаправлены на платежный шлюз для проведения операции пополнения</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="16%">Ваш текущий баланс:</td>
+					<td width="15%" align="left"><b>[balance] [cur]</b></td>
+					<td width="5%" align="right">Сумма:</td>
+					<td><input id="sum" pattern="[0-9]{1,20}" placeholder="Введите необходимую сумму" value="500" class="text-right"></td>
+					<td width="5%">[cur]</td>
+					<td width="5%">
+						<div onclick="return replenish(true);" class="btn btn-full btn-success">UnitPay</div>
+					</td>
+					<td width="5%">
+						<button class="btn-full btn-info">WebMoney</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<input type="hidden" name="LMI_PAYMENT_NO" value="1">
+		<input type="hidden" name="LMI_PAYMENT_AMOUNT" id="amount">
+		<input type="hidden" name="LMI_PAYMENT_DESC_BASE64" value="0J/QvtC/0L7Qu9C90LXQvdC40LUg0YHRh9C10YLQsA==">
+		<input type="hidden" name="LMI_PAYEE_PURSE" value="[wmr]">
+		<input type="hidden" name="us_user" value="[id]">
+	</form>
+	<div class="space"></div>
+
+	<table class="table_pad">
+		<tbody>
+			<tr>
+				<td align="center"><img src="[img]replenish/visa.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/mastercard.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/webmoney.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/qiwi.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/yandex.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/mobile.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/megafon.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/beeline.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/mts.jpg" width="80" class="box-shadow"></td>
+				<td align="center"><img src="[img]replenish/liqpay.jpg" width="80" class="box-shadow"></td>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Логи последних пополнений</h4>
+
+<div class="block_content">
+	<table class="table_pad">
+		<tbody>
+			[logs]
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	function replenish(free)
+	{
+		sum = $('#sum').val();
+
+		if(sum < 1)
+			bootbox.dialog('Необходимо указань сумму',
+				[{
+					"label" : "OK",
+					"class" : "btn-small btn-primary",
+				}]
+			);
+		else{
+			if(free)
+				location.href='https://unitpay.ru/pay/?sum='+sum+'&account=[id]&desc=Пополнение+счета';
+				/* freekassa
+				$.get(home+'user/section/replenish/key/get/sum/'+sum, function(data){
+					location.href='http://www.free-kassa.ru/merchant/cash.php?m=[freekassa]&o=1&us_user=[id]&lang=ru&pay=Пополнение счета&oa='+sum+'&s='+data;
+				});
+				*/
+			else{
+				$('#amount').val(sum);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+</script>

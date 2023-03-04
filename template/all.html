@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>[title]</title>
+		<link rel="icon" href="[home]favicon.ico">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<meta name="description" content="[description]" />
+		<meta name="keywords" content="[keywords]" />
+
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Хостинг игровых серверов">
+		<meta property="og:site_name" content="EngineGP">
+		<meta property="og:locale" content="ru_RU">
+
+		<!-- styles !-->
+		<link rel="stylesheet" type="text/css" href="[css]style.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="[css]fonts.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="[css]bootbox.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="[css]code.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="[css]google-translate.css" media="screen" />
+
+		<!-- scripts !-->
+		<script type="text/javascript" src="[js]jquery.js"></script>
+		
+		<script type="text/javascript">
+			var title = '[title]';
+			var home = '[home]';
+
+			jQuery(document).ready(function($){
+				$("textarea").keydown(function(event){
+					if(event.keyCode != 9)
+						return;
+
+					event.preventDefault();
+
+					var 
+						obj = $(this)[0],
+						start = obj.selectionStart,
+						end = obj.selectionEnd,
+						before = obj.value.substring(0, start), 
+						after = obj.value.substring(end, obj.value.length);
+						obj.value = before + "\t" + after;
+						obj.setSelectionRange(start+1, start+1);
+				});
+
+				 setTimeout(function () {
+               			 help_notice_check()
+           			 }, 10000);
+
+				$(".loader span").each(function(i)
+				{
+					var _item = $(this);
+
+					setTimeout(function($){_item.removeClass("jmp"); _item.css({"left": '110%'})}, 150*i);
+					setTimeout(function($){_item.addClass("jmp"); _item.css({"left": '90%'})}, 1000 + 150*i);
+				});
+
+				var _pageLoader = setInterval(function()
+				{
+					$(".loader span").each(function(i)
+					{
+						var _item = $(this); 
+
+						setTimeout(function($){_item.removeClass("jmp"); _item.css({"left": '110%'})}, 150*i);
+						setTimeout(function($){_item.addClass("jmp"); _item.css({"left": '90%'})}, 1000 + 150*i);
+					})
+				}, 1500);
+				$(document).ajaxStart(function () {
+                		loading(1);
+           			 });
+
+           			 $(document).ajaxStop(function () {
+              			  loading(0);
+          			});
+			});
+		</script>
+
+		<script type="text/javascript" src="[js]form.js"></script>
+		<script type="text/javascript" src="[js]bootstrap.js"></script>
+		<script type="text/javascript" src="[js]bootbox.js"></script>
+		<script type="text/javascript" src="[js]code.js"></script>
+		<script type="text/javascript" src="[js]functions.js"></script>
+		<script type="text/javascript" src="[js]top.js"></script>
+		<script type="text/javascript" src="[js]google-translate.js"></script>
+   		<script src="//translate.google.com/translate_a/element.js?cb=TranslateInit"></script>
+		<script type="text/javascript" src="[js]jquery.cookie.min.js"></script>
+
+
+	</head>
+	<body>
+			<div class="language">
+        			<img src="[home]template/images/lang/lang__ru.png" alt="ru" data-google-lang="ru" class="language__img">
+      				<img src="[home]template/images/lang/lang__en.png" alt="en" data-google-lang="en" class="language__img">
+        			<img src="[home]template/images/lang/lang__de.png" alt="de" data-google-lang="de" class="language__img">
+        			<img src="[home]template/images/lang/lang__fr.png" alt="fr" data-google-lang="fr" class="language__img">
+        			<img src="[home]template/images/lang/lang__pt.png" alt="pt" data-google-lang="pt" class="language__img">
+        			<img src="[home]template/images/lang/lang__es.png" alt="es" data-google-lang="es" class="language__img">
+        			<img src="[home]template/images/lang/lang__it.png" alt="it" data-google-lang="it" class="language__img">
+        			<img src="[home]template/images/lang/lang__zh.png" alt="zh" data-google-lang="zh-CN" class="language__img">
+       			        <img src="[home]template/images/lang/lang__ar.png" alt="ar" data-google-lang="ar" class="language__img">
+        			<img src="[home]template/images/lang/lang__nl.png" alt="nl" data-google-lang="nl" class="language__img">
+        			<img src="[home]template/images/lang/lang__sv.png" alt="sv" data-google-lang="sv" class="language__img">
+    		</div>
+		<div class="space"></div>
+		<div class="all">
+			<div class="top">
+				<a href="[home]">Главная</a>
+				<a href="[home]news">Новости</a>
+				<a href="[home]services">Услуги</a>
+				<a href="[home]wiki">База знаний</a>
+				<a href="[home]contacts" class="right">Контактная информация</a>
+		  	 |admin|<a href="[home]acp" class="right"><font color="red">ACP</font></a>|_admin|
+			</div>
+			<div class="header">
+				<a href="[home]"><div class="logo">EngineGP</div></a>
+				
+				<div class="user right">
+					|!auth|
+						<div class="recsign text-right">
+							<a href="[home]user/section/auth">Авторизоваться</a>
+							<a href="[home]user/section/signup">Зарегистрироваться</a>
+						</div>
+					|_!auth|
+					
+					|auth|
+						<div class="user_lk">
+							<div class="miniscreen">
+								|!servers|
+									<a href="[home]services" class="margin-right">Арендовать сервер</a>
+								|_!servers|
+								|servers|
+									<a href="[home]servers" class="margin-right">Игровые сервера</a>
+								|_servers|
+								<a href="[home]help/section/open" class="margin-right">Тех. поддержка</a>
+							</div>
+							<a href="[home]user/section/lk" class="margin-right">Личный кабинет</a>
+							<a href="[home]user/section/replenish" class="margin-right">Баланс: [balance] [cur]</a>
+							<a href="[home]user/section/quit">Выйти</a>
+						</div>
+					|_auth|
+				</div>
+			</div>
+		<p id="back-top">
+		<a href="#top"><span></span>Вверх</a>
+		</p>
+			<div class="nav">
+				[nav]
+			</div>
+			<div class="wrapper">
+				<!-- block !-->
+				<div class="block">
+					<div class="title">Меню</div>
+					<ul>
+						|!servers|
+							<li><a href="[home]services"><i class="fa fa-shopping-basket"></i> Арендовать сервер</a></li>
+						|_!servers|
+						|servers|
+							<li><a href="[home]servers"><i class="fa fa-gamepad"></i> Игровые сервера</a></li>
+						|_servers|
+						|auth|<li><a href="[home]help/section/open"><i class="fa fa-life-ring"></i> Тех. поддержка <i id="help_notice" class="fa fa-paper-plane-o"></i></a></li>|_auth|
+						<li><a href="[home]monitoring"><i class="fa fa-desktop"></i> Мониторинг</a></li>
+						|auth|<li><a href="[home]chat"><i class="fa fa-commenting-o"></i> Онлайн чат</a></li>|_auth|
+					</ul>
+					<!-- other menu !-->
+						[other_menu]
+					<!-- /other menu !-->
+					<div class="title" style="margin-top: 15px;">Пользователей онлайн</div>
+					[online_users]
+
+				<!-- other menu !-->
+					<div class="online_host_players">
+						Онлайн игроков: <b>[aop]</b>
+					</div>
+				<!-- /other menu !-->
+
+				</div>
+				<!-- /block !-->
+
+
+
+				<!-- main !-->
+				<div class="main">
+					[main]
+				</div>
+				<!-- /main !-->
+			</div>
+			<div class="nav">
+				[nav]
+			</div>
+			<div class="footer">
+				<div class="menu">
+					<a href="[home]">Главная</a>
+					<a href="[home]news">Новости</a>
+					<a href="[home]services">Услуги</a>
+					<a href="[home]wiki">База знаний</a>
+					<a href="[home]contacts">Контакты</a>
+					<div class="copyright">
+						© EGPv3. Все права защищены.
+					</div>
+				</div>
+				<div class="infoegp right">
+					<div class="social">
+						<a href="https://vk.com/enginegamespanel" target="_blank"><i class="fa fa-vk"></i></a>
+					</div>
+					<p> Powered by: <a href="https://enginegp.ru" target="_blank">EGPv3.<small>6</small></a></p>
+				</div>
+			</div>
+		<div id="help_notice_block"></div>
+		<div id="loadinginfo">
+			<div class="loader">
+				<span class="l-1"></span>
+				<span class="l-2"></span>
+				<span class="l-3"></span>
+				<span class="l-4"></span>
+				<span class="l-5"></span>
+				<span class="l-6"></span>
+			</div>
+		</div>
+	</body>
+</html>

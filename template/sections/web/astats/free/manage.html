@@ -1,0 +1,44 @@
+<h4 class="hblock_content">Информация</h4>
+
+<div class="block_content">
+	<form action="[home]servers/id/[id]/section/web/subsection/astats/action/connect/go" method="POST" id="form">
+		<table class="table_pad input_pad">
+			<tbody>
+				<tr>
+					<td colspan="2">
+						<b>Адрес услуги</b>
+						<p><a href="http://[url]/" target="_blank">http://[url]/</a></p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<b>Автоподключение игрового сервера</b>
+						<select name="server[]" multiple="multiple">
+							[servers]
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="btn btn-none btn-short">У подключаемого игрового сервера должен быть <u>всегда включен</u> FileTP.</div>
+					</td>
+					<td align="right">
+						<button class="btn-success btn-short">Подключить</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						|update|<div class="btn btn-short margin-right" onclick="update()">Обновить</div>|_update|
+						<div class="btn btn-error btn-short" onclick="delweb()">Удалить</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<script type="text/javascript">
+	var server = '[id]';
+</script>
+
+<script src="[js]sections/web/astats.js" type="text/javascript"></script>

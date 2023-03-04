@@ -1,0 +1,21 @@
+<tr>
+	<td width="30%">
+		|file||edit|<a href="#" onclick="return edit('[path]', '[name]');">|_edit||_file|
+		|folder|<a href="#" onclick="return open_path('[path][name]');">|_folder|
+		<p>
+			<i class="fa fa-|folder|folder|_folder||file|file|edit|-text|_edit||_file|"></i>
+				[name]
+		</p>
+		|folder|</a>|_folder|
+		|file||edit|</a>|_edit||_file|
+	</td>
+	<td width="10%">[size]</td>
+	<td width="14%">[chmod]</td>
+	<td width="17%">[owner] / [group]</td>
+	<td width="17%">[time] - [day] [month]</td>
+	<td width="12%" align="center">
+		<div class="btn btn-short left" onclick="rename('[name]');"><i class="fa fa-pencil"></i></div>
+		<div class="btn btn-short" onclick="chmod('[name]');"><i class="fa fa-key"></i></div>
+		<div class="btn btn-short right btn-error" onclick="del('|folder|folder|_folder||file|file|_file|','[name]');"><i class="fa fa-times"></i></div>
+	</td>
+</tr>

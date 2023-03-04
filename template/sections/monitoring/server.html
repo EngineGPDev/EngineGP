@@ -1,0 +1,178 @@
+<h4 class="hblock_content">[name]</h4>
+<div class="block_content">
+    <div class="server_list">
+        <div class="server_img" id="image"><img src="[img]"></div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Адрес: [address] <a href="steam://connect/[address]" data-toggle="tooltip" data-placement="top" title="Подключится"><i class="fa fa-steam"></i></a></td>
+                </tr>
+                <tr>
+                    <td>Карта: [map]</td>
+                </tr>
+                <tr>
+					<td>Онлайн: [online] / [slots]</td>
+                </tr>
+                <tr>
+					<td>Локация: [unit]</td>
+                </tr>
+		<tr>
+					<td>Тариф: [tarif]</td>
+                </tr>
+		<tr>
+					<td>Создан: [create]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="space"></div>
+
+<button class="tablink" onclick="openCity('player', this, 'color')" id="defaultOpen">Игроки онлайн</button>
+<button class="tablink" onclick="openCity('banners', this, 'color')">Баннеры</button>
+
+<div class="space"></div>
+
+<div id="player" class="tabcontent" style="display: block;">
+    <div class="block_content">
+        <table class="table_pad">
+            <thead>
+                <tr>
+                    <th width="1%" align="left">#</th>
+                    <th width="69%" align="left">Ник</th>
+                    <th width="15%" align="center">Фраги</th>
+                    <th width="15%" align="center">Время</th>
+                </tr>
+            </thead>
+            <tbody id="players">
+                [players]
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="banners" class="tabcontent" style="display: none;">
+    <h4 class="hblock_content">Баннеры 160x248</h4>
+
+    <div class="block_content">
+        <table class="table_pad input_pad">
+            <tbody>
+				<tr>
+					<td width="5%">
+						<img src="[home]graph/type/first/key/[key]">
+					</td>
+					<td class="vtop">
+						<label>Для форума (bb-code)</label>
+						<textarea rows="2" onClick="this.select();">[url=steam://connect/[address]]&#091;img][home]graph/type/first/key/[key][/img][/url]</textarea>
+
+						<div class="space"></div>
+
+						<label>Для сайта (html-code)</label>
+						<textarea rows="3" onClick="this.select();"><a href="steam://connect/[address]"><img src="[home]graph/type/first/key/[key]" border="0" width="160" height="248" alt="Баннер сервера" /></a></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%">
+						<img src="[home]graph/type/first/style/black/key/[key]">
+					</td>
+					<td class="vtop">
+						<label>Для форума (bb-code)</label>
+						<textarea rows="2" onClick="this.select();">[url=steam://connect/[address]]&#091;img][home]graph/type/first/style/black/key/[key][/img][/url]</textarea>
+
+						<div class="space"></div>
+
+						<label>Для сайта (html-code)</label>
+						<textarea rows="3" onClick="this.select();"><a href="steam://connect/[address]"><img src="[home]graph/type/first/style/black/key/[key]" border="0" width="160" height="248" alt="Баннер сервера" /></a></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%">
+						<img src="[home]graph/type/first/style/camo/key/[key]">
+					</td>
+					<td class="vtop">
+						<label>Для форума (bb-code)</label>
+						<textarea rows="2" onClick="this.select();">[url=steam://connect/[address]]&#091;img][home]graph/type/first/style/camo/key/[key][/img][/url]</textarea>
+
+						<div class="space"></div>
+
+						<label>Для сайта (html-code)</label>
+						<textarea rows="3" onClick="this.select();"><a href="steam://connect/[address]"><img src="[home]graph/type/first/style/camo/key/[key]" border="0" width="160" height="248" alt="Баннер сервера" /></a></textarea>
+					</td>
+				</tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="space"></div>
+
+    <h4 class="hblock_content">Баннеры 560x95</h4>
+
+    <div class="block_content">
+        <table class="table_pad input_pad">
+            <tbody>
+				<tr>
+					<td width="5%" align="center">
+						<img src="[home]graph/type/second/key/[key]">
+					</td>
+				</tr>
+				<tr>
+					<td class="vtop">
+						<label>Для форума (bb-code)</label>
+						<textarea rows="2" onClick="this.select();">[url=steam://connect/[address]]&#091;img][home]graph/type/second/key/[key][/img][/url]</textarea>
+
+						<div class="space"></div>
+
+						<label>Для сайта (html-code)</label>
+						<textarea rows="3" onClick="this.select();"><a href="steam://connect/[address]"><img src="[home]graph/type/second/key/[key]" border="0" width="560" height="95" alt="Баннер сервера" /></a></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%" align="center">
+						<img src="[home]graph/type/second/style/black/key/[key]">
+					</td>
+				</tr>
+				<tr>
+					<td class="vtop">
+						<label>Для форума (bb-code)</label>
+						<textarea rows="2" onClick="this.select();">[url=steam://connect/[address]]&#091;img][home]graph/type/second/style/black/key/[key][/img][/url]</textarea>
+
+						<div class="space"></div>
+
+						<label>Для сайта (html-code)</label>
+						<textarea rows="3" onClick="this.select();"><a href="steam://connect/[address]"><img src="[home]graph/type/second/style/black/key/[key]" border="0" width="560" height="95" alt="Баннер сервера" /></a></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%" align="center">
+						<img src="[home]graph/type/second/style/camo/key/[key]">
+					</td>
+				</tr>
+				<tr>
+					<td class="vtop">
+						<label>Для форума (bb-code)</label>
+						<textarea rows="2" onClick="this.select();">[url=[home]steam://connect/[address]]&#091;img][home]graph/type/second/style/camo/key/[key][/img][/url]</textarea>
+
+						<div class="space"></div>
+
+						<label>Для сайта (html-code)</label>
+						<textarea rows="3" onClick="this.select();"><a href="steam://connect/[address]"><img src="[home]graph/type/second/style/camo/key/[key]" border="0" width="560" height="95" alt="Баннер сервера" /></a></textarea>
+					</td>
+				</tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function openCity(cityName, elmnt, color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(cityName).style.display = "block";
+    }
+</script>

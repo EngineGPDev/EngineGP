@@ -1,0 +1,4 @@
+mysql -uroot -p[passwd] -e "CREATE DATABASE ftp;";
+mysql -uroot -p[passwd] -e "CREATE USER 'ftp'@'localhost' IDENTIFIED BY '[passwd_ftp]';";
+mysql -uroot -p[passwd] -e "GRANT ALL PRIVILEGES ON ftp . * TO 'ftp'@'localhost';";
+mysql -uroot -p[passwd] ftp < /tmp/proftpd_sqldump;

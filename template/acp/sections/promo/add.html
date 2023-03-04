@@ -1,0 +1,82 @@
+<form action="[acp]promo/section/add/go" method="POST" id="promo">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Код:</td>
+				<td class="w25p"><input name="cod" placeholder="Введите промо-код" type="text"></td>
+				<td class="w5p text-right">Значение:</td>
+				<td class="w25p"><input name="value" placeholder="Введите значение" type="text"></td>
+				<td class="w5p text-right">Акция:</td>
+				<td class="w25p">
+					<select name="discount">
+						<option value="0">Подарочные дни</option>
+						<option value="1">Скидка</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Совпадений:</td>
+				<td><input name="hits" type="text" placeholder="Введите число"></td>
+				<td class="text-right">Использований:</td>
+				<td><input name="use" placeholder="Введите число" type="text"></td>
+				<td class="text-right">Тип:</td>
+				<td>
+					<select name="extend">
+						<option value="0">Для аренды</option>
+						<option value="1">Для продления</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Пользователь:</td>
+				<td><input name="user" placeholder="Введите ID" type="text"></td>
+				<td class="text-right">Сервер:</td>
+				<td><input name="server" placeholder="Введите ID" type="text"></td>
+				<td class="text-right">Окончание:</td>
+				<td><input name="time" id="datetimepicker" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="6"><textarea name="data" rows="1" placeholder="Введите условия акции"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="6">[tarifs]</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Добавить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<div class="space"></div>
+
+<div class="informer">Информация по условиям</div>
+
+<table class="p_info">
+	<tbody>
+		<tr>
+			<td>
+				<p><i class="fa fa-info-circle"></i> FPS: "fps":"1000" или "fps":"500:1000"</p>
+				<p><i class="fa fa-info-circle"></i> RAM: "ram":"50" или "fps":"50:80"</p>
+				<p><i class="fa fa-info-circle"></i> TickRate: "tickrate":"66" или "fps":"64:128"</p>
+				<p><i class="fa fa-info-circle"></i> Период: "time":"30" или "time":"30:90"</p>
+				<p><i class="fa fa-info-circle"></i> Слоты: "slots":"32" или "slots":"20:32" или "slots":"10-20"</p>
+				<p><i class="fa fa-info-circle"></i> Указывать несколько условий через запятые: "fps":"500:1000","slots":"10-32","time":"30"</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<link rel="stylesheet" type="text/css" href="[css]jquery.datetimepicker.css" media="screen">
+
+<script type="text/javascript" src="[js]date/jquery.datetimepicker.full.js"></script>
+
+<script type="text/javascript">  
+    jQuery(document).ready(function($){
+		$.datetimepicker.setLocale('ru');
+
+		$('#datetimepicker').datetimepicker({value: '0', format: 'd/m/Y H:i'});
+	});  
+</script>
+
+<script type="text/javascript" src="[js]promo.js"></script>

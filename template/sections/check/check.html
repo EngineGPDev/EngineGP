@@ -1,0 +1,45 @@
+<h4 class="hblock_content">Проверка плагинов на плохие команды</h4>
+
+|!auth|
+<div class="block_content">
+	<p><center>Что бы проверить плагин, вам необходимо <a href="[home]user/section/auth" style="color: green;"><u>авторизоваться</u></a>.</center></p>
+</div>
+|_!auth|
+|auth|
+<div class="block_content">
+    <form action="[home]check/go" method="POST" enctype="multipart/form-data" id="smac" style="width: 99%;">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="file" name="file" accept=".sma">
+                    </td>
+                    <td style="width: 70px;">
+                        <input style="margin: 0 0 0 -10px;" class="btn btn-short btn-success" type="submit" name="sumbit" value="Проверить">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Результаты проверки</h4>
+<div class="block_content">
+    <table class="table_pad smar" id="smar"></table>
+</div>
+|_auth|
+<div class="space"></div>
+<h4 class="hblock_content">Описание раздела</h4>
+<div class="block_content">
+    <p>Многие из вас, администраторы игровых серверов Counter Strike 1.6 знают что устанавливая плагин без <strong>исходника</strong>, вы подвергаетесь риску свой игровой сервер, и по этому, устанавливать плагины на свой сервер нужно только при наличие файла с расширением - sma. 
+<br>
+<br>
+Будьте очень внимательны когда скачиваете плагины, и обязательно проверяйте наличие исходного кода! Иначе вы можете подвергнуться взлому, так как плагин без исходника может содержать вредоносный код, который вы попросту не увидите, и увидеть его будет невозможно.</p>
+<br>
+<p>В свою очередь мы разработали для Вас удобный сервис, он поможет проверить исходник <strong>плагина</strong> на наличие в нем так называемых <strong>бэкдоров</strong>.</p>
+    <p>В любое время вы можете воспользоваться данным сервисом для проверки исходников с расширением SMA и быть уверены, что ваш сервер будет в безопасности.</p>
+</div>
+
+<script type="text/javascript" src="[js]check.js"></script>

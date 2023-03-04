@@ -1,0 +1,65 @@
+<a href="[home]servers/id/[id]/section/maps/subsection/listing"><div class="btn margin-right">Настроить списки</div></a>
+
+<a href="[home]servers/id/[id]/section/maps/subsection/list"><div class="btn btn-success right">Установить карты</div></a>
+
+<div class="space"></div>
+
+<div class="width50p">
+
+	<h4 class="hblock_content">Файл: maps.ini</h4>
+
+	<div class="block_content">
+
+		<form action="[home]servers/id/[id]/section/maps/subsection/listing/file/maps/go" method="POST" class="form">
+			<table class="table_pad input_pad">
+				<tbody>
+					<tr>
+						<td colspan="2">Путь: cstrike/addons/amxmodx/configs/maps.ini</td>
+					</tr>
+					<tr>
+						<td colspan="2"><textarea rows="10" id="maps" name="data">[maps]</textarea></td>
+					</tr>
+					<tr>
+						<td><div class="btn btn-short left" onclick="genlist('maps')">Сгенерировать</div></td>
+						<td><button class="btn-success btn-short right" onclick="loading(1)">Сохранить</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+	</div>
+
+</div>
+
+<div class="width50p right">
+
+	<h4 class="hblock_content">Файл: mapcycle.txt</h4>
+
+	<div class="block_content">
+
+		<form action="[home]servers/id/[id]/section/maps/subsection/listing/file/mapcycle/go" method="POST" class="form">
+			<table class="table_pad input_pad">
+				<tbody>
+					<tr>
+						<td colspan="2">Путь: cstrike/mapcycle.txt</td>
+					</tr>
+					<tr>
+						<td colspan="2"><textarea rows="10" id="mapcycle" name="data">[mapcycle]</textarea></td>
+					</tr>
+					<tr>
+						<td><div class="btn btn-short left" onclick="genlist('mapcycle')">Сгенерировать</div></td>
+						<td><button class="btn-success btn-short right" onclick="loading(1)">Сохранить</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+	</div>
+
+</div>
+
+<script src="[js]sections/servers/maps.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	var server = '[id]';
+</script>

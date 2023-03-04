@@ -1,0 +1,203 @@
+<form action="[acp]tarifs/section/add/go" method="POST" id="tarif">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Название:</td>
+				<td class="w25p"><input name="name" placeholder="Введите название" type="text"></td>
+				<td class="w5p text-right">Локация:</td>
+				<td class="w25p">
+					<select name="unit">
+						<option value="0">Выберете локацию</option>
+						[units]
+					</select>
+				</td>
+				<td class="w5p text-right">Игра:</td>
+				<td class="w25p">
+					<select name="game">
+						<option value="0">Выберете игру</option>
+						<option value="cs">Counter-Strike: 1.6</option>
+						<option value="cssold">Counter-Strike: Source v34</option>
+						<option value="css">Counter-Strike: Source</option>
+						<option value="csgo">Counter-Strike: Global Offensive</option>
+						<option value="samp">San Andreas Multiplayer</option>
+						<option value="crmp">GTA: Criminal Russia</option>
+						<option value="mta">Multi Theft Auto</option>
+						<option value="mc">Minecraft</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Слоты:</td>
+				<td><input name="slots" value="10-32" type="text" placeholder="Слоты: 10-32"></td>
+				<td class="text-right">Порты:</td>
+				<td><input name="posts" id="ports" value="27016-27056" type="text" placeholder="Порты: 27016-27056"></td>
+				<td class="text-right">Имя:</td>
+				<td><input name="hostname" placeholder="Введите hostname сервера" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Сборки:</td>
+				<td><input name="path" value="/path/" type="text"></td>
+				<td class="text-right">Обновления:</td>
+				<td><input name="update" value="/path/update/" type="text"></td>
+				<td class="text-right">Сервера:</td>
+				<td><input name="install" value="/servers/" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">FPS:</td>
+				<td><input name="fps" value="500:1000" type="text"></td>
+				<td class="text-right">TickRate:</td>
+				<td><input name="tickrate" value="66:100" type="text"></td>
+				<td class="text-right">RAM:</td>
+				<td><input name="ram" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Аренда:</td>
+				<td><input name="time" value="15:30:90:180" type="text"></td>
+				<td class="text-right">Продление:</td>
+				<td><input name="timext" value="7:30:90:180" type="text"></td>
+				<td class="text-right">Фиксация:</td>
+				<td>
+					<select name="param_fix">
+						<option value="0">Не фиксированные параметры</option>
+						<option value="1">Фиксированные параметры</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Тестирование:</td>
+				<td>
+					<select name="test">
+						<option value="0">Недоступно</option>
+						<option value="1">Доступно</option>
+					</select>
+				</td>
+				<td class="text-right">Тестов:</td>
+				<td><input name="tests" placeholder="Введите число тестов" type="text"></td>
+				<td class="text-right">Скидки:</td>
+				<td>
+					<select name="discount">
+						<option value="1">Включены</option>
+						<option value="0">Без скидок</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Диск:</td>
+				<td><input name="hdd" placeholder="Введите дисковую квоту" type="text"></td>
+				<td class="text-right">Карта:</td>
+				<td><input name="map" value="de_dust2" type="text"></td>
+				<td class="text-right">Выключение:</td>
+				<td>
+					<select name="autostop">
+						<option value="0">Выключено</option>
+						<option value="1">Включено</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Цена:</td>
+				<td><input name="price" value="15:25" type="text"></td>
+				<td class="text-right">Положение:</td>
+				<td><input name="sort" placeholder="Введите место в списке" type="text"></td>
+				<td class="text-right">Аренда:</td>
+				<td>
+					<select name="show">
+						<option value="1">Доступна</option>
+						<option value="0">Недоступна</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right">Ядра:</td>
+				<td colspan="5"><input name="core_fix" placeholder="Введите через запятую ядра/потоки" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Сборки:</td>
+				<td colspan="5"><textarea rows="4" name="packs" placeholder="Укажите доступные для установки сборки"></textarea></td>
+			</tr>
+			<tr>
+				<td class="text-right">Адреса:</td>
+				<td colspan="5"><textarea rows="3" name="ip" placeholder="Введите через двоеточие выделенные IP адреса"></textarea></td>
+			</tr>
+			<tr>
+				<td class="text-right">Плагины:</td>
+				<td colspan="5"><textarea rows="2" name="plugins_install" placeholder="Введите через запятую номера плагинов"></textarea></td>
+			</tr>
+			<tr>
+				<td class="text-right">Разделы:</td>
+				<td colspan="5">
+					<label>
+						Плагины
+						<input type="checkbox" name="plugins">
+					</label>
+					<label>
+						Консоль
+						<input type="checkbox" name="console" checked>
+					</label>
+					<label>
+						FileTP
+						<input type="checkbox" name="ftp" checked>
+					</label>
+					<label>
+						Копии
+						<input type="checkbox" name="copy" checked>
+					</label>
+					<label>
+						Графики
+						<input type="checkbox" name="stats">
+					</label>
+					<label>
+						Бесплатные услуги
+						<input type="checkbox" name="web">
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Добавить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<div class="space"></div>
+
+<div class="informer">Информация по портам</div>
+
+<table class="inputs inputs-max p_info">
+	<tbody>
+		<tr>
+			<td>
+				<p>Counter-Strike: 1.6 - по умолчанию: <u class="pointer" onclick="tarifs_ports('27015-27015')">27015</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('27016-27056')">27016-27056</u> (40 шт.)</p>
+				<p>Counter-Strike: Source v34 - по умолчанию: <u class="pointer" onclick="tarifs_ports('27015-27015')">27015</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('27016-27056')">27016-27056</u> (40 шт.)</p>
+				<p>Counter-Strike: Source - по умолчанию: <u class="pointer" onclick="tarifs_ports('27015-27015')">27015</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('27016-27056')">27016-27056</u> (40 шт.)</p>
+				<p>Counter-Strike: Global Offensive - по умолчанию: <u class="pointer" onclick="tarifs_ports('27015-27015')">27015</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('27016-27036')">27016-27036</u> (20 шт.)</p>
+				<p>San Andreas Multiplayer - по умолчанию: <u class="pointer" onclick="tarifs_ports('7777-7777')">7777</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('7778-7858')">7778-7858</u> (80 шт.)</p>
+				<p>GTA: Criminal Russia - по умолчанию: <u class="pointer" onclick="tarifs_ports('7777-7777')">7777</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('7778-7858')">7778-7858</u> (80 шт.)</p>
+				<p>Multi Theft Auto - по умолчанию: <u class="pointer" onclick="tarifs_ports('22003-22003')">22003</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('22004-22084')">22004-22084</u> (80 шт.)</p>
+				<p>Minecraft - по умолчанию: <u class="pointer" onclick="tarifs_ports('25565-25565')">25565</u> / для тарифов: <u class="pointer" onclick="tarifs_ports('25566-25606')">25566-25606</u> (40 шт.)</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="space"></div>
+
+<div class="informer">Информация по полям</div>
+
+<table class="inputs inputs-max p_info">
+	<tbody>
+		<tr>
+			<td>
+				<p><i class="fa fa-info-circle"></i> Фиксация - если установлено "<i>фиксированные праметры</i>", то например, указав 4000 Mb RAM - будут выделяться на 1 сервер</p>
+				<p><i class="fa fa-info-circle"></i> Скидки - если включено, то аренда / продление будут со скидками и наценками установленными в настройках</p>
+				<p><i class="fa fa-info-circle"></i> Выключение - если включено, то сервер будет выключаться автоматически (например для тарифа ClanWar)</p>
+				<p><i class="fa fa-info-circle"></i> Сборки - указывать в специальном формате перечисляя через запятую, пример: <u>"name":"Название","name":"Название"</u></p>
+				<p><i class="fa fa-info-circle"></i> Ядра - если указаны ядра, то каждому серверу будет выдаваться выделенное ядро из списка</p>
+				<p><i class="fa fa-info-circle"></i> Адреса - если указаны адреса, то каждому серверу будет выдаваться выделенный адрес с стандартным портом игры</p>
+				<p><i class="fa fa-info-circle"></i> Плагины - плагины, которые установлены в сборке, указывать в специальном формате, пример: "name":"5,10,30,11","name":"10,7"</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<script type="text/javascript" src="[js]tarifs.js"></script>

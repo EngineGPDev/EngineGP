@@ -1,0 +1,84 @@
+<h4 class="hblock_content">Создание полной копии</h4>
+
+<div class="block_content">
+	<table class="table_pad">
+		<tbody>
+			<tr>
+				<td>
+					<b>*</b>
+					<p>Все содержимое игрового сервера</p>
+				</td>
+				<td width="35%" align="right">
+					<div onclick="fullcopy()" class="btn btn-success">Создать полную резервную копию</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Создание копии</h4>
+
+<div class="block_content">
+	<form action="[home]servers/id/[id]/section/copy/subsection/create/go" method="POST" id="copy">
+		<table class="table_pad">
+			<tbody>
+				[list]
+				<tr>
+					<td colspan="2" align="right">
+						<span class="btn btn-none left">Перед созданием резервной копии, убедитесь что игровой север выключен.</span>
+						<button onclick="loading(1)" class="btn-success">Создать резервную копию</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Созданные копии</h4>
+
+<div class="block_content">
+	<table class="table_pad">
+		<tbody>
+			[copy]
+		</tbody>
+	</table>
+</div>
+<div class="space"></div>
+
+<h4 class="hblock_content">Информация</h4>
+
+<div class="block_content">
+	<p>
+		<i class="fa fa-reply-all" title="Восстановить полностью"></i>
+		<u>Полное восстановление</u> - при восстановлении все директории в копии будут полностью заменена на имеющиеся.
+	</p>
+	<p>
+		<i class="fa fa-retweet" title="Восстановить частично"></i>
+		<u>Частичное восстановление</u> - при восстановлении происходит замена одинаковых файлов, не удаляются другие файлы и папки.
+	</p>
+	<p>
+		<i class="fa fa-times" title="Удалить копию"></i>
+		<u>Удаление копии</u> - после удаление резервной копии, восстановить её будет невозможно.
+	</p>
+</div>
+
+<div class="space"></div>
+
+<link rel="stylesheet" type="text/css" href="[css]switch.css" media="screen" />
+
+<script src="[js]switch.js" type="text/javascript"></script>
+<script src="[js]sections/servers/copy.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	var server = '[id]';
+
+	$(document).ready(function(e){
+		$('input').lc_switch();
+
+		$.get(home+'servers/id/'+server+'/section/copy/subsection/check/go', function(){});
+	});
+</script>

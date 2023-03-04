@@ -1,0 +1,38 @@
+<table class="trh">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Пользователь</th>
+			<th>Ответ</th>
+			<th>Контакты</th>
+			<th>Вакансия</th>
+			<th>Создан</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		[list]
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	function del(id, confirm)
+	{
+		if(confirm == 'ok')
+			$.getJSON(home+'jobs/section/request/del/'+id, function(data){
+				if(data['s'] == 'ok')
+					location.reload();
+			});
+		else
+			bootbox.dialog('<h3 class="red">Внимание!</h3> Вы уверены, что хотите удалить данную заявку?',
+				[{
+					"label" : "Да, уверен",
+					callback : function(){
+						del(id, 'ok');
+					}
+				},{
+					"label" : "Отмена"
+				}])
+	}
+</script>

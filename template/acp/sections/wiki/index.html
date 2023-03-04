@@ -1,0 +1,33 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="wiki_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table>
+	<thead>
+		<tr>
+			<th class="w5p"></th>
+			<th>Вопрос</th>
+			<th>Категория</th>
+			<th class="w15p">Дата</th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	$('#search').keyup(function(){
+		wiki_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]wiki.js"></script>

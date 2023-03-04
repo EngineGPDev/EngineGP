@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Панель администатора</title>
+		<link rel="icon" href="/favicon.ico">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="[css]style.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="[css]fonts.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="[css]bootbox.css" media="screen">
+
+		<script type="text/javascript" src="[js]jquery.js"></script>
+		<script type="text/javascript" src="[js]form.js"></script>
+		<script type="text/javascript" src="[js]bootstrap.js"></script>
+		<script type="text/javascript" src="[js]bootbox.js"></script>
+		<script type="text/javascript" src="[js]functions.js"></script>
+
+		<script type="text/javascript">
+			var home = '[acp]';
+
+			jQuery(document).ready(function($){
+				$("textarea").keydown(function(event){
+					if(event.keyCode != 9)
+						return;
+
+					event.preventDefault();
+
+					var 
+						obj = $(this)[0],
+						start = obj.selectionStart,
+						end = obj.selectionEnd,
+						before = obj.value.substring(0, start), 
+						after = obj.value.substring(end, obj.value.length);
+						obj.value = before + '  ' + after;
+						obj.setSelectionRange(start+1, start+1);
+				});
+
+				$(".loader span").each(function(i)
+				{
+					var _item = $(this);
+
+					setTimeout(function($){_item.removeClass("jmp"); _item.css({"left": '110%'})}, 150*i);
+					setTimeout(function($){_item.addClass("jmp"); _item.css({"left": '90%'})}, 1000 + 150*i);
+				});
+
+				var _pageLoader = setInterval(function()
+				{
+					$(".loader span").each(function(i)
+					{
+						var _item = $(this); 
+
+						setTimeout(function($){_item.removeClass("jmp"); _item.css({"left": '110%'})}, 150*i);
+						setTimeout(function($){_item.addClass("jmp"); _item.css({"left": '90%'})}, 1000 + 150*i);
+					})
+				}, 1500);
+			});
+		</script>
+	</head>
+
+	<body>
+		<header>
+			<div class="sidebar bg-gray">
+				<h3>Панель управления</h3>
+			</div>
+			|section|
+				<div class="sidebar-second bg-green">
+					<h3>[info]</h3>
+				</div>
+			|_section|
+			<div class="content bg-gray-mild |section|content-mini|_section|">
+				<div class="fl-left">
+					<a href="[home]">На сайт</a>
+				</div>
+
+				<div class="fl-right">
+					<a href="[acp]users/id/[admin]">Профиль</a>
+					<a href="[home]help/section/open" target="_blank">Тех. поддержка</a>
+					<a href="[acp]system"><i class="fa fa-cog"></i></a>
+					<a href="[home]user/section/quit">Выйти</a>
+				</div>
+			</div>
+		</header>
+
+		<main>
+			<div class="sidebar bg-gray br-gray-top">
+				<h5>Основное меню</h5>
+
+				<ul>
+					<li><a href="[acp]" |p_index|class="active"|_p_index|><i class="fa fa-home"></i> Главная страница</a></li>
+					<li><a href="[acp]users" |p_users|class="active"|_p_users|><i class="fa fa-users"></i> Управление пользователями</a></li>
+					<li><a href="[acp]units" |p_units|class="active"|_p_units|><i class="fa fa-server"></i> Управление локациями</a></li>
+					<li><a href="[acp]tarifs" |p_tarifs|class="active"|_p_tarifs|><i class="fa fa-shopping-bag"></i> Управление тарифами</a></li>
+					<li><a href="[acp]addons" |p_addons|class="active"|_p_addons|><i class="fa fa-cubes"></i> Управление дополнениями</a></li>
+				</ul>
+				
+				<div class="hr-gray"></div>
+				
+				<h5>Управление услугами</h5>
+
+				<ul>
+					<li><a href="[acp]servers" |p_servers|class="active"|_p_servers|><i class="fa fa-gamepad"></i> Список серверов</a></li>
+					<li><a href="[acp]web" |p_web|class="active"|_p_web|><i class="fa fa-cloud"></i> Список бесплатных услуг</a></li>
+					<li><a href="[acp]control" |p_control|class="active"|_p_control|><i class="fa fa-dropbox"></i> Контроль серверов</a></li>
+				</ul>
+
+				<div class="hr-gray"></div>
+
+				<h5>Остальные разделы</h5>
+
+				<ul>
+					<li><a href="[acp]promo" |p_promo|class="active"|_p_promo|><i class="fa fa-gift"></i> Управление акциями</a></li>
+					<li><a href="[acp]notice" |p_notice|class="active"|_p_notice|><i class="fa fa-bullhorn"></i> Управление уведомлениями</a></li>
+					<li><a href="[acp]news" |p_news|class="active"|_p_news|><i class="fa fa-newspaper-o"></i> Управление новостями</a></li>
+					<li><a href="[acp]wiki" |p_wiki|class="active"|_p_wiki|><i class="fa fa-cubes"></i> Управление википедией</a></li>
+					<li><a href="[acp]pages" |p_pages|class="active"|_p_pages|><i class="fa fa-file-text-o"></i> Управление страницами</a></li>
+					<li><a href="[acp]jobs" |p_jobs|class="active"|_p_jobs|><i class="fa fa-user-md"></i> Управление вакансиями</a></li>
+					<li><a href="[acp]logs" |p_logs|class="active"|_p_logs|><i class="fa fa-clipboard"></i> Логи операций</a></li>
+					<li><a href="[acp]boost" |p_boost|class="active"|_p_boost|><i class="fa fa-line-chart"></i> Boost / Игра: CS 1.6</a></li>
+					<li><a href="[acp]letter" |p_letter|class="active"|_p_letter|><i class="fa fa-envelope-open"></i> Рассылка новостей</a></li>
+				</ul>
+			</div>
+
+			|section|<div class="sidebar-second bg-white">[menu]</div>|_section|
+
+			<div class="content |section|content-mini|_section|">
+				<div class="main">
+					[main]
+				</div>
+			</div>
+		</main>
+
+		<footer></footer>
+
+		<div id="loadinginfo">
+			<div class="loader">
+				<span class="l-1" style="left: 110%;"></span>
+				<span class="l-2 jmp" style="left: 90%;"></span>
+				<span class="l-3 jmp" style="left: 90%;"></span>
+				<span class="l-4 jmp" style="left: 90%;"></span>
+				<span class="l-5" style="left: 110%;"></span>
+				<span class="l-6" style="left: 110%;"></span>
+			</div>
+		</div>
+	</body>
+</html>

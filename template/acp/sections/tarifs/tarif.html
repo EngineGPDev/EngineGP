@@ -1,0 +1,120 @@
+<form action="[acp]tarifs/section/tarif/id/[id]/go" method="POST" id="tarif">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Название:</td>
+				<td class="w25p"><input name="name" value="[name]" type="text"></td>
+				<td class="w5p text-right">Локация:</td>
+				<td class="w25p"><select name="unit">[units]</select></td>
+				<td class="w5p text-right">Игра:</td>
+				<td class="w25p"><select name="game">[games]</select></td>
+			</tr>
+			<tr>
+				<td class="text-right">Слоты:</td>
+				<td><input name="slots" value="[slots_min]-[slots_max]" type="text" placeholder="Слоты: 10-32"></td>
+				<td class="text-right">Порты:</td>
+				<td><input name="posts" id="ports" value="[port_min]-[port_max]" type="text" placeholder="Порты: 27016-27056"></td>
+				<td class="text-right">Имя:</td>
+				<td><input name="hostname" value="[hostname]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Сборки:</td>
+				<td><input name="path" value="[path]" type="text"></td>
+				<td class="text-right">Обновления:</td>
+				<td><input name="update" value="[update]" type="text"></td>
+				<td class="text-right">Сервера:</td>
+				<td><input name="install" value="[install]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">FPS:</td>
+				<td><input name="fps" value="[fps]" type="text"></td>
+				<td class="text-right">TickRate:</td>
+				<td><input name="tickrate" value="[tickrate]" type="text"></td>
+				<td class="text-right">RAM:</td>
+				<td><input name="ram" value="[ram]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Аренда:</td>
+				<td><input name="time" value="[time]" type="text"></td>
+				<td class="text-right">Продление:</td>
+				<td><input name="timext" value="[timext]" type="text"></td>
+				<td class="text-right">Фиксация:</td>
+				<td><select name="param_fix">[param_fix]</select></td>
+			</tr>
+			<tr>
+				<td class="text-right">Тестирование:</td>
+				<td><select name="test">[test]</select></td>
+				<td class="text-right">Тестов:</td>
+				<td><input name="tests" value="[tests]" type="text"></td>
+				<td class="text-right">Скидки:</td>
+				<td><select name="discount">[discount]</select></td>
+			</tr>
+			<tr>
+				<td class="text-right">Диск:</td>
+				<td><input name="hdd" value="[hdd]" type="text"></td>
+				<td class="text-right">Карта:</td>
+				<td><input name="map" value="[map]" type="text"></td>
+				<td class="text-right">Выключение:</td>
+				<td><select name="autostop">[autostop]</select></td>
+			</tr>
+			<tr>
+				<td class="text-right">Цена:</td>
+				<td><input name="price" value="[price]" type="text"></td>
+				<td class="text-right">Положение:</td>
+				<td><input name="sort" value="[sort]" type="text"></td>
+				<td class="text-right">Аренда:</td>
+				<td><select name="show">[show]</select></td>
+			</tr>
+			<tr>
+				<td class="text-right">Ядра:</td>
+				<td colspan="5"><input name="core_fix" value="[core_fix]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Сборки:</td>
+				<td colspan="5"><textarea rows="4" name="packs">[packs]</textarea></td>
+			</tr>
+			<tr>
+				<td class="text-right">Адреса:</td>
+				<td colspan="5"><textarea rows="3" name="ip">[ip]</textarea></td>
+			</tr>
+			<tr>
+				<td class="text-right">Плагины:</td>
+				<td colspan="5"><textarea rows="2" name="plugins_install">[plugins_install]</textarea></td>
+			</tr>
+			<tr>
+				<td class="text-right">Разделы:</td>
+				<td colspan="5">
+					<label>
+						Плагины
+						<input type="checkbox" name="plugins" |plugins|checked|_plugins|>
+					</label>
+					<label>
+						Консоль
+						<input type="checkbox" name="console" |console|checked|_console|>
+					</label>
+					<label>
+						FileTP
+						<input type="checkbox" name="ftp" |ftp|checked|_ftp|>
+					</label>
+					<label>
+						Копии
+						<input type="checkbox" name="copy" |copy|checked|_copy|>
+					</label>
+					<label>
+						Графики
+						<input type="checkbox" name="stats" |stats|checked|_stats|>
+					</label>
+					<label>
+						Бесплатные услуги
+						<input type="checkbox" name="web" |web|checked|_web|>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript" src="[js]tarifs.js"></script>

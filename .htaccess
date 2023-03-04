@@ -1,0 +1,53 @@
+AddDefaultCharset utf-8
+
+RewriteBase /
+Options -Indexes +FollowSymLinks +MultiViews
+
+RewriteEngine on
+RewriteBase /acp/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=/favicon.ico
+RewriteRule ^acp /acp/index.php [L]
+
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=/favicon.ico
+RewriteRule ^(?!acp).* index.php [L]
+
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+
+#***Раскодировать, если не загружаются большие файлы:
+php_value max_execution_time 500
+php_value max_input_time 500
+php_value upload_max_filesize 30M
+php_value post_max_size 30M
+
+#***Раскодировать, если белый экран:
+#php_flag short_open_tag = On
+
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+
+<ifModule mod_expires.c>
+
+ ExpiresActive On
+ #кэшировать флэш и изображения на одну неделю
+ ExpiresByType image/x-icon "access plus 7 days"
+ ExpiresByType image/jpeg "access plus 7 days"
+ ExpiresByType image/png "access plus 7 days"
+ ExpiresByType image/gif "access plus 7 days"
+ ExpiresByType application/x-shockwave-flash "access plus 7 days"
+ #кэшировать css, javascript и текстовые файлы на одну неделю
+ ExpiresByType text/css "access plus 7 days"
+ ExpiresByType text/javascript "access plus 7 days"
+ ExpiresByType application/javascript "access plus 7 days"
+ ExpiresByType application/x-javascript "access plus 7 days"
+ #кэшировать html и htm файлы на один день
+ ExpiresByType text/html "access plus 1 day"
+ #кэшировать xml файлы на десять минут
+ ExpiresByType application/xhtml+xml "access plus 10 minutes"
+</ifModule>

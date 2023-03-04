@@ -1,0 +1,36 @@
+<form action="[acp]wiki/id/[id]/go" method="POST" id="wiki">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Вопрос:</td>
+				<td>
+					<input name="name" placeholder="Введите вопрос" value="[name]" type="text">
+				</td>
+				<td class="w5p text-right">Категория:</td>
+				<td class="w20p">
+					<select name="cat">[cats]</select>
+				</td>
+				<td class="w5p text-right">Теги:</td>
+				<td class="w25p">
+					<input name="tags" placeholder="Введите теги вопроса" value="[tags]" type="text">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6">
+					<div onclick="bbcode('[spoiler]', '[/spoiler]')" class="btn btn-red right">Спойлер</div>
+					<div onclick="bbcode('[code]', '[/code]')" class="btn btn-red right">Подсветка</div>
+					<div onclick="bbcode('[quote]', '[/quote]')" class="btn btn-red right">Цитата</div>
+					<div onclick="bbcode('[url=', ']ссылка[/url]')" class="btn btn-red right">Ссылка</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6"><textarea id="text" name="text" rows="10" placeholder="Введите развернутый ответ на вопрос">[text]</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript" src="[js]wiki.js"></script>

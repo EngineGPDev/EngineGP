@@ -1,0 +1,40 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="tarifs_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="trh">
+	<thead>
+		<tr>
+			<th class="w5p"><span onclick="tarifs_sort('id')"><i class="fa fa-sort-numeric-[sort_id]"></i></span></th>
+			<th class="w20p">Название</th>
+			<th class="w20p">Локация <span onclick="tarifs_sort('unit')"><i class="fa fa-sort-numeric-[sort_unit]"></i></span></th>
+			<th class="w15p">Слоты</th>
+			<th class="w15p">Порты</th>
+			<th class="w10p">Игра <span onclick="tarifs_sort('game')"><i class="fa fa-sort-alpha-[sort_game]"></i></span></th>
+			<th class="w5p"></th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	var sort_id = '[sort_id]';
+	var sort_unit = '[sort_unit]';
+	var sort_game = '[sort_game]';
+
+	$('#search').keyup(function(){
+		tarifs_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]tarifs.js"></script>

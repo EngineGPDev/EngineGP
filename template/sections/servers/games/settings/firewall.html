@@ -1,0 +1,65 @@
+<h4 class="hblock_content">Блокировка злоумышленников на оборудовании</h4>
+
+<div class="block_content">
+	<table class="table_pad input_pad">
+		<tbody>
+			<tr>
+				<td width="25%" style="vertical-align: top;">
+					<table>
+						<tbody>[firewall]</tbody>
+					</table>
+				</td>
+				<td style="vertical-align: top; background-color: #fff;">
+					<table>
+						<tbody>
+							<tr>
+								<td colspan="3">
+									Блокировка одиночного адреса
+								</td>
+							</tr>
+							<tr>
+								<td width="1%"><button><i class="fa fa-globe"></i></button></td>
+								<td><input id="blockip" placeholder="Введите адрес"></td>
+								<td width="1%"><button onclick="firewall('block')" class="btn-error btn-max">Заблокировать</button></td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									Блокировка подсети (автоопределение)
+								</td>
+							</tr>
+							<tr>
+								<td width="1%"><button><i class="fa fa-globe"></i></button></td>
+								<td><input id="blocksubip" placeholder="Введите адрес"></td>
+								<td width="1%"><button onclick="firewall('blocksub')" class="btn-error btn-max">Заблокировать</button></td>
+							</tr>
+							<tr>
+								<td colspan="3"><div class="space"></div></td>
+							</tr>
+							<tr>
+								<td width="1%"><button><i class="fa fa-globe"></i></button></td>
+								<td><input id="unblockip" placeholder="Введите адрес"></td>
+								<td width="1%"><button onclick="firewall('unblock')" class="btn-success btn-max">Разблокировать</button></td>
+							</tr>
+							<tr>
+								<td width="1%"><button><i class="fa fa-globe"></i></button></td>
+								<td><input id="infoip" placeholder="Введите адрес"></td>
+								<td width="1%"><button onclick="firewall('info')" class="btn-info btn-max">Информация</button></td>
+							</tr>
+							<tr>
+								<td colspan="3" id="whois">
+									Вывод информация об указанном адресе
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	var server = '[id]';
+</script>
+
+<script src="[js]sections/servers/settings/firewall.js" type="text/javascript"></script>

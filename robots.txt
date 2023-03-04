@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /acp
+Disallow: /system
+Disallow: /temp
+Disallow: /template
+Disallow: /upload

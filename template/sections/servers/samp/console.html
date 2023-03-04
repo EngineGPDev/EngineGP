@@ -1,0 +1,109 @@
+<h4 class="hblock_content">Консоль</h4>
+
+<div class="block_content">
+	<div class="server_console">
+		
+		<pre id="console">...</pre>
+
+ 		<!-- цвет консоли начало-->					
+                    <tr>
+                        <td colspan="4">
+                            <p>Цвет консоли:</p>
+                            <div class="btn console_hover" onclick="console_color('#fff')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_slategray" onclick="console_color('#708090')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_red" onclick="console_color('#f94747')"><i class="fa fa-terminal"></i></div>
+	                    <div class="btn console_maroon" onclick="console_color('#800000')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_green" onclick="console_color('#03aa46')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_darkgreen" onclick="console_color('#105310')"><i class="fa fa-terminal"></i></div>
+                 	    <div class="btn console_lime" onclick="console_color('#7CFC00')"><i class="fa fa-terminal"></i></div>	
+                            <div class="btn console_olive" onclick="console_color('#808000')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_yellow" onclick="console_color('#ffcc3c')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_tan" onclick="console_color('#D2B48C')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_blue" onclick="console_color('#3c7fff')"><i class="fa fa-terminal"></i></div>
+                            <div class="btn console_skyblue" onclick="console_color('#87CEEB')"><i class="fa fa-terminal"></i></div>
+                        </td>
+                    </tr>					
+		<!-- цвет консоли конец-->
+		
+		<form action="[home]servers/id/[id]/section/console/go" method="POST" id="form_console">
+			<table class="table_pad input_pad">
+				<tbody>
+					<tr>
+						<td width="5"><div class="btn btn-info" onclick="update_switch()">Обновление</div></td>
+						<td width="5" id="console_update"><i class="fa fa-toggle-on"></i></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script src="[js]sections/servers/console.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = [id];
+	$(document).ready(function(){
+		setTimeout(function() {update_console(true)}, 1000);
+	});
+</script>
+
+<!-- цвет консоли начало-->
+<script type="text/javascript">
+    function console_color(color) {
+        $('#console').css('color', color);
+
+        return null;
+    }
+</script>
+<style>
+    #console {
+        height: 350px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border-radius: 0;
+        padding: 5px;
+        margin-bottom: 10px;
+        background-color: #141617;
+        color: #fff;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+	
+.console_hover {
+	background: #9b9f9e;
+}
+.console_slategray {
+	background: #708090;
+}
+.console_maroon {
+	background: #800000;
+}
+.console_green {
+	background: #03aa46;
+}
+.console_olive {
+	background: #808000;
+}
+.console_yellow {
+	background: #ffcc3c;
+}
+.console_tan {
+	background: #D2B48C;
+}	
+.console_red {
+	background: #f94747;
+}
+.console_blue {
+	background: #558efa;
+}
+.console_skyblue {
+	background: #87CEEB;	
+}	
+.console_darkgreen {
+	background: #006400;	
+}	
+.console_lime {
+	background: #00FF00;	
+}
+</style>
+<!-- цвет консоли конец-->

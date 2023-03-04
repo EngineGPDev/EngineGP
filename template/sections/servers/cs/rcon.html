@@ -1,0 +1,71 @@
+<h4 class="hblock_content">Управление игроками</h4>
+
+<div class="block_content">
+	<table class="table_pad">
+		<tbody>
+			<tr>
+				<td>
+					Выбранный игрок:
+					<b id="sel_player_info">____________</b>
+				</td>
+				<td width="15%">
+					<div onclick="update_players_list()" class="btn btn-gray right">Обновить список</div>
+				</td>
+				<td width="5%">
+					<div onclick="rcon_kill()" class="btn right">Убить</div>
+				</td>
+				<td width="5%">
+					<div onclick="rcon_kick()" class="btn right">Кикнуть</div>
+				</td>
+				<td width="5%">
+					<div onclick="rcon_ban()" class="btn right">Забанить</div>
+				</td>
+				<td width="5%">
+					<div onclick="firewall()" class="btn btn-error right">Заблокировать</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<table class="table_pad">
+		<thead>
+			<tr>
+				<th width="1%">#</th>
+				<th width="29%">Ник</th>
+				<th width="20%">SteamID</th>
+				<th width="10%">Время</th>
+				<th width="10%">Пинг</th>
+				<th width="15%">Адрес</th>
+				<th width="15%">Управление</th>
+			</tr>
+		</thead>
+		<tbody id="players"></tbody>
+	</table>
+</div>
+
+<input type="hidden" id="sel_player" value="0">
+
+
+<div class="space"></div>
+
+<h2 class="hblock_content">Game Server Control Panel</h2>
+
+<div class="block_content">
+<p><center>Приложение для удобного управления игровыми серверами со своего смартфона.</center></p>
+<div class="space"></div>
+<p><center>С помощью него Вы всегда будете в курсе состояния вашего игрового сервера.</center></p>
+<br>
+<center><a href="https://play.google.com/store/apps/details?id=ru.air.gscp&hl=ru" target="_blank"><img src="[home]template/images/gscp.png"></a></center>
+</div>
+
+<script type="text/javascript">
+	var server = '[id]';
+		
+	$(document).ready(function(){
+		update_players_list();
+	});
+</script>
+
+<script src="[js]sections/servers/rcon.js" type="text/javascript"></script>

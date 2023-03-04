@@ -1,0 +1,148 @@
+<h4 class="hblock_content">Планировщик задач</h4>
+
+<div class="block_content">
+	<form action="[home]servers/id/[id]/section/settings/subsection/crontab/go" method="POST" id="form">
+		<table class="table_pad input_pad">
+			<tbody>
+				<tr>
+					<td width="5%" align="right">Задание:</td>
+					<td>
+						<select name="task" id="task" onchange="cron_check_type()">
+							<option value="start">Включение сервера</option>
+							<option value="stop">Выключение сервера</option>
+							<option value="restart">Перезагрузка сервера</option>
+							<option value="console">Отправка команд на сервер</option>
+						</select>
+					</td>
+				</tr>
+				<tr id="console" style="display: none">
+					<td align="right">Команды:</td>
+					<td>
+						<textarea name="commands" rows="5" placeholder="Каждая команда с новой строки"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">Время:</td>
+					<td>
+						<select name="hour" class="left" style="width: 50px">
+							<option value="00">00</option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>
+						</select>
+						
+						<div class="btn btn-none"> : </div>
+						
+						<select name="minute" class="left" style="width: 50px">
+							<option value="00">00</option>
+							<option value="05">05</option>
+							<option value="10">10</option>
+							<option value="15">15</option>
+							<option value="20">20</option>
+							<option value="25">25</option>
+							<option value="30">30</option>
+							<option value="35">35</option>
+							<option value="40">40</option>
+							<option value="45">45</option>
+							<option value="50">50</option>
+							<option value="55">55</option>
+						</select>
+						
+						|!autostop|
+							<div class="btn btn-none margin-top">Выполнять задание каждый час: </div>
+							<input type="checkbox" name="allhour" class="lcs_check left" />
+						|_!autostop|
+						
+						<div class="btn right margin-top">Время на сайте: [time]</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<div class="btn btn-none btn-switch">Пн.
+							<input type="checkbox" name="week['1']" class="lcs_check left" checked />
+						</div>
+						
+						<div class="btn btn-none btn-switch">Вт.
+							<input type="checkbox" name="week['2']" class="lcs_check left" checked />
+						</div>
+						
+						<div class="btn btn-none btn-switch">Ср.
+							<input type="checkbox" name="week['3']" class="lcs_check left" checked />
+						</div>
+						
+						<div class="btn btn-none btn-switch">Чт.
+							<input type="checkbox" name="week['4']" class="lcs_check left" checked />
+						</div>
+						
+						<div class="btn btn-none btn-switch">Пт.
+							<input type="checkbox" name="week['5']" class="lcs_check left" checked />
+						</div>
+						
+						<div class="btn btn-none btn-switch">Сб.
+							<input type="checkbox" name="week['6']" class="lcs_check left" checked />
+						</div>
+						
+						<div class="btn btn-none btn-switch">Вс.
+							<input type="checkbox" name="week['7']" class="lcs_check left" checked />
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<button class="btn-success" onclick="loading(1)">Добавить задание</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<div class="space"></div>
+
+<h4 class="hblock_content">Список добавленных задач</h4>
+
+<div class="block_content">
+	<table class="table_pad">
+		<thead>
+			<tr>
+				<th width="25%">Задание</th>
+				<th width="10%">Время</th>
+				<th align="left">Дни недели</th>
+			</tr>
+		</thead>
+		<tbody>
+			[crontab]
+		</tbody>
+	</table>
+</div>
+
+<link rel="stylesheet" type="text/css" href="[css]switch.css" media="screen" />
+<script src="[js]switch.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	var server = '[id]';
+	
+	$(document).ready(function(e){$('input').lc_switch();});
+</script>
+
+<script src="[js]sections/servers/settings/crontab.js" type="text/javascript"></script>
