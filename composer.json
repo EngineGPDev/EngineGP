@@ -1,5 +1,6 @@
 {
   "require": {
-    "symfony/polyfill": "*"
+    "symfony/polyfill": "*",
+    "delight-im/cookie": "^3.4"
   }
 }
