@@ -371,7 +371,7 @@
 			return $sum;
 		}
 
-		public static function define_promo($cod, $data = array(), $discount, $sum, $type = 'buy')
+		public static function define_promo($cod, $data, $discount, $sum, $type = 'buy')
 		{
 			global $cfg, $sql, $go, $start_point;
 
