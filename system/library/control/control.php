@@ -384,7 +384,7 @@
 			}
 		}
 
-		public static function crontab($data = array(), $id, $cid)
+		public static function crontab($id, $cid, $data = array())
 		{
 			global $cfg;
 
