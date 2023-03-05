@@ -1,8 +1,8 @@
 <?php
     if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-	$device = '!mobile';
+    $device = '!mobile';
 
     // Парсинг адреса
     $url = is_array(sys::url()) ? sys::url() : array();
@@ -14,7 +14,7 @@
     $page = array_key_exists('page', $url) ? sys::int($url['page']) : 1;
     $route = $route == '' ? 'index' : $route;
 
-	$auth = false;
+    $auth = false;
 
     // Проверка cookie на авторизацию
     $aAuth = array();
@@ -44,22 +44,22 @@
         }
     }
 
-	if(!$auth)
-		exit(header('Refresh: 0; URL=http://'.$cfg['url'].'/403'));
+    if(!$auth)
+        exit(header('Refresh: 0; URL=http://'.$cfg['url'].'/403'));
 
     // Подключение файла
     if(in_array($route, $aRoute))
         include(ENG.$route.'.php');
     else{
-		$route = 'index';
+        $route = 'index';
         include(ENG.'index.php');
-	}
+    }
 
     // Обновление ссылок
-	if(isset($html->arr['main']))
+    if(isset($html->arr['main']))
     {
-		$html->upd(
-			'main',
+        $html->upd(
+            'main',
 
             array(
                 '[cur]',
@@ -78,13 +78,13 @@
                 $cfg['http'].'template/acp/css/',
                 $cfg['http'].'template/acp/images/'
             ),
-		);
-	}
+        );
+    }
 
-	if(isset($html->arr['menu']))
+    if(isset($html->arr['menu']))
     {
-		$html->upd(
-			'menu',
+        $html->upd(
+            'menu',
 
             array(
                 '[acp]',
@@ -101,8 +101,8 @@
                 $cfg['http'].'template/acp/css/',
                 $cfg['http'].'template/acp/images/'
             ),
-		);
-	}
+        );
+    }
 
     // Заготовка выхлопа
     $html->get('all');
@@ -114,20 +114,20 @@
         $html->set('css', $cfg['http'].'template/acp/css/');
         $html->set('img', $cfg['http'].'template/acp/images/');
 
-		if(isset($html->arr['menu']))
-		{
-			$html->unit('section', true);
-			$html->set('info', $info);
-			$html->set('menu', $html->arr['menu']);
-		}else
-			$html->unit('section');
+        if(isset($html->arr['menu']))
+        {
+            $html->unit('section', true);
+            $html->set('info', $info);
+            $html->set('menu', $html->arr['menu']);
+        }else
+            $html->unit('section');
 
-		$html->unit('p_'.$route, true);
+        $html->unit('p_'.$route, true);
 
-		unset($aRoute[array_search($route, $aRoute)]);
+        unset($aRoute[array_search($route, $aRoute)]);
 
-		foreach($aRoute as $route)
-			$html->unit('p_'.$route);
+        foreach($aRoute as $route)
+            $html->unit('p_'.$route);
 
         $html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
 
