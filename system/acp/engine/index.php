@@ -19,7 +19,7 @@
 			$html->set('mail', $us['mail']);
 			$html->set('money', $cb['money'].' '.$cfg['currency']);
 			$html->set('cashback', ($cb['money']-($cb['money']/100*$cfg['part_output_proc'])).' '.$cfg['currency']);
-			$html->set('type', $cb['purse']{0} == 'R' ? '<span class="text-blue">WebMoney</span>' : '<span class="text-orange">Qiwi</span>');
+			$html->set('type', $cb['purse'][0] == 'R' ? '<span class="text-blue">WebMoney</span>' : '<span class="text-orange">Qiwi</span>');
 			$html->set('purse', $cb['purse']);
 			$html->set('gateway', empty($cfg['part_gateway']) ? 'mm' : 'auto');
 			$html->set('date', sys::today($cb['date']));

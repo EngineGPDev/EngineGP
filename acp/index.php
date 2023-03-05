@@ -22,7 +22,7 @@
 	$start_point = $_SERVER['REQUEST_TIME'];
 
 	$mcache = new Memcache;
-	$mcache->connect('127.0.0.1', 11211) or exit('Ошибка: #mc0, обновите страницу позже, если ошибка повторяется, обратитесь в тех.поддержку: <a href="https://enginegp.ru">EGPv3</a>');
+	$mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
 
 	// Настройки
 	include(DATA.'config.php');
