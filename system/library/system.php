@@ -1078,7 +1078,7 @@
 			return false;
 		}
 
-		public static function cpu_idle($pros_stat = array(), $unit, $fcpu = false, $ctrl = false)
+		public static function cpu_idle($pros_stat = array(), $unit = false, $fcpu = false, $ctrl = false)
 		{
 			return sys::cpu_get_idle(sys::parse_cpu($pros_stat[0]), sys::parse_cpu($pros_stat[1]), $unit, $fcpu, $ctrl);
 		}
