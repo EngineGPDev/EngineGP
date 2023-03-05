@@ -87,20 +87,21 @@
 	if(isset($html->arr['main']))
 	{
 		$html->upd(
-			array(
-				'[home]',
-				'[js]',
-				'[css]',
-				'[img]'
-			),
+			'main',
 
-			array(
-				$cfg['http'],
-				$cfg['http'].'template/js/',
-				$cfg['http'].'template/css/',
-				$cfg['http'].'template/images/'
-			),
-			'main'
+            array(
+                '[home]',
+                '[js]',
+                '[css]',
+                '[img]'
+            ),
+
+            array(
+                $cfg['http'],
+                $cfg['http'].'template/js/',
+                $cfg['http'].'template/css/',
+                $cfg['http'].'template/images/'
+            ),
 		);
 	}
 
