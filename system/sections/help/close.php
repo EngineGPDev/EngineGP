@@ -89,15 +89,15 @@
 
 	if(!in_array($user['group'], array('admin', 'support')))
 	{
-		$html->unitall('main', 'user', 1);
-		$html->unitall('main', 'support');
+		$html->unitall('user', 'main', 1);
+		$html->unitall('support', 'main');
 	}else{
-		$html->unitall('main', 'user');
-		$html->unitall('main', 'support', 1);
+		$html->unitall('user', 'main');
+		$html->unitall('support', 'main', 1);
 	}
 
 	if($user['group'] == 'admin')
-		$html->unitall('main', 'admin', 1);
+		$html->unitall('admin', 'main', 1);
 	else
-		$html->unitall('main', 'admin');
+		$html->unitall('admin', 'main');
 ?>

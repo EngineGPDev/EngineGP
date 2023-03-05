@@ -137,7 +137,7 @@
 			return NULL;
 		}
 
-		public function unitall($arr = array(), $name, $var = false, $mirror = false)
+		public function unitall($name, $arr = array(), $var = false, $mirror = false)
 		{
 			$block = str_replace($name, "'\\|".$name."\\|(.*?)\\|_".$name."\\|'si", $name);
 
