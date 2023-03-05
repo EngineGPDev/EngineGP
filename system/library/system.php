@@ -1052,7 +1052,7 @@
 
 			fclose($stack);
 
-			return isset($subnetwork{0}) ? $subnetwork : 'не определена';
+			return isset($subnetwork[0]) ? $subnetwork : 'не определена';
 		}
 
 		public static function rep_act($name, $time = 20)
@@ -1418,7 +1418,7 @@
 			foreach($aTags as $tag)
 				$text .= '<strong>'.trim($tag).'</strong>, ';
 
-			return isset($text{0}) ? substr($text, 0, -2) : 'отсутствуют';
+			return isset($text[0]) ? substr($text, 0, -2) : 'отсутствуют';
 		}
 
 		public static function benefitblock($id, $nmch = false)
