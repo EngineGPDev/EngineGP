@@ -9,7 +9,7 @@ $id = intval($url['id']);
 
 // Если ID пустой
 if(empty($id)){
-	header('Refresh: 0; URL='.$cfg['http'].'monitoring');
+    header('Refresh: 0; URL='.$cfg['http'].'monitoring');
     exit();
 }
 
@@ -26,7 +26,7 @@ $server = $sql->get();
 
 // Если результат пустой
 if(empty($server)){
-	header('Refresh: 0; URL='.$cfg['http'].'monitoring');
+    header('Refresh: 0; URL='.$cfg['http'].'monitoring');
     exit();
 }
 

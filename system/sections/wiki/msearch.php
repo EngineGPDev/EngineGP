@@ -12,7 +12,7 @@
 	if($mcache->get($mkey) != '' AND !isset($url['tag']))
 		sys::outjs(array('s' => $mcache->get($mkey)));
 
-	if(!isset($text{2}) AND !isset($url['tag']))
+	if(!isset($text[2]) AND !isset($url['tag']))
 		sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
 
 	$aWiki_q = array();
@@ -43,7 +43,7 @@
 
 		foreach($aText as $word)
 		{
-			if($word == '' || !isset($word{2}))
+			if($word == '' || !isset($word[2]))
 				continue;
 
 			// Поиск по вопросу

@@ -54,7 +54,7 @@
 				$passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
 			else{
 				// Проверка длинны пароля
-				if(!isset($_POST['passwd']{5}) || isset($_POST['passwd']{16}))
+				if(!isset($_POST['passwd'][5]) || isset($_POST['passwd'][16]))
 					sys::outjs(array('e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'), $nmch);
 
 				// Проверка валидности пароля
