@@ -4,6 +4,18 @@
 
 	class sys
 	{
+        public static function isSecure() {
+            $is_secure = false;
+
+            if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+                $is_secure = true;
+            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+                $is_secure = true;
+            }
+
+            return $is_secure;
+        }
+
 		public static function url($all = true)
 		{
 			if($_SERVER['REQUEST_URI'] == '/')
@@ -427,11 +439,13 @@
 			return md5($passwd);
 		}
 
-		public static function cookie($name, $value, $expires)
-		{
-			$expires = time() + ($expires * 86400);
-			setcookie($name, $value, $expires, "/", $_SERVER['HTTP_HOST'], true);
-		}
+        public static function cookie($name, $value, $expires)
+        {
+            global $cfg;
+
+            $expires = time() + ($expires * 86400);
+            \Delight\Cookie\Cookie::setcookie($name, $value, $expires, '/', $cfg['url'], self::isSecure(), true, $cfg['cookie_same_site']);
+        }
 
 		public static function auth()
 		{
