@@ -59,46 +59,48 @@
 	if(isset($html->arr['main']))
     {
 		$html->upd(
-			array(
-				'[cur]',
-				'[acp]',
-				'[home]',
-				'[js]',
-				'[css]',
-				'[img]'
-			),
+			'main',
 
-			array(
-				$cfg['currency'],
-				$cfg['http'].'acp/',
-				$cfg['http'],
-				$cfg['http'].'template/acp/js/',
-				$cfg['http'].'template/acp/css/',
-				$cfg['http'].'template/acp/images/'
-			),
-			'main'
+            array(
+                '[cur]',
+                '[acp]',
+                '[home]',
+                '[js]',
+                '[css]',
+                '[img]'
+            ),
+
+            array(
+                $cfg['currency'],
+                $cfg['http'].'acp/',
+                $cfg['http'],
+                $cfg['http'].'template/acp/js/',
+                $cfg['http'].'template/acp/css/',
+                $cfg['http'].'template/acp/images/'
+            ),
 		);
 	}
 
 	if(isset($html->arr['menu']))
     {
 		$html->upd(
-			array(
-				'[acp]',
-				'[home]',
-				'[js]',
-				'[css]',
-				'[img]'
-			),
+			'menu',
 
-			array(
-				$cfg['http'].'acp/',
-				$cfg['http'],
-				$cfg['http'].'template/acp/js/',
-				$cfg['http'].'template/acp/css/',
-				$cfg['http'].'template/acp/images/'
-			),
-			'menu'
+            array(
+                '[acp]',
+                '[home]',
+                '[js]',
+                '[css]',
+                '[img]'
+            ),
+
+            array(
+                $cfg['http'].'acp/',
+                $cfg['http'],
+                $cfg['http'].'template/acp/js/',
+                $cfg['http'].'template/acp/css/',
+                $cfg['http'].'template/acp/images/'
+            ),
 		);
 	}
 
