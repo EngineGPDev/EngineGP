@@ -259,7 +259,7 @@
 			return $data;
 		}
 
-		public static function parse_time($aTime = array(), $discount, $tarif, $type = 'buy')
+		public static function parse_time($aTime, $discount, $tarif, $type = 'buy')
 		{
 			global $cfg;
 
