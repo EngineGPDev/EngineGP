@@ -1,518 +1,518 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
-
-	define('AXIS_FORMAT_DEFAULT', 680001);
-	define('AXIS_FORMAT_TIME', 680002);
-	define('AXIS_FORMAT_DATE', 680003);
-	define('AXIS_FORMAT_METRIC', 680004);
-	define('AXIS_FORMAT_CURRENCY', 680005);
-	define('AXIS_FORMAT_TRAFFIC', 680006);
-	define('AXIS_FORMAT_CUSTOM', 680007);
-	define('AXIS_POSITION_LEFT', 681001);
-	define('AXIS_POSITION_RIGHT', 681002);
-	define('AXIS_POSITION_TOP', 681001);
-	define('AXIS_POSITION_BOTTOM', 681002);
-	define('SERIE_SHAPE_FILLEDCIRCLE', 681011);
-	define('SERIE_SHAPE_FILLEDTRIANGLE', 681012);
-	define('SERIE_SHAPE_FILLEDSQUARE', 681013);
-	define('SERIE_SHAPE_FILLEDDIAMOND', 681017);
-	define('SERIE_SHAPE_CIRCLE', 681014);
-	define('SERIE_SHAPE_TRIANGLE', 681015);
-	define('SERIE_SHAPE_SQUARE', 681016);
-	define('SERIE_SHAPE_DIAMOND', 681018);
-	define('AXIS_X', 682001);
-	define('AXIS_Y', 682002);
-	define('ABSOLUTE_MIN', -10000000000000);
-	define('ABSOLUTE_MAX', 10000000000000);
-	define('VOID' , 0.123456789);
-	define('EURO_SYMBOL', utf8_encode('&#8364;'));
-
-	class pData
-	{
-		var $Data;
-
-		var $Palette = array('0'=>array('R'=>188,'G'=>224,'B'=>46,'Alpha'=>100),
-						'1'=>array('R'=>224,'G'=>100,'B'=>46,'Alpha'=>100),
-						'2'=>array('R'=>224,'G'=>214,'B'=>46,'Alpha'=>100),
-						'3'=>array('R'=>46,'G'=>151,'B'=>224,'Alpha'=>100),
-						'4'=>array('R'=>176,'G'=>46,'B'=>224,'Alpha'=>100),
-						'5'=>array('R'=>224,'G'=>46,'B'=>117,'Alpha'=>100),
-						'6'=>array('R'=>92,'G'=>224,'B'=>46,'Alpha'=>100),
-						'7'=>array('R'=>224,'G'=>176,'B'=>46,'Alpha'=>100));
-
-		function pData()
-		{
-			$this->Data = '';
-			$this->Data['XAxisDisplay'] = AXIS_FORMAT_DEFAULT;
-			$this->Data['XAxisFormat'] = NULL;
-			$this->Data['XAxisName'] = NULL;
-			$this->Data['XAxisUnit'] = NULL;
-			$this->Data['Abscissa'] = NULL;
-			$this->Data['AbsicssaPosition'] = AXIS_POSITION_BOTTOM;
-			$this->Data['Axis'][0]['Display'] = AXIS_FORMAT_DEFAULT;
-			$this->Data['Axis'][0]['Position'] = AXIS_POSITION_LEFT;
-			$this->Data['Axis'][0]['Identity'] = AXIS_Y;
-		}
-
-		function addPoints($Values, $SerieName = 'Serie1')
-		{
-			if(!isset($this->Data['Series'][$SerieName]))
-				$this->initialise($SerieName);
-
-			if(is_array($Values))
-			{
-				foreach($Values as $Key => $Value)
-					$this->Data['Series'][$SerieName]['Data'][] = $Value;
-			}else
-				$this->Data['Series'][$SerieName]['Data'][] = $Values;
-
-			if($Values != VOID)
-			{
-				$StrippedData = $this->stripVOID($this->Data['Series'][$SerieName]['Data']);
-
-				if(empty($StrippedData))
-				{
-				   $this->Data['Series'][$SerieName]['Max'] = 0;
-				   $this->Data['Series'][$SerieName]['Min'] =0;
-				   return(0);
-				}
-
-				$this->Data['Series'][$SerieName]['Max'] = max($StrippedData);
-				$this->Data['Series'][$SerieName]['Min'] = min($StrippedData);
-			}
-		}
-
-		function stripVOID($Values)
-		{
-			if(!is_array($Values))
-				return(array());
-
-			$Result = array();
-
-			foreach($Values as $Key => $Value)
-			{
-				if($Value != VOID)
-					$Result[] = $Value;
-			}
-
-			return($Result);
-		}
-
-		function getSerieCount($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]['Data']))
-				return(sizeof($this->Data['Series'][$Serie]['Data']));
-
-			return(0);
-		}
-
-		function removeSerie($Series)
-		{
-			if(!is_array($Series))
-				$Series = $this->convertToArray($Series);
-
-			foreach($Series as $Key => $Serie)
-			{
-				if(isset($this->Data['Series'][$Serie]))
-					unset($this->Data['Series'][$Serie]);
-			}
-		}
-
-		function getValueAt($Serie,$Index=0)
-		{
-			if(isset($this->Data['Series'][$Serie]['Data'][$Index]))
-				return($this->Data['Series'][$Serie]['Data'][$Index]);
-
-			return(NULL);
-		}
-
-		function getValues($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]['Data']))
-				return($this->Data['Series'][$Serie]['Data']);
-
-			return(NULL);
-		}
-
-		function reverseSerie($Series)
-		{
-			if(!is_array($Series))
-				$Series = $this->convertToArray($Series);
-
-			foreach($Series as $Key => $Serie)
-			{
-				if(isset($this->Data['Series'][$Serie]['Data']))
-					$this->Data['Series'][$Serie]['Data'] = array_reverse($this->Data['Series'][$Serie]['Data']);
-			}
-		}
-
-		function getSum($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-				return(array_sum($this->Data['Series'][$Serie]['Data']));
-
-			return(NULL);
-		}
-
-		function getMax($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]['Max']))
-				return($this->Data['Series'][$Serie]['Max']);
-
-			return(NULL);
-		}
-
-		function getMin($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]['Min']))
-				return($this->Data['Series'][$Serie]['Min']);
-
-			return(NULL);
-		}
-
-		function setSerieShape($Series, $Shape = SERIE_SHAPE_FILLEDCIRCLE)
-		{
-			if(!is_array($Series))
-				$Series = $this->convertToArray($Series);
-
-			foreach($Series as $Key => $Serie)
-			{
-				if(isset($this->Data['Series'][$Serie]))
-					$this->Data['Series'][$Serie]['Shape'] = $Shape;
-			}
-		}
-
-		function setSerieDescription($Series, $Description = 'My serie')
-		{
-			if(!is_array($Series))
-				$Series = $this->convertToArray($Series);
-
-			foreach($Series as $Key => $Serie)
-			{
-				if(isset($this->Data['Series'][$Serie]))
-					$this->Data['Series'][$Serie]['Description'] = $Description;
-			}
-		}
-
-		function setSerieDrawable($Series, $Drawable = TRUE)
-		{
-			if(!is_array($Series))
-				$Series = $this->convertToArray($Series);
-
-			foreach($Series as $Key => $Serie)
-			{
-				if(isset($this->Data['Series'][$Serie]))
-					$this->Data['Series'][$Serie]['isDrawable'] = $Drawable;
-			}
-		}
-
-		function setSeriePicture($Series,$Picture=NULL)
-		{
-			if(!is_array($Series))
-				$Series = $this->convertToArray($Series);
-
-			foreach($Series as $Key => $Serie)
-			{
-				if(isset($this->Data['Series'][$Serie]))
-					$this->Data['Series'][$Serie]['Picture'] = $Picture;
-			}
-		}
-
-		function setXAxisName($Name)
-		{
-			$this->Data['XAxisName'] = $Name;
-		}
-
-		function setXAxisDisplay($Mode, $Format = NULL)
-		{
-			$this->Data['XAxisDisplay'] = $Mode;
-			$this->Data['XAxisFormat']  = $Format;
-		}
-
-		function setXAxisUnit($Unit)
-		{
-			$this->Data['XAxisUnit'] = $Unit;
-		}
-
-		function setAbscissa($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-				$this->Data['Abscissa'] = $Serie;
-		}
-
-		function setAbsicssaPosition($Position = AXIS_POSITION_BOTTOM)
-		{
-			$this->Data['AbsicssaPosition'] = $Position;
-		}
-
-		function setAbscissaName($Name)
-		{
-			$this->Data['AbscissaName'] = $Name;
-		}
-
-		function setScatterSerie($SerieX, $SerieY, $ID = 0)
-		{
-			if(isset($this->Data['Series'][$SerieX]) && isset($this->Data['Series'][$SerieY]))
-			{
-				$this->initScatterSerie($ID);
-				$this->Data['ScatterSeries'][$ID]['X'] = $SerieX;
-				$this->Data['ScatterSeries'][$ID]['Y'] = $SerieY;
-			}
-		}
-
-		function setScatterSerieShape($ID, $Shape = SERIE_SHAPE_FILLEDCIRCLE)
-		{
-			if(isset($this->Data['ScatterSeries'][$ID]))
-				$this->Data['ScatterSeries'][$ID]['Shape'] = $Shape;
-		}
-
-		function setScatterSerieDescription($ID, $Description = 'My serie')
-		{
-			if(isset($this->Data['ScatterSeries'][$ID]))
-				$this->Data['ScatterSeries'][$ID]['Description'] = $Description;
-		}
-
-		function setScatterSeriePicture($ID, $Picture = NULL)
-		{
-			if(isset($this->Data['ScatterSeries'][$ID]))
-				$this->Data['ScatterSeries'][$ID]['Picture'] = $Picture;
-		}
-
-		function setScatterSerieDrawable($ID, $Drawable = TRUE)
-		{
-			if(isset($this->Data['ScatterSeries'][$ID]))
-				$this->Data['ScatterSeries'][$ID]['isDrawable'] = $Drawable;
-		}
-
-		function setScatterSerieTicks($ID, $Width = 0)
-		{
-			if(isset($this->Data['ScatterSeries'][$ID]))
-				$this->Data['ScatterSeries'][$ID]['Ticks'] = $Width;
-		}
-
-		function setScatterSerieWeight($ID, $Weight = 0)
-		{
-			if(isset($this->Data['ScatterSeries'][$ID]))
-				$this->Data['ScatterSeries'][$ID]['Weight'] = $Weight;
-		}
-
-		function setScatterSerieColor($ID, $Format)
-		{
-			$R = isset($Format['R']) ? $Format['R'] : 0;
-			$G = isset($Format['G']) ? $Format['G'] : 0;
-			$B = isset($Format['B']) ? $Format['B'] : 0;
-			$Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
-
-			if(isset($this->Data['ScatterSeries'][$ID]))
-			{
-				$this->Data['ScatterSeries'][$ID]['Color']['R'] = $R;
-				$this->Data['ScatterSeries'][$ID]['Color']['G'] = $G;
-				$this->Data['ScatterSeries'][$ID]['Color']['B'] = $B;
-				$this->Data['ScatterSeries'][$ID]['Color']['Alpha'] = $Alpha;
-			}
-		}
-
-		function limits()
-		{
-			$GlobalMin = ABSOLUTE_MAX;
-			$GlobalMax = ABSOLUTE_MIN;
-
-			foreach($this->Data['Series'] as $Key => $Value)
-			{
-				if($this->Data['Abscissa'] != $Key && $this->Data['Series'][$Key]['isDrawable'] == TRUE)
-				{
-					if($GlobalMin > $this->Data['Series'][$Key]['Min'])
-						$GlobalMin = $this->Data['Series'][$Key]['Min'];
-
-					if($GlobalMax < $this->Data['Series'][$Key]['Max'])
-						$GlobalMax = $this->Data['Series'][$Key]['Max'];
-				}
-			}
-
-			$this->Data['Min'] = $GlobalMin;
-			$this->Data['Max'] = $GlobalMax;
-
-			return(array($GlobalMin,$GlobalMax));
-		}
-
-		function drawAll()
-		{
-			foreach($this->Data['Series'] as $Key => $Value)
-			{
-				if($this->Data['Abscissa'] != $Key)
-					$this->Data['Series'][$Key]['isDrawable'] = TRUE;
-			}    
-		}
-
-		function getSerieAverage($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-			{
-				$SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
-
-				return(array_sum($SerieData)/sizeof($SerieData));
-			}
-
-			return(NULL);
-		}
-
-		function getGeometricMean($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-			{
-				$SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
-				$Seriesum = 1;
-
-				foreach($SerieData as $Key => $Value)
-					$Seriesum = $Seriesum * $Value;
-
-				return(pow($Seriesum,1/sizeof($SerieData)));
-			}
-
-			return(NULL);
-		}
-
-		function getHarmonicMean($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-			{
-				$SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
-				$Seriesum = 0;
-
-				foreach($SerieData as $Key => $Value)
-					$Seriesum = $Seriesum + 1/$Value;
-
-				return(sizeof($SerieData)/$Seriesum);
-			}
-
-			return(NULL);
-		}
-
-		function getStandardDeviation($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-			{
-				$Average = $this->getSerieAverage($Serie);
-				$SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
-
-				$DeviationSum = 0;
-
-				foreach($SerieData as $Key => $Value)
-					$DeviationSum = $DeviationSum + ($Value-$Average)*($Value-$Average);
-
-				$Deviation = sqrt($DeviationSum/count($SerieData));
-
-				return($Deviation);
-			}
-
-			return(NULL);
-		}
-
-		function getCoefficientOfVariation($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-			{
-				$Average = $this->getSerieAverage($Serie);
-				$StandardDeviation = $this->getStandardDeviation($Serie);
-
-				if($StandardDeviation != 0)
-					return($StandardDeviation/$Average);
-			}
-
-			return(NULL);
-		}
-
-		function getSerieMedian($Serie)
-		{
-			if(isset($this->Data['Series'][$Serie]))
-			{
-				$SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
-
-				sort($SerieData);
-
-				$SerieCenter = floor(sizeof($SerieData)/2);
-
-				if(isset($SerieData[$SerieCenter]))
-					return($SerieData[$SerieCenter]);
-			}
-
-			return(NULL);
-		}
-
-		function getSeriePercentile($Serie = 'Serie1', $Percentil = 95)
-		{
-			if(!isset($this->Data['Series'][$Serie]['Data']))
-				return(NULL);
-
-			$Values = count($this->Data['Series'][$Serie]['Data'])-1;
-
-			if($Values < 0)
-				$Values = 0;
-
-			$PercentilID = floor(($Values/100)*$Percentil+.5);
-			$SortedValues = $this->Data['Series'][$Serie]['Data'];
-
-			sort($SortedValues);
-
-			if(is_numeric($SortedValues[$PercentilID]))
-				return($SortedValues[$PercentilID]);
-
-			return(NULL);
-		}
-
-		function addRandomValues($SerieName = 'Serie1', $Options = '')
-		{
-			$Values = isset($Options['Values']) ? $Options['Values'] : 20;
-			$Min = isset($Options['Min']) ? $Options['Min'] : 0;
-			$Max = isset($Options['Max']) ? $Options['Max'] : 100;
-			$withFloat = isset($Options['withFloat']) ? $Options['withFloat'] : FALSE;
-
-			for($i = 0; $i <= $Values; $i+=1)
-			{
-				if($withFloat)
-					$Value = rand($Min*100,$Max*100)/100;
-				else
-					$Value = rand($Min, $Max);
-
-				$this->addPoints($Value,$SerieName);
-			}
-		}
-
-		function containsData()
-		{
-			if(!isset($this->Data['Series']))
-				return(FALSE);
-
-			$Result = FALSE;
-
-			foreach($this->Data['Series'] as $Key => $Value)
-			{
-				if($this->Data['Abscissa'] != $Key && $this->Data['Series'][$Key]['isDrawable'] == TRUE)
-					$Result=TRUE;
-			}
-
-			return($Result);
-		}
-
-		function setAxisDisplay($AxisID, $Mode = AXIS_FORMAT_DEFAULT, $Format = NULL)
-		{
-			if(isset($this->Data['Axis'][$AxisID]))
-			{
-				$this->Data['Axis'][$AxisID]['Display'] = $Mode;
-
-				if($Format != NULL)
-					$this->Data['Axis'][$AxisID]['Format'] = $Format;
-			}
-		}
-
-		function setAxisPosition($AxisID, $Position = AXIS_POSITION_LEFT)
-		{
-			if(isset($this->Data['Axis'][$AxisID]))
-			{
-				$this->Data['Axis'][$AxisID]['Position'] = $Position;
-			}
-		}
+    if(!DEFINED('EGP'))
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+
+    define('AXIS_FORMAT_DEFAULT', 680001);
+    define('AXIS_FORMAT_TIME', 680002);
+    define('AXIS_FORMAT_DATE', 680003);
+    define('AXIS_FORMAT_METRIC', 680004);
+    define('AXIS_FORMAT_CURRENCY', 680005);
+    define('AXIS_FORMAT_TRAFFIC', 680006);
+    define('AXIS_FORMAT_CUSTOM', 680007);
+    define('AXIS_POSITION_LEFT', 681001);
+    define('AXIS_POSITION_RIGHT', 681002);
+    define('AXIS_POSITION_TOP', 681001);
+    define('AXIS_POSITION_BOTTOM', 681002);
+    define('SERIE_SHAPE_FILLEDCIRCLE', 681011);
+    define('SERIE_SHAPE_FILLEDTRIANGLE', 681012);
+    define('SERIE_SHAPE_FILLEDSQUARE', 681013);
+    define('SERIE_SHAPE_FILLEDDIAMOND', 681017);
+    define('SERIE_SHAPE_CIRCLE', 681014);
+    define('SERIE_SHAPE_TRIANGLE', 681015);
+    define('SERIE_SHAPE_SQUARE', 681016);
+    define('SERIE_SHAPE_DIAMOND', 681018);
+    define('AXIS_X', 682001);
+    define('AXIS_Y', 682002);
+    define('ABSOLUTE_MIN', -10000000000000);
+    define('ABSOLUTE_MAX', 10000000000000);
+    define('VOID' , 0.123456789);
+    define('EURO_SYMBOL', utf8_encode('&#8364;'));
+
+    class pData
+    {
+        var $Data;
+
+        var $Palette = array('0'=>array('R'=>188,'G'=>224,'B'=>46,'Alpha'=>100),
+                        '1'=>array('R'=>224,'G'=>100,'B'=>46,'Alpha'=>100),
+                        '2'=>array('R'=>224,'G'=>214,'B'=>46,'Alpha'=>100),
+                        '3'=>array('R'=>46,'G'=>151,'B'=>224,'Alpha'=>100),
+                        '4'=>array('R'=>176,'G'=>46,'B'=>224,'Alpha'=>100),
+                        '5'=>array('R'=>224,'G'=>46,'B'=>117,'Alpha'=>100),
+                        '6'=>array('R'=>92,'G'=>224,'B'=>46,'Alpha'=>100),
+                        '7'=>array('R'=>224,'G'=>176,'B'=>46,'Alpha'=>100));
+
+        function pData()
+        {
+            $this->Data = '';
+            $this->Data['XAxisDisplay'] = AXIS_FORMAT_DEFAULT;
+            $this->Data['XAxisFormat'] = NULL;
+            $this->Data['XAxisName'] = NULL;
+            $this->Data['XAxisUnit'] = NULL;
+            $this->Data['Abscissa'] = NULL;
+            $this->Data['AbsicssaPosition'] = AXIS_POSITION_BOTTOM;
+            $this->Data['Axis'][0]['Display'] = AXIS_FORMAT_DEFAULT;
+            $this->Data['Axis'][0]['Position'] = AXIS_POSITION_LEFT;
+            $this->Data['Axis'][0]['Identity'] = AXIS_Y;
+        }
+
+        function addPoints($Values, $SerieName = 'Serie1')
+        {
+            if(!isset($this->Data['Series'][$SerieName]))
+                $this->initialise($SerieName);
+
+            if(is_array($Values))
+            {
+                foreach($Values as $Key => $Value)
+                    $this->Data['Series'][$SerieName]['Data'][] = $Value;
+            }else
+                $this->Data['Series'][$SerieName]['Data'][] = $Values;
+
+            if($Values != VOID)
+            {
+                $StrippedData = $this->stripVOID($this->Data['Series'][$SerieName]['Data']);
+
+                if(empty($StrippedData))
+                {
+                   $this->Data['Series'][$SerieName]['Max'] = 0;
+                   $this->Data['Series'][$SerieName]['Min'] =0;
+                   return(0);
+                }
+
+                $this->Data['Series'][$SerieName]['Max'] = max($StrippedData);
+                $this->Data['Series'][$SerieName]['Min'] = min($StrippedData);
+            }
+        }
+
+        function stripVOID($Values)
+        {
+            if(!is_array($Values))
+                return(array());
+
+            $Result = array();
+
+            foreach($Values as $Key => $Value)
+            {
+                if($Value != VOID)
+                    $Result[] = $Value;
+            }
+
+            return($Result);
+        }
+
+        function getSerieCount($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]['Data']))
+                return(sizeof($this->Data['Series'][$Serie]['Data']));
+
+            return(0);
+        }
+
+        function removeSerie($Series)
+        {
+            if(!is_array($Series))
+                $Series = $this->convertToArray($Series);
+
+            foreach($Series as $Key => $Serie)
+            {
+                if(isset($this->Data['Series'][$Serie]))
+                    unset($this->Data['Series'][$Serie]);
+            }
+        }
+
+        function getValueAt($Serie,$Index=0)
+        {
+            if(isset($this->Data['Series'][$Serie]['Data'][$Index]))
+                return($this->Data['Series'][$Serie]['Data'][$Index]);
+
+            return(NULL);
+        }
+
+        function getValues($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]['Data']))
+                return($this->Data['Series'][$Serie]['Data']);
+
+            return(NULL);
+        }
+
+        function reverseSerie($Series)
+        {
+            if(!is_array($Series))
+                $Series = $this->convertToArray($Series);
+
+            foreach($Series as $Key => $Serie)
+            {
+                if(isset($this->Data['Series'][$Serie]['Data']))
+                    $this->Data['Series'][$Serie]['Data'] = array_reverse($this->Data['Series'][$Serie]['Data']);
+            }
+        }
+
+        function getSum($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+                return(array_sum($this->Data['Series'][$Serie]['Data']));
+
+            return(NULL);
+        }
+
+        function getMax($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]['Max']))
+                return($this->Data['Series'][$Serie]['Max']);
+
+            return(NULL);
+        }
+
+        function getMin($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]['Min']))
+                return($this->Data['Series'][$Serie]['Min']);
+
+            return(NULL);
+        }
+
+        function setSerieShape($Series, $Shape = SERIE_SHAPE_FILLEDCIRCLE)
+        {
+            if(!is_array($Series))
+                $Series = $this->convertToArray($Series);
+
+            foreach($Series as $Key => $Serie)
+            {
+                if(isset($this->Data['Series'][$Serie]))
+                    $this->Data['Series'][$Serie]['Shape'] = $Shape;
+            }
+        }
+
+        function setSerieDescription($Series, $Description = 'My serie')
+        {
+            if(!is_array($Series))
+                $Series = $this->convertToArray($Series);
+
+            foreach($Series as $Key => $Serie)
+            {
+                if(isset($this->Data['Series'][$Serie]))
+                    $this->Data['Series'][$Serie]['Description'] = $Description;
+            }
+        }
+
+        function setSerieDrawable($Series, $Drawable = TRUE)
+        {
+            if(!is_array($Series))
+                $Series = $this->convertToArray($Series);
+
+            foreach($Series as $Key => $Serie)
+            {
+                if(isset($this->Data['Series'][$Serie]))
+                    $this->Data['Series'][$Serie]['isDrawable'] = $Drawable;
+            }
+        }
+
+        function setSeriePicture($Series,$Picture=NULL)
+        {
+            if(!is_array($Series))
+                $Series = $this->convertToArray($Series);
+
+            foreach($Series as $Key => $Serie)
+            {
+                if(isset($this->Data['Series'][$Serie]))
+                    $this->Data['Series'][$Serie]['Picture'] = $Picture;
+            }
+        }
+
+        function setXAxisName($Name)
+        {
+            $this->Data['XAxisName'] = $Name;
+        }
+
+        function setXAxisDisplay($Mode, $Format = NULL)
+        {
+            $this->Data['XAxisDisplay'] = $Mode;
+            $this->Data['XAxisFormat']  = $Format;
+        }
+
+        function setXAxisUnit($Unit)
+        {
+            $this->Data['XAxisUnit'] = $Unit;
+        }
+
+        function setAbscissa($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+                $this->Data['Abscissa'] = $Serie;
+        }
+
+        function setAbsicssaPosition($Position = AXIS_POSITION_BOTTOM)
+        {
+            $this->Data['AbsicssaPosition'] = $Position;
+        }
+
+        function setAbscissaName($Name)
+        {
+            $this->Data['AbscissaName'] = $Name;
+        }
+
+        function setScatterSerie($SerieX, $SerieY, $ID = 0)
+        {
+            if(isset($this->Data['Series'][$SerieX]) && isset($this->Data['Series'][$SerieY]))
+            {
+                $this->initScatterSerie($ID);
+                $this->Data['ScatterSeries'][$ID]['X'] = $SerieX;
+                $this->Data['ScatterSeries'][$ID]['Y'] = $SerieY;
+            }
+        }
+
+        function setScatterSerieShape($ID, $Shape = SERIE_SHAPE_FILLEDCIRCLE)
+        {
+            if(isset($this->Data['ScatterSeries'][$ID]))
+                $this->Data['ScatterSeries'][$ID]['Shape'] = $Shape;
+        }
+
+        function setScatterSerieDescription($ID, $Description = 'My serie')
+        {
+            if(isset($this->Data['ScatterSeries'][$ID]))
+                $this->Data['ScatterSeries'][$ID]['Description'] = $Description;
+        }
+
+        function setScatterSeriePicture($ID, $Picture = NULL)
+        {
+            if(isset($this->Data['ScatterSeries'][$ID]))
+                $this->Data['ScatterSeries'][$ID]['Picture'] = $Picture;
+        }
+
+        function setScatterSerieDrawable($ID, $Drawable = TRUE)
+        {
+            if(isset($this->Data['ScatterSeries'][$ID]))
+                $this->Data['ScatterSeries'][$ID]['isDrawable'] = $Drawable;
+        }
+
+        function setScatterSerieTicks($ID, $Width = 0)
+        {
+            if(isset($this->Data['ScatterSeries'][$ID]))
+                $this->Data['ScatterSeries'][$ID]['Ticks'] = $Width;
+        }
+
+        function setScatterSerieWeight($ID, $Weight = 0)
+        {
+            if(isset($this->Data['ScatterSeries'][$ID]))
+                $this->Data['ScatterSeries'][$ID]['Weight'] = $Weight;
+        }
+
+        function setScatterSerieColor($ID, $Format)
+        {
+            $R = isset($Format['R']) ? $Format['R'] : 0;
+            $G = isset($Format['G']) ? $Format['G'] : 0;
+            $B = isset($Format['B']) ? $Format['B'] : 0;
+            $Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
+
+            if(isset($this->Data['ScatterSeries'][$ID]))
+            {
+                $this->Data['ScatterSeries'][$ID]['Color']['R'] = $R;
+                $this->Data['ScatterSeries'][$ID]['Color']['G'] = $G;
+                $this->Data['ScatterSeries'][$ID]['Color']['B'] = $B;
+                $this->Data['ScatterSeries'][$ID]['Color']['Alpha'] = $Alpha;
+            }
+        }
+
+        function limits()
+        {
+            $GlobalMin = ABSOLUTE_MAX;
+            $GlobalMax = ABSOLUTE_MIN;
+
+            foreach($this->Data['Series'] as $Key => $Value)
+            {
+                if($this->Data['Abscissa'] != $Key && $this->Data['Series'][$Key]['isDrawable'] == TRUE)
+                {
+                    if($GlobalMin > $this->Data['Series'][$Key]['Min'])
+                        $GlobalMin = $this->Data['Series'][$Key]['Min'];
+
+                    if($GlobalMax < $this->Data['Series'][$Key]['Max'])
+                        $GlobalMax = $this->Data['Series'][$Key]['Max'];
+                }
+            }
+
+            $this->Data['Min'] = $GlobalMin;
+            $this->Data['Max'] = $GlobalMax;
+
+            return(array($GlobalMin,$GlobalMax));
+        }
+
+        function drawAll()
+        {
+            foreach($this->Data['Series'] as $Key => $Value)
+            {
+                if($this->Data['Abscissa'] != $Key)
+                    $this->Data['Series'][$Key]['isDrawable'] = TRUE;
+            }    
+        }
+
+        function getSerieAverage($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+            {
+                $SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
+
+                return(array_sum($SerieData)/sizeof($SerieData));
+            }
+
+            return(NULL);
+        }
+
+        function getGeometricMean($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+            {
+                $SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
+                $Seriesum = 1;
+
+                foreach($SerieData as $Key => $Value)
+                    $Seriesum = $Seriesum * $Value;
+
+                return(pow($Seriesum,1/sizeof($SerieData)));
+            }
+
+            return(NULL);
+        }
+
+        function getHarmonicMean($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+            {
+                $SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
+                $Seriesum = 0;
+
+                foreach($SerieData as $Key => $Value)
+                    $Seriesum = $Seriesum + 1/$Value;
+
+                return(sizeof($SerieData)/$Seriesum);
+            }
+
+            return(NULL);
+        }
+
+        function getStandardDeviation($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+            {
+                $Average = $this->getSerieAverage($Serie);
+                $SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
+
+                $DeviationSum = 0;
+
+                foreach($SerieData as $Key => $Value)
+                    $DeviationSum = $DeviationSum + ($Value-$Average)*($Value-$Average);
+
+                $Deviation = sqrt($DeviationSum/count($SerieData));
+
+                return($Deviation);
+            }
+
+            return(NULL);
+        }
+
+        function getCoefficientOfVariation($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+            {
+                $Average = $this->getSerieAverage($Serie);
+                $StandardDeviation = $this->getStandardDeviation($Serie);
+
+                if($StandardDeviation != 0)
+                    return($StandardDeviation/$Average);
+            }
+
+            return(NULL);
+        }
+
+        function getSerieMedian($Serie)
+        {
+            if(isset($this->Data['Series'][$Serie]))
+            {
+                $SerieData = $this->stripVOID($this->Data['Series'][$Serie]['Data']);
+
+                sort($SerieData);
+
+                $SerieCenter = floor(sizeof($SerieData)/2);
+
+                if(isset($SerieData[$SerieCenter]))
+                    return($SerieData[$SerieCenter]);
+            }
+
+            return(NULL);
+        }
+
+        function getSeriePercentile($Serie = 'Serie1', $Percentil = 95)
+        {
+            if(!isset($this->Data['Series'][$Serie]['Data']))
+                return(NULL);
+
+            $Values = count($this->Data['Series'][$Serie]['Data'])-1;
+
+            if($Values < 0)
+                $Values = 0;
+
+            $PercentilID = floor(($Values/100)*$Percentil+.5);
+            $SortedValues = $this->Data['Series'][$Serie]['Data'];
+
+            sort($SortedValues);
+
+            if(is_numeric($SortedValues[$PercentilID]))
+                return($SortedValues[$PercentilID]);
+
+            return(NULL);
+        }
+
+        function addRandomValues($SerieName = 'Serie1', $Options = '')
+        {
+            $Values = isset($Options['Values']) ? $Options['Values'] : 20;
+            $Min = isset($Options['Min']) ? $Options['Min'] : 0;
+            $Max = isset($Options['Max']) ? $Options['Max'] : 100;
+            $withFloat = isset($Options['withFloat']) ? $Options['withFloat'] : FALSE;
+
+            for($i = 0; $i <= $Values; $i+=1)
+            {
+                if($withFloat)
+                    $Value = rand($Min*100,$Max*100)/100;
+                else
+                    $Value = rand($Min, $Max);
+
+                $this->addPoints($Value,$SerieName);
+            }
+        }
+
+        function containsData()
+        {
+            if(!isset($this->Data['Series']))
+                return(FALSE);
+
+            $Result = FALSE;
+
+            foreach($this->Data['Series'] as $Key => $Value)
+            {
+                if($this->Data['Abscissa'] != $Key && $this->Data['Series'][$Key]['isDrawable'] == TRUE)
+                    $Result=TRUE;
+            }
+
+            return($Result);
+        }
+
+        function setAxisDisplay($AxisID, $Mode = AXIS_FORMAT_DEFAULT, $Format = NULL)
+        {
+            if(isset($this->Data['Axis'][$AxisID]))
+            {
+                $this->Data['Axis'][$AxisID]['Display'] = $Mode;
+
+                if($Format != NULL)
+                    $this->Data['Axis'][$AxisID]['Format'] = $Format;
+            }
+        }
+
+        function setAxisPosition($AxisID, $Position = AXIS_POSITION_LEFT)
+        {
+            if(isset($this->Data['Axis'][$AxisID]))
+            {
+                $this->Data['Axis'][$AxisID]['Position'] = $Position;
+            }
+        }
 
    /* Associate an unit to an axis */
    function setAxisUnit($AxisID,$Unit)
@@ -525,9 +525,9 @@
    /* Associate a color to an axis */
    function setAxisColor($AxisID,$Format)
     {
-     $R	    = isset($Format['R']) ? $Format['R'] : 0;
-     $G	    = isset($Format['G']) ? $Format['G'] : 0;
-     $B	    = isset($Format['B']) ? $Format['B'] : 0;
+     $R        = isset($Format['R']) ? $Format['R'] : 0;
+     $G        = isset($Format['G']) ? $Format['G'] : 0;
+     $B        = isset($Format['B']) ? $Format['B'] : 0;
      $Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
 
      if ( isset($this->Data['Axis'][$AxisID] ) )
@@ -565,14 +565,14 @@
       }
     }
 
-   /*	define if a serie should be draw with ticks */
+   /*    define if a serie should be draw with ticks */
    function setSerieTicks($Series,$Width=0)
     {
      if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
      foreach($Series as $Key => $Serie) { if ( isset($this->Data['Series'][$Serie]) ) { $this->Data['Series'][$Serie]['Ticks'] = $Width; } }
     }
 
-   /*	define if a serie should be draw with a special weight */
+   /*    define if a serie should be draw with a special weight */
    function setSerieWeight($Series,$Weight=0)
     {
      if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
@@ -600,9 +600,9 @@
 
      foreach($Series as $Key => $Serie)
       {
-       $R	    = isset($Format['R']) ? $Format['R'] : 0;
-       $G	    = isset($Format['G']) ? $Format['G'] : 0;
-       $B	    = isset($Format['B']) ? $Format['B'] : 0;
+       $R        = isset($Format['R']) ? $Format['R'] : 0;
+       $G        = isset($Format['G']) ? $Format['G'] : 0;
+       $B        = isset($Format['B']) ? $Format['B'] : 0;
        $Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
 
        if ( isset($this->Data['Series'][$Serie]) )
@@ -660,11 +660,11 @@
     {
      if ( isset($this->Data['ScatterSeries'][$ID]) ) { return(0); }
 
-     $this->Data['ScatterSeries'][$ID]['Description']	= 'Scatter '.$ID;
-     $this->Data['ScatterSeries'][$ID]['isDrawable']	= TRUE;
-     $this->Data['ScatterSeries'][$ID]['Picture']	= NULL;
-     $this->Data['ScatterSeries'][$ID]['Ticks']		= 0;
-     $this->Data['ScatterSeries'][$ID]['Weight']	= 0;
+     $this->Data['ScatterSeries'][$ID]['Description']    = 'Scatter '.$ID;
+     $this->Data['ScatterSeries'][$ID]['isDrawable']    = TRUE;
+     $this->Data['ScatterSeries'][$ID]['Picture']    = NULL;
+     $this->Data['ScatterSeries'][$ID]['Ticks']        = 0;
+     $this->Data['ScatterSeries'][$ID]['Weight']    = 0;
 
      if ( isset($this->Palette[$ID]) )
       $this->Data['ScatterSeries'][$ID]['Color'] = $this->Palette[$ID];
@@ -682,15 +682,15 @@
     {
      if ( isset($this->Data['Series']) ) { $ID = count($this->Data['Series']); } else { $ID = 0; }
 
-     $this->Data['Series'][$Serie]['Description']	= $Serie;
-     $this->Data['Series'][$Serie]['isDrawable']	= TRUE;
-     $this->Data['Series'][$Serie]['Picture']		= NULL;
-     $this->Data['Series'][$Serie]['Max']		= NULL;
-     $this->Data['Series'][$Serie]['Min']		= NULL;
-     $this->Data['Series'][$Serie]['Axis']		= 0;
-     $this->Data['Series'][$Serie]['Ticks']		= 0;
-     $this->Data['Series'][$Serie]['Weight']		= 0;
-     $this->Data['Series'][$Serie]['Shape']		= SERIE_SHAPE_FILLEDCIRCLE;
+     $this->Data['Series'][$Serie]['Description']    = $Serie;
+     $this->Data['Series'][$Serie]['isDrawable']    = TRUE;
+     $this->Data['Series'][$Serie]['Picture']        = NULL;
+     $this->Data['Series'][$Serie]['Max']        = NULL;
+     $this->Data['Series'][$Serie]['Min']        = NULL;
+     $this->Data['Series'][$Serie]['Axis']        = 0;
+     $this->Data['Series'][$Serie]['Ticks']        = 0;
+     $this->Data['Series'][$Serie]['Weight']        = 0;
+     $this->Data['Series'][$Serie]['Shape']        = SERIE_SHAPE_FILLEDCIRCLE;
 
      if ( isset($this->Palette[$ID]) )
       $this->Data['Series'][$Serie]['Color'] = $this->Palette[$ID];
@@ -762,10 +762,10 @@
    /* Load data from a CSV (or similar) data source */
    function importFromCSV($FileName,$Options='')
     {
-     $Delimiter		= isset($Options['Delimiter']) ? $Options['Delimiter'] : ',';
-     $GotHeader		= isset($Options['GotHeader']) ? $Options['GotHeader'] : FALSE;
-     $SkipColumns	= isset($Options['SkipColumns']) ? $Options['SkipColumns'] : array(-1);
-     $DefaultSerieName	= isset($Options['DefaultSerieName']) ? $Options['DefaultSerieName'] : 'Serie';
+     $Delimiter        = isset($Options['Delimiter']) ? $Options['Delimiter'] : ',';
+     $GotHeader        = isset($Options['GotHeader']) ? $Options['GotHeader'] : FALSE;
+     $SkipColumns    = isset($Options['SkipColumns']) ? $Options['SkipColumns'] : array(-1);
+     $DefaultSerieName    = isset($Options['DefaultSerieName']) ? $Options['DefaultSerieName'] : 'Serie';
 
      $Handle = @fopen($FileName,'r');
      if ($Handle)
@@ -799,12 +799,12 @@
    /* Create a dataset based on a formula */
    function createFunctionSerie($SerieName,$Formula='',$Options='')
     {
-     $MinX		= isset($Options['MinX']) ? $Options['MinX'] : -10;
-     $MaxX		= isset($Options['MaxX']) ? $Options['MaxX'] : 10;
-     $XStep		= isset($Options['XStep']) ? $Options['XStep'] : 1;
-     $AutoDescription	= isset($Options['AutoDescription']) ? $Options['AutoDescription'] : FALSE;
-     $RecordAbscissa	= isset($Options['RecordAbscissa']) ? $Options['RecordAbscissa'] : FALSE;
-     $AbscissaSerie	= isset($Options['AbscissaSerie']) ? $Options['AbscissaSerie'] : 'Abscissa';
+     $MinX        = isset($Options['MinX']) ? $Options['MinX'] : -10;
+     $MaxX        = isset($Options['MaxX']) ? $Options['MaxX'] : 10;
+     $XStep        = isset($Options['XStep']) ? $Options['XStep'] : 1;
+     $AutoDescription    = isset($Options['AutoDescription']) ? $Options['AutoDescription'] : FALSE;
+     $RecordAbscissa    = isset($Options['RecordAbscissa']) ? $Options['RecordAbscissa'] : FALSE;
+     $AbscissaSerie    = isset($Options['AbscissaSerie']) ? $Options['AbscissaSerie'] : 'Abscissa';
 
      if ( $Formula == '' ) { return(0); }
 
@@ -868,8 +868,8 @@
    function __toString()
     { return('pData object.'); }
 
-   function left($value,$NbChar)	{ return substr($value,0,$NbChar); }  
-   function right($value,$NbChar)	{ return substr($value,strlen($value)-$NbChar,$NbChar); }  
-   function mid($value,$Depart,$NbChar)	{ return substr($value,$Depart-1,$NbChar); }  
+   function left($value,$NbChar)    { return substr($value,0,$NbChar); }  
+   function right($value,$NbChar)    { return substr($value,strlen($value)-$NbChar,$NbChar); }  
+   function mid($value,$Depart,$NbChar)    { return substr($value,$Depart-1,$NbChar); }  
   }
 ?>

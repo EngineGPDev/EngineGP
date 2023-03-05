@@ -1,6 +1,6 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+    if(!DEFINED('EGP'))
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
     class smtp
     {
@@ -30,7 +30,7 @@
             $contentMail .= $headers."\r\n";
             $contentMail .= $message."\r\n";
 
-			try
+            try
             {
                 if(!$socket = @fsockopen($this->smtp_host, $this->smtp_port, $errorNumber, $errorDescription, 30))
                     throw new Exception($errorNumber.'.'.$errorDescription);

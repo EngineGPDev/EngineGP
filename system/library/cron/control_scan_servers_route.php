@@ -1,104 +1,104 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+    if(!DEFINED('EGP'))
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-	class control_scan_servers_route extends cron
-	{
-		function __construct()
-		{
-			global $cfg, $sql, $argv, $start_point;
+    class control_scan_servers_route extends cron
+    {
+        function __construct()
+        {
+            global $cfg, $sql, $argv, $start_point;
 
-			$servers = $argv;
+            $servers = $argv;
 
-			unset($servers[0], $servers[1], $servers[2]);
+            unset($servers[0], $servers[1], $servers[2]);
 
-			$sql->query('SELECT `address` FROM `control` WHERE `id`="'.$servers[4].'" LIMIT 1');
-			if(!$sql->num())
-				return NULL;
+            $sql->query('SELECT `address` FROM `control` WHERE `id`="'.$servers[4].'" LIMIT 1');
+            if(!$sql->num())
+                return NULL;
 
-			$unit = $sql->get();
+            $unit = $sql->get();
 
-			$game = $servers[3];
+            $game = $servers[3];
 
-			unset($servers[3], $servers[4]);
+            unset($servers[3], $servers[4]);
 
-			$sql->query('SELECT `unit` FROM `control_servers` WHERE `id`="'.$servers[5].'" LIMIT 1');
-			$server = $sql->get();
+            $sql->query('SELECT `unit` FROM `control_servers` WHERE `id`="'.$servers[5].'" LIMIT 1');
+            $server = $sql->get();
 
-			$sql->query('SELECT `address`, `passwd`, `fcpu` FROM `control` WHERE `id`="'.$server['unit'].'" LIMIT 1');
-			$unit = $sql->get();
+            $sql->query('SELECT `address`, `passwd`, `fcpu` FROM `control` WHERE `id`="'.$server['unit'].'" LIMIT 1');
+            $unit = $sql->get();
 
-			include(LIB.'ssh.php');
+            include(LIB.'ssh.php');
 
-			// Проверка ssh соедниения пу с локацией
-			if(!$ssh->auth($unit['passwd'], $unit['address']))
-				return NULL;
+            // Проверка ssh соедниения пу с локацией
+            if(!$ssh->auth($unit['passwd'], $unit['address']))
+                return NULL;
 
-			$first = $ssh->get('cat /proc/stat');
+            $first = $ssh->get('cat /proc/stat');
 
-			sleep(1);
+            sleep(1);
 
-			$aCpu = sys::cpu_idle(array($first, $ssh->get('cat /proc/stat')), $unit['fcpu'], true);
+            $aCpu = sys::cpu_idle(array($first, $ssh->get('cat /proc/stat')), $unit['fcpu'], true);
 
-			array_shift($aCpu);
+            array_shift($aCpu);
 
-			$idle = array();
-			$uses = array();
+            $idle = array();
+            $uses = array();
 
-			foreach($aCpu as $cpu => $data)
-			{
-				$core = sys::int($cpu)+1;
+            foreach($aCpu as $cpu => $data)
+            {
+                $core = sys::int($cpu)+1;
 
-				$sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="'.$server['unit'].'" AND `core_fix`="'.$core.'" AND `core_fix`="1" LIMIT 1');
-				if($sql->num())
-				{
-					unset($aCpu[$cpu]);
+                $sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="'.$server['unit'].'" AND `core_fix`="'.$core.'" AND `core_fix`="1" LIMIT 1');
+                if($sql->num())
+                {
+                    unset($aCpu[$cpu]);
 
-					continue;
-				}
+                    continue;
+                }
 
-				if($data['idle'] > 50)
-					$idle[$core] = $data['idle'];
-				else
-					$uses[$core] = 100-$data['idle'];
-			}
+                if($data['idle'] > 50)
+                    $idle[$core] = $data['idle'];
+                else
+                    $uses[$core] = 100-$data['idle'];
+            }
 
-			if(!count($idle))
-				return NULL;
+            if(!count($idle))
+                return NULL;
 
-			foreach($uses as $use_core => $use)
-			{
-				if(!count($idle))
-					break;
+            foreach($uses as $use_core => $use)
+            {
+                if(!count($idle))
+                    break;
 
-				$sql->query('SELECT `id`, `uid` FROM `control_servers` WHERE `unit`="'.$server['unit'].'" AND `game`="'.$game.'" AND `core_use`="'.$use_core.'" AND `status`="working" AND `core_fix`="0" ORDER BY `slots_start` DESC, `online` DESC LIMIT 3');
-				if($sql->num() > 1)
-				{
-					$server = $sql->get();
+                $sql->query('SELECT `id`, `uid` FROM `control_servers` WHERE `unit`="'.$server['unit'].'" AND `game`="'.$game.'" AND `core_use`="'.$use_core.'" AND `status`="working" AND `core_fix`="0" ORDER BY `slots_start` DESC, `online` DESC LIMIT 3');
+                if($sql->num() > 1)
+                {
+                    $server = $sql->get();
 
-					$core = array_search(max($idle), $idle);
+                    $core = array_search(max($idle), $idle);
 
-					$aPid = explode("\n", $ssh->get('ps aux | grep -v grep | grep '.$server['uid'].' | awk \'{print $2}\''));
+                    $aPid = explode("\n", $ssh->get('ps aux | grep -v grep | grep '.$server['uid'].' | awk \'{print $2}\''));
 
-					if(count($aPid) < 2)
-						continue;
+                    if(count($aPid) < 2)
+                        continue;
 
-					array_pop($aPid);
+                    array_pop($aPid);
 
-					$taskset = '';
+                    $taskset = '';
 
-					foreach($aPid as $pid)
-						$taskset .= 'taskset -cp '.($core-1).' '.$pid.';';
+                    foreach($aPid as $pid)
+                        $taskset .= 'taskset -cp '.($core-1).' '.$pid.';';
 
-					$ssh->set($taskset);
+                    $ssh->set($taskset);
 
-					unset($idle[$core]);
+                    unset($idle[$core]);
 
-					$sql->query('UPDATE `control_servers` set `core_use`="'.$core.'" WHERE `id`="'.$server['id'].'" LIMIT 1');
-				}
-			}
+                    $sql->query('UPDATE `control_servers` set `core_use`="'.$core.'" WHERE `id`="'.$server['id'].'" LIMIT 1');
+                }
+            }
 
-			return NULL;
-		}
-	}
+            return NULL;
+        }
+    }
 ?>

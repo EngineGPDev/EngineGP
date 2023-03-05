@@ -22,14 +22,14 @@ see the file license.txt that was included with the plugin bundle.
     gradient.src = imgdata;
 
     /** Percentage loader
-     * @param	params	Specify options in {}. May be on of width, height, progress or value.
+     * @param    params    Specify options in {}. May be on of width, height, progress or value.
      *
      * @example $("#myloader-container).percentageLoader({
-		    width : 256,  // width in pixels
-		    height : 256, // height in pixels
-		    progress: 0,  // initialise progress bar position, within the range [0..1]
-		    value: '0kb'  // initialise text label to this value
-		});
+            width : 256,  // width in pixels
+            height : 256, // height in pixels
+            progress: 0,  // initialise progress bar position, within the range [0..1]
+            value: '0kb'  // initialise text label to this value
+        });
      */
     $.fn.percentageLoader = function (params) {
         var settings, canvas, percentageText, valueText, items, i, item, selectors, s, ctx, progress,

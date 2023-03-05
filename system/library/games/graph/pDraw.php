@@ -1,73 +1,73 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+    if(!DEFINED('EGP'))
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-	define('DIRECTION_VERTICAL', 690001);
-	define('DIRECTION_HORIZONTAL', 690002);
-	define('SCALE_POS_LEFTRIGHT', 690101);
-	define('SCALE_POS_TOPBOTTOM', 690102);
-	define('SCALE_MODE_FLOATING', 690201);
-	define('SCALE_MODE_START0', 690202);
-	define('SCALE_MODE_ADDALL', 690203);
-	define('SCALE_MODE_ADDALL_START0', 690204);
-	define('SCALE_MODE_MANUAL', 690205);
-	define('SCALE_SKIP_NONE', 690301);
-	define('SCALE_SKIP_SAME', 690302);
-	define('SCALE_SKIP_NUMBERS', 690303);
-	define('TEXT_ALIGN_TOPLEFT', 690401);
-	define('TEXT_ALIGN_TOPMIDDLE', 690402);
-	define('TEXT_ALIGN_TOPRIGHT', 690403);
-	define('TEXT_ALIGN_MIDDLELEFT', 690404);
-	define('TEXT_ALIGN_MIDDLEMIDDLE', 690405);
-	define('TEXT_ALIGN_MIDDLERIGHT', 690406);
-	define('TEXT_ALIGN_BOTTOMLEFT', 690407);
-	define('TEXT_ALIGN_BOTTOMMIDDLE', 690408);
-	define('TEXT_ALIGN_BOTTOMRIGHT', 690409);
-	define('POSITION_TOP', 690501);
-	define('POSITION_BOTTOM', 690502);
-	define('LABEL_POS_LEFT', 690601);
-	define('LABEL_POS_CENTER', 690602);
-	define('LABEL_POS_RIGHT', 690603);
-	define('LABEL_POS_TOP', 690604);
-	define('LABEL_POS_BOTTOM', 690605);
-	define('LABEL_POS_INSIDE', 690606);
-	define('LABEL_POS_OUTSIDE', 690607);
-	define('ORIENTATION_HORIZONTAL', 690701);
-	define('ORIENTATION_VERTICAL', 690702);
-	define('ORIENTATION_AUTO', 690703);
-	define('LEGEND_NOBORDER', 690800);
-	define('LEGEND_BOX', 690801);
-	define('LEGEND_ROUND', 690802);
-	define('LEGEND_VERTICAL', 690901);
-	define('LEGEND_HORIZONTAL', 690902);
-	define('LEGEND_FAMILY_BOX', 691051);
-	define('LEGEND_FAMILY_CIRCLE', 691052);
-	define('LEGEND_FAMILY_LINE', 691053);
-	define('DISPLAY_AUTO', 691001);
-	define('DISPLAY_MANUAL', 691002);
-	define('LABELING_ALL', 691011);
-	define('LABELING_DIFFERENT', 691012);
-	define('BOUND_MIN', 691021);
-	define('BOUND_MAX', 691022);
-	define('BOUND_BOTH', 691023);
-	define('BOUND_LABEL_POS_TOP', 691031);
-	define('BOUND_LABEL_POS_BOTTOM', 691032);
-	define('BOUND_LABEL_POS_AUTO', 691033);
-	define('CAPTION_LEFT_TOP', 691041);
-	define('CAPTION_RIGHT_BOTTOM', 691042);
-	define('GRADIENT_SIMPLE', 691051);
-	define('GRADIENT_EFFECT_CAN', 691052);
-	define('LABEL_TITLE_NOBACKGROUND', 691061);
-	define('LABEL_TITLE_BACKGROUND', 691062);
-	define('LABEL_POINT_NONE', 691071);
-	define('LABEL_POINT_CIRCLE', 691072);
-	define('LABEL_POINT_BOX', 691073);
-	define('ZONE_NAME_ANGLE_AUTO', 691081);
-	define('PI', 3.14159265);
-	define('ALL', 69);
-	define('NONE', 31);
-	define('AUTO', 690000);
-	define('OUT_OF_SIGHT', -10000000000000);
+    define('DIRECTION_VERTICAL', 690001);
+    define('DIRECTION_HORIZONTAL', 690002);
+    define('SCALE_POS_LEFTRIGHT', 690101);
+    define('SCALE_POS_TOPBOTTOM', 690102);
+    define('SCALE_MODE_FLOATING', 690201);
+    define('SCALE_MODE_START0', 690202);
+    define('SCALE_MODE_ADDALL', 690203);
+    define('SCALE_MODE_ADDALL_START0', 690204);
+    define('SCALE_MODE_MANUAL', 690205);
+    define('SCALE_SKIP_NONE', 690301);
+    define('SCALE_SKIP_SAME', 690302);
+    define('SCALE_SKIP_NUMBERS', 690303);
+    define('TEXT_ALIGN_TOPLEFT', 690401);
+    define('TEXT_ALIGN_TOPMIDDLE', 690402);
+    define('TEXT_ALIGN_TOPRIGHT', 690403);
+    define('TEXT_ALIGN_MIDDLELEFT', 690404);
+    define('TEXT_ALIGN_MIDDLEMIDDLE', 690405);
+    define('TEXT_ALIGN_MIDDLERIGHT', 690406);
+    define('TEXT_ALIGN_BOTTOMLEFT', 690407);
+    define('TEXT_ALIGN_BOTTOMMIDDLE', 690408);
+    define('TEXT_ALIGN_BOTTOMRIGHT', 690409);
+    define('POSITION_TOP', 690501);
+    define('POSITION_BOTTOM', 690502);
+    define('LABEL_POS_LEFT', 690601);
+    define('LABEL_POS_CENTER', 690602);
+    define('LABEL_POS_RIGHT', 690603);
+    define('LABEL_POS_TOP', 690604);
+    define('LABEL_POS_BOTTOM', 690605);
+    define('LABEL_POS_INSIDE', 690606);
+    define('LABEL_POS_OUTSIDE', 690607);
+    define('ORIENTATION_HORIZONTAL', 690701);
+    define('ORIENTATION_VERTICAL', 690702);
+    define('ORIENTATION_AUTO', 690703);
+    define('LEGEND_NOBORDER', 690800);
+    define('LEGEND_BOX', 690801);
+    define('LEGEND_ROUND', 690802);
+    define('LEGEND_VERTICAL', 690901);
+    define('LEGEND_HORIZONTAL', 690902);
+    define('LEGEND_FAMILY_BOX', 691051);
+    define('LEGEND_FAMILY_CIRCLE', 691052);
+    define('LEGEND_FAMILY_LINE', 691053);
+    define('DISPLAY_AUTO', 691001);
+    define('DISPLAY_MANUAL', 691002);
+    define('LABELING_ALL', 691011);
+    define('LABELING_DIFFERENT', 691012);
+    define('BOUND_MIN', 691021);
+    define('BOUND_MAX', 691022);
+    define('BOUND_BOTH', 691023);
+    define('BOUND_LABEL_POS_TOP', 691031);
+    define('BOUND_LABEL_POS_BOTTOM', 691032);
+    define('BOUND_LABEL_POS_AUTO', 691033);
+    define('CAPTION_LEFT_TOP', 691041);
+    define('CAPTION_RIGHT_BOTTOM', 691042);
+    define('GRADIENT_SIMPLE', 691051);
+    define('GRADIENT_EFFECT_CAN', 691052);
+    define('LABEL_TITLE_NOBACKGROUND', 691061);
+    define('LABEL_TITLE_BACKGROUND', 691062);
+    define('LABEL_POINT_NONE', 691071);
+    define('LABEL_POINT_CIRCLE', 691072);
+    define('LABEL_POINT_BOX', 691073);
+    define('ZONE_NAME_ANGLE_AUTO', 691081);
+    define('PI', 3.14159265);
+    define('ALL', 69);
+    define('NONE', 31);
+    define('AUTO', 690000);
+    define('OUT_OF_SIGHT', -10000000000000);
 
  class pDraw
   {
@@ -95,21 +95,21 @@
    /* Draw a polygon */
    function drawPolygon($Points,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 0;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $NoFill		= isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
-     $NoBorder		= isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
-     $BorderAlpha 	= isset($Format["Alpha"]) ? $Format["Alpha"] : $Alpha / 2;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-     $SkipX		= isset($Format["SkipX"]) ? $Format["SkipX"] : OUT_OF_SIGHT;
-     $SkipY		= isset($Format["SkipY"]) ? $Format["SkipY"] : OUT_OF_SIGHT;
+     $R            = isset($Format["R"]) ? $Format["R"] : 0;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $NoFill        = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
+     $NoBorder        = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
+     $BorderAlpha     = isset($Format["Alpha"]) ? $Format["Alpha"] : $Alpha / 2;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $SkipX        = isset($Format["SkipX"]) ? $Format["SkipX"] : OUT_OF_SIGHT;
+     $SkipY        = isset($Format["SkipY"]) ? $Format["SkipY"] : OUT_OF_SIGHT;
 
-     /* Calling the ImageFilledPolygon() function over the $Points array will round it */ 	
+     /* Calling the ImageFilledPolygon() function over the $Points array will round it */     
      $Backup = $Points;
 
      if ( $Surrounding != NULL ) { $BorderR = $R+$Surrounding; $BorderG = $G+$Surrounding; $BorderB = $B+$Surrounding; }
@@ -185,9 +185,9 @@
    /* Draw a rectangle with rounded corners */
    function drawRoundedRectangle($X1,$Y1,$X2,$Y2,$Radius,$Format="")
     {
-     $R	    = isset($Format["R"]) ? $Format["R"] : 0;
-     $G	    = isset($Format["G"]) ? $Format["G"] : 0;
-     $B	    = isset($Format["B"]) ? $Format["B"] : 0;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
      $Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
 
      list($X1,$Y1,$X2,$Y2) = $this->fixBoxCoordinates($X1,$Y1,$X2,$Y2);
@@ -239,14 +239,14 @@
    /* Draw a rectangle with rounded corners */
    function drawRoundedFilledRectangle($X1,$Y1,$X2,$Y2,$Radius,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 0;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $R            = isset($Format["R"]) ? $Format["R"] : 0;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 
      /* Temporary fix for AA issue */
      $Y1 = floor($Y1); $Y2 = floor($Y2); $X1 = floor($X1); $X2 = floor($X2);
@@ -324,14 +324,14 @@
    /* Draw a rectangle with rounded corners */
    function drawRoundedFilledRectangle_deprecated($X1,$Y1,$X2,$Y2,$Radius,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 0;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $R            = isset($Format["R"]) ? $Format["R"] : 0;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 
      if ( $Surrounding != NULL ) { $BorderR = $R+$Surrounding; $BorderG = $G+$Surrounding; $BorderB = $B+$Surrounding; }
      if ( $BorderR == -1 ) { $BorderR = $R; $BorderG = $G; $BorderB = $B; }
@@ -403,12 +403,12 @@
    /* Draw a rectangle */
    function drawRectangle($X1,$Y1,$X2,$Y2,$Format="")
     {
-     $R		= isset($Format["R"]) ? $Format["R"] : 0;
-     $G		= isset($Format["G"]) ? $Format["G"] : 0;
-     $B		= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Ticks	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-     $NoAngle	= isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Ticks    = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $NoAngle    = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 
      if ($X1 > $X2) { list($X1, $X2) = array($X2, $X1); }
      if ($Y1 > $Y2) { list($Y1, $Y2) = array($Y2, $Y1); }
@@ -440,23 +440,23 @@
    /* Draw a filled rectangle */
    function drawFilledRectangle($X1,$Y1,$X2,$Y2,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 0;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
-     $BorderAlpha	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-     $Ticks		= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-     $NoAngle		= isset($Format["NoAngle"]) ? $Format["NoAngle"] : NULL;
-     $Dash		= isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
-     $DashStep		= isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
-     $DashR		= isset($Format["DashR"]) ? $Format["DashR"] : 0;
-     $DashG		= isset($Format["DashG"]) ? $Format["DashG"] : 0;
-     $DashB		= isset($Format["DashB"]) ? $Format["DashB"] : 0;
-     $NoBorder		= isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
+     $R            = isset($Format["R"]) ? $Format["R"] : 0;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $BorderAlpha    = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $Ticks        = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $NoAngle        = isset($Format["NoAngle"]) ? $Format["NoAngle"] : NULL;
+     $Dash        = isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
+     $DashStep        = isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
+     $DashR        = isset($Format["DashR"]) ? $Format["DashR"] : 0;
+     $DashG        = isset($Format["DashG"]) ? $Format["DashG"] : 0;
+     $DashB        = isset($Format["DashB"]) ? $Format["DashB"] : 0;
+     $NoBorder        = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
 
      if ( $Surrounding != NULL ) { $BorderR = $R+$Surrounding; $BorderG = $G+$Surrounding; $BorderB = $B+$Surrounding; }
 
@@ -544,16 +544,16 @@
    /* Drawn a spline based on the bezier function */
    function drawSpline($Coordinates,$Format="")
     {
-     $R		= isset($Format["R"]) ? $Format["R"] : 0;
-     $G		= isset($Format["G"]) ? $Format["G"] : 0;
-     $B		= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Force	= isset($Format["Force"]) ? $Format["Force"] : 30;
-     $Forces	= isset($Format["Forces"]) ? $Format["Forces"] : NULL;
-     $ShowC	= isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
-     $Ticks	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-     $PathOnly	= isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;
-     $Weight	= isset($Format["Weight"]) ? $Format["Weight"] : NULL;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Force    = isset($Format["Force"]) ? $Format["Force"] : 30;
+     $Forces    = isset($Format["Forces"]) ? $Format["Forces"] : NULL;
+     $ShowC    = isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
+     $Ticks    = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $PathOnly    = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;
+     $Weight    = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
 
      $Cpt = NULL; $Mode = NULL; $Result = "";
      for($i=1;$i<=count($Coordinates)-1;$i++)
@@ -603,20 +603,20 @@
    /* Draw a bezier curve with two controls points */
    function drawBezier($X1,$Y1,$X2,$Y2,$Xv1,$Yv1,$Xv2,$Yv2,$Format="")
     {
-     $R		= isset($Format["R"]) ? $Format["R"] : 0;
-     $G		= isset($Format["G"]) ? $Format["G"] : 0;
-     $B		= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $ShowC	= isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
-     $Segments	= isset($Format["Segments"]) ? $Format["Segments"] : NULL;
-     $Ticks	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $ShowC    = isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
+     $Segments    = isset($Format["Segments"]) ? $Format["Segments"] : NULL;
+     $Ticks    = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
      $NoDraw    = isset($Format["NoDraw"]) ? $Format["NoDraw"] : FALSE;
      $PathOnly  = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;
      $Weight    = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-     $DrawArrow		= isset($Format["DrawArrow"]) ? $Format["DrawArrow"] : FALSE;
-     $ArrowSize		= isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 10;
-     $ArrowRatio	= isset($Format["ArrowRatio"]) ? $Format["ArrowRatio"] : .5;
-     $ArrowTwoHeads	= isset($Format["ArrowTwoHeads"]) ? $Format["ArrowTwoHeads"] : FALSE;
+     $DrawArrow        = isset($Format["DrawArrow"]) ? $Format["DrawArrow"] : FALSE;
+     $ArrowSize        = isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 10;
+     $ArrowRatio    = isset($Format["ArrowRatio"]) ? $Format["ArrowRatio"] : .5;
+     $ArrowTwoHeads    = isset($Format["ArrowTwoHeads"]) ? $Format["ArrowTwoHeads"] : FALSE;
 
      if ( $Segments == NULL )
       {
@@ -707,15 +707,15 @@
    /* Draw a line between two points */
    function drawLine($X1,$Y1,$X2,$Y2,$Format="")
     {
-     $R		= isset($Format["R"]) ? $Format["R"] : 0;
-     $G		= isset($Format["G"]) ? $Format["G"] : 0;
-     $B		= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Ticks	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-     $Cpt	= isset($Format["Cpt"]) ? $Format["Cpt"] : 1;
-     $Mode	= isset($Format["Mode"]) ? $Format["Mode"] : 1;
-     $Weight	= isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-     $Threshold	= isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Ticks    = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $Cpt    = isset($Format["Cpt"]) ? $Format["Cpt"] : 1;
+     $Mode    = isset($Format["Mode"]) ? $Format["Mode"] : 1;
+     $Weight    = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
+     $Threshold    = isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
 
      if ( $this->Antialias == FALSE && $Ticks == NULL )
       {
@@ -760,7 +760,7 @@
            $Points[] = cos(deg2rad($Angle-90)) * $Weight + $Xa; $Points[] = sin(deg2rad($Angle-90)) * $Weight + $Ya;
            $Points[] = cos(deg2rad($Angle+90)) * $Weight + $Xa; $Points[] = sin(deg2rad($Angle+90)) * $Weight + $Ya;
            $Points[] = cos(deg2rad($Angle+90)) * $Weight + $Xb; $Points[] = sin(deg2rad($Angle+90)) * $Weight + $Yb;
-           $Points[] = cos(deg2rad($Angle-90)) * $Weight + $Xb; $Points[] = sin(deg2rad($Angle-90)) * $Weight 	+ $Yb;
+           $Points[] = cos(deg2rad($Angle-90)) * $Weight + $Xb; $Points[] = sin(deg2rad($Angle-90)) * $Weight     + $Yb;
 
            $this->drawPolygon($Points,$PolySettings);
           }
@@ -814,14 +814,14 @@
    /* Draw a circle */
    function drawCircle($Xc,$Yc,$Height,$Width,$Format="")
     {
-     $R	    = isset($Format["R"]) ? $Format["R"] : 0;
-     $G	    = isset($Format["G"]) ? $Format["G"] : 0;
-     $B	    = isset($Format["B"]) ? $Format["B"] : 0;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
      $Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
      $Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 
-     $Height	= abs($Height);
-     $Width	= abs($Width);
+     $Height    = abs($Height);
+     $Width    = abs($Width);
 
      if ( $Height == 0 ) { $Height = 1; }
      if ( $Width == 0 )  { $Width = 1; }
@@ -866,16 +866,16 @@
    /* Draw a filled circle */
    function drawFilledCircle($X,$Y,$Radius,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 0;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
-     $BorderAlpha	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha;
-     $Ticks     	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-     $Surrounding 	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $R            = isset($Format["R"]) ? $Format["R"] : 0;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $BorderAlpha    = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha;
+     $Ticks         = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $Surrounding     = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 
      if ( $Radius == 0 ) { $Radius = 1; }
      if ( $Surrounding != NULL ) { $BorderR = $R+$Surrounding; $BorderG = $G+$Surrounding; $BorderB = $B+$Surrounding; }
@@ -911,37 +911,37 @@
      if ( $BorderR != -1 )
       $this->drawCircle($X,$Y,$Radius,$Radius,array("R"=>$BorderR,"G"=>$BorderG,"B"=>$BorderB,"Alpha"=>$BorderAlpha,"Ticks"=>$Ticks));
 
-     $this->Shadow	= $RestoreShadow;
+     $this->Shadow    = $RestoreShadow;
     }
 
    /* Write text */
    function drawText($X,$Y,$Text,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : $this->FontColorR;
-     $G			= isset($Format["G"]) ? $Format["G"] : $this->FontColorG;
-     $B			= isset($Format["B"]) ? $Format["B"] : $this->FontColorB;
-     $Angle		= isset($Format["Angle"]) ? $Format["Angle"] : 0;
-     $Align		= isset($Format["Align"]) ? $Format["Align"] : TEXT_ALIGN_BOTTOMLEFT;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : $this->FontColorA;
-     $FontName		= isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
-     $FontSize		= isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
-     $ShowOrigine	= isset($Format["ShowOrigine"]) ? $Format["ShowOrigine"] : FALSE;
-     $TOffset		= isset($Format["TOffset"]) ? $Format["TOffset"] : 2;
-     $DrawBox		= isset($Format["DrawBox"]) ? $Format["DrawBox"] : FALSE;
-     $DrawBoxBorder	= isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : TRUE;
-     $BorderOffset	= isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 6;
-     $BoxRounded	= isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : FALSE;
-     $RoundedRadius	= isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 6;
-     $BoxR		= isset($Format["BoxR"]) ? $Format["BoxR"] : 255;
-     $BoxG		= isset($Format["BoxG"]) ? $Format["BoxG"] : 255;
-     $BoxB		= isset($Format["BoxB"]) ? $Format["BoxB"] : 255;
-     $BoxAlpha		= isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 50;
-     $BoxSurrounding	= isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
-     $BoxBorderR	= isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
-     $BoxBorderG	= isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
-     $BoxBorderB	= isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
-     $BoxBorderAlpha	= isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 50;
-     $NoShadow		= isset($Format["NoShadow"]) ? $Format["NoShadow"] : FALSE;
+     $R            = isset($Format["R"]) ? $Format["R"] : $this->FontColorR;
+     $G            = isset($Format["G"]) ? $Format["G"] : $this->FontColorG;
+     $B            = isset($Format["B"]) ? $Format["B"] : $this->FontColorB;
+     $Angle        = isset($Format["Angle"]) ? $Format["Angle"] : 0;
+     $Align        = isset($Format["Align"]) ? $Format["Align"] : TEXT_ALIGN_BOTTOMLEFT;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : $this->FontColorA;
+     $FontName        = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
+     $FontSize        = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
+     $ShowOrigine    = isset($Format["ShowOrigine"]) ? $Format["ShowOrigine"] : FALSE;
+     $TOffset        = isset($Format["TOffset"]) ? $Format["TOffset"] : 2;
+     $DrawBox        = isset($Format["DrawBox"]) ? $Format["DrawBox"] : FALSE;
+     $DrawBoxBorder    = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : TRUE;
+     $BorderOffset    = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 6;
+     $BoxRounded    = isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : FALSE;
+     $RoundedRadius    = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 6;
+     $BoxR        = isset($Format["BoxR"]) ? $Format["BoxR"] : 255;
+     $BoxG        = isset($Format["BoxG"]) ? $Format["BoxG"] : 255;
+     $BoxB        = isset($Format["BoxB"]) ? $Format["BoxB"] : 255;
+     $BoxAlpha        = isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 50;
+     $BoxSurrounding    = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
+     $BoxBorderR    = isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
+     $BoxBorderG    = isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
+     $BoxBorderB    = isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
+     $BoxBorderAlpha    = isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 50;
+     $NoShadow        = isset($Format["NoShadow"]) ? $Format["NoShadow"] : FALSE;
 
      $Shadow = $this->Shadow;
      if ( $NoShadow ) { $this->Shadow = FALSE; }
@@ -999,14 +999,14 @@
    /* Draw a gradient within a defined area */
    function drawGradientArea($X1,$Y1,$X2,$Y2,$Direction,$Format="")
     {
-     $StartR	= isset($Format["StartR"]) ? $Format["StartR"] : 90;
-     $StartG	= isset($Format["StartG"]) ? $Format["StartG"] : 90;
-     $StartB	= isset($Format["StartB"]) ? $Format["StartB"] : 90;
-     $EndR	= isset($Format["EndR"]) ? $Format["EndR"] : 0;
-     $EndG	= isset($Format["EndG"]) ? $Format["EndG"] : 0;
-     $EndB	= isset($Format["EndB"]) ? $Format["EndB"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Levels	= isset($Format["Levels"]) ? $Format["Levels"] : NULL;
+     $StartR    = isset($Format["StartR"]) ? $Format["StartR"] : 90;
+     $StartG    = isset($Format["StartG"]) ? $Format["StartG"] : 90;
+     $StartB    = isset($Format["StartB"]) ? $Format["StartB"] : 90;
+     $EndR    = isset($Format["EndR"]) ? $Format["EndR"] : 0;
+     $EndG    = isset($Format["EndG"]) ? $Format["EndG"] : 0;
+     $EndB    = isset($Format["EndB"]) ? $Format["EndB"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Levels    = isset($Format["Levels"]) ? $Format["Levels"] : NULL;
 
      $Shadow = $this->Shadow;
      $this->Shadow = FALSE;
@@ -1250,17 +1250,17 @@
    /* Draw an arrow */
    function drawArrow($X1,$Y1,$X2,$Y2,$Format="")
     {
-     $FillR	= isset($Format["FillR"]) ? $Format["FillR"] : 0;
-     $FillG	= isset($Format["FillG"]) ? $Format["FillG"] : 0;
-     $FillB	= isset($Format["FillB"]) ? $Format["FillB"] : 0;
-     $BorderR	= isset($Format["BorderR"]) ? $Format["BorderR"] : $FillR;
-     $BorderG	= isset($Format["BorderG"]) ? $Format["BorderG"] : $FillG;
-     $BorderB	= isset($Format["BorderB"]) ? $Format["BorderB"] : $FillB;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $Size	= isset($Format["Size"]) ? $Format["Size"] : 10;
-     $Ratio	= isset($Format["Ratio"]) ? $Format["Ratio"] : .5;
-     $TwoHeads	= isset($Format["TwoHeads"]) ? $Format["TwoHeads"] : FALSE;
-     $Ticks	= isset($Format["Ticks"]) ? $Format["Ticks"] : FALSE;
+     $FillR    = isset($Format["FillR"]) ? $Format["FillR"] : 0;
+     $FillG    = isset($Format["FillG"]) ? $Format["FillG"] : 0;
+     $FillB    = isset($Format["FillB"]) ? $Format["FillB"] : 0;
+     $BorderR    = isset($Format["BorderR"]) ? $Format["BorderR"] : $FillR;
+     $BorderG    = isset($Format["BorderG"]) ? $Format["BorderG"] : $FillG;
+     $BorderB    = isset($Format["BorderB"]) ? $Format["BorderB"] : $FillB;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $Size    = isset($Format["Size"]) ? $Format["Size"] : 10;
+     $Ratio    = isset($Format["Ratio"]) ? $Format["Ratio"] : .5;
+     $TwoHeads    = isset($Format["TwoHeads"]) ? $Format["TwoHeads"] : FALSE;
+     $Ticks    = isset($Format["Ticks"]) ? $Format["Ticks"] : FALSE;
 
      /* Calculate the line angle */
      $Angle = $this->getAngle($X1,$Y1,$X2,$Y2);
@@ -1277,10 +1277,10 @@
      $TailX = cos(($Angle-180)*PI/180)*$Size+$X2;
      $TailY = sin(($Angle-180)*PI/180)*$Size+$Y2;
 
-     $Points	= "";
+     $Points    = "";
      $Points[]  = $X2; $Points[]  = $Y2;
-     $Points[]	= cos(($Angle-90)*PI/180)*$Size*$Ratio+$TailX; $Points[] = sin(($Angle-90)*PI/180)*$Size*$Ratio+$TailY;
-     $Points[]	= cos(($Angle-270)*PI/180)*$Size*$Ratio+$TailX; $Points[] = sin(($Angle-270)*PI/180)*$Size*$Ratio+$TailY;
+     $Points[]    = cos(($Angle-90)*PI/180)*$Size*$Ratio+$TailX; $Points[] = sin(($Angle-90)*PI/180)*$Size*$Ratio+$TailY;
+     $Points[]    = cos(($Angle-270)*PI/180)*$Size*$Ratio+$TailX; $Points[] = sin(($Angle-270)*PI/180)*$Size*$Ratio+$TailY;
      $Points[]  = $X2; $Points[]  = $Y2;
 
      /* Visual correction */
@@ -1357,9 +1357,9 @@
 
      $this->drawArrow($X2,$Y2,$X1,$Y1,$Format);
 
-     $Size	= imagettfbbox($FontSize,0,$FontName,$Text);
-     $TxtWidth	= max(abs($Size[2]-$Size[0]),abs($Size[0]-$Size[6]));
-     $TxtHeight	= max(abs($Size[1]-$Size[7]),abs($Size[3]-$Size[1]));
+     $Size    = imagettfbbox($FontSize,0,$FontName,$Text);
+     $TxtWidth    = max(abs($Size[2]-$Size[0]),abs($Size[0]-$Size[6]));
+     $TxtHeight    = max(abs($Size[1]-$Size[7]),abs($Size[3]-$Size[1]));
 
      if ( $Angle > 0 && $Angle < 180 )
       {
@@ -1385,31 +1385,31 @@
      if ( $Percent > 100 ) { $Percent = 100; }
      if ( $Percent < 0 ) { $Percent = 0; }
 
-     $Width	= isset($Format["Width"]) ? $Format["Width"] : 200;
-     $Height	= isset($Format["Height"]) ? $Format["Height"] : 20;
+     $Width    = isset($Format["Width"]) ? $Format["Width"] : 200;
+     $Height    = isset($Format["Height"]) ? $Format["Height"] : 20;
      $Orientation = isset($Format["Orientation"]) ? $Format["Orientation"] : ORIENTATION_HORIZONTAL;
      $ShowLabel = isset($Format["ShowLabel"]) ? $Format["ShowLabel"] : FALSE;
-     $LabelPos	= isset($Format["LabelPos"]) ? $Format["LabelPos"] : LABEL_POS_INSIDE;
+     $LabelPos    = isset($Format["LabelPos"]) ? $Format["LabelPos"] : LABEL_POS_INSIDE;
      $Margin    = isset($Format["Margin"]) ? $Format["Margin"] : 10;
-     $R		= isset($Format["R"]) ? $Format["R"] : 130;
-     $G		= isset($Format["G"]) ? $Format["G"] : 130;
-     $B		= isset($Format["B"]) ? $Format["B"] : 130;
-     $RFade	= isset($Format["RFade"]) ? $Format["RFade"] : -1;
-     $GFade	= isset($Format["GFade"]) ? $Format["GFade"] : -1;
-     $BFade	= isset($Format["BFade"]) ? $Format["BFade"] : -1;
-     $BorderR	= isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
-     $BorderG	= isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
-     $BorderB	= isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
+     $R        = isset($Format["R"]) ? $Format["R"] : 130;
+     $G        = isset($Format["G"]) ? $Format["G"] : 130;
+     $B        = isset($Format["B"]) ? $Format["B"] : 130;
+     $RFade    = isset($Format["RFade"]) ? $Format["RFade"] : -1;
+     $GFade    = isset($Format["GFade"]) ? $Format["GFade"] : -1;
+     $BFade    = isset($Format["BFade"]) ? $Format["BFade"] : -1;
+     $BorderR    = isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
+     $BorderG    = isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
+     $BorderB    = isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
      $BoxBorderR = isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 0;
      $BoxBorderG = isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 0;
      $BoxBorderB = isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 0;
-     $BoxBackR	= isset($Format["BoxBackR"]) ? $Format["BoxBackR"] : 255;
-     $BoxBackG	= isset($Format["BoxBackG"]) ? $Format["BoxBackG"] : 255;
-     $BoxBackB	= isset($Format["BoxBackB"]) ? $Format["BoxBackB"] : 255;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $BoxBackR    = isset($Format["BoxBackR"]) ? $Format["BoxBackR"] : 255;
+     $BoxBackG    = isset($Format["BoxBackG"]) ? $Format["BoxBackG"] : 255;
+     $BoxBackB    = isset($Format["BoxBackB"]) ? $Format["BoxBackB"] : 255;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
      $Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
      $BoxSurrounding = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : NULL;
-     $NoAngle	= isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
+     $NoAngle    = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 
      if ( $RFade != -1 && $GFade != -1 && $BFade != -1 )
       {
@@ -1440,10 +1440,10 @@
 
        $this->Shadow = $RestoreShadow;
 
-       if ( $ShowLabel && $LabelPos == LABEL_POS_BOTTOM )	{ $this->drawText($X+($Width/2),$Y+$Margin,$Percent."%",array("Align"=>TEXT_ALIGN_TOPMIDDLE)); }
-       if ( $ShowLabel && $LabelPos == LABEL_POS_TOP )		{ $this->drawText($X+($Width/2),$Y-$Height-$Margin,$Percent."%",array("Align"=>TEXT_ALIGN_BOTTOMMIDDLE)); }
-       if ( $ShowLabel && $LabelPos == LABEL_POS_INSIDE )	{ $this->drawText($X+($Width/2),$Y-$InnerHeight-$Margin,$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLELEFT,"Angle"=>90)); }
-       if ( $ShowLabel && $LabelPos == LABEL_POS_CENTER )	{ $this->drawText($X+($Width/2),$Y-($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLEMIDDLE,"Angle"=>90)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_BOTTOM )    { $this->drawText($X+($Width/2),$Y+$Margin,$Percent."%",array("Align"=>TEXT_ALIGN_TOPMIDDLE)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_TOP )        { $this->drawText($X+($Width/2),$Y-$Height-$Margin,$Percent."%",array("Align"=>TEXT_ALIGN_BOTTOMMIDDLE)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_INSIDE )    { $this->drawText($X+($Width/2),$Y-$InnerHeight-$Margin,$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLELEFT,"Angle"=>90)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_CENTER )    { $this->drawText($X+($Width/2),$Y-($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLEMIDDLE,"Angle"=>90)); }
       }
      else
       {
@@ -1468,27 +1468,27 @@
  
        $this->Shadow = $RestoreShadow;
 
-       if ( $ShowLabel && $LabelPos == LABEL_POS_LEFT )		{ $this->drawText($X-$Margin,$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLERIGHT)); }
-       if ( $ShowLabel && $LabelPos == LABEL_POS_RIGHT )	{ $this->drawText($X+$Width+$Margin,$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLELEFT)); }
-       if ( $ShowLabel && $LabelPos == LABEL_POS_CENTER )	{ $this->drawText($X+($Width/2),$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLEMIDDLE)); }
-       if ( $ShowLabel && $LabelPos == LABEL_POS_INSIDE )	{ $this->drawText($X+$InnerWidth+$Margin,$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLELEFT)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_LEFT )        { $this->drawText($X-$Margin,$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLERIGHT)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_RIGHT )    { $this->drawText($X+$Width+$Margin,$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLELEFT)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_CENTER )    { $this->drawText($X+($Width/2),$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLEMIDDLE)); }
+       if ( $ShowLabel && $LabelPos == LABEL_POS_INSIDE )    { $this->drawText($X+$InnerWidth+$Margin,$Y+($Height/2),$Percent."%",array("Align"=>TEXT_ALIGN_MIDDLELEFT)); }
       }
     }
 
    /* Get the legend box size */
    function getLegendSize($Format="")
     {
-     $FontName		= isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
-     $FontSize		= isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
-     $BoxSize		= isset($Format["BoxSize"]) ? $Format["BoxSize"] : 5;
-     $Margin		= isset($Format["Margin"]) ? $Format["Margin"] : 5;
-     $Style		= isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
-     $Mode		= isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
-     $BoxWidth		= isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
-     $BoxHeight		= isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
-     $IconAreaWidth	= isset($Format["IconAreaWidth"]) ? $Format["IconAreaWidth"] : $BoxWidth;
-     $IconAreaHeight	= isset($Format["IconAreaHeight"]) ? $Format["IconAreaHeight"] : $BoxHeight;
-     $XSpacing		= isset($Format["XSpacing"]) ? $Format["XSpacing"] : 5;
+     $FontName        = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
+     $FontSize        = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
+     $BoxSize        = isset($Format["BoxSize"]) ? $Format["BoxSize"] : 5;
+     $Margin        = isset($Format["Margin"]) ? $Format["Margin"] : 5;
+     $Style        = isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
+     $Mode        = isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
+     $BoxWidth        = isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
+     $BoxHeight        = isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
+     $IconAreaWidth    = isset($Format["IconAreaWidth"]) ? $Format["IconAreaWidth"] : $BoxWidth;
+     $IconAreaHeight    = isset($Format["IconAreaHeight"]) ? $Format["IconAreaHeight"] : $BoxHeight;
+     $XSpacing        = isset($Format["XSpacing"]) ? $Format["XSpacing"] : 5;
 
      $Data = $this->DataSet->getData();
 
@@ -1557,28 +1557,28 @@
    /* Draw the legend of the active series */
    function drawLegend($X,$Y,$Format="")
     {
-     $Family	= isset($Format["Family"]) ? $Format["Family"] : LEGEND_FAMILY_BOX;
-     $FontName	= isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
-     $FontSize	= isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
-     $FontR	= isset($Format["FontR"]) ? $Format["FontR"] : $this->FontColorR;
-     $FontG	= isset($Format["FontG"]) ? $Format["FontG"] : $this->FontColorG;
-     $FontB	= isset($Format["FontB"]) ? $Format["FontB"] : $this->FontColorB;
-     $BoxWidth	= isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
-     $BoxHeight	= isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
-     $IconAreaWidth	= isset($Format["IconAreaWidth"]) ? $Format["IconAreaWidth"] : $BoxWidth;
-     $IconAreaHeight	= isset($Format["IconAreaHeight"]) ? $Format["IconAreaHeight"] : $BoxHeight;
-     $XSpacing	= isset($Format["XSpacing"]) ? $Format["XSpacing"] : 5;
-     $Margin	= isset($Format["Margin"]) ? $Format["Margin"] : 5;
-     $R		= isset($Format["R"]) ? $Format["R"] : 200;
-     $G		= isset($Format["G"]) ? $Format["G"] : 200;
-     $B		= isset($Format["B"]) ? $Format["B"] : 200;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $BorderR	= isset($Format["BorderR"]) ? $Format["BorderR"] : 255;
-     $BorderG	= isset($Format["BorderG"]) ? $Format["BorderG"] : 255;
-     $BorderB	= isset($Format["BorderB"]) ? $Format["BorderB"] : 255;
+     $Family    = isset($Format["Family"]) ? $Format["Family"] : LEGEND_FAMILY_BOX;
+     $FontName    = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
+     $FontSize    = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
+     $FontR    = isset($Format["FontR"]) ? $Format["FontR"] : $this->FontColorR;
+     $FontG    = isset($Format["FontG"]) ? $Format["FontG"] : $this->FontColorG;
+     $FontB    = isset($Format["FontB"]) ? $Format["FontB"] : $this->FontColorB;
+     $BoxWidth    = isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
+     $BoxHeight    = isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
+     $IconAreaWidth    = isset($Format["IconAreaWidth"]) ? $Format["IconAreaWidth"] : $BoxWidth;
+     $IconAreaHeight    = isset($Format["IconAreaHeight"]) ? $Format["IconAreaHeight"] : $BoxHeight;
+     $XSpacing    = isset($Format["XSpacing"]) ? $Format["XSpacing"] : 5;
+     $Margin    = isset($Format["Margin"]) ? $Format["Margin"] : 5;
+     $R        = isset($Format["R"]) ? $Format["R"] : 200;
+     $G        = isset($Format["G"]) ? $Format["G"] : 200;
+     $B        = isset($Format["B"]) ? $Format["B"] : 200;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $BorderR    = isset($Format["BorderR"]) ? $Format["BorderR"] : 255;
+     $BorderG    = isset($Format["BorderG"]) ? $Format["BorderG"] : 255;
+     $BorderB    = isset($Format["BorderB"]) ? $Format["BorderB"] : 255;
      $Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-     $Style	= isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
-     $Mode	= isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
+     $Style    = isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
+     $Mode    = isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
 
      if ( $Surrounding != NULL ) { $BorderR = $R + $Surrounding; $BorderG = $G + $Surrounding; $BorderB = $B + $Surrounding; }
 
@@ -1709,68 +1709,68 @@
 
    function drawScale($Format="")
     {
-     $Pos		= isset($Format["Pos"]) ? $Format["Pos"] : SCALE_POS_LEFTRIGHT;
-     $Floating		= isset($Format["Floating"]) ? $Format["Floating"] : FALSE;
-     $Mode		= isset($Format["Mode"]) ? $Format["Mode"] : SCALE_MODE_FLOATING;
-     $RemoveXAxis	= isset($Format["RemoveXAxis"]) ? $Format["RemoveXAxis"] : FALSE;
-     $MinDivHeight	= isset($Format["MinDivHeight"]) ? $Format["MinDivHeight"] : 20;
-     $Factors		= isset($Format["Factors"]) ? $Format["Factors"] : array(1,2,5);
-     $ManualScale	= isset($Format["ManualScale"]) ? $Format["ManualScale"] : array("0"=>array("Min"=>-100,"Max"=>100));
-     $XMargin		= isset($Format["XMargin"]) ? $Format["XMargin"] : AUTO;
-     $YMargin		= isset($Format["YMargin"]) ? $Format["YMargin"] : 0;
-     $ScaleSpacing	= isset($Format["ScaleSpacing"]) ? $Format["ScaleSpacing"] : 15;
-     $InnerTickWidth	= isset($Format["InnerTickWidth"]) ? $Format["InnerTickWidth"] : 2;
-     $OuterTickWidth	= isset($Format["OuterTickWidth"]) ? $Format["OuterTickWidth"] : 2;
-     $DrawXLines	= isset($Format["DrawXLines"]) ? $Format["DrawXLines"] : TRUE;
-     $DrawYLines	= isset($Format["DrawYLines"]) ? $Format["DrawYLines"] : ALL;
-     $GridTicks		= isset($Format["GridTicks"]) ? $Format["GridTicks"] : 4;
-     $GridR		= isset($Format["GridR"]) ? $Format["GridR"] : 255;
-     $GridG		= isset($Format["GridG"]) ? $Format["GridG"] : 255;
-     $GridB		= isset($Format["GridB"]) ? $Format["GridB"] : 255;
-     $GridAlpha		= isset($Format["GridAlpha"]) ? $Format["GridAlpha"] : 40;
-     $AxisRo		= isset($Format["AxisR"]) ? $Format["AxisR"] : 0;
-     $AxisGo		= isset($Format["AxisG"]) ? $Format["AxisG"] : 0;
-     $AxisBo		= isset($Format["AxisB"]) ? $Format["AxisB"] : 0;
-     $AxisAlpha		= isset($Format["AxisAlpha"]) ? $Format["AxisAlpha"] : 100;
-     $TickRo		= isset($Format["TickR"]) ? $Format["TickR"] : 0;
-     $TickGo		= isset($Format["TickG"]) ? $Format["TickG"] : 0;
-     $TickBo		= isset($Format["TickB"]) ? $Format["TickB"] : 0;
-     $TickAlpha		= isset($Format["TickAlpha"]) ? $Format["TickAlpha"] : 100;
-     $DrawSubTicks	= isset($Format["DrawSubTicks"]) ? $Format["DrawSubTicks"] : FALSE;
-     $InnerSubTickWidth	= isset($Format["InnerSubTickWidth"]) ? $Format["InnerSubTickWidth"] : 0;
-     $OuterSubTickWidth	= isset($Format["OuterSubTickWidth"]) ? $Format["OuterSubTickWidth"] : 2;
-     $SubTickR		= isset($Format["SubTickR"]) ? $Format["SubTickR"] : 255;
-     $SubTickG		= isset($Format["SubTickG"]) ? $Format["SubTickG"] : 0;
-     $SubTickB		= isset($Format["SubTickB"]) ? $Format["SubTickB"] : 0;
-     $SubTickAlpha	= isset($Format["SubTickAlpha"]) ? $Format["SubTickAlpha"] : 100;
-     $AutoAxisLabels	= isset($Format["AutoAxisLabels"]) ? $Format["AutoAxisLabels"] : TRUE;
-     $XReleasePercent	= isset($Format["XReleasePercent"]) ? $Format["XReleasePercent"] : 1;
-     $DrawArrows	= isset($Format["DrawArrows"]) ? $Format["DrawArrows"] : FALSE;
+     $Pos        = isset($Format["Pos"]) ? $Format["Pos"] : SCALE_POS_LEFTRIGHT;
+     $Floating        = isset($Format["Floating"]) ? $Format["Floating"] : FALSE;
+     $Mode        = isset($Format["Mode"]) ? $Format["Mode"] : SCALE_MODE_FLOATING;
+     $RemoveXAxis    = isset($Format["RemoveXAxis"]) ? $Format["RemoveXAxis"] : FALSE;
+     $MinDivHeight    = isset($Format["MinDivHeight"]) ? $Format["MinDivHeight"] : 20;
+     $Factors        = isset($Format["Factors"]) ? $Format["Factors"] : array(1,2,5);
+     $ManualScale    = isset($Format["ManualScale"]) ? $Format["ManualScale"] : array("0"=>array("Min"=>-100,"Max"=>100));
+     $XMargin        = isset($Format["XMargin"]) ? $Format["XMargin"] : AUTO;
+     $YMargin        = isset($Format["YMargin"]) ? $Format["YMargin"] : 0;
+     $ScaleSpacing    = isset($Format["ScaleSpacing"]) ? $Format["ScaleSpacing"] : 15;
+     $InnerTickWidth    = isset($Format["InnerTickWidth"]) ? $Format["InnerTickWidth"] : 2;
+     $OuterTickWidth    = isset($Format["OuterTickWidth"]) ? $Format["OuterTickWidth"] : 2;
+     $DrawXLines    = isset($Format["DrawXLines"]) ? $Format["DrawXLines"] : TRUE;
+     $DrawYLines    = isset($Format["DrawYLines"]) ? $Format["DrawYLines"] : ALL;
+     $GridTicks        = isset($Format["GridTicks"]) ? $Format["GridTicks"] : 4;
+     $GridR        = isset($Format["GridR"]) ? $Format["GridR"] : 255;
+     $GridG        = isset($Format["GridG"]) ? $Format["GridG"] : 255;
+     $GridB        = isset($Format["GridB"]) ? $Format["GridB"] : 255;
+     $GridAlpha        = isset($Format["GridAlpha"]) ? $Format["GridAlpha"] : 40;
+     $AxisRo        = isset($Format["AxisR"]) ? $Format["AxisR"] : 0;
+     $AxisGo        = isset($Format["AxisG"]) ? $Format["AxisG"] : 0;
+     $AxisBo        = isset($Format["AxisB"]) ? $Format["AxisB"] : 0;
+     $AxisAlpha        = isset($Format["AxisAlpha"]) ? $Format["AxisAlpha"] : 100;
+     $TickRo        = isset($Format["TickR"]) ? $Format["TickR"] : 0;
+     $TickGo        = isset($Format["TickG"]) ? $Format["TickG"] : 0;
+     $TickBo        = isset($Format["TickB"]) ? $Format["TickB"] : 0;
+     $TickAlpha        = isset($Format["TickAlpha"]) ? $Format["TickAlpha"] : 100;
+     $DrawSubTicks    = isset($Format["DrawSubTicks"]) ? $Format["DrawSubTicks"] : FALSE;
+     $InnerSubTickWidth    = isset($Format["InnerSubTickWidth"]) ? $Format["InnerSubTickWidth"] : 0;
+     $OuterSubTickWidth    = isset($Format["OuterSubTickWidth"]) ? $Format["OuterSubTickWidth"] : 2;
+     $SubTickR        = isset($Format["SubTickR"]) ? $Format["SubTickR"] : 255;
+     $SubTickG        = isset($Format["SubTickG"]) ? $Format["SubTickG"] : 0;
+     $SubTickB        = isset($Format["SubTickB"]) ? $Format["SubTickB"] : 0;
+     $SubTickAlpha    = isset($Format["SubTickAlpha"]) ? $Format["SubTickAlpha"] : 100;
+     $AutoAxisLabels    = isset($Format["AutoAxisLabels"]) ? $Format["AutoAxisLabels"] : TRUE;
+     $XReleasePercent    = isset($Format["XReleasePercent"]) ? $Format["XReleasePercent"] : 1;
+     $DrawArrows    = isset($Format["DrawArrows"]) ? $Format["DrawArrows"] : FALSE;
      $ArrowSize         = isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 8;
-     $CycleBackground	= isset($Format["CycleBackground"]) ? $Format["CycleBackground"] : FALSE;
-     $BackgroundR1	= isset($Format["BackgroundR1"]) ? $Format["BackgroundR1"] : 255;
-     $BackgroundG1	= isset($Format["BackgroundG1"]) ? $Format["BackgroundG1"] : 255;
-     $BackgroundB1	= isset($Format["BackgroundB1"]) ? $Format["BackgroundB1"] : 255;
-     $BackgroundAlpha1	= isset($Format["BackgroundAlpha1"]) ? $Format["BackgroundAlpha1"] : 20;
-     $BackgroundR2	= isset($Format["BackgroundR2"]) ? $Format["BackgroundR2"] : 230;
-     $BackgroundG2	= isset($Format["BackgroundG2"]) ? $Format["BackgroundG2"] : 230;
-     $BackgroundB2	= isset($Format["BackgroundB2"]) ? $Format["BackgroundB2"] : 230;
-     $BackgroundAlpha2	= isset($Format["BackgroundAlpha2"]) ? $Format["BackgroundAlpha2"] : 20;
-     $LabelingMethod	= isset($Format["LabelingMethod"]) ? $Format["LabelingMethod"] : LABELING_ALL;
-     $LabelSkip		= isset($Format["LabelSkip"]) ? $Format["LabelSkip"] : 0;
-     $LabelRotation	= isset($Format["LabelRotation"]) ? $Format["LabelRotation"] : 0;
-     $RemoveSkippedAxis	= isset($Format["RemoveSkippedAxis"]) ? $Format["RemoveSkippedAxis"] : FALSE;
-     $SkippedAxisTicks	= isset($Format["SkippedAxisTicks"]) ? $Format["SkippedAxisTicks"] : $GridTicks+2;
-     $SkippedAxisR	= isset($Format["SkippedAxisR"]) ? $Format["SkippedAxisR"] : $GridR;
-     $SkippedAxisG	= isset($Format["SkippedAxisG"]) ? $Format["SkippedAxisG"] : $GridG;
-     $SkippedAxisB	= isset($Format["SkippedAxisB"]) ? $Format["SkippedAxisB"] : $GridB;
-     $SkippedAxisAlpha	= isset($Format["SkippedAxisAlpha"]) ? $Format["SkippedAxisAlpha"] : $GridAlpha-30;
-     $SkippedTickR	= isset($Format["SkippedTickR"]) ? $Format["SkippedTickR"] : $TickRo;
-     $SkippedTickG	= isset($Format["SkippedTickG"]) ? $Format["SkippedTickG"] : $TickGo;
-     $SkippedTickB	= isset($Format["SkippedTicksB"]) ? $Format["SkippedTickB"] : $TickBo;
-     $SkippedTickAlpha	= isset($Format["SkippedTickAlpha"]) ? $Format["SkippedTickAlpha"] : $TickAlpha-80;
-     $SkippedInnerTickWidth	= isset($Format["SkippedInnerTickWidth"]) ? $Format["SkippedInnerTickWidth"] : 0;
-     $SkippedOuterTickWidth	= isset($Format["SkippedOuterTickWidth"]) ? $Format["SkippedOuterTickWidth"] : 2;
+     $CycleBackground    = isset($Format["CycleBackground"]) ? $Format["CycleBackground"] : FALSE;
+     $BackgroundR1    = isset($Format["BackgroundR1"]) ? $Format["BackgroundR1"] : 255;
+     $BackgroundG1    = isset($Format["BackgroundG1"]) ? $Format["BackgroundG1"] : 255;
+     $BackgroundB1    = isset($Format["BackgroundB1"]) ? $Format["BackgroundB1"] : 255;
+     $BackgroundAlpha1    = isset($Format["BackgroundAlpha1"]) ? $Format["BackgroundAlpha1"] : 20;
+     $BackgroundR2    = isset($Format["BackgroundR2"]) ? $Format["BackgroundR2"] : 230;
+     $BackgroundG2    = isset($Format["BackgroundG2"]) ? $Format["BackgroundG2"] : 230;
+     $BackgroundB2    = isset($Format["BackgroundB2"]) ? $Format["BackgroundB2"] : 230;
+     $BackgroundAlpha2    = isset($Format["BackgroundAlpha2"]) ? $Format["BackgroundAlpha2"] : 20;
+     $LabelingMethod    = isset($Format["LabelingMethod"]) ? $Format["LabelingMethod"] : LABELING_ALL;
+     $LabelSkip        = isset($Format["LabelSkip"]) ? $Format["LabelSkip"] : 0;
+     $LabelRotation    = isset($Format["LabelRotation"]) ? $Format["LabelRotation"] : 0;
+     $RemoveSkippedAxis    = isset($Format["RemoveSkippedAxis"]) ? $Format["RemoveSkippedAxis"] : FALSE;
+     $SkippedAxisTicks    = isset($Format["SkippedAxisTicks"]) ? $Format["SkippedAxisTicks"] : $GridTicks+2;
+     $SkippedAxisR    = isset($Format["SkippedAxisR"]) ? $Format["SkippedAxisR"] : $GridR;
+     $SkippedAxisG    = isset($Format["SkippedAxisG"]) ? $Format["SkippedAxisG"] : $GridG;
+     $SkippedAxisB    = isset($Format["SkippedAxisB"]) ? $Format["SkippedAxisB"] : $GridB;
+     $SkippedAxisAlpha    = isset($Format["SkippedAxisAlpha"]) ? $Format["SkippedAxisAlpha"] : $GridAlpha-30;
+     $SkippedTickR    = isset($Format["SkippedTickR"]) ? $Format["SkippedTickR"] : $TickRo;
+     $SkippedTickG    = isset($Format["SkippedTickG"]) ? $Format["SkippedTickG"] : $TickGo;
+     $SkippedTickB    = isset($Format["SkippedTicksB"]) ? $Format["SkippedTickB"] : $TickBo;
+     $SkippedTickAlpha    = isset($Format["SkippedTickAlpha"]) ? $Format["SkippedTickAlpha"] : $TickAlpha-80;
+     $SkippedInnerTickWidth    = isset($Format["SkippedInnerTickWidth"]) ? $Format["SkippedInnerTickWidth"] : 0;
+     $SkippedOuterTickWidth    = isset($Format["SkippedOuterTickWidth"]) ? $Format["SkippedOuterTickWidth"] : 2;
 
      /* Floating scale require X & Y margins to be set manually */
      if ( $Floating && ( $XMargin == AUTO || $YMargin == 0 ) ) { $Floating = FALSE; }
@@ -1958,10 +1958,10 @@
           {
            if ( $Parameters["Position"] == AXIS_POSITION_BOTTOM )
             {
-             if ( $LabelRotation == 0 )					{ $LabelAlign = TEXT_ALIGN_TOPMIDDLE; $YLabelOffset = 2; }
-             if ( $LabelRotation > 0 && $LabelRotation < 190 )		{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $YLabelOffset = 5; }
-             if ( $LabelRotation == 180 )				{ $LabelAlign = TEXT_ALIGN_BOTTOMMIDDLE; $YLabelOffset = 5; }
-             if ( $LabelRotation > 180 && $LabelRotation < 360 )	{ $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $YLabelOffset = 2; }
+             if ( $LabelRotation == 0 )                    { $LabelAlign = TEXT_ALIGN_TOPMIDDLE; $YLabelOffset = 2; }
+             if ( $LabelRotation > 0 && $LabelRotation < 190 )        { $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $YLabelOffset = 5; }
+             if ( $LabelRotation == 180 )                { $LabelAlign = TEXT_ALIGN_BOTTOMMIDDLE; $YLabelOffset = 5; }
+             if ( $LabelRotation > 180 && $LabelRotation < 360 )    { $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $YLabelOffset = 2; }
 
              if ( !$RemoveXAxis )
               {
@@ -2031,10 +2031,10 @@
             }
            elseif ( $Parameters["Position"] == AXIS_POSITION_TOP )
             {
-             if ( $LabelRotation == 0 )					{ $LabelAlign = TEXT_ALIGN_BOTTOMMIDDLE; $YLabelOffset = 2; }
-             if ( $LabelRotation > 0 && $LabelRotation < 190 )		{ $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $YLabelOffset = 2; }
-             if ( $LabelRotation == 180 )				{ $LabelAlign = TEXT_ALIGN_TOPMIDDLE; $YLabelOffset = 5; }
-             if ( $LabelRotation > 180 && $LabelRotation < 360 )	{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $YLabelOffset = 5; }
+             if ( $LabelRotation == 0 )                    { $LabelAlign = TEXT_ALIGN_BOTTOMMIDDLE; $YLabelOffset = 2; }
+             if ( $LabelRotation > 0 && $LabelRotation < 190 )        { $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $YLabelOffset = 2; }
+             if ( $LabelRotation == 180 )                { $LabelAlign = TEXT_ALIGN_TOPMIDDLE; $YLabelOffset = 5; }
+             if ( $LabelRotation > 180 && $LabelRotation < 360 )    { $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $YLabelOffset = 5; }
 
              if ( !$RemoveXAxis )
               {
@@ -2108,10 +2108,10 @@
           {
            if ( $Parameters["Position"] == AXIS_POSITION_LEFT )
             {
-             if ( $LabelRotation == 0 )					{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = -2; }
-             if ( $LabelRotation > 0 && $LabelRotation < 190 )		{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = -6; }
-             if ( $LabelRotation == 180 )				{ $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = -2; }
-             if ( $LabelRotation > 180 && $LabelRotation < 360 )	{ $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = -5; }
+             if ( $LabelRotation == 0 )                    { $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = -2; }
+             if ( $LabelRotation > 0 && $LabelRotation < 190 )        { $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = -6; }
+             if ( $LabelRotation == 180 )                { $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = -2; }
+             if ( $LabelRotation > 180 && $LabelRotation < 360 )    { $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = -5; }
 
              if ( !$RemoveXAxis )
               {
@@ -2181,10 +2181,10 @@
             }
            elseif ( $Parameters["Position"] == AXIS_POSITION_RIGHT )
             {
-             if ( $LabelRotation == 0 )					{ $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = 2; }
-             if ( $LabelRotation > 0 && $LabelRotation < 190 )		{ $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = 6; }
-             if ( $LabelRotation == 180 )				{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = 5; }
-             if ( $LabelRotation > 180 && $LabelRotation < 360 )	{ $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = 7; }
+             if ( $LabelRotation == 0 )                    { $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = 2; }
+             if ( $LabelRotation > 0 && $LabelRotation < 190 )        { $LabelAlign = TEXT_ALIGN_MIDDLELEFT; $XLabelOffset = 6; }
+             if ( $LabelRotation == 180 )                { $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = 5; }
+             if ( $LabelRotation > 180 && $LabelRotation < 360 )    { $LabelAlign = TEXT_ALIGN_MIDDLERIGHT; $XLabelOffset = 7; }
 
              if ( !$RemoveXAxis )
               {
@@ -2573,10 +2573,10 @@
      return($Scale);
     }
 
-	/*
+    /*
    function modulo($Value1,$Value2)
     {
-		if ($Value1 > $Value2) { return 0; }
+        if ($Value1 > $Value2) { return 0; }
      if (floor($Value2) == 0) { return(0); }
      if (floor($Value2) != 0) { return($Value1 % $Value2); }
 
@@ -2586,9 +2586,9 @@
 
      return(($Value1*$Factor) % ($Value2*$Factor));
     }
-	*/
-	 function modulo( $Value1, $Value2 ) {
-		if ($Value1 > $Value2) { return 0; }
+    */
+     function modulo( $Value1, $Value2 ) {
+        if ($Value1 > $Value2) { return 0; }
 
         if ($Value2 == 0) {
             return 0;
@@ -2602,37 +2602,37 @@
    /* Draw an X threshold */
    function drawXThreshold($Value,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 255;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 50;
-     $Weight		= isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-     $Ticks		= isset($Format["Ticks"]) ? $Format["Ticks"] : 6;
-     $Wide		= isset($Format["Wide"]) ? $Format["Wide"] : FALSE;
-     $WideFactor	= isset($Format["WideFactor"]) ? $Format["WideFactor"] : 5;
-     $WriteCaption	= isset($Format["WriteCaption"]) ? $Format["WriteCaption"] : FALSE;
-     $Caption		= isset($Format["Caption"]) ? $Format["Caption"] : NULL;
-     $CaptionAlign	= isset($Format["CaptionAlign"]) ? $Format["CaptionAlign"] : CAPTION_LEFT_TOP;
+     $R            = isset($Format["R"]) ? $Format["R"] : 255;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 50;
+     $Weight        = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
+     $Ticks        = isset($Format["Ticks"]) ? $Format["Ticks"] : 6;
+     $Wide        = isset($Format["Wide"]) ? $Format["Wide"] : FALSE;
+     $WideFactor    = isset($Format["WideFactor"]) ? $Format["WideFactor"] : 5;
+     $WriteCaption    = isset($Format["WriteCaption"]) ? $Format["WriteCaption"] : FALSE;
+     $Caption        = isset($Format["Caption"]) ? $Format["Caption"] : NULL;
+     $CaptionAlign    = isset($Format["CaptionAlign"]) ? $Format["CaptionAlign"] : CAPTION_LEFT_TOP;
      $CaptionOffset     = isset($Format["CaptionOffset"]) ? $Format["CaptionOffset"] : 5;
-     $CaptionR		= isset($Format["CaptionR"]) ? $Format["CaptionR"] : 255;
-     $CaptionG		= isset($Format["CaptionG"]) ? $Format["CaptionG"] : 255;
-     $CaptionB		= isset($Format["CaptionB"]) ? $Format["CaptionB"] : 255;
-     $CaptionAlpha	= isset($Format["CaptionAlpha"]) ? $Format["CaptionAlpha"] : 100;
-     $DrawBox		= isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
-     $DrawBoxBorder	= isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
-     $BorderOffset	= isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 3;
-     $BoxRounded	= isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : TRUE;
-     $RoundedRadius	= isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
-     $BoxR		= isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
-     $BoxG		= isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
-     $BoxB		= isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
-     $BoxAlpha		= isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 30;
-     $BoxSurrounding	= isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
-     $BoxBorderR	= isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 255;
-     $BoxBorderG	= isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 255;
-     $BoxBorderB	= isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 255;
-     $BoxBorderAlpha	= isset($Format["BoxBorderAlpha"]) ? $Format["BoxBorderAlpha"] : 100;
-     $ValueIsLabel	= isset($Format["ValueIsLabel"]) ? $Format["ValueIsLabel"] : FALSE;
+     $CaptionR        = isset($Format["CaptionR"]) ? $Format["CaptionR"] : 255;
+     $CaptionG        = isset($Format["CaptionG"]) ? $Format["CaptionG"] : 255;
+     $CaptionB        = isset($Format["CaptionB"]) ? $Format["CaptionB"] : 255;
+     $CaptionAlpha    = isset($Format["CaptionAlpha"]) ? $Format["CaptionAlpha"] : 100;
+     $DrawBox        = isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
+     $DrawBoxBorder    = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
+     $BorderOffset    = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 3;
+     $BoxRounded    = isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : TRUE;
+     $RoundedRadius    = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
+     $BoxR        = isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
+     $BoxG        = isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
+     $BoxB        = isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
+     $BoxAlpha        = isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 30;
+     $BoxSurrounding    = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
+     $BoxBorderR    = isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 255;
+     $BoxBorderG    = isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 255;
+     $BoxBorderB    = isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 255;
+     $BoxBorderAlpha    = isset($Format["BoxBorderAlpha"]) ? $Format["BoxBorderAlpha"] : 100;
+     $ValueIsLabel    = isset($Format["ValueIsLabel"]) ? $Format["ValueIsLabel"] : FALSE;
 
      $Data           = $this->DataSet->getData();
      $AbscissaMargin = $this->getAbscissaMargin($Data);
@@ -2732,22 +2732,22 @@
    /* Draw an X threshold area */
    function drawXThresholdArea($Value1,$Value2,$Format="")
     {
-     $R		= isset($Format["R"]) ? $Format["R"] : 255;
-     $G		= isset($Format["G"]) ? $Format["G"] : 0;
-     $B		= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 20;
+     $R        = isset($Format["R"]) ? $Format["R"] : 255;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 20;
      $Border    = isset($Format["Border"]) ? $Format["Border"] : TRUE;
      $BorderR   = isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
      $BorderG   = isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
      $BorderB   = isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
      $BorderAlpha = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha + 20;
      $BorderTicks = isset($Format["BorderTicks"]) ? $Format["BorderTicks"] : 2;
-     $AreaName 	= isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
-     $NameAngle	= isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
-     $NameR	= isset($Format["NameR"]) ? $Format["NameR"] : 255;
-     $NameG	= isset($Format["NameG"]) ? $Format["NameG"] : 255;
-     $NameB	= isset($Format["NameB"]) ? $Format["NameB"] : 255;
-     $NameAlpha	= isset($Format["NameAlpha"]) ? $Format["NameAlpha"] : 100;
+     $AreaName     = isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
+     $NameAngle    = isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
+     $NameR    = isset($Format["NameR"]) ? $Format["NameR"] : 255;
+     $NameG    = isset($Format["NameG"]) ? $Format["NameG"] : 255;
+     $NameB    = isset($Format["NameB"]) ? $Format["NameB"] : 255;
+     $NameAlpha    = isset($Format["NameAlpha"]) ? $Format["NameAlpha"] : 100;
      $DisableShadowOnArea = isset($Format["DisableShadowOnArea"]) ? $Format["DisableShadowOnArea"] : TRUE;
 
      $RestoreShadow = $this->Shadow;
@@ -2838,38 +2838,38 @@
    /* Draw an Y threshold with the computed scale */
    function drawThreshold($Value,$Format="")
     {
-     $AxisID		= isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
-     $R			= isset($Format["R"]) ? $Format["R"] : 255;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 50;
-     $Weight		= isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-     $Ticks		= isset($Format["Ticks"]) ? $Format["Ticks"] : 6;
-     $Wide		= isset($Format["Wide"]) ? $Format["Wide"] : FALSE;
-     $WideFactor	= isset($Format["WideFactor"]) ? $Format["WideFactor"] : 5;
-     $WriteCaption	= isset($Format["WriteCaption"]) ? $Format["WriteCaption"] : FALSE;
-     $Caption		= isset($Format["Caption"]) ? $Format["Caption"] : NULL;
-     $CaptionAlign	= isset($Format["CaptionAlign"]) ? $Format["CaptionAlign"] : CAPTION_LEFT_TOP;
+     $AxisID        = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
+     $R            = isset($Format["R"]) ? $Format["R"] : 255;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 50;
+     $Weight        = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
+     $Ticks        = isset($Format["Ticks"]) ? $Format["Ticks"] : 6;
+     $Wide        = isset($Format["Wide"]) ? $Format["Wide"] : FALSE;
+     $WideFactor    = isset($Format["WideFactor"]) ? $Format["WideFactor"] : 5;
+     $WriteCaption    = isset($Format["WriteCaption"]) ? $Format["WriteCaption"] : FALSE;
+     $Caption        = isset($Format["Caption"]) ? $Format["Caption"] : NULL;
+     $CaptionAlign    = isset($Format["CaptionAlign"]) ? $Format["CaptionAlign"] : CAPTION_LEFT_TOP;
      $CaptionOffset     = isset($Format["CaptionOffset"]) ? $Format["CaptionOffset"] : 10;
-     $CaptionR		= isset($Format["CaptionR"]) ? $Format["CaptionR"] : 255;
-     $CaptionG		= isset($Format["CaptionG"]) ? $Format["CaptionG"] : 255;
-     $CaptionB		= isset($Format["CaptionB"]) ? $Format["CaptionB"] : 255;
-     $CaptionAlpha	= isset($Format["CaptionAlpha"]) ? $Format["CaptionAlpha"] : 100;
-     $DrawBox		= isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
-     $DrawBoxBorder	= isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
-     $BorderOffset	= isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 5;
-     $BoxRounded	= isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : TRUE;
-     $RoundedRadius	= isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
-     $BoxR		= isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
-     $BoxG		= isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
-     $BoxB		= isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
-     $BoxAlpha		= isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 20;
-     $BoxSurrounding	= isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
-     $BoxBorderR	= isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 255;
-     $BoxBorderG	= isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 255;
-     $BoxBorderB	= isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 255;
-     $BoxBorderAlpha	= isset($Format["BoxBorderAlpha"]) ? $Format["BoxBorderAlpha"] : 100;
-     $NoMargin		= isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
+     $CaptionR        = isset($Format["CaptionR"]) ? $Format["CaptionR"] : 255;
+     $CaptionG        = isset($Format["CaptionG"]) ? $Format["CaptionG"] : 255;
+     $CaptionB        = isset($Format["CaptionB"]) ? $Format["CaptionB"] : 255;
+     $CaptionAlpha    = isset($Format["CaptionAlpha"]) ? $Format["CaptionAlpha"] : 100;
+     $DrawBox        = isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
+     $DrawBoxBorder    = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
+     $BorderOffset    = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 5;
+     $BoxRounded    = isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : TRUE;
+     $RoundedRadius    = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
+     $BoxR        = isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
+     $BoxG        = isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
+     $BoxB        = isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
+     $BoxAlpha        = isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 20;
+     $BoxSurrounding    = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
+     $BoxBorderR    = isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 255;
+     $BoxBorderG    = isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 255;
+     $BoxBorderB    = isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 255;
+     $BoxBorderAlpha    = isset($Format["BoxBorderAlpha"]) ? $Format["BoxBorderAlpha"] : 100;
+     $NoMargin        = isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
 
      if ( is_array($Value) ) { foreach ($Value as $Key => $ID) { $this->drawThreshold($ID,$Format); } return(0); }
 
@@ -2950,25 +2950,25 @@
    /* Draw a threshold with the computed scale */
    function drawThresholdArea($Value1,$Value2,$Format="")
     {
-     $AxisID	= isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
-     $R		= isset($Format["R"]) ? $Format["R"] : 255;
-     $G		= isset($Format["G"]) ? $Format["G"] : 0;
-     $B		= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 20;
+     $AxisID    = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
+     $R        = isset($Format["R"]) ? $Format["R"] : 255;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 20;
      $Border    = isset($Format["Border"]) ? $Format["Border"] : TRUE;
      $BorderR   = isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
      $BorderG   = isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
      $BorderB   = isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
      $BorderAlpha = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha + 20;
      $BorderTicks = isset($Format["BorderTicks"]) ? $Format["BorderTicks"] : 2;
-     $AreaName 	= isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
-     $NameAngle	= isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
-     $NameR	= isset($Format["NameR"]) ? $Format["NameR"] : 255;
-     $NameG	= isset($Format["NameG"]) ? $Format["NameG"] : 255;
-     $NameB	= isset($Format["NameB"]) ? $Format["NameB"] : 255;
-     $NameAlpha	= isset($Format["NameAlpha"]) ? $Format["NameAlpha"] : 100;
+     $AreaName     = isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
+     $NameAngle    = isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
+     $NameR    = isset($Format["NameR"]) ? $Format["NameR"] : 255;
+     $NameG    = isset($Format["NameG"]) ? $Format["NameG"] : 255;
+     $NameB    = isset($Format["NameB"]) ? $Format["NameB"] : 255;
+     $NameAlpha    = isset($Format["NameAlpha"]) ? $Format["NameAlpha"] : 100;
      $DisableShadowOnArea = isset($Format["DisableShadowOnArea"]) ? $Format["DisableShadowOnArea"] : TRUE;
-     $NoMargin	= isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
+     $NoMargin    = isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
 
      if ($Value1 > $Value2) { list($Value1, $Value2) = array($Value2, $Value1); }
 
@@ -3070,8 +3070,8 @@
 
    function scaleComputeY($Values,$Option="",$ReturnOnly0Height=FALSE)
     {
-     $AxisID	= isset($Option["AxisID"]) ? $Option["AxisID"] : 0;
-     $SerieName	= isset($Option["SerieName"]) ? $Option["SerieName"] : NULL;
+     $AxisID    = isset($Option["AxisID"]) ? $Option["AxisID"] : 0;
+     $SerieName    = isset($Option["SerieName"]) ? $Option["SerieName"] : NULL;
 
      $Data = $this->DataSet->getData();
      if ( !isset($Data["Axis"][$AxisID]) ) { return(-1); }
@@ -3096,11 +3096,11 @@
        $Width      = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Data["Axis"][$AxisID]["Margin"]*2;
        $ScaleWidth = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
      
-	   if ($ScaleWidth > 0) {
-			$Step       = $Width / $ScaleWidth;
-		} else {
-			$Step       = 1; // or change this to 0 if it doesn't work, I am not sure what this line does.
-		}
+       if ($ScaleWidth > 0) {
+            $Step       = $Width / $ScaleWidth;
+        } else {
+            $Step       = 1; // or change this to 0 if it doesn't work, I am not sure what this line does.
+        }
 
        if ( $ReturnOnly0Height )
         { foreach($Values as $Key => $Value) { if ( $Value == VOID ) { $Result[] = VOID; } else { $Result[] = $Step * $Value; } } }
@@ -3157,34 +3157,34 @@
    /* Write Max value on a chart */
    function writeBounds($Type=BOUND_BOTH,$Format=NULL)
     {
-     $MaxLabelTxt	= isset($Format["MaxLabelTxt"]) ? $Format["MaxLabelTxt"] : "max=";
-     $MinLabelTxt	= isset($Format["MinLabelTxt"]) ? $Format["MinLabelTxt"] : "min=";
-     $Decimals		= isset($Format["Decimals"]) ? $Format["Decimals"] : 1;
-     $ExcludedSeries	= isset($Format["ExcludedSeries"]) ? $Format["ExcludedSeries"] : "";
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 4;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $MaxDisplayR	= isset($Format["MaxDisplayR"]) ? $Format["MaxDisplayR"] : 0;
-     $MaxDisplayG	= isset($Format["MaxDisplayG"]) ? $Format["MaxDisplayG"] : 0;
-     $MaxDisplayB	= isset($Format["MaxDisplayB"]) ? $Format["MaxDisplayB"] : 0;
-     $MinDisplayR	= isset($Format["MinDisplayR"]) ? $Format["MinDisplayR"] : 255;
-     $MinDisplayG	= isset($Format["MinDisplayG"]) ? $Format["MinDisplayG"] : 255;
-     $MinDisplayB	= isset($Format["MinDisplayB"]) ? $Format["MinDisplayB"] : 255;
-     $MinLabelPos	= isset($Format["MinLabelPos"]) ? $Format["MinLabelPos"] : BOUND_LABEL_POS_AUTO;
-     $MaxLabelPos	= isset($Format["MaxLabelPos"]) ? $Format["MaxLabelPos"] : BOUND_LABEL_POS_AUTO;
-     $DrawBox		= isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
-     $DrawBoxBorder	= isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
-     $BorderOffset	= isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 5;
-     $BoxRounded	= isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : TRUE;
-     $RoundedRadius	= isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
-     $BoxR		= isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
-     $BoxG		= isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
-     $BoxB		= isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
-     $BoxAlpha		= isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 20;
-     $BoxSurrounding	= isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
-     $BoxBorderR	= isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 255;
-     $BoxBorderG	= isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 255;
-     $BoxBorderB	= isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 255;
-     $BoxBorderAlpha	= isset($Format["BoxBorderAlpha"]) ? $Format["BoxBorderAlpha"] : 100;
+     $MaxLabelTxt    = isset($Format["MaxLabelTxt"]) ? $Format["MaxLabelTxt"] : "max=";
+     $MinLabelTxt    = isset($Format["MinLabelTxt"]) ? $Format["MinLabelTxt"] : "min=";
+     $Decimals        = isset($Format["Decimals"]) ? $Format["Decimals"] : 1;
+     $ExcludedSeries    = isset($Format["ExcludedSeries"]) ? $Format["ExcludedSeries"] : "";
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 4;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $MaxDisplayR    = isset($Format["MaxDisplayR"]) ? $Format["MaxDisplayR"] : 0;
+     $MaxDisplayG    = isset($Format["MaxDisplayG"]) ? $Format["MaxDisplayG"] : 0;
+     $MaxDisplayB    = isset($Format["MaxDisplayB"]) ? $Format["MaxDisplayB"] : 0;
+     $MinDisplayR    = isset($Format["MinDisplayR"]) ? $Format["MinDisplayR"] : 255;
+     $MinDisplayG    = isset($Format["MinDisplayG"]) ? $Format["MinDisplayG"] : 255;
+     $MinDisplayB    = isset($Format["MinDisplayB"]) ? $Format["MinDisplayB"] : 255;
+     $MinLabelPos    = isset($Format["MinLabelPos"]) ? $Format["MinLabelPos"] : BOUND_LABEL_POS_AUTO;
+     $MaxLabelPos    = isset($Format["MaxLabelPos"]) ? $Format["MaxLabelPos"] : BOUND_LABEL_POS_AUTO;
+     $DrawBox        = isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
+     $DrawBoxBorder    = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
+     $BorderOffset    = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 5;
+     $BoxRounded    = isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : TRUE;
+     $RoundedRadius    = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
+     $BoxR        = isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
+     $BoxG        = isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
+     $BoxB        = isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
+     $BoxAlpha        = isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 20;
+     $BoxSurrounding    = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : "";
+     $BoxBorderR    = isset($Format["BoxBorderR"]) ? $Format["BoxBorderR"] : 255;
+     $BoxBorderG    = isset($Format["BoxBorderG"]) ? $Format["BoxBorderG"] : 255;
+     $BoxBorderB    = isset($Format["BoxBorderB"]) ? $Format["BoxBorderB"] : 255;
+     $BoxBorderAlpha    = isset($Format["BoxBorderAlpha"]) ? $Format["BoxBorderAlpha"] : 100;
 
      $CaptionSettings = array("DrawBox"=>$DrawBox,"DrawBoxBorder"=>$DrawBoxBorder,"BorderOffset"=>$BorderOffset,"BoxRounded"=>$BoxRounded,"RoundedRadius"=>$RoundedRadius,
                               "BoxR"=>$BoxR,"BoxG"=>$BoxG,"BoxB"=>$BoxB,"BoxAlpha"=>$BoxAlpha,"BoxSurrounding"=>$BoxSurrounding,
@@ -3210,10 +3210,10 @@
            if ( $Value == $MaxValue ) { $MaxPos = $Key; }
           }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]));
 
@@ -3320,21 +3320,21 @@
    /* Draw a plot chart */
    function drawPlotChart($Format=NULL)
     {
-     $PlotSize		= isset($Format["PlotSize"]) ? $Format["PlotSize"] : NULL;
-     $PlotBorder	= isset($Format["PlotBorder"]) ? $Format["PlotBorder"] : FALSE;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : 50;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : 50;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : 50;
-     $BorderAlpha	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 30;
-     $BorderSize	= isset($Format["BorderSize"]) ? $Format["BorderSize"] : 2;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 4;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+     $PlotSize        = isset($Format["PlotSize"]) ? $Format["PlotSize"] : NULL;
+     $PlotBorder    = isset($Format["PlotBorder"]) ? $Format["PlotBorder"] : FALSE;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : 50;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : 50;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : 50;
+     $BorderAlpha    = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 30;
+     $BorderSize    = isset($Format["BorderSize"]) ? $Format["BorderSize"] : 2;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 4;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $RecordImageMap    = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
@@ -3356,11 +3356,11 @@
 
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Shape		= $Serie["Shape"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Shape        = $Serie["Shape"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          if (isset($Serie["Description"])) { $SerieDescription = $Serie["Description"]; } else { $SerieDescription = $SerieName; }
 
@@ -3423,18 +3423,18 @@
    /* Draw a spline chart */
    function drawSplineChart($Format=NULL)
     {
-     $BreakVoid		= isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
-     $VoidTicks		= isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
-     $BreakR		= isset($Format["BreakR"]) ? $Format["BreakR"] : NULL; // 234
-     $BreakG		= isset($Format["BreakG"]) ? $Format["BreakG"] : NULL; // 55
-     $BreakB		= isset($Format["BreakB"]) ? $Format["BreakB"] : NULL; // 26
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+     $BreakVoid        = isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
+     $VoidTicks        = isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
+     $BreakR        = isset($Format["BreakR"]) ? $Format["BreakR"] : NULL; // 234
+     $BreakG        = isset($Format["BreakG"]) ? $Format["BreakG"] : NULL; // 55
+     $BreakB        = isset($Format["BreakB"]) ? $Format["BreakB"] : NULL; // 26
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $RecordImageMap    = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
      $ImageMapPlotSize  = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 5;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
@@ -3454,10 +3454,10 @@
 
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          if (isset($Serie["Description"])) { $SerieDescription = $Serie["Description"]; } else { $SerieDescription = $SerieName; }
 
@@ -3477,7 +3477,7 @@
             {
              if ( $DisplayValues ) 
               $this->drawText($X,$Y-$DisplayOffset,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
-	
+    
              if ( $RecordImageMap && $Y != VOID ) { $this->addToImageMap("CIRCLE",floor($X).",".floor($Y).",".$ImageMapPlotSize,$this->toHTMLColor($R,$G,$B),$SerieDescription,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit)); }
 
              if ( $Y == VOID && $LastY != NULL )
@@ -3536,14 +3536,14 @@
    /* Draw a filled spline chart */
    function drawFilledSplineChart($Format=NULL)
     {
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $AroundZero	= isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
-     $Threshold		= isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $AroundZero    = isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
+     $Threshold        = isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
@@ -3556,10 +3556,10 @@
          $R = $Serie["Color"]["R"]; $G = $Serie["Color"]["G"]; $B = $Serie["Color"]["B"]; $Alpha = $Serie["Color"]["Alpha"]; $Ticks = $Serie["Ticks"];
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]));
          if ( $AroundZero ) { $YZero = $this->scaleComputeY(0,array("AxisID"=>$Serie["Axis"])); }
@@ -3710,24 +3710,24 @@
    /* Draw a line chart */
    function drawLineChart($Format=NULL)
     {
-     $BreakVoid		= isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
-     $VoidTicks		= isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
-     $BreakR		= isset($Format["BreakR"]) ? $Format["BreakR"] : NULL;
-     $BreakG		= isset($Format["BreakG"]) ? $Format["BreakG"] : NULL;
-     $BreakB		= isset($Format["BreakB"]) ? $Format["BreakB"] : NULL;
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+     $BreakVoid        = isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
+     $VoidTicks        = isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
+     $BreakR        = isset($Format["BreakR"]) ? $Format["BreakR"] : NULL;
+     $BreakG        = isset($Format["BreakG"]) ? $Format["BreakG"] : NULL;
+     $BreakB        = isset($Format["BreakB"]) ? $Format["BreakB"] : NULL;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $RecordImageMap    = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
      $ImageMapPlotSize  = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 5;
-     $ForceColor	= isset($Format["ForceColor"]) ? $Format["ForceColor"] : FALSE;
-     $ForceR		= isset($Format["ForceR"]) ? $Format["ForceR"] : 0;
-     $ForceG		= isset($Format["ForceG"]) ? $Format["ForceG"] : 0;
-     $ForceB		= isset($Format["ForceB"]) ? $Format["ForceB"] : 0;
-     $ForceAlpha	= isset($Format["ForceAlpha"]) ? $Format["ForceAlpha"] : 100;
+     $ForceColor    = isset($Format["ForceColor"]) ? $Format["ForceColor"] : FALSE;
+     $ForceR        = isset($Format["ForceR"]) ? $Format["ForceR"] : 0;
+     $ForceG        = isset($Format["ForceG"]) ? $Format["ForceG"] : 0;
+     $ForceB        = isset($Format["ForceB"]) ? $Format["ForceB"] : 0;
+     $ForceAlpha    = isset($Format["ForceAlpha"]) ? $Format["ForceAlpha"] : 100;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
@@ -3749,10 +3749,10 @@
 
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          if (isset($Serie["Description"])) { $SerieDescription = $Serie["Description"]; } else { $SerieDescription = $SerieName; }
 
@@ -3824,29 +3824,29 @@
    /* Draw a line chart */
    function drawZoneChart($SerieA,$SerieB,$Format=NULL)
     {
-     $AxisID	= isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
-     $LineR	= isset($Format["LineR"]) ? $Format["LineR"] : 150;
-     $LineG	= isset($Format["LineG"]) ? $Format["LineG"] : 150;
-     $LineB	= isset($Format["LineB"]) ? $Format["LineB"] : 150;
-     $LineAlpha	= isset($Format["LineAlpha"]) ? $Format["LineAlpha"] : 50;
-     $LineTicks	= isset($Format["LineTicks"]) ? $Format["LineTicks"] : 1;
-     $AreaR	= isset($Format["AreaR"]) ? $Format["AreaR"] : 150;
-     $AreaG	= isset($Format["AreaG"]) ? $Format["AreaG"] : 150;
-     $AreaB	= isset($Format["AreaB"]) ? $Format["AreaB"] : 150;
-     $AreaAlpha	= isset($Format["AreaAlpha"]) ? $Format["AreaAlpha"] : 5;
+     $AxisID    = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
+     $LineR    = isset($Format["LineR"]) ? $Format["LineR"] : 150;
+     $LineG    = isset($Format["LineG"]) ? $Format["LineG"] : 150;
+     $LineB    = isset($Format["LineB"]) ? $Format["LineB"] : 150;
+     $LineAlpha    = isset($Format["LineAlpha"]) ? $Format["LineAlpha"] : 50;
+     $LineTicks    = isset($Format["LineTicks"]) ? $Format["LineTicks"] : 1;
+     $AreaR    = isset($Format["AreaR"]) ? $Format["AreaR"] : 150;
+     $AreaG    = isset($Format["AreaG"]) ? $Format["AreaG"] : 150;
+     $AreaB    = isset($Format["AreaB"]) ? $Format["AreaB"] : 150;
+     $AreaAlpha    = isset($Format["AreaAlpha"]) ? $Format["AreaAlpha"] : 5;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
-     $Data	 = $this->DataSet->getData();
+     $Data     = $this->DataSet->getData();
      if ( !isset($Data["Series"][$SerieA]["Data"]) || !isset($Data["Series"][$SerieB]["Data"]) ) { return(0); }
      $SerieAData = $Data["Series"][$SerieA]["Data"];
      $SerieBData = $Data["Series"][$SerieB]["Data"];
 
      list($XMargin,$XDivs) = $this->scaleGetXSettings();
 
-     $Mode	= $Data["Axis"][$AxisID]["Display"];
-     $Format	= $Data["Axis"][$AxisID]["Format"];
-     $Unit	= $Data["Axis"][$AxisID]["Unit"];
+     $Mode    = $Data["Axis"][$AxisID]["Display"];
+     $Format    = $Data["Axis"][$AxisID]["Format"];
+     $Unit    = $Data["Axis"][$AxisID]["Unit"];
 
      $PosArrayA = $this->scaleComputeY($SerieAData,array("AxisID"=>$AxisID));
      $PosArrayB = $this->scaleComputeY($SerieBData,array("AxisID"=>$AxisID));
@@ -3913,19 +3913,19 @@
    /* Draw a step chart */
    function drawStepChart($Format=NULL)
     {
-     $BreakVoid		= isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : FALSE;
-     $ReCenter		= isset($Format["ReCenter"]) ? $Format["ReCenter"] : TRUE;
-     $VoidTicks		= isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
-     $BreakR		= isset($Format["BreakR"]) ? $Format["BreakR"] : NULL;
-     $BreakG		= isset($Format["BreakG"]) ? $Format["BreakG"] : NULL;
-     $BreakB		= isset($Format["BreakB"]) ? $Format["BreakB"] : NULL;
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] :FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+     $BreakVoid        = isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : FALSE;
+     $ReCenter        = isset($Format["ReCenter"]) ? $Format["ReCenter"] : TRUE;
+     $VoidTicks        = isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
+     $BreakR        = isset($Format["BreakR"]) ? $Format["BreakR"] : NULL;
+     $BreakG        = isset($Format["BreakG"]) ? $Format["BreakG"] : NULL;
+     $BreakB        = isset($Format["BreakB"]) ? $Format["BreakB"] : NULL;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] :FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $RecordImageMap    = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
      $ImageMapPlotSize  = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 5;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
@@ -3947,11 +3947,11 @@
 
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
-         $Color		= array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight);
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
+         $Color        = array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight);
 
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]));
 
@@ -4082,15 +4082,15 @@
    /* Draw a step chart */
    function drawFilledStepChart($Format=NULL)
     {
-     $ReCenter		= isset($Format["ReCenter"]) ? $Format["ReCenter"] : TRUE;
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] :FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $ForceTransparency	= isset($Format["ForceTransparency"]) ? $Format["ForceTransparency"] : NULL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $AroundZero	= isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
+     $ReCenter        = isset($Format["ReCenter"]) ? $Format["ReCenter"] : TRUE;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] :FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $ForceTransparency    = isset($Format["ForceTransparency"]) ? $Format["ForceTransparency"] : NULL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $AroundZero    = isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
@@ -4104,12 +4104,12 @@
 
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
-         $Color		= array("R"=>$R,"G"=>$G,"B"=>$B);
+         $Color        = array("R"=>$R,"G"=>$G,"B"=>$B);
          if ( $ForceTransparency != NULL ) { $Color["Alpha"] = $ForceTransparency; } else { $Color["Alpha"] = $Alpha; }
 
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]));
@@ -4222,15 +4222,15 @@
    /* Draw an area chart */
    function drawAreaChart($Format=NULL)
     {
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $ForceTransparency	= isset($Format["ForceTransparency"]) ? $Format["ForceTransparency"] : 25;
-     $AroundZero	= isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
-     $Threshold		= isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $ForceTransparency    = isset($Format["ForceTransparency"]) ? $Format["ForceTransparency"] : 25;
+     $AroundZero    = isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
+     $Threshold        = isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
@@ -4244,10 +4244,10 @@
          $R = $Serie["Color"]["R"]; $G = $Serie["Color"]["G"]; $B = $Serie["Color"]["B"]; $Alpha = $Serie["Color"]["Alpha"]; $Ticks = $Serie["Ticks"];
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]));
          $YZero    = $this->scaleComputeY(0,array("AxisID"=>$Serie["Axis"]));
@@ -4421,45 +4421,45 @@
    /* Draw a bar chart */
    function drawBarChart($Format=NULL)
     {
-     $Floating0Serie	= isset($Format["Floating0Serie"]) ? $Format["Floating0Serie"] : NULL;
-     $Floating0Value	= isset($Format["Floating0Value"]) ? $Format["Floating0Value"] : NULL;
-     $Draw0Line		= isset($Format["Draw0Line"]) ? $Format["Draw0Line"] : FALSE;
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $Floating0Serie    = isset($Format["Floating0Serie"]) ? $Format["Floating0Serie"] : NULL;
+     $Floating0Value    = isset($Format["Floating0Value"]) ? $Format["Floating0Value"] : NULL;
+     $Draw0Line        = isset($Format["Draw0Line"]) ? $Format["Draw0Line"] : FALSE;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
      $DisplayOrientation = isset($Format["DisplayOrientation"]) ? $Format["DisplayOrientation"] : ORIENTATION_HORIZONTAL;
-     $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayFont	= isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontName;
-     $DisplaySize	= isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontSize;
-     $DisplayPos	= isset($Format["DisplayPos"]) ? $Format["DisplayPos"] : LABEL_POS_OUTSIDE;
-     $DisplayShadow	= isset($Format["DisplayShadow"]) ? $Format["DisplayShadow"] : TRUE;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $AroundZero	= isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
-     $Interleave	= isset($Format["Interleave"]) ? $Format["Interleave"] : .5;
-     $Rounded		= isset($Format["Rounded"]) ? $Format["Rounded"] : FALSE;
-     $RoundRadius	= isset($Format["RoundRadius"]) ? $Format["RoundRadius"] : 4;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
-     $Gradient		= isset($Format["Gradient"]) ? $Format["Gradient"] : FALSE;
-     $GradientMode	= isset($Format["GradientMode"]) ? $Format["GradientMode"] : GRADIENT_SIMPLE;
-     $GradientAlpha	= isset($Format["GradientAlpha"]) ? $Format["GradientAlpha"] : 20;
-     $GradientStartR	= isset($Format["GradientStartR"]) ? $Format["GradientStartR"] : 255;
-     $GradientStartG	= isset($Format["GradientStartG"]) ? $Format["GradientStartG"] : 255;
-     $GradientStartB	= isset($Format["GradientStartB"]) ? $Format["GradientStartB"] : 255;
-     $GradientEndR	= isset($Format["GradientEndR"]) ? $Format["GradientEndR"] : 0;
-     $GradientEndG	= isset($Format["GradientEndG"]) ? $Format["GradientEndG"] : 0;
-     $GradientEndB	= isset($Format["GradientEndB"]) ? $Format["GradientEndB"] : 0;
-     $TxtMargin		= isset($Format["TxtMargin"]) ? $Format["TxtMargin"] : 6;
-     $OverrideColors	= isset($Format["OverrideColors"]) ? $Format["OverrideColors"] : NULL;
+     $DisplayOffset    = isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayFont    = isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontName;
+     $DisplaySize    = isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontSize;
+     $DisplayPos    = isset($Format["DisplayPos"]) ? $Format["DisplayPos"] : LABEL_POS_OUTSIDE;
+     $DisplayShadow    = isset($Format["DisplayShadow"]) ? $Format["DisplayShadow"] : TRUE;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $AroundZero    = isset($Format["AroundZero"]) ? $Format["AroundZero"] : TRUE;
+     $Interleave    = isset($Format["Interleave"]) ? $Format["Interleave"] : .5;
+     $Rounded        = isset($Format["Rounded"]) ? $Format["Rounded"] : FALSE;
+     $RoundRadius    = isset($Format["RoundRadius"]) ? $Format["RoundRadius"] : 4;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $Gradient        = isset($Format["Gradient"]) ? $Format["Gradient"] : FALSE;
+     $GradientMode    = isset($Format["GradientMode"]) ? $Format["GradientMode"] : GRADIENT_SIMPLE;
+     $GradientAlpha    = isset($Format["GradientAlpha"]) ? $Format["GradientAlpha"] : 20;
+     $GradientStartR    = isset($Format["GradientStartR"]) ? $Format["GradientStartR"] : 255;
+     $GradientStartG    = isset($Format["GradientStartG"]) ? $Format["GradientStartG"] : 255;
+     $GradientStartB    = isset($Format["GradientStartB"]) ? $Format["GradientStartB"] : 255;
+     $GradientEndR    = isset($Format["GradientEndR"]) ? $Format["GradientEndR"] : 0;
+     $GradientEndG    = isset($Format["GradientEndG"]) ? $Format["GradientEndG"] : 0;
+     $GradientEndB    = isset($Format["GradientEndB"]) ? $Format["GradientEndB"] : 0;
+     $TxtMargin        = isset($Format["TxtMargin"]) ? $Format["TxtMargin"] : 6;
+     $OverrideColors    = isset($Format["OverrideColors"]) ? $Format["OverrideColors"] : NULL;
      $OverrideSurrounding = isset($Format["OverrideSurrounding"]) ? $Format["OverrideSurrounding"] : 30;
-     $InnerSurrounding	= isset($Format["InnerSurrounding"]) ? $Format["InnerSurrounding"] : NULL;
-     $InnerBorderR	= isset($Format["InnerBorderR"]) ? $Format["InnerBorderR"] : -1;
-     $InnerBorderG	= isset($Format["InnerBorderG"]) ? $Format["InnerBorderG"] : -1;
-     $InnerBorderB	= isset($Format["InnerBorderB"]) ? $Format["InnerBorderB"] : -1;
-     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+     $InnerSurrounding    = isset($Format["InnerSurrounding"]) ? $Format["InnerSurrounding"] : NULL;
+     $InnerBorderR    = isset($Format["InnerBorderR"]) ? $Format["InnerBorderR"] : -1;
+     $InnerBorderG    = isset($Format["InnerBorderG"]) ? $Format["InnerBorderG"] : -1;
+     $InnerBorderB    = isset($Format["InnerBorderB"]) ? $Format["InnerBorderB"] : -1;
+     $RecordImageMap    = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 
@@ -4487,10 +4487,10 @@
          if ( $InnerBorderR == -1 ) { $InnerColor = NULL; } else { $InnerColor = array("R"=>$InnerBorderR,"G"=>$InnerBorderG,"B"=>$InnerBorderB); }
          $Color = array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"BorderR"=>$BorderR,"BorderG"=>$BorderG,"BorderB"=>$BorderB);
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          if (isset($Serie["Description"])) { $SerieDescription = $Serie["Description"]; } else { $SerieDescription = $SerieName; }
 
@@ -4763,37 +4763,37 @@
    /* Draw a bar chart */
    function drawStackedBarChart($Format=NULL)
     {
-     $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
+     $DisplayValues    = isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
      $DisplayOrientation = isset($Format["DisplayOrientation"]) ? $Format["DisplayOrientation"] : ORIENTATION_AUTO;
      $DisplayRound      = isset($Format["DisplayRound"]) ? $Format["DisplayRound"] : 0;
-     $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
-     $DisplayFont	= isset($Format["DisplayFont"]) ? $Format["DisplayFont"] : $this->FontName;
-     $DisplaySize	= isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontSize;
-     $DisplayR		= isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
-     $DisplayG		= isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
-     $DisplayB		= isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
-     $Interleave	= isset($Format["Interleave"]) ? $Format["Interleave"] : .5;
-     $Rounded		= isset($Format["Rounded"]) ? $Format["Rounded"] : FALSE;
-     $RoundRadius	= isset($Format["RoundRadius"]) ? $Format["RoundRadius"] : 4;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
-     $Gradient		= isset($Format["Gradient"]) ? $Format["Gradient"] : FALSE;
-     $GradientMode	= isset($Format["GradientMode"]) ? $Format["GradientMode"] : GRADIENT_SIMPLE;
-     $GradientAlpha	= isset($Format["GradientAlpha"]) ? $Format["GradientAlpha"] : 20;
-     $GradientStartR	= isset($Format["GradientStartR"]) ? $Format["GradientStartR"] : 255;
-     $GradientStartG	= isset($Format["GradientStartG"]) ? $Format["GradientStartG"] : 255;
-     $GradientStartB	= isset($Format["GradientStartB"]) ? $Format["GradientStartB"] : 255;
-     $GradientEndR	= isset($Format["GradientEndR"]) ? $Format["GradientEndR"] : 0;
-     $GradientEndG	= isset($Format["GradientEndG"]) ? $Format["GradientEndG"] : 0;
-     $GradientEndB	= isset($Format["GradientEndB"]) ? $Format["GradientEndB"] : 0;
-     $InnerSurrounding	= isset($Format["InnerSurrounding"]) ? $Format["InnerSurrounding"] : NULL;
-     $InnerBorderR	= isset($Format["InnerBorderR"]) ? $Format["InnerBorderR"] : -1;
-     $InnerBorderG	= isset($Format["InnerBorderG"]) ? $Format["InnerBorderG"] : -1;
-     $InnerBorderB	= isset($Format["InnerBorderB"]) ? $Format["InnerBorderB"] : -1;
-     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
-     $FontFactor	= isset($Format["FontFactor"]) ? $Format["FontFactor"] : 8;
+     $DisplayColor    = isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
+     $DisplayFont    = isset($Format["DisplayFont"]) ? $Format["DisplayFont"] : $this->FontName;
+     $DisplaySize    = isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontSize;
+     $DisplayR        = isset($Format["DisplayR"]) ? $Format["DisplayR"] : 0;
+     $DisplayG        = isset($Format["DisplayG"]) ? $Format["DisplayG"] : 0;
+     $DisplayB        = isset($Format["DisplayB"]) ? $Format["DisplayB"] : 0;
+     $Interleave    = isset($Format["Interleave"]) ? $Format["Interleave"] : .5;
+     $Rounded        = isset($Format["Rounded"]) ? $Format["Rounded"] : FALSE;
+     $RoundRadius    = isset($Format["RoundRadius"]) ? $Format["RoundRadius"] : 4;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $Gradient        = isset($Format["Gradient"]) ? $Format["Gradient"] : FALSE;
+     $GradientMode    = isset($Format["GradientMode"]) ? $Format["GradientMode"] : GRADIENT_SIMPLE;
+     $GradientAlpha    = isset($Format["GradientAlpha"]) ? $Format["GradientAlpha"] : 20;
+     $GradientStartR    = isset($Format["GradientStartR"]) ? $Format["GradientStartR"] : 255;
+     $GradientStartG    = isset($Format["GradientStartG"]) ? $Format["GradientStartG"] : 255;
+     $GradientStartB    = isset($Format["GradientStartB"]) ? $Format["GradientStartB"] : 255;
+     $GradientEndR    = isset($Format["GradientEndR"]) ? $Format["GradientEndR"] : 0;
+     $GradientEndG    = isset($Format["GradientEndG"]) ? $Format["GradientEndG"] : 0;
+     $GradientEndB    = isset($Format["GradientEndB"]) ? $Format["GradientEndB"] : 0;
+     $InnerSurrounding    = isset($Format["InnerSurrounding"]) ? $Format["InnerSurrounding"] : NULL;
+     $InnerBorderR    = isset($Format["InnerBorderR"]) ? $Format["InnerBorderR"] : -1;
+     $InnerBorderG    = isset($Format["InnerBorderG"]) ? $Format["InnerBorderG"] : -1;
+     $InnerBorderB    = isset($Format["InnerBorderB"]) ? $Format["InnerBorderB"] : -1;
+     $RecordImageMap    = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+     $FontFactor    = isset($Format["FontFactor"]) ? $Format["FontFactor"] : 8;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_STACKED;
 
@@ -4813,10 +4813,10 @@
          if ( $InnerSurrounding != NULL ) { $InnerBorderR = $R+$InnerSurrounding; $InnerBorderG = $G+$InnerSurrounding; $InnerBorderB = $B+$InnerSurrounding; }
          if ( $InnerBorderR == -1 ) { $InnerColor = NULL; } else { $InnerColor = array("R"=>$InnerBorderR,"G"=>$InnerBorderG,"B"=>$InnerBorderB); }
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          if (isset($Serie["Description"])) { $SerieDescription = $Serie["Description"]; } else { $SerieDescription = $SerieName; }
 
@@ -5023,21 +5023,21 @@
    /* Draw a stacked area chart */
    function drawStackedAreaChart($Format=NULL)
     {
-     $DrawLine		= isset($Format["DrawLine"]) ? $Format["DrawLine"] : FALSE;
-     $LineSurrounding	= isset($Format["LineSurrounding"]) ? $Format["LineSurrounding"] : NULL;
-     $LineR		= isset($Format["LineR"]) ? $Format["LineR"] : VOID;
-     $LineG		= isset($Format["LineG"]) ? $Format["LineG"] : VOID;
-     $LineB		= isset($Format["LineB"]) ? $Format["LineB"] : VOID;
-     $LineAlpha		= isset($Format["LineAlpha"]) ? $Format["LineAlpha"] : 100;
-     $DrawPlot		= isset($Format["DrawPlot"]) ? $Format["DrawPlot"] : FALSE;
-     $PlotRadius	= isset($Format["PlotRadius"]) ? $Format["PlotRadius"] : 2;
-     $PlotBorder	= isset($Format["PlotBorder"]) ? $Format["PlotBorder"] : 1;
+     $DrawLine        = isset($Format["DrawLine"]) ? $Format["DrawLine"] : FALSE;
+     $LineSurrounding    = isset($Format["LineSurrounding"]) ? $Format["LineSurrounding"] : NULL;
+     $LineR        = isset($Format["LineR"]) ? $Format["LineR"] : VOID;
+     $LineG        = isset($Format["LineG"]) ? $Format["LineG"] : VOID;
+     $LineB        = isset($Format["LineB"]) ? $Format["LineB"] : VOID;
+     $LineAlpha        = isset($Format["LineAlpha"]) ? $Format["LineAlpha"] : 100;
+     $DrawPlot        = isset($Format["DrawPlot"]) ? $Format["DrawPlot"] : FALSE;
+     $PlotRadius    = isset($Format["PlotRadius"]) ? $Format["PlotRadius"] : 2;
+     $PlotBorder    = isset($Format["PlotBorder"]) ? $Format["PlotBorder"] : 1;
      $PlotBorderSurrounding = isset($Format["PlotBorderSurrounding"]) ? $Format["PlotBorderSurrounding"] : NULL;
-     $PlotBorderR	= isset($Format["PlotBorderR"]) ? $Format["PlotBorderR"] : 0;
-     $PlotBorderG	= isset($Format["PlotBorderG"]) ? $Format["PlotBorderG"] : 0;
-     $PlotBorderB	= isset($Format["PlotBorderB"]) ? $Format["PlotBorderB"] : 0;
-     $PlotBorderAlpha	= isset($Format["PlotBorderAlpha"]) ? $Format["PlotBorderAlpha"] : 50;
-     $ForceTransparency	= isset($Format["ForceTransparency"]) ? $Format["ForceTransparency"] : NULL;
+     $PlotBorderR    = isset($Format["PlotBorderR"]) ? $Format["PlotBorderR"] : 0;
+     $PlotBorderG    = isset($Format["PlotBorderG"]) ? $Format["PlotBorderG"] : 0;
+     $PlotBorderB    = isset($Format["PlotBorderB"]) ? $Format["PlotBorderB"] : 0;
+     $PlotBorderAlpha    = isset($Format["PlotBorderAlpha"]) ? $Format["PlotBorderAlpha"] : 50;
+     $ForceTransparency    = isset($Format["ForceTransparency"]) ? $Format["ForceTransparency"] : NULL;
 
      $this->LastChartLayout = CHART_LAST_LAYOUT_STACKED;
 
@@ -5097,10 +5097,10 @@
          else
           $PlotBorderColor = array("R"=>$PlotBorderR,"G"=>$PlotBorderG,"B"=>$PlotBorderB,"Alpha"=>$PlotBorderAlpha);
 
-         $AxisID	= $Serie["Axis"];
-         $Mode		= $Data["Axis"][$AxisID]["Display"];
-         $Format	= $Data["Axis"][$AxisID]["Format"];
-         $Unit		= $Data["Axis"][$AxisID]["Unit"];
+         $AxisID    = $Serie["Axis"];
+         $Mode        = $Data["Axis"][$AxisID]["Display"];
+         $Format    = $Data["Axis"][$AxisID]["Format"];
+         $Unit        = $Data["Axis"][$AxisID]["Unit"];
 
          $PosArray = $this->scaleComputeY($Serie["Data"],array("AxisID"=>$Serie["Axis"]),TRUE);
          $YZero    = $this->scaleComputeY(0,array("AxisID"=>$Serie["Axis"]));
@@ -5219,45 +5219,45 @@
    /* Draw the derivative chart associated to the data series */
    function drawDerivative($Format=NULL)
     {
-     $Offset		= isset($Format["Offset"]) ? $Format["Offset"] : 10;
-     $SerieSpacing	= isset($Format["SerieSpacing"]) ? $Format["SerieSpacing"] : 3;
-     $DerivativeHeight	= isset($Format["DerivativeHeight"]) ? $Format["DerivativeHeight"] : 4;
-     $ShadedSlopeBox	= isset($Format["ShadedSlopeBox"]) ? $Format["ShadedSlopeBox"] : FALSE;
-     $DrawBackground	= isset($Format["DrawBackground"]) ? $Format["DrawBackground"] : TRUE;
-     $BackgroundR	= isset($Format["BackgroundR"]) ? $Format["BackgroundR"] : 255;
-     $BackgroundG	= isset($Format["BackgroundG"]) ? $Format["BackgroundG"] : 255;
-     $BackgroundB	= isset($Format["BackgroundB"]) ? $Format["BackgroundB"] : 255;
-     $BackgroundAlpha	= isset($Format["BackgroundAlpha"]) ? $Format["BackgroundAlpha"] : 20;
-     $DrawBorder	= isset($Format["DrawBorder"]) ? $Format["DrawBorder"] : TRUE;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : 0;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : 0;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
-     $BorderAlpha	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 100;
-     $Caption		= isset($Format["Caption"]) ? $Format["Caption"] : TRUE;
-     $CaptionHeight	= isset($Format["CaptionHeight"]) ? $Format["CaptionHeight"] : 10;
-     $CaptionWidth	= isset($Format["CaptionWidth"]) ? $Format["CaptionWidth"] : 20;
-     $CaptionMargin	= isset($Format["CaptionMargin"]) ? $Format["CaptionMargin"] : 4;
-     $CaptionLine	= isset($Format["CaptionLine"]) ? $Format["CaptionLine"] : FALSE;
-     $CaptionBox	= isset($Format["CaptionBox"]) ? $Format["CaptionBox"] : FALSE;
-     $CaptionBorderR	= isset($Format["CaptionBorderR"]) ? $Format["CaptionBorderR"] : 0;
-     $CaptionBorderG	= isset($Format["CaptionBorderG"]) ? $Format["CaptionBorderG"] : 0;
-     $CaptionBorderB	= isset($Format["CaptionBorderB"]) ? $Format["CaptionBorderB"] : 0;
-     $CaptionFillR	= isset($Format["CaptionFillR"]) ? $Format["CaptionFillR"] : 255;
-     $CaptionFillG	= isset($Format["CaptionFillG"]) ? $Format["CaptionFillG"] : 255;
-     $CaptionFillB	= isset($Format["CaptionFillB"]) ? $Format["CaptionFillB"] : 255;
-     $CaptionFillAlpha	= isset($Format["CaptionFillAlpha"]) ? $Format["CaptionFillAlpha"] : 80;
-     $PositiveSlopeStartR	= isset($Format["PositiveSlopeStartR"]) ? $Format["PositiveSlopeStartR"] : 184;
-     $PositiveSlopeStartG	= isset($Format["PositiveSlopeStartG"]) ? $Format["PositiveSlopeStartG"] : 234;
-     $PositiveSlopeStartB	= isset($Format["PositiveSlopeStartB"]) ? $Format["PositiveSlopeStartB"] : 88;
-     $PositiveSlopeEndR		= isset($Format["PositiveSlopeStartR"]) ? $Format["PositiveSlopeStartR"] : 239;
-     $PositiveSlopeEndG		= isset($Format["PositiveSlopeStartG"]) ? $Format["PositiveSlopeStartG"] : 31;
-     $PositiveSlopeEndB		= isset($Format["PositiveSlopeStartB"]) ? $Format["PositiveSlopeStartB"] : 36;
-     $NegativeSlopeStartR	= isset($Format["NegativeSlopeStartR"]) ? $Format["NegativeSlopeStartR"] : 184;
-     $NegativeSlopeStartG	= isset($Format["NegativeSlopeStartG"]) ? $Format["NegativeSlopeStartG"] : 234;
-     $NegativeSlopeStartB	= isset($Format["NegativeSlopeStartB"]) ? $Format["NegativeSlopeStartB"] : 88;
-     $NegativeSlopeEndR		= isset($Format["NegativeSlopeStartR"]) ? $Format["NegativeSlopeStartR"] : 67;
-     $NegativeSlopeEndG		= isset($Format["NegativeSlopeStartG"]) ? $Format["NegativeSlopeStartG"] : 124;
-     $NegativeSlopeEndB		= isset($Format["NegativeSlopeStartB"]) ? $Format["NegativeSlopeStartB"] : 227;
+     $Offset        = isset($Format["Offset"]) ? $Format["Offset"] : 10;
+     $SerieSpacing    = isset($Format["SerieSpacing"]) ? $Format["SerieSpacing"] : 3;
+     $DerivativeHeight    = isset($Format["DerivativeHeight"]) ? $Format["DerivativeHeight"] : 4;
+     $ShadedSlopeBox    = isset($Format["ShadedSlopeBox"]) ? $Format["ShadedSlopeBox"] : FALSE;
+     $DrawBackground    = isset($Format["DrawBackground"]) ? $Format["DrawBackground"] : TRUE;
+     $BackgroundR    = isset($Format["BackgroundR"]) ? $Format["BackgroundR"] : 255;
+     $BackgroundG    = isset($Format["BackgroundG"]) ? $Format["BackgroundG"] : 255;
+     $BackgroundB    = isset($Format["BackgroundB"]) ? $Format["BackgroundB"] : 255;
+     $BackgroundAlpha    = isset($Format["BackgroundAlpha"]) ? $Format["BackgroundAlpha"] : 20;
+     $DrawBorder    = isset($Format["DrawBorder"]) ? $Format["DrawBorder"] : TRUE;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : 0;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : 0;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
+     $BorderAlpha    = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 100;
+     $Caption        = isset($Format["Caption"]) ? $Format["Caption"] : TRUE;
+     $CaptionHeight    = isset($Format["CaptionHeight"]) ? $Format["CaptionHeight"] : 10;
+     $CaptionWidth    = isset($Format["CaptionWidth"]) ? $Format["CaptionWidth"] : 20;
+     $CaptionMargin    = isset($Format["CaptionMargin"]) ? $Format["CaptionMargin"] : 4;
+     $CaptionLine    = isset($Format["CaptionLine"]) ? $Format["CaptionLine"] : FALSE;
+     $CaptionBox    = isset($Format["CaptionBox"]) ? $Format["CaptionBox"] : FALSE;
+     $CaptionBorderR    = isset($Format["CaptionBorderR"]) ? $Format["CaptionBorderR"] : 0;
+     $CaptionBorderG    = isset($Format["CaptionBorderG"]) ? $Format["CaptionBorderG"] : 0;
+     $CaptionBorderB    = isset($Format["CaptionBorderB"]) ? $Format["CaptionBorderB"] : 0;
+     $CaptionFillR    = isset($Format["CaptionFillR"]) ? $Format["CaptionFillR"] : 255;
+     $CaptionFillG    = isset($Format["CaptionFillG"]) ? $Format["CaptionFillG"] : 255;
+     $CaptionFillB    = isset($Format["CaptionFillB"]) ? $Format["CaptionFillB"] : 255;
+     $CaptionFillAlpha    = isset($Format["CaptionFillAlpha"]) ? $Format["CaptionFillAlpha"] : 80;
+     $PositiveSlopeStartR    = isset($Format["PositiveSlopeStartR"]) ? $Format["PositiveSlopeStartR"] : 184;
+     $PositiveSlopeStartG    = isset($Format["PositiveSlopeStartG"]) ? $Format["PositiveSlopeStartG"] : 234;
+     $PositiveSlopeStartB    = isset($Format["PositiveSlopeStartB"]) ? $Format["PositiveSlopeStartB"] : 88;
+     $PositiveSlopeEndR        = isset($Format["PositiveSlopeStartR"]) ? $Format["PositiveSlopeStartR"] : 239;
+     $PositiveSlopeEndG        = isset($Format["PositiveSlopeStartG"]) ? $Format["PositiveSlopeStartG"] : 31;
+     $PositiveSlopeEndB        = isset($Format["PositiveSlopeStartB"]) ? $Format["PositiveSlopeStartB"] : 36;
+     $NegativeSlopeStartR    = isset($Format["NegativeSlopeStartR"]) ? $Format["NegativeSlopeStartR"] : 184;
+     $NegativeSlopeStartG    = isset($Format["NegativeSlopeStartG"]) ? $Format["NegativeSlopeStartG"] : 234;
+     $NegativeSlopeStartB    = isset($Format["NegativeSlopeStartB"]) ? $Format["NegativeSlopeStartB"] : 88;
+     $NegativeSlopeEndR        = isset($Format["NegativeSlopeStartR"]) ? $Format["NegativeSlopeStartR"] : 67;
+     $NegativeSlopeEndG        = isset($Format["NegativeSlopeStartG"]) ? $Format["NegativeSlopeStartG"] : 124;
+     $NegativeSlopeEndB        = isset($Format["NegativeSlopeStartB"]) ? $Format["NegativeSlopeStartB"] : 227;
 
      $Data = $this->DataSet->getData();
 
@@ -5471,11 +5471,11 @@
    /* Draw the line of best fit */
    function drawBestFit($Format="")
     {
-     $OverrideTicks	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-     $OverrideR		= isset($Format["R"]) ? $Format["R"] : VOID;
-     $OverrideG		= isset($Format["G"]) ? $Format["G"] : VOID;
-     $OverrideB		= isset($Format["B"]) ? $Format["B"] : VOID;
-     $OverrideAlpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : VOID;
+     $OverrideTicks    = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+     $OverrideR        = isset($Format["R"]) ? $Format["R"] : VOID;
+     $OverrideG        = isset($Format["G"]) ? $Format["G"] : VOID;
+     $OverrideB        = isset($Format["B"]) ? $Format["B"] : VOID;
+     $OverrideAlpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : VOID;
 
      $Data = $this->DataSet->getData();
      list($XMargin,$XDivs) = $this->scaleGetXSettings();
@@ -5570,15 +5570,15 @@
    /* Write labels */
    function writeLabel($SeriesName,$Indexes,$Format="")
     {
-     $OverrideTitle	= isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
-     $ForceLabels	= isset($Format["ForceLabels"]) ? $Format["ForceLabels"] : NULL;
-     $DrawPoint		= isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
-     $DrawVerticalLine	= isset($Format["DrawVerticalLine"]) ? $Format["DrawVerticalLine"] : FALSE;
-     $VerticalLineR	= isset($Format["VerticalLineR"]) ? $Format["VerticalLineR"] : 0;
-     $VerticalLineG	= isset($Format["VerticalLineG"]) ? $Format["VerticalLineG"] : 0;
-     $VerticalLineB	= isset($Format["VerticalLineB"]) ? $Format["VerticalLineB"] : 0;
-     $VerticalLineAlpha	= isset($Format["VerticalLineAlpha"]) ? $Format["VerticalLineAlpha"] : 40;
-     $VerticalLineTicks	= isset($Format["VerticalLineTicks"]) ? $Format["VerticalLineTicks"] : 2;
+     $OverrideTitle    = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
+     $ForceLabels    = isset($Format["ForceLabels"]) ? $Format["ForceLabels"] : NULL;
+     $DrawPoint        = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
+     $DrawVerticalLine    = isset($Format["DrawVerticalLine"]) ? $Format["DrawVerticalLine"] : FALSE;
+     $VerticalLineR    = isset($Format["VerticalLineR"]) ? $Format["VerticalLineR"] : 0;
+     $VerticalLineG    = isset($Format["VerticalLineG"]) ? $Format["VerticalLineG"] : 0;
+     $VerticalLineB    = isset($Format["VerticalLineB"]) ? $Format["VerticalLineB"] : 0;
+     $VerticalLineAlpha    = isset($Format["VerticalLineAlpha"]) ? $Format["VerticalLineAlpha"] : 40;
+     $VerticalLineTicks    = isset($Format["VerticalLineTicks"]) ? $Format["VerticalLineTicks"] : 2;
 
      $Data = $this->DataSet->getData();
      list($XMargin,$XDivs) = $this->scaleGetXSettings();
@@ -5783,39 +5783,39 @@
    /* Draw a label box */
    function drawLabelBox($X,$Y,$Title,$Captions,$Format="")
     {
-     $NoTitle			= isset($Format["NoTitle"]) ? $Format["NoTitle"] : NULL;
-     $BoxWidth			= isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 50;
-     $DrawSerieColor		= isset($Format["DrawSerieColor"]) ? $Format["DrawSerieColor"] : TRUE;
-     $SerieR			= isset($Format["SerieR"]) ? $Format["SerieR"] : NULL;
-     $SerieG			= isset($Format["SerieG"]) ? $Format["SerieG"] : NULL;
-     $SerieB			= isset($Format["SerieB"]) ? $Format["SerieB"] : NULL;
-     $SerieAlpha		= isset($Format["SerieAlpha"]) ? $Format["SerieAlpha"] : NULL;
-     $SerieBoxSize		= isset($Format["SerieBoxSize"]) ? $Format["SerieBoxSize"] : 6;
-     $SerieBoxSpacing		= isset($Format["SerieBoxSpacing"]) ? $Format["SerieBoxSpacing"] : 4;
-     $VerticalMargin		= isset($Format["VerticalMargin"]) ? $Format["VerticalMargin"] : 10;
-     $HorizontalMargin		= isset($Format["HorizontalMargin"]) ? $Format["HorizontalMargin"] : 8;
-     $R				= isset($Format["R"]) ? $Format["R"] : $this->FontColorR;
-     $G				= isset($Format["G"]) ? $Format["G"] : $this->FontColorG;
-     $B				= isset($Format["B"]) ? $Format["B"] : $this->FontColorB;
-     $Alpha			= isset($Format["Alpha"]) ? $Format["Alpha"] : $this->FontColorA;
-     $FontName			= isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
-     $FontSize			= isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
-     $TitleMode			= isset($Format["TitleMode"]) ? $Format["TitleMode"] : LABEL_TITLE_NOBACKGROUND;
-     $TitleR			= isset($Format["TitleR"]) ? $Format["TitleR"] : $R;
-     $TitleG			= isset($Format["TitleG"]) ? $Format["TitleG"] : $G;
-     $TitleB			= isset($Format["TitleB"]) ? $Format["TitleB"] : $B;
-     $TitleAlpha		= isset($Format["TitleAlpha"]) ? $Format["TitleAlpha"] : 100;
-     $TitleBackgroundR		= isset($Format["TitleBackgroundR"]) ? $Format["TitleBackgroundR"] : 0;
-     $TitleBackgroundG		= isset($Format["TitleBackgroundG"]) ? $Format["TitleBackgroundG"] : 0;
-     $TitleBackgroundB		= isset($Format["TitleBackgroundB"]) ? $Format["TitleBackgroundB"] : 0;
-     $TitleBackgroundAlpha	= isset($Format["TitleBackgroundAlpha"]) ? $Format["TitleBackgroundAlpha"] : 100;
-     $GradientStartR		= isset($Format["GradientStartR"]) ? $Format["GradientStartR"] : 255;
-     $GradientStartG		= isset($Format["GradientStartG"]) ? $Format["GradientStartG"] : 255;
-     $GradientStartB		= isset($Format["GradientStartB"]) ? $Format["GradientStartB"] : 255;
-     $GradientEndR		= isset($Format["GradientEndR"]) ? $Format["GradientEndR"] : 220;
-     $GradientEndG		= isset($Format["GradientEndG"]) ? $Format["GradientEndG"] : 220;
-     $GradientEndB		= isset($Format["GradientEndB"]) ? $Format["GradientEndB"] : 220;
-     $BoxAlpha			= isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 100;
+     $NoTitle            = isset($Format["NoTitle"]) ? $Format["NoTitle"] : NULL;
+     $BoxWidth            = isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 50;
+     $DrawSerieColor        = isset($Format["DrawSerieColor"]) ? $Format["DrawSerieColor"] : TRUE;
+     $SerieR            = isset($Format["SerieR"]) ? $Format["SerieR"] : NULL;
+     $SerieG            = isset($Format["SerieG"]) ? $Format["SerieG"] : NULL;
+     $SerieB            = isset($Format["SerieB"]) ? $Format["SerieB"] : NULL;
+     $SerieAlpha        = isset($Format["SerieAlpha"]) ? $Format["SerieAlpha"] : NULL;
+     $SerieBoxSize        = isset($Format["SerieBoxSize"]) ? $Format["SerieBoxSize"] : 6;
+     $SerieBoxSpacing        = isset($Format["SerieBoxSpacing"]) ? $Format["SerieBoxSpacing"] : 4;
+     $VerticalMargin        = isset($Format["VerticalMargin"]) ? $Format["VerticalMargin"] : 10;
+     $HorizontalMargin        = isset($Format["HorizontalMargin"]) ? $Format["HorizontalMargin"] : 8;
+     $R                = isset($Format["R"]) ? $Format["R"] : $this->FontColorR;
+     $G                = isset($Format["G"]) ? $Format["G"] : $this->FontColorG;
+     $B                = isset($Format["B"]) ? $Format["B"] : $this->FontColorB;
+     $Alpha            = isset($Format["Alpha"]) ? $Format["Alpha"] : $this->FontColorA;
+     $FontName            = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
+     $FontSize            = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
+     $TitleMode            = isset($Format["TitleMode"]) ? $Format["TitleMode"] : LABEL_TITLE_NOBACKGROUND;
+     $TitleR            = isset($Format["TitleR"]) ? $Format["TitleR"] : $R;
+     $TitleG            = isset($Format["TitleG"]) ? $Format["TitleG"] : $G;
+     $TitleB            = isset($Format["TitleB"]) ? $Format["TitleB"] : $B;
+     $TitleAlpha        = isset($Format["TitleAlpha"]) ? $Format["TitleAlpha"] : 100;
+     $TitleBackgroundR        = isset($Format["TitleBackgroundR"]) ? $Format["TitleBackgroundR"] : 0;
+     $TitleBackgroundG        = isset($Format["TitleBackgroundG"]) ? $Format["TitleBackgroundG"] : 0;
+     $TitleBackgroundB        = isset($Format["TitleBackgroundB"]) ? $Format["TitleBackgroundB"] : 0;
+     $TitleBackgroundAlpha    = isset($Format["TitleBackgroundAlpha"]) ? $Format["TitleBackgroundAlpha"] : 100;
+     $GradientStartR        = isset($Format["GradientStartR"]) ? $Format["GradientStartR"] : 255;
+     $GradientStartG        = isset($Format["GradientStartG"]) ? $Format["GradientStartG"] : 255;
+     $GradientStartB        = isset($Format["GradientStartB"]) ? $Format["GradientStartB"] : 255;
+     $GradientEndR        = isset($Format["GradientEndR"]) ? $Format["GradientEndR"] : 220;
+     $GradientEndG        = isset($Format["GradientEndG"]) ? $Format["GradientEndG"] : 220;
+     $GradientEndB        = isset($Format["GradientEndB"]) ? $Format["GradientEndB"] : 220;
+     $BoxAlpha            = isset($Format["BoxAlpha"]) ? $Format["BoxAlpha"] : 100;
 
      if ( !$DrawSerieColor ) { $SerieBoxSize = 0; $SerieBoxSpacing = 0; }
 
@@ -6010,17 +6010,17 @@
 
    function drawPolygonChart($Points,$Format="")
     {
-     $R			= isset($Format["R"]) ? $Format["R"] : 0;
-     $G			= isset($Format["G"]) ? $Format["G"] : 0;
-     $B			= isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha		= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $NoFill		= isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
-     $NoBorder		= isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
-     $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
-     $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
-     $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
-     $BorderAlpha 	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha / 2;
-     $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+     $R            = isset($Format["R"]) ? $Format["R"] : 0;
+     $G            = isset($Format["G"]) ? $Format["G"] : 0;
+     $B            = isset($Format["B"]) ? $Format["B"] : 0;
+     $Alpha        = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $NoFill        = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
+     $NoBorder        = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
+     $BorderR        = isset($Format["BorderR"]) ? $Format["BorderR"] : $R;
+     $BorderG        = isset($Format["BorderG"]) ? $Format["BorderG"] : $G;
+     $BorderB        = isset($Format["BorderB"]) ? $Format["BorderB"] : $B;
+     $BorderAlpha     = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha / 2;
+     $Surrounding    = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
      $Threshold         = isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
 
      if ( $Surrounding != NULL ) { $BorderR = $R+$Surrounding; $BorderG = $G+$Surrounding; $BorderB = $B+$Surrounding; }

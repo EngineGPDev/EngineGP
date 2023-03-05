@@ -1,6 +1,6 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+    if(!DEFINED('EGP'))
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
     class mysql
     {
@@ -43,7 +43,7 @@
             if(!$query_id)
                 $query_id = $this->query_id;
 
-			$get = mysqli_fetch_assoc($query_id);
+            $get = mysqli_fetch_assoc($query_id);
 
             return $get;
         }
@@ -69,10 +69,10 @@
 
         private function out_error($error, $query = '')
         {
-			global $go;
+            global $go;
 
-			if($go)
-				sys::outjs(array('e' =>  'Query: '.$query.'<br>Error:<br>'.$error));
+            if($go)
+                sys::outjs(array('e' =>  'Query: '.$query.'<br>Error:<br>'.$error));
 
             if($query != '')
                 echo 'Query: '.$query.'<br>';

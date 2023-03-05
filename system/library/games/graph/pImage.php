@@ -1,6 +1,6 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+    if(!DEFINED('EGP'))
+        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
  /* The GD extension is mandatory */
  if (!extension_loaded('gd') && !extension_loaded('gd2'))
@@ -10,65 +10,65 @@
   }
 
  /* Image map handling */
- define("IMAGE_MAP_STORAGE_FILE"	, 680001);
- define("IMAGE_MAP_STORAGE_SESSION"	, 680002);
+ define("IMAGE_MAP_STORAGE_FILE"    , 680001);
+ define("IMAGE_MAP_STORAGE_SESSION"    , 680002);
 
  /* Last generated chart layout */
- define("CHART_LAST_LAYOUT_REGULAR"	, 680011);
- define("CHART_LAST_LAYOUT_STACKED"	, 680012);
+ define("CHART_LAST_LAYOUT_REGULAR"    , 680011);
+ define("CHART_LAST_LAYOUT_STACKED"    , 680012);
 
  /* ImageMap string delimiter */
- define("IMAGE_MAP_DELIMITER"		, chr(1));
+ define("IMAGE_MAP_DELIMITER"        , chr(1));
 
  class pImage extends pDraw
   {
    /* Image settings, size, quality, .. */
-   var $XSize		= NULL;				// Width of the picture
-   var $YSize		= NULL;				// Height of the picture
-   var $Picture		= NULL;				// GD picture object
-   var $Antialias	= TRUE;				// Turn antialias on or off
-   var $AntialiasQuality  = 0;				// Quality of the antialiasing implementation (0-1)
-   var $Mask		= "";				// Already drawn pixels mask (Filled circle implementation)
-   var $TransparentBackground = FALSE;			// Just to know if we need to flush the alpha channels when rendering
+   var $XSize        = NULL;                // Width of the picture
+   var $YSize        = NULL;                // Height of the picture
+   var $Picture        = NULL;                // GD picture object
+   var $Antialias    = TRUE;                // Turn antialias on or off
+   var $AntialiasQuality  = 0;                // Quality of the antialiasing implementation (0-1)
+   var $Mask        = "";                // Already drawn pixels mask (Filled circle implementation)
+   var $TransparentBackground = FALSE;            // Just to know if we need to flush the alpha channels when rendering
 
    /* Graph area settings */
-   var $GraphAreaX1	= NULL;				// Graph area X origin
-   var $GraphAreaY1	= NULL;				// Graph area Y origin
-   var $GraphAreaX2	= NULL;				// Graph area bottom right X position
-   var $GraphAreaY2	= NULL;				// Graph area bottom right Y position
+   var $GraphAreaX1    = NULL;                // Graph area X origin
+   var $GraphAreaY1    = NULL;                // Graph area Y origin
+   var $GraphAreaX2    = NULL;                // Graph area bottom right X position
+   var $GraphAreaY2    = NULL;                // Graph area bottom right Y position
 
    /* Scale settings */
-   var $ScaleMinDivHeight = 20;				// Minimum height for scame divs
+   var $ScaleMinDivHeight = 20;                // Minimum height for scame divs
 
    /* Font properties */
-   var $FontName	= "fonts/GeosansLight.ttf";	// Default font file
-   var $FontSize	= 12;				// Default font size
-   var $FontBox		= NULL;				// Return the bounding box of the last written string
-   var $FontColorR	= 0;				// Default color settings
-   var $FontColorG	= 0;				// Default color settings
-   var $FontColorB	= 0;				// Default color settings
-   var $FontColorA	= 100;				// Default transparency
+   var $FontName    = "fonts/GeosansLight.ttf";    // Default font file
+   var $FontSize    = 12;                // Default font size
+   var $FontBox        = NULL;                // Return the bounding box of the last written string
+   var $FontColorR    = 0;                // Default color settings
+   var $FontColorG    = 0;                // Default color settings
+   var $FontColorB    = 0;                // Default color settings
+   var $FontColorA    = 100;                // Default transparency
 
    /* Shadow properties */
-   var $Shadow		= FALSE;			// Turn shadows on or off
-   var $ShadowX		= NULL;				// X Offset of the shadow
-   var $ShadowY		= NULL;				// Y Offset of the shadow
-   var $ShadowR		= NULL;				// R component of the shadow
-   var $ShadowG		= NULL;				// G component of the shadow
-   var $ShadowB		= NULL;				// B component of the shadow
-   var $Shadowa		= NULL;				// Alpha level of the shadow
+   var $Shadow        = FALSE;            // Turn shadows on or off
+   var $ShadowX        = NULL;                // X Offset of the shadow
+   var $ShadowY        = NULL;                // Y Offset of the shadow
+   var $ShadowR        = NULL;                // R component of the shadow
+   var $ShadowG        = NULL;                // G component of the shadow
+   var $ShadowB        = NULL;                // B component of the shadow
+   var $Shadowa        = NULL;                // Alpha level of the shadow
 
    /* Image map */
-   var $ImageMap	= NULL;				// Aray containing the image map
-   var $ImageMapIndex	= "pChart";			// Name of the session array
-   var $ImageMapStorageMode = NULL;			// Save the current imagemap storage mode
-   var $ImageMapAutoDelete  = TRUE;			// Automatic deletion of the image map temp files
+   var $ImageMap    = NULL;                // Aray containing the image map
+   var $ImageMapIndex    = "pChart";            // Name of the session array
+   var $ImageMapStorageMode = NULL;            // Save the current imagemap storage mode
+   var $ImageMapAutoDelete  = TRUE;            // Automatic deletion of the image map temp files
 
    /* Data Set */
-   var $DataSet		= NULL;				// Attached dataset
+   var $DataSet        = NULL;                // Attached dataset
 
    /* Last generated chart info */
-   var $LastChartLayout	= CHART_LAST_LAYOUT_REGULAR;	// Last layout : regular or stacked
+   var $LastChartLayout    = CHART_LAST_LAYOUT_REGULAR;    // Last layout : regular or stacked
 
    /* Class constructor */
    function pImage($XSize,$YSize,$DataSet=NULL,$TransparentBackground=FALSE)
@@ -98,11 +98,11 @@
    /* Enable / Disable and set shadow properties */
    function setShadow($Enabled=TRUE,$Format="")
     {
-     $X	    = isset($Format["X"]) ? $Format["X"] : 2;
-     $Y	    = isset($Format["Y"]) ? $Format["Y"] : 2;
-     $R	    = isset($Format["R"]) ? $Format["R"] : 0;
-     $G	    = isset($Format["G"]) ? $Format["G"] : 0;
-     $B	    = isset($Format["B"]) ? $Format["B"] : 0;
+     $X        = isset($Format["X"]) ? $Format["X"] : 2;
+     $Y        = isset($Format["Y"]) ? $Format["Y"] : 2;
+     $R        = isset($Format["R"]) ? $Format["R"] : 0;
+     $G        = isset($Format["G"]) ? $Format["G"] : 0;
+     $B        = isset($Format["B"]) ? $Format["B"] : 0;
      $Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 10;
 
      $this->Shadow  = $Enabled;
@@ -188,8 +188,8 @@
      $RealPos[2]["X"] = cos((270-$Angle)*PI/180)*$Height + $RealPos[1]["X"]; $RealPos[2]["Y"] = sin((270-$Angle)*PI/180)*$Height + $RealPos[1]["Y"];
      $RealPos[3]["X"] = cos((180-$Angle)*PI/180)*$Width + $RealPos[2]["X"]; $RealPos[3]["Y"] = sin((180-$Angle)*PI/180)*$Width + $RealPos[2]["Y"];
 
-     $RealPos[TEXT_ALIGN_BOTTOMLEFT]["X"] = $RealPos[0]["X"];	$RealPos[TEXT_ALIGN_BOTTOMLEFT]["Y"] = $RealPos[0]["Y"];
-     $RealPos[TEXT_ALIGN_BOTTOMRIGHT]["X"] = $RealPos[1]["X"];	$RealPos[TEXT_ALIGN_BOTTOMRIGHT]["Y"] = $RealPos[1]["Y"];
+     $RealPos[TEXT_ALIGN_BOTTOMLEFT]["X"] = $RealPos[0]["X"];    $RealPos[TEXT_ALIGN_BOTTOMLEFT]["Y"] = $RealPos[0]["Y"];
+     $RealPos[TEXT_ALIGN_BOTTOMRIGHT]["X"] = $RealPos[1]["X"];    $RealPos[TEXT_ALIGN_BOTTOMRIGHT]["Y"] = $RealPos[1]["Y"];
 
      return($RealPos);
     }
@@ -206,15 +206,15 @@
        $RealPos[$i/2]["Y"] = $Y + round($coords[$i+1] * $ca - $coords[$i] * $sa);
       }
 
-     $RealPos[TEXT_ALIGN_BOTTOMLEFT]["X"]	= $RealPos[0]["X"];	$RealPos[TEXT_ALIGN_BOTTOMLEFT]["Y"]	= $RealPos[0]["Y"];
-     $RealPos[TEXT_ALIGN_BOTTOMRIGHT]["X"]	= $RealPos[1]["X"];	$RealPos[TEXT_ALIGN_BOTTOMRIGHT]["Y"]	= $RealPos[1]["Y"];
-     $RealPos[TEXT_ALIGN_TOPLEFT]["X"]		= $RealPos[3]["X"];	$RealPos[TEXT_ALIGN_TOPLEFT]["Y"]	= $RealPos[3]["Y"];
-     $RealPos[TEXT_ALIGN_TOPRIGHT]["X"]		= $RealPos[2]["X"];	$RealPos[TEXT_ALIGN_TOPRIGHT]["Y"]	= $RealPos[2]["Y"];
-     $RealPos[TEXT_ALIGN_BOTTOMMIDDLE]["X"]	= ($RealPos[1]["X"]-$RealPos[0]["X"])/2+$RealPos[0]["X"];	$RealPos[TEXT_ALIGN_BOTTOMMIDDLE]["Y"]	= ($RealPos[0]["Y"]-$RealPos[1]["Y"])/2+$RealPos[1]["Y"];
-     $RealPos[TEXT_ALIGN_TOPMIDDLE]["X"]	= ($RealPos[2]["X"]-$RealPos[3]["X"])/2+$RealPos[3]["X"];	$RealPos[TEXT_ALIGN_TOPMIDDLE]["Y"]	= ($RealPos[3]["Y"]-$RealPos[2]["Y"])/2+$RealPos[2]["Y"];
-     $RealPos[TEXT_ALIGN_MIDDLELEFT]["X"]	= ($RealPos[0]["X"]-$RealPos[3]["X"])/2+$RealPos[3]["X"];	$RealPos[TEXT_ALIGN_MIDDLELEFT]["Y"]	= ($RealPos[0]["Y"]-$RealPos[3]["Y"])/2+$RealPos[3]["Y"];
-     $RealPos[TEXT_ALIGN_MIDDLERIGHT]["X"]	= ($RealPos[1]["X"]-$RealPos[2]["X"])/2+$RealPos[2]["X"];	$RealPos[TEXT_ALIGN_MIDDLERIGHT]["Y"]	= ($RealPos[1]["Y"]-$RealPos[2]["Y"])/2+$RealPos[2]["Y"];
-     $RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["X"]	= ($RealPos[1]["X"]-$RealPos[3]["X"])/2+$RealPos[3]["X"];	$RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"]	= ($RealPos[0]["Y"]-$RealPos[2]["Y"])/2+$RealPos[2]["Y"];
+     $RealPos[TEXT_ALIGN_BOTTOMLEFT]["X"]    = $RealPos[0]["X"];    $RealPos[TEXT_ALIGN_BOTTOMLEFT]["Y"]    = $RealPos[0]["Y"];
+     $RealPos[TEXT_ALIGN_BOTTOMRIGHT]["X"]    = $RealPos[1]["X"];    $RealPos[TEXT_ALIGN_BOTTOMRIGHT]["Y"]    = $RealPos[1]["Y"];
+     $RealPos[TEXT_ALIGN_TOPLEFT]["X"]        = $RealPos[3]["X"];    $RealPos[TEXT_ALIGN_TOPLEFT]["Y"]    = $RealPos[3]["Y"];
+     $RealPos[TEXT_ALIGN_TOPRIGHT]["X"]        = $RealPos[2]["X"];    $RealPos[TEXT_ALIGN_TOPRIGHT]["Y"]    = $RealPos[2]["Y"];
+     $RealPos[TEXT_ALIGN_BOTTOMMIDDLE]["X"]    = ($RealPos[1]["X"]-$RealPos[0]["X"])/2+$RealPos[0]["X"];    $RealPos[TEXT_ALIGN_BOTTOMMIDDLE]["Y"]    = ($RealPos[0]["Y"]-$RealPos[1]["Y"])/2+$RealPos[1]["Y"];
+     $RealPos[TEXT_ALIGN_TOPMIDDLE]["X"]    = ($RealPos[2]["X"]-$RealPos[3]["X"])/2+$RealPos[3]["X"];    $RealPos[TEXT_ALIGN_TOPMIDDLE]["Y"]    = ($RealPos[3]["Y"]-$RealPos[2]["Y"])/2+$RealPos[2]["Y"];
+     $RealPos[TEXT_ALIGN_MIDDLELEFT]["X"]    = ($RealPos[0]["X"]-$RealPos[3]["X"])/2+$RealPos[3]["X"];    $RealPos[TEXT_ALIGN_MIDDLELEFT]["Y"]    = ($RealPos[0]["Y"]-$RealPos[3]["Y"])/2+$RealPos[3]["Y"];
+     $RealPos[TEXT_ALIGN_MIDDLERIGHT]["X"]    = ($RealPos[1]["X"]-$RealPos[2]["X"])/2+$RealPos[2]["X"];    $RealPos[TEXT_ALIGN_MIDDLERIGHT]["Y"]    = ($RealPos[1]["Y"]-$RealPos[2]["Y"])/2+$RealPos[2]["Y"];
+     $RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["X"]    = ($RealPos[1]["X"]-$RealPos[3]["X"])/2+$RealPos[3]["X"];    $RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"]    = ($RealPos[0]["Y"]-$RealPos[2]["Y"])/2+$RealPos[2]["Y"];
 
      return($RealPos);
     }
@@ -222,12 +222,12 @@
    /* Set current font properties */
    function setFontProperties($Format="")
     {
-     $R		= isset($Format["R"]) ? $Format["R"] : -1;
-     $G		= isset($Format["G"]) ? $Format["G"] : -1;
-     $B		= isset($Format["B"]) ? $Format["B"] : -1;
-     $Alpha	= isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-     $FontName	= isset($Format["FontName"]) ? $Format["FontName"] : NULL;
-     $FontSize	= isset($Format["FontSize"]) ? $Format["FontSize"] : NULL;
+     $R        = isset($Format["R"]) ? $Format["R"] : -1;
+     $G        = isset($Format["G"]) ? $Format["G"] : -1;
+     $B        = isset($Format["B"]) ? $Format["B"] : -1;
+     $Alpha    = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     $FontName    = isset($Format["FontName"]) ? $Format["FontName"] : NULL;
+     $FontSize    = isset($Format["FontSize"]) ? $Format["FontSize"] : NULL;
 
      if ( $R != -1)       {  $this->FontColorR = $R; }
      if ( $G != -1)       {  $this->FontColorG = $G; }
@@ -259,8 +259,8 @@
    /* Initialise the image map methods */
    function initialiseImageMap($Name="pChart",$StorageMode=IMAGE_MAP_STORAGE_SESSION,$UniqueID="imageMap",$StorageFolder="tmp")
     {
-     $this->ImageMapIndex 		= $Name;
-     $this->ImageMapStorageMode		= $StorageMode;
+     $this->ImageMapIndex         = $Name;
+     $this->ImageMapStorageMode        = $StorageMode;
 
      if ($StorageMode == IMAGE_MAP_STORAGE_SESSION)
       {
@@ -269,8 +269,8 @@
       }
      elseif($StorageMode == IMAGE_MAP_STORAGE_FILE)
       {
-       $this->ImageMapFileName 		= $UniqueID;
-       $this->ImageMapStorageFolder	= $StorageFolder;
+       $this->ImageMapFileName         = $UniqueID;
+       $this->ImageMapStorageFolder    = $StorageFolder;
 
        if (file_exists($StorageFolder."/".$UniqueID.".map")) { unlink($StorageFolder."/".$UniqueID.".map"); }
       }
@@ -394,8 +394,8 @@
    /* Dump the image map */
    function dumpImageMap($Name="pChart",$StorageMode=IMAGE_MAP_STORAGE_SESSION,$UniqueID="imageMap",$StorageFolder="tmp")
     {
-     $this->ImageMapIndex 		= $Name;
-     $this->ImageMapStorageMode		= $StorageMode;
+     $this->ImageMapIndex         = $Name;
+     $this->ImageMapStorageMode        = $StorageMode;
 
      if ( $this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION )
       {
@@ -442,8 +442,8 @@
    /* Mirror Effect */
    function drawAreaMirror($X,$Y,$Width,$Height,$Format="")
     {
-     $StartAlpha	= isset($Format["StartAlpha"]) ? $Format["StartAlpha"] : 80;
-     $EndAlpha		= isset($Format["EndAlpha"]) ? $Format["EndAlpha"] : 0;
+     $StartAlpha    = isset($Format["StartAlpha"]) ? $Format["StartAlpha"] : 80;
+     $EndAlpha        = isset($Format["EndAlpha"]) ? $Format["EndAlpha"] : 0;
 
      $AlphaStep = ($StartAlpha-$EndAlpha)/$Height;
 

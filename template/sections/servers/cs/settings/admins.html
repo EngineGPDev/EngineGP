@@ -1,24 +1,24 @@
 <h4 class="hblock_content">Управление администраторами на сервере</h4>
 
 <div class="block_content">
-	<form method="POST" action="[home]servers/id/[id]/section/settings/subsection/admins/go" id="form">
-		<table class="table_pad input_pad">
-			<tbody id="forms">
-				<tr>
-					<td align="center" width="7%"></td>
-					<td align="center" width="17%">Ник / Steam / Ip</td>
-					<td align="center" width="17%">Пароль</td>
-					<td align="center" width="17%">Флаги доступа</td>
-					<td align="center" width="14%">Тип доступа</td>
-					<td align="center" width="10%">Истекает</td>
-					<td align="center" width="10%">Примечание</td>
-					<td align="center" width="7%"><button class="btn-success btn-max" onclick="return addform();">Добавить</button></td>
-				</tr>
-				[admins]
-			</tbody>
-		</table>
-		<button type="submit" class="btn-success btn-max">Сохранить</button>
-	</form>
+    <form method="POST" action="[home]servers/id/[id]/section/settings/subsection/admins/go" id="form">
+        <table class="table_pad input_pad">
+            <tbody id="forms">
+                <tr>
+                    <td align="center" width="7%"></td>
+                    <td align="center" width="17%">Ник / Steam / Ip</td>
+                    <td align="center" width="17%">Пароль</td>
+                    <td align="center" width="17%">Флаги доступа</td>
+                    <td align="center" width="14%">Тип доступа</td>
+                    <td align="center" width="10%">Истекает</td>
+                    <td align="center" width="10%">Примечание</td>
+                    <td align="center" width="7%"><button class="btn-success btn-max" onclick="return addform();">Добавить</button></td>
+                </tr>
+                [admins]
+            </tbody>
+        </table>
+        <button type="submit" class="btn-success btn-max">Сохранить</button>
+    </form>
 </div>
 
 <link rel="stylesheet" type="text/css" href="[css]date.css" media="screen" />
@@ -33,7 +33,7 @@
 var server = '[id]';
 var index = [index];
 $(function(){
-	$('.date-picker').datepicker();
+    $('.date-picker').datepicker();
 });
 $(document).ready(function(e){$('input').lc_switch();});
 </script>
