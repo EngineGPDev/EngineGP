@@ -24,6 +24,9 @@
 	$mcache = new Memcache;
 	$mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
 
+    // Composer
+    require(ROOT.'vendor/autoload.php');
+
 	// Настройки
 	include(DATA.'config.php');
 	include(DATA.'mysql.php');
