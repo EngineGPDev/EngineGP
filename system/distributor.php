@@ -3,6 +3,8 @@
 	if(!DEFINED('EGP'))
 		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
+	$device = '!mobile';
+	
 	// Парсинг адреса
 	$url = is_array(sys::url()) ? sys::url() : array();
 	$route = sys::url(false);

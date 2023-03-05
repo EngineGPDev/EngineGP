@@ -20,7 +20,6 @@
 	DEFINE('ENG', SYS.'engine/');
 	DEFINE('SEC', SYS.'sections/');
 
-	$device = isset($_COOKIE['egp_device']) ? $_COOKIE['egp_device'] : '!mobile';
 	$start_point = $_SERVER['REQUEST_TIME'];
 
 	$mcache = new Memcache;
@@ -39,23 +38,8 @@
 
 	$uip = sys::ip();
 
-	/* if(!isset($_COOKIE['egp_device']))
-	{
-		include(LIB.'megp.php');
-
-		$device = $megp->isMobile() ? 'mobile' : '!mobile';
-
-		sys::cookie('egp_device', $device, 14);
-
-		if($device == 'mobile')
-			sys::back();
-	} */
-
 	// Распределитель
-	if($device == '!mobile')
-		include(SYS.'distributor.php');
-	/* else
-		include(SYS.'mdistributor.php'); */
+	include(SYS.'distributor.php');
 
 	// Выхлоп
 	echo $html->arr['all'];
