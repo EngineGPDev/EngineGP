@@ -428,7 +428,7 @@
 		public static function cookie($name, $value, $expires)
 		{
 			$expires = time() + ($expires * 86400);
-			setcookie($name, $value, $expires, "/", $_SERVER['HTTP_HOST'], null, true);
+			setcookie($name, $value, $expires, "/", $_SERVER['HTTP_HOST'], true);
 		}
 
 		public static function auth()
