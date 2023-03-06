@@ -8,6 +8,8 @@
         var $template = null;
         var $data = array();
         var $unitblock = array();
+        public $arr;
+        public $select_template;
 
         public function set($name, $var, $unset = false)
         {
