@@ -740,7 +740,7 @@
             {
                $color = imagecolorallocatealpha($src, $colors[rand(0,sizeof($colors)-1)], $colors[rand(0,sizeof($colors)-1)], $colors[rand(0,sizeof($colors)-1)], rand(20,40)); 
                $char = $chars[rand(0, sizeof($chars)-1)];
-               $size = rand($font_size*2.1-2, $font_size*2.1+2);
+               $size = rand($font_size*((int) 2.1)-2, $font_size*((int) 2.1)+2);
 
                $x = ($i+1)*$font_size + rand(6,8);
                $y = (($height*2)/3) + rand(3,7);
