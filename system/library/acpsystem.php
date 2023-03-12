@@ -75,6 +75,7 @@
 
         public static function valid($val, $type, $preg = '')
         {
+            $val = isset($val) ? $val : '';
             switch($type)
             {
                 case 'promo':
