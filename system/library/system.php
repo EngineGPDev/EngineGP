@@ -687,6 +687,10 @@
 
         public static function strlen($str)
         {
+            if ($str === null) {
+                return 0;
+            }
+
             return iconv_strlen($str, 'UTF-8');
         }
 
