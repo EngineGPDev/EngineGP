@@ -50,7 +50,7 @@
             return NULL;
         }
 
-        public static function users($users = false, $user = false, $authkey = false, $del = false)
+        public static function users($users = [], $user = false, $authkey = false, $del = false)
         {
             global $mcache;
 
