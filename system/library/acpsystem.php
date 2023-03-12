@@ -466,7 +466,7 @@
             if($hour)
                 $uptime .= $hour.'ч. ';
 
-            $min = $time/60%60;
+            $min = (int)($time/60)%60;
             if($min)
                 $uptime .= $min.'м. ';
             
