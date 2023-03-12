@@ -462,7 +462,7 @@
             if($day)
                 $uptime .= $day.'д. ';
 
-            $hour = $time/60/60%24;
+            $hour = (int)($time/60/60)%24;
             if($hour)
                 $uptime .= $hour.'ч. ';
 
