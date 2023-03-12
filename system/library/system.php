@@ -50,9 +50,13 @@
             return NULL;
         }
 
-        public static function users($users = [], $user = false, $authkey = false, $del = false)
+        public static function users($users, $user, $authkey, $del = false)
         {
             global $mcache;
+
+            if (!is_array($users) || empty($users)) {
+                $users = [];
+            }
 
             if($del)
                 unset($users[md5($user['login'].$user['authkey'].$user['passwd'])]);
