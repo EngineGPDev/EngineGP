@@ -32,7 +32,7 @@
 
     $aData = $mcache->get('data_boost_all');
 
-    if(!is_array($aData))
+    if($aData === false || !is_array($aData))
     {
         $sql->query('SELECT SUM(`circles`), SUM(`money`) FROM `boost`');
         $data = $sql->get();
