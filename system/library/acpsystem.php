@@ -577,7 +577,7 @@
 
         public static function passwdkey($passwd)
         {
-            return md5($passwd);
+            return md5(sha1($passwd));
         }
 
         public static function mail($name, $text, $mail)
