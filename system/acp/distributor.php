@@ -3,6 +3,10 @@
         exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
     $device = '!mobile';
+    // Подключение filp/whoops
+    $whoops = new \Whoops\Run;
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->register();
 
     // Парсинг адреса
     $url = is_array(sys::url()) ? sys::url() : array();
