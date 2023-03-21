@@ -78,9 +78,9 @@
                 $cfg['currency'],
                 $cfg['http'].'acp/',
                 $cfg['http'],
-                $cfg['http'].'template/acp/js/',
-                $cfg['http'].'template/acp/css/',
-                $cfg['http'].'template/acp/images/'
+                $cfg['http'].'acp/template/js/',
+                $cfg['http'].'acp/template/css/',
+                $cfg['http'].'acp/template/images/'
             ),
         );
     }
@@ -101,9 +101,9 @@
             array(
                 $cfg['http'].'acp/',
                 $cfg['http'],
-                $cfg['http'].'template/acp/js/',
-                $cfg['http'].'template/acp/css/',
-                $cfg['http'].'template/acp/images/'
+                $cfg['http'].'acp/template/js/',
+                $cfg['http'].'acp/template/css/',
+                $cfg['http'].'acp/template/images/'
             ),
         );
     }
@@ -114,9 +114,9 @@
         $html->set('acp', $cfg['http'].'acp/');
         $html->set('admin', $user['id']);
         $html->set('home', $cfg['http']);
-        $html->set('js', $cfg['http'].'template/acp/js/');
-        $html->set('css', $cfg['http'].'template/acp/css/');
-        $html->set('img', $cfg['http'].'template/acp/images/');
+        $html->set('js', $cfg['http'].'acp/template/js/');
+        $html->set('css', $cfg['http'].'acp/template/css/');
+        $html->set('img', $cfg['http'].'acp/template/images/');
 
         if(isset($html->arr['menu']))
         {
