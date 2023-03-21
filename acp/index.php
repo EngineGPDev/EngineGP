@@ -11,7 +11,7 @@
     DEFINE('ROOT', '../');
     DEFINE('SYS', ROOT.'system/');
     DEFINE('ACP', ROOT.'system/acp/');
-    DEFINE('TPL', ROOT.'template/acp/');
+    DEFINE('TPL', ROOT.'acp/template/');
     DEFINE('TEMP', ROOT.'temp/');
     DEFINE('FILES', ROOT.'files/');
     DEFINE('DATA', SYS.'data/');
