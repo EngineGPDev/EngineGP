@@ -30,7 +30,7 @@
         $html->set('game', $aGname[$server['game']]);
         $html->set('slots', $server['slots_start']);
         $html->set('online', $server['online']);
-        $html->set('players', base64_decode($server['players']));
+        $html->set('players', base64_decode($server['players'] ?? ''));
         $html->set('name', $server['name']);
         $html->set('status', sys::status($server['status'], $server['game'], $server['map']));
         $html->set('img', sys::status($server['status'], $server['game'], 'mc', 'img'));
