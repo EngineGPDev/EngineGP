@@ -9,6 +9,16 @@
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
     $whoops->register();
 
+    // Подключение monolog/monolog
+    use Monolog\Level;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    // create a log channel
+    $log = new Logger('egp_logger');
+    $log->pushHandler(new StreamHandler(__DIR__.'/logs/enginegp.log', Logger::DEBUG));
+    $log->pushHandler(new StreamHandler(__DIR__.'/logs/enginegp.log', Logger::INFO));
+
     // Парсинг адреса
     $url = is_array(sys::url()) ? sys::url() : array();
     $route = sys::url(false);

@@ -2,6 +2,7 @@
   "require": {
     "symfony/polyfill": "*",
     "delight-im/cookie": "^3.4",
-    "filp/whoops": "2.15.1"
+    "filp/whoops": "2.15.1",
+    "monolog/monolog": "^2.9.1"
   }
 }
