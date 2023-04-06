@@ -363,7 +363,7 @@
             $sql->query('SELECT `'.$sel.'` FROM `users` WHERE `id`="'.$user['id'].'" LIMIT 1');
             $user = array_merge($user, $sql->get());
 
-            $sum = strpos($user[$sel], '%') ? $sum-$sum/100*$user[$sel] : $sum-$user[$sel];
+            $sum = strpos($user[$sel], '%') ? $sum-$sum/100*$user[$sel] : $sum-(float)$user[$sel];
 
             if($sum < 0)
                 sys::outjs(array('e' => 'Ошибка: сумма за услугу неверна'));
