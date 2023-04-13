@@ -115,7 +115,7 @@
                 $cfg['http'].'template/js/',
                 $cfg['http'].'template/css/',
                 $cfg['http'].'template/images/'
-            ),
+            )
         );
     }
 
