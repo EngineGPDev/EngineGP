@@ -22,6 +22,9 @@
 
     $start_point = $_SERVER['REQUEST_TIME'];
 
+    if (!class_exists('Memcache')) {
+        die('Please install Memcache extension');
+    }
     $mcache = new Memcache;
     $mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
 
