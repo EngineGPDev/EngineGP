@@ -5,7 +5,7 @@
 
     @ini_set('display_errors', FALSE);
     @ini_set('html_errors', FALSE);
-    @ini_set('error_reporting', E_ALL ^ E_WARNING ^ E_NOTICE ^ E_STRICT);
+    @ini_set('error_reporting', E_ALL);
 
     DEFINE('EGP', TRUE);
     DEFINE('ROOT', '../');

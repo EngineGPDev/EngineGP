@@ -4,7 +4,7 @@
 
     @ini_set('display_errors', TRUE);
     @ini_set('html_errors', TRUE);
-    @ini_set('error_reporting', E_ALL ^ E_WARNING ^ E_NOTICE ^ E_STRICT);
+    @ini_set('error_reporting', E_ALL);
 
     $nmc = 'cashback_'.$id;
 
