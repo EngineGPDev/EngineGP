@@ -156,17 +156,17 @@
         $html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
 
         $sql->query('SELECT `id`, `login`, `time` FROM `users` ORDER BY `id` ASC');
-        $online = '<span style="padding:0 5px;">';
+        $online = '';
+        $online_users = [];
         while($staff = $sql->get())
         {
             if ($staff['time']+15 > $start_point) {
-                $online .= $staff['login'].', ';
-            }
-            else {
-                $online .= '';
+                $online_users[] = $staff['login'];
             }
         }
-        $online .= '</span>';
+        if(!empty($online_users) && is_countable($online_users)) {
+            $online = '<span style="padding:0 5px;">' . implode(", ", $online_users) . '</span>';
+        }
         $html->set('online_users', $online);
     $html->pack('all');
 
