@@ -131,6 +131,8 @@
             }else
                 $sql->query('UPDATE `web` set `user`="0" WHERE `server`="'.$server['id'].'"');
 
+            $start_point = $_SERVER['REQUEST_TIME'];
+
             // Удаление различной информации игрового сервера
             $sql->query('DELETE FROM `admins_'.$server['game'].'` WHERE `server`="'.$server['id'].'"');
             $sql->query('DELETE FROM `plugins_install` WHERE `server`="'.$server['id'].'"');
