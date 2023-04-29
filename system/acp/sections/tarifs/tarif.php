@@ -139,7 +139,7 @@
             $ips .= $ip.':';
         }
 
-        $ips = isset($ips{0}) ? substr($ips, 0, -1) : '';
+        $ips = isset($ips[0]) ? substr($ips, 0, -1) : '';
 
         $aData['ip'] = $ips;
 
@@ -173,7 +173,7 @@
                 $list .= intval($pid).',';
             }
 
-            $list = isset($list{0}) ? substr($list, 0, -1) : '';
+            $list = isset($list[0]) ? substr($list, 0, -1) : '';
 
             if($list == '')
                 continue;
@@ -200,7 +200,7 @@
             $cores .= intval($core).',';
         }
 
-        $cores = isset($cores{0}) ? substr($cores, 0, -1) : '';
+        $cores = isset($cores[0]) ? substr($cores, 0, -1) : '';
 
         $aData['core_fix'] = $cores;
 
@@ -218,7 +218,7 @@
             $times .= intval($time).':';
         }
 
-        $times = isset($times{0}) ? substr($times, 0, -1) : '';
+        $times = isset($times[0]) ? substr($times, 0, -1) : '';
 
         $aData['time'] = $times;
 
@@ -236,7 +236,7 @@
             $timexts .= intval($timext).':';
         }
 
-        $timexts = isset($timexts{0}) ? substr($timexts, 0, -1) : '';
+        $timexts = isset($timexts[0]) ? substr($timexts, 0, -1) : '';
 
         $aData['timext'] = $timexts;
 
@@ -254,7 +254,7 @@
             $sfps .= intval($fps).':';
         }
 
-        $sfps = isset($sfps{0}) ? substr($sfps, 0, -1) : '';
+        $sfps = isset($sfps[0]) ? substr($sfps, 0, -1) : '';
 
         $aData['fps'] = $sfps;
 
@@ -272,7 +272,7 @@
             $stick .= intval($tick).':';
         }
 
-        $stick = isset($stick{0}) ? substr($stick, 0, -1) : '';
+        $stick = isset($stick[0]) ? substr($stick, 0, -1) : '';
 
         $aData['tickrate'] = $stick;
 
@@ -290,7 +290,7 @@
             $sram .= intval($ram).':';
         }
 
-        $sram = isset($sram{0}) ? substr($sram, 0, -1) : '';
+        $sram = isset($sram[0]) ? substr($sram, 0, -1) : '';
 
         $aData['ram'] = $sram;
 
@@ -435,7 +435,7 @@
             foreach($aPrice as $price)
                 $sprice .= $price.':';
 
-            $sprice = isset($sprice{0}) ? substr($sprice, 0, -1) : '';
+            $sprice = isset($sprice[0]) ? substr($sprice, 0, -1) : '';
 
             $tarif['price'] = $sprice;
         }
@@ -466,7 +466,7 @@
         foreach($aPacks as $name => $fullname)
             $packs .= '"'.$name.'":"'.$fullname.'",';
 
-        $packs = isset($packs{0}) ? substr($packs, 0, -1) : '';
+        $packs = isset($packs[0]) ? substr($packs, 0, -1) : '';
 
         $html->set('packs', $packs);
 
