@@ -220,14 +220,14 @@
                 }
             }
 
-            $ram = $tarif['param_fix'] ? $aData['ram'] : $cfg['ram']['cs']*$aSDATA['slots'];
+            $ram = isset($tarif['param_fix']) ? $aData['ram'] : $cfg['ram']['cs']*isset($aSDATA['slots']);
 
             // Массив данных
             $aSDATA = array(
                 'unit' => $aData['unit'], // идентификатор локации
                 'tarif' => $aData['tarif'], // идентификатор тарифа
                 'ram' => $ram, // значение ram
-                'param_fix' => $tarif['param_fix'], // фиксированные параметры
+                'param_fix' => isset($tarif['param_fix']), // фиксированные параметры
                 'fps' => $aData['fps'], // значение fps
                 'pack' => $aData['pack'], // Выбранная сборка для установки
                 'time' => $aData['time'], // Время аренды
