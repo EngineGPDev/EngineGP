@@ -1,109 +1,105 @@
 <?php
-    if(!DEFINED('EGP'))
-        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-    $html->nav('Параметры server.cfg');
+$html->nav('Параметры server.cfg');
 
-    $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="'.$server['unit'].'" LIMIT 1');
-    $unit = $sql->get();
+$sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
+$unit = $sql->get();
 
-    $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="'.$server['tarif'].'" LIMIT 1');
-    $tarif = $sql->get();
+$sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
+$tarif = $sql->get();
 
-    include(LIB.'ssh.php');
-    
-    if(!$ssh->auth($unit['passwd'], $unit['address']))
-    {
-        if($go)
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
-        
-        sys::back($cfg['http'].'servers/id/'.$id.'/section/settings');
-    }
-    
-    include(DATA.'scfg/'.$server['game'].'.php');
+include(LIB . 'ssh.php');
 
-    // Сохранение изменений
-    if($go)
-    {
-        $servercfg = isset($_POST['config']) ? $_POST['config'] : '';
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+    if ($go)
+        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
 
-        $config = '';
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+}
 
-        foreach($servercfg as $cvar => $val)
-            if($val != '')
-                $config .= str_replace("'", '', $cvar).'='.$val.PHP_EOL;
+include(DATA . 'scfg/' . $server['game'] . '.php');
 
-        // Временый файл
-        $temp = sys::temp($config);
+// Сохранение изменений
+if ($go) {
+    $servercfg = isset($_POST['config']) ? $_POST['config'] : '';
 
-        $ssh->setfile($temp, $tarif['install'].$server['uid'].'/server.properties', 0644);
+    $config = '';
 
-        $ssh->set('chown server'.$server['uid'].':servers '.$tarif['install'].$server['uid'].'/server.properties');
+    foreach ($servercfg as $cvar => $val)
+        if ($val != '')
+            $config .= str_replace("'", '', $cvar) . '=' . $val . PHP_EOL;
 
-        unlink($temp);
+    // Временый файл
+    $temp = sys::temp($config);
 
-        sys::outjs(array('s' => 'ok'), $nmch);
-    }
+    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.properties', 0644);
 
-    // Чтение файла - server.properties
-    $file = $tarif['install'].$server['uid'].'/server.properties';
+    $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/server.properties');
 
-    $ssh->set('echo "" >> '.$file.' && cat '.$file.' | grep -ve "^#\|^[[:space:]]*$"');
+    unlink($temp);
 
-    $fScfg = explode("\n", strip_tags($ssh->get()));
+    sys::outjs(array('s' => 'ok'), $nmch);
+}
 
-    $servercfg = array();
+// Чтение файла - server.properties
+$file = $tarif['install'] . $server['uid'] . '/server.properties';
 
-    // Убираем пробелы и генерируем массив
-    foreach($fScfg as $line)
-    {
-        // имя квара
-        $cvar = sys::first(explode('=', $line));
+$ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep -ve "^#\|^[[:space:]]*$"');
 
-        if($cvar == '')
-            continue;
+$fScfg = explode("\n", strip_tags($ssh->get()));
 
-        // убираем имя квара и оставляем только значение
-        $value = str_replace($cvar.'=', '', $line);
+$servercfg = array();
 
-        // выбираем только то, что нам нужно
-        preg_match_all('~([^"]+)~', $value, $cvar_value, PREG_SET_ORDER);
+// Убираем пробелы и генерируем массив
+foreach ($fScfg as $line) {
+    // имя квара
+    $cvar = sys::first(explode('=', $line));
 
-        // Исключаем комментарии
-        if($cvar == '//')
-            continue;
+    if ($cvar == '')
+        continue;
 
-        $val = sys::first(explode(' //', $cvar_value[0][1]));
+    // убираем имя квара и оставляем только значение
+    $value = str_replace($cvar . '=', '', $line);
 
-        // Добавляем данные в массив
-        if(array_key_exists($cvar, $aScfg))
-            $servercfg[$cvar] = trim($val);
-    }
+    // выбираем только то, что нам нужно
+    preg_match_all('~([^"]+)~', $value, $cvar_value, PREG_SET_ORDER);
 
-    foreach($aScfg as $name => $desc)
-    {
-        if(!isset($servercfg[$name]))
-            $servercfg[$name] = '';
+    // Исключаем комментарии
+    if ($cvar == '//')
+        continue;
 
-        // Формирование формы
-        if(strpos($aScfg_form[$name], 'select'))
-            $form = str_replace('value="'.$servercfg[$name].'"', 'value="'.$servercfg[$name].'" selected="select"', $aScfg_form[$name]);
-        else
-            $form = str_replace('['.$name.']', $servercfg[$name], $aScfg_form[$name]);
+    $val = sys::first(explode(' //', $cvar_value[0][1]));
 
-        $html->get('servercfg_list', 'sections/servers/games/settings');
+    // Добавляем данные в массив
+    if (array_key_exists($cvar, $aScfg))
+        $servercfg[$cvar] = trim($val);
+}
 
-            $html->set('name', $name);
-            $html->set('desc', $desc);
-            $html->set('form', $form);
+foreach ($aScfg as $name => $desc) {
+    if (!isset($servercfg[$name]))
+        $servercfg[$name] = '';
 
-        $html->pack('list');
-    }
+    // Формирование формы
+    if (strpos($aScfg_form[$name], 'select'))
+        $form = str_replace('value="' . $servercfg[$name] . '"', 'value="' . $servercfg[$name] . '" selected="select"', $aScfg_form[$name]);
+    else
+        $form = str_replace('[' . $name . ']', $servercfg[$name], $aScfg_form[$name]);
 
-    $html->get('servercfg', 'sections/servers/'.$server['game'].'/settings');
+    $html->get('servercfg_list', 'sections/servers/games/settings');
 
-        $html->set('id', $id);
-        $html->set('cfg', $html->arr['list']);
+    $html->set('name', $name);
+    $html->set('desc', $desc);
+    $html->set('form', $form);
 
-    $html->pack('main');
+    $html->pack('list');
+}
+
+$html->get('servercfg', 'sections/servers/' . $server['game'] . '/settings');
+
+$html->set('id', $id);
+$html->set('cfg', $html->arr['list']);
+
+$html->pack('main');
 ?>

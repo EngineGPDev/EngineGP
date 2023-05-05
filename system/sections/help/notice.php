@@ -1,49 +1,47 @@
 <?php
-    if(!DEFINED('EGP'))
-        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-    if($user['group'] == 'user')
-        $sql->query('SELECT `id` FROM `help` WHERE `user`="'.$user['id'].'" AND `status`="0" AND `close`="0" LIMIT 1');
-    else
-        $sql->query('SELECT `id` FROM `help` WHERE `status`="1" AND `close`="0" LIMIT 1');
+if ($user['group'] == 'user')
+    $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `status`="0" AND `close`="0" LIMIT 1');
+else
+    $sql->query('SELECT `id` FROM `help` WHERE `status`="1" AND `close`="0" LIMIT 1');
 
-    if(!$sql->num())
-        sys::outjs(array('empty' => ''));
+if (!$sql->num())
+    sys::outjs(array('empty' => ''));
 
-    if($user['group'] != 'user')
-    {
-        $sql->query('SELECT `time` FROM `help` WHERE `status`="1" AND `close`="0" ORDER BY `time` DESC LIMIT 1');
-        if($sql->num())
-        {
-            $help = $sql->get();
+if ($user['group'] != 'user') {
+    $sql->query('SELECT `time` FROM `help` WHERE `status`="1" AND `close`="0" ORDER BY `time` DESC LIMIT 1');
+    if ($sql->num()) {
+        $help = $sql->get();
 
-            sys::outjs(array('reply' => $help['time']));
-        }
-
-        sys::outjs(array('empty' => ''));
+        sys::outjs(array('reply' => $help['time']));
     }
 
-    $help = $sql->get();
+    sys::outjs(array('empty' => ''));
+}
 
-    $sql->query('SELECT `text`, `time` FROM `help_dialogs` WHERE `help`="'.$help['id'].'" AND `user`!="'.$user['id'].'" AND `time`>"'.($start_point-15).'" ORDER BY `id` DESC LIMIT 1');
-    if(!$sql->num())
-        sys::outjs(array('reply' => ''));
+$help = $sql->get();
 
-    $msg = $sql->get();
-    
-    if(strip_tags($msg['text'], '<br>,<p>') != $msg['text'])
-        sys::outjs(array('reply' => ''));
+$sql->query('SELECT `text`, `time` FROM `help_dialogs` WHERE `help`="' . $help['id'] . '" AND `user`!="' . $user['id'] . '" AND `time`>"' . ($start_point - 15) . '" ORDER BY `id` DESC LIMIT 1');
+if (!$sql->num())
+    sys::outjs(array('reply' => ''));
 
-    include(LIB.'help.php');
+$msg = $sql->get();
 
-    $html->get('notice', 'sections/help');
+if (strip_tags($msg['text'], '<br>,<p>') != $msg['text'])
+    sys::outjs(array('reply' => ''));
 
-        $html->set('id', $help['id']);
-        $html->set('home', $cfg['http']);
-        $html->set('text', $msg['text']);
-        $html->set('ago', help::ago($msg['time']));
+include(LIB . 'help.php');
 
-    $html->pack('notice');
+$html->get('notice', 'sections/help');
 
-    sys::outjs(array('notice' => $html->arr['notice']));
+$html->set('id', $help['id']);
+$html->set('home', $cfg['http']);
+$html->set('text', $msg['text']);
+$html->set('ago', help::ago($msg['time']));
+
+$html->pack('notice');
+
+sys::outjs(array('notice' => $html->arr['notice']));
 ?>

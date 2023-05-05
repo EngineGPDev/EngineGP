@@ -1,99 +1,97 @@
 <?php
-    if(!DEFINED('EGP'))
-        exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-    class ssh
+class ssh
+{
+    var $conn;
+    var $stream;
+
+    public function auth($passwd, $address)
     {
-        var $conn;
-        var $stream;
+        if ($this->connect($address) and $this->auth_pwd('root', $passwd))
+            return true;
 
-        public function auth($passwd, $address)
-        {
-            if($this->connect($address) AND $this->auth_pwd('root', $passwd))
-                return true;
+        return false;
+    }
 
-            return false;
+    public function connect($address)
+    {
+        list($host, $port) = explode(':', $address);
+
+        if ($port == '')
+            $port = 22;
+
+        ini_set('default_socket_timeout', '3');
+
+        if ($this->conn = ssh2_connect($host, $port)) {
+            ini_set('default_socket_timeout', '180');
+
+            return true;
         }
 
-        public function connect($address)
-        {
-            list($host, $port) = explode(':', $address);
+        return false;
+    }
 
-            if($port == '')
-                $port = 22;
+    public function setfile($localFile, $remoteFile, $permision)
+    {
+        if (@ssh2_scp_send($this->conn, $localFile, $remoteFile, $permision))
+            return true;
 
-            ini_set('default_socket_timeout', '3');
+        return false;
+    }
 
-            if($this->conn = ssh2_connect($host, $port))
-            {
-                ini_set('default_socket_timeout', '180');
+    public function getfile($remoteFile, $localFile)
+    {
+        if (@ssh2_scp_recv($this->conn, $remoteFile, $localFile))
+            return true;
 
-                return true;
-            }
+        return false;
+    }
 
-            return false;
-        }
+    public function set($cmd)
+    {
+        $this->stream = ssh2_exec($this->conn, $cmd);
 
-        public function setfile($localFile, $remoteFile, $permision)
-        {
-            if(@ssh2_scp_send($this->conn, $localFile, $remoteFile, $permision))
-                return true;
+        stream_set_blocking($this->stream, true);
+    }
 
-            return false;
-        }
+    public function auth_pwd($u, $p)
+    {
+        if (@ssh2_auth_password($this->conn, $u, $p))
+            return true;
 
-        public function getfile($remoteFile, $localFile)
-        {
-            if(@ssh2_scp_recv($this->conn, $remoteFile, $localFile))
-                return true;
+        return false;
+    }
 
-            return false;
-        }
-
-        public function set($cmd)
-        {
+    public function get($cmd = false)
+    {
+        if ($cmd) {
             $this->stream = ssh2_exec($this->conn, $cmd);
 
             stream_set_blocking($this->stream, true);
         }
 
-        public function auth_pwd($u, $p)
-        {
-            if(@ssh2_auth_password($this->conn, $u, $p))
-                return true;
+        $line = '';
 
-            return false;
-        }
+        while ($get = fgets($this->stream))
+            $line .= $get;
 
-        public function get($cmd = false)
-        {
-            if($cmd)
-            {
-                $this->stream = ssh2_exec($this->conn, $cmd);
-
-                stream_set_blocking($this->stream, true);
-            }
-
-            $line = '';
-
-            while($get = fgets($this->stream))
-                $line.= $get;
-
-            return $line;
-        }
-
-        public function esc()
-        {
-            if(function_exists('ssh2_disconnect'))
-                ssh2_disconnect($this->conn);
-            else{
-                @fclose($this->conn);
-                unset($this->conn);
-            }
-
-            return NULL;
-        }
+        return $line;
     }
 
-    $ssh = new ssh;
+    public function esc()
+    {
+        if (function_exists('ssh2_disconnect'))
+            ssh2_disconnect($this->conn);
+        else {
+            @fclose($this->conn);
+            unset($this->conn);
+        }
+
+        return NULL;
+    }
+}
+
+$ssh = new ssh;
 ?>
