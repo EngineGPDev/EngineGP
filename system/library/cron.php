@@ -1,6 +1,6 @@
 <?php
-if(!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 // Подключение filp/whoops
 $whoops = new \Whoops\Run;
@@ -13,7 +13,7 @@ $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handle
 $whoops->pushHandler($loggingInFile);
 
 // Подгрузка трейта
-if(!file_exists(CRON.$task.'.php'))
+if (!file_exists(CRON . $task . '.php'))
     exit('Invalid cron method' . PHP_EOL);
 
 $device = '!mobile';
@@ -52,29 +52,27 @@ class cron
     {
         $threads = array();
 
-        for($n = 1; $n <= $num; $n+=1)
-        {
+        for ($n = 1; $n <= $num; $n += 1) {
             $data = '';
             $i = 0;
-            foreach($aData as $key => $val)
-            {
-                if($i == cron::$seping)
+            foreach ($aData as $key => $val) {
+                if ($i == cron::$seping)
                     break;
-                    $data .= $val.' ';
-                    unset($aData[$key]);
-                    $i+=1;
+                $data .= $val . ' ';
+                unset($aData[$key]);
+                $i += 1;
             }
 
             $aData = array_values($aData);
 
-            $threads[] = $type.' '.substr($data, 0, -1);
+            $threads[] = $type . ' ' . substr($data, 0, -1);
         }
 
         return $threads;
     }
 }
 
-include(CRON.$task.'.php');
+include(CRON . $task . '.php');
 
 new $task();
 ?>

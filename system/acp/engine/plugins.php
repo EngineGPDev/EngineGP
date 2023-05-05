@@ -1,25 +1,15 @@
 <?php
-if(!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $info = '<i class="fa fa-puzzle-piece"></i> Управление плагинами';
 
 $html->get('menu', 'sections/plugins');
 
 
-
-
 $html->pack('menu');
 
-include(SEC.'plugins/'.$section.'.php');
-
-
-
-
-
-
-
-
+include(SEC . 'plugins/' . $section . '.php');
 
 
 if ($_FILES['plugin']['error'] === UPLOAD_ERR_OK) {
