@@ -114,10 +114,10 @@ class ftp
             }
 
         foreach ($rawlist as $name => $data) {
-            if ($data['chmod']{0} == 'd')
+            if ($data['chmod'][0] == 'd')
                 $aDir[$name] = $data;
 
-            elseif ($data['chmod']{0} == '-')
+            elseif ($data['chmod'][0] == '-')
                 $aFile[$name] = $data;
         }
 
@@ -154,7 +154,7 @@ class ftp
 
                 $path = $view['path'];
 
-                if ($path{0} != '/') $path = '/' . $path;
+                if ($path[0] != '/') $path = '/' . $path;
 
                 if ($path != '/') $path = $path . '/';
 
@@ -379,7 +379,7 @@ class ftp
 
             $path = $data['dir'];
 
-            if ($path{0} != '/') $path = '/' . $path;
+            if ($path[0] != '/') $path = '/' . $path;
 
             if ($path != '/') $path = $path . '/';
 
@@ -388,7 +388,7 @@ class ftp
             $html->set('owner', $info[2]);
             $html->set('group', $info[3]);
 
-            if ($info[0]{0} == 'd') {
+            if ($info[0][0] == 'd') {
                 $html->unit('folder', 1);
                 $html->unit('file');
                 $html->set('size', '');
