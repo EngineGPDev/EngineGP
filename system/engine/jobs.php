@@ -8,7 +8,7 @@ $sql->query('SELECT `name` FROM `jobs` WHERE `id`="' . $id . '" AND `status`!="0
 $nav = $sql->get();
 
 $html->nav('Вакансии', $cfg['http'] . 'jobs');
-$html->nav($nav['name']);
+$html->nav($nav ? $nav['name'] : '');
 
 if ($id) {
     $sql->query('SELECT * FROM `jobs` WHERE `id`="' . $id . '" AND `status`!="0" LIMIT 1');
@@ -37,23 +37,25 @@ if ($id) {
         sys::outjs(array('s' => 'ok'));
     }
 
-    $sql->query('SELECT `text` FROM `jobs_app` WHERE `user`="' . $user['id'] . '" AND `job`="' . $jobs['id'] . '" LIMIT 1');
-    $text = $sql->get();
+    if ($jobs !== null) {
+        $sql->query('SELECT `text` FROM `jobs_app` WHERE `user`="' . $user['id'] . '" AND `job`="' . $jobs['id'] . '" LIMIT 1');
+        $text = $sql->get();
 
-    $html->get('jobs', 'jobs');
-    $html->set('id', $jobs['id']);
-    $html->set('name', $jobs['name']);
-    $html->set('job', $jobs['job']);
-    $html->set('desc', $jobs['desc']);
-    $html->set('date', sys::today($jobs['date']));
-    if (sys::strlen($text['text']) > 0) {
-        $html->unit('answer', 1, 1);
-        $html->set('text', $text['text']);
-    } else {
-        $html->unit('answer', 0, 1);
-        $html->set('text', '');
+        $html->get('jobs', 'jobs');
+        $html->set('id', $jobs['id']);
+        $html->set('name', $jobs['name']);
+        $html->set('job', $jobs['job']);
+        $html->set('desc', $jobs['desc']);
+        $html->set('date', sys::today($jobs['date']));
+        if (isset($text['text']) && sys::strlen($text['text']) > 0) {
+            $html->unit('answer', 1, 1);
+            $html->set('text', $text['text']);
+        } else {
+            $html->unit('answer', 0, 1);
+            $html->set('text', '');
+        }
+        $html->pack('main');
     }
-    $html->pack('main');
 } else {
     $sql->query('SELECT * FROM `jobs` WHERE `status`!="0" ORDER BY `id` ASC');
     while ($jobs = $sql->get()) {
@@ -75,4 +77,3 @@ else
     $html->set('jobs', '');
 
 $html->pack('main');
-?>
