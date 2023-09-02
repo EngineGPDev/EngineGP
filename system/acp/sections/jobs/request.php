@@ -40,7 +40,7 @@ if ($id) {
         $list .= '<tr>';
         $list .= '<td>' . $jobs['id'] . '</td>';
         $list .= '<td><a href="[acp]users/id/' . $jobs['user'] . '">user_' . $jobs['user'] . '</a></td>';
-        $list .= '<td>' . sys::strlen($jobs['text']) > 0 ? '<td>' . $jobs['text'] . '</td>' : '<td><a href="[acp]jobs/section/request/id/' . $jobs['id'] . '#text">Ответить</a></td>' . '</td>';
+        $list .= '<td>' . (sys::strlen($jobs['text']) > 0 ? '<td>' . $jobs['text'] . '</td>' : '<td><a href="[acp]jobs/section/request/id/' . $jobs['id'] . '#text">Ответить</a></td>') . '</td>';
         $list .= '<td>' . $jobs['contact'] . '</td>';
         $list .= '<td><a href="[acp]jobs/edit/section/id/' . $jobs['job'] . '">job_' . $jobs['job'] . '</a></td>';
         $list .= '<td>' . sys::today($jobs['date']) . '</td>';
