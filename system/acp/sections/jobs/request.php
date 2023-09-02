@@ -28,6 +28,8 @@ if ($id) {
         $html->set($idata, $jobs_app[$idata]);
     $html->pack('main');
 } else {
+    $list = '';
+
     $sql->query('SELECT * FROM `jobs_app` ORDER BY `id` ASC');
     while ($jobs = $sql->get()) {
         $status = [

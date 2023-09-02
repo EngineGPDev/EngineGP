@@ -2,9 +2,11 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-if ($url['edit']) {
+if (isset($url['edit']) && $url['edit']) {
     include(SEC . 'jobs/edit.php');
 } else {
+    $list = '';
+
     $sql->query('SELECT * FROM `jobs` ORDER BY `id` ASC');
     while ($jobs = $sql->get()) {
         $status = [
