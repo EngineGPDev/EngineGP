@@ -50,8 +50,19 @@ if ($id) {
 
         if (isset($url['del'])) {
             $sql->query('DELETE FROM `jobs_app` WHERE `id`="' . $url['del'] . '" LIMIT 1');
-            sys::outjs(array('s' => 'ok'));
+            $jobID = $jobs['job'];
 
+            // Получить текущее значение счетчика созданных вакансий
+            $sql->query('SELECT `counter` FROM `jobs` WHERE `id`="' . $jobID . '" LIMIT 1');
+            $job = $sql->get();
+
+            // Уменьшить значение счетчика на 1
+            $counter = intval($job['counter']) - 1;
+
+            // Обновить значение счетчика в таблице `jobs`
+            $sql->query('UPDATE `jobs` SET `counter`="' . $counter . '" WHERE `id`="' . $jobID . '"');
+
+            sys::outjs(array('s' => 'ok'));
         }
     }
 
