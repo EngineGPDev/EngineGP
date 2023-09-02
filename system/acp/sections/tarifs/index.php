@@ -39,7 +39,11 @@ else {
         $list .= '<tr>';
         $list .= '<td>' . $tarif['id'] . '</td>';
         $list .= '<td><a href="' . $cfg['http'] . 'acp/tarifs/id/' . $tarif['id'] . '">' . $tarif['name'] . '</a></td>';
-        $list .= '<td>#' . $tarif['unit'] . ' ' . $unit['name'] . '</td>';
+        if ($unit) {
+            $list .= '<td>#' . $tarif['unit'] . ' ' . $unit['name'] . '</td>';
+        } else {
+            $list .= '<td>#' . $tarif['unit'] . ' ' . 'Локация отсутствует' . '</td>';
+        }
         $list .= '<td>' . $tarif['slots_min'] . '-' . $tarif['slots_max'] . '</td>';
         $list .= '<td>' . $tarif['port_min'] . '-' . $tarif['port_max'] . '</td>';
         $list .= '<td>' . strtoupper($tarif['game']) . '</td>';
