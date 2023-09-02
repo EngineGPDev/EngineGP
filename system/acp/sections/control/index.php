@@ -46,6 +46,7 @@ else {
 
     $html->get('index', 'sections/control');
     $html->set('list', $list);
+    $url_search = isset($url['search']) ? $url['search'] : '';
     $html->set('url_search', $url_search);
     $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
     $html->pack('main');
