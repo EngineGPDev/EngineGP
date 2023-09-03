@@ -101,12 +101,7 @@ class sys
         $html->set('home', $cfg['http']);
 
         if (is_array($notice)) {
-            global $device;
-
-            if ($device == '!mobile')
-                $html->set('notice', '<div class="informer ' . $notice['color'] . ' topifon">' . $notice['text'] . '</div><div class="space"></div>');
-            else
-                $html->set('notice', '<div class="heading-style-1 container"><div class="smaller-text color-' . $notice['color'] . '-light">' . $notice['text'] . '</div><div class="heading-decoration bg-' . $notice['color'] . '-light" style="margin-top: 0px"></div></div>');
+            $html->set('notice', '<div class="informer ' . $notice['color'] . ' topifon">' . $notice['text'] . '</div><div class="space"></div>');
         } else
             $html->set('notice', '');
 
@@ -144,9 +139,9 @@ class sys
 
     public static function route($server, $inc, $go, $all = false)
     {
-        global $device, $start_point;
+        global $start_point;
 
-        $dir = $device == '!mobile' ? '' : 'megp/';
+        $dir = '';
         $use = true;
 
         if (in_array($inc, array('plugins', 'ftp', 'console', 'graph', 'copy', 'web'))) {
@@ -225,12 +220,12 @@ class sys
 
     public static function outhtml($text, $time = 3, $url = false, $cache = false)
     {
-        global $device, $mcache, $html, $cfg;
+        global $mcache, $html, $cfg;
 
         if ($cache)
             $mcache->delete($cache);
 
-        $tpl = $device == '!mobile' ? '' : '/megp';
+        $tpl = '';
 
         $html->get('out');
 
@@ -451,9 +446,7 @@ class sys
             if ($go)
                 sys::outjs(array('e' => sys::text('output', 'auth')));
 
-            global $device;
-
-            $link = $device == '!mobile' ? 'user/section/lk' : '';
+            $link = 'user/section/lk';
 
             exit(header('Refresh: 0; URL=' . $cfg['http'] . $link));
         }
@@ -469,9 +462,7 @@ class sys
             if ($go)
                 sys::outjs(array('e' => sys::text('output', 'noauth')));
 
-            global $device;
-
-            $link = $device == '!mobile' ? 'user/section/auth' : 'auth';
+            $link = 'user/section/auth';
 
             exit(header('Refresh: 0; URL=' . $cfg['http'] . $link));
         }
