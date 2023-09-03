@@ -14,7 +14,7 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 
     $uploads = $sql->query('SELECT `id`, `name` FROM `help_upload` WHERE `user`="' . $id . '"');
     while ($upload = $sql->get($uploads)) {
-        @unlink(ROOT . 'upload/' . $upload['name']);
+        @unlink(DIR . 'upload/' . $upload['name']);
 
         $sql->query('DELETE FROM `help_upload` WHERE `id`="' . $upload['id'] . '" LIMIT 1');
     }

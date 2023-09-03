@@ -6,7 +6,7 @@ if (!isset($url['response']) and !in_array($url['response'], array('success', 'f
     exit();
 
 if ($url['response'] == 'success')
-    sys::out(file_get_contents(ROOT . 'success.html'));
+    sys::out(file_get_contents(DIR . 'success.html'));
 else
-    sys::out(file_get_contents(ROOT . 'fail.html'));
+    sys::out(file_get_contents(DIR . 'fail.html'));
 ?>

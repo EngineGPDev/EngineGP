@@ -699,7 +699,7 @@ class sys
     public static function logMessage($message, $logFile = 'enginegp_info', $context = [])
     {
         $logger = new \Monolog\Logger('EngineGP');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler(ROOT . '/logs/' . $logFile . '.log'));
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler(DIR . 'logs/' . $logFile . '.log'));
         $logger->info($message, $context);
     }
 }
