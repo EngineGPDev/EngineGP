@@ -17,10 +17,12 @@ class ssh
 
     public function connect($address)
     {
-        list($host, $port) = explode(':', $address);
-
-        if ($port == '')
+        if (strpos($address, ':') !== false) {
+            list($host, $port) = explode(':', $address);
+        } else {
+            $host = $address;
             $port = 22;
+        }
 
         ini_set('default_socket_timeout', '3');
 

@@ -40,11 +40,11 @@ if (isset($section)) {
                 global $cfg;
                 $file = 'upload/avatars/' . $resp['uid'] . '.';
                 $link = $cfg['http'] . 'upload/avatars/' . $resp['uid'] . '.';
-                if (file_exists(ROOT . $file . 'jpg'))
+                if (file_exists(DIR . $file . 'jpg'))
                     $html->set('ava', '/upload/avatars/' . $resp['uid'] . '.jpg');
-                elseif (file_exists(ROOT . $file . 'png'))
+                elseif (file_exists(DIR . $file . 'png'))
                     $html->set('ava', '/upload/avatars/' . $resp['uid'] . '.png');
-                elseif (file_exists(ROOT . $file . 'gif'))
+                elseif (file_exists(DIR . $file . 'gif'))
                     $html->set('ava', '/upload/avatars/' . $resp['uid'] . '.gif');
                 else
                     $html->set('ava', $cfg['http'] . 'template/images/avatar.png');
@@ -97,11 +97,11 @@ while ($msg = $sql->get($q_Msgs)) {
     global $cfg;
     $file = 'upload/avatars/' . $msg['uid'] . '.';
     $link = $cfg['http'] . 'upload/avatars/' . $msg['uid'] . '.';
-    if (file_exists(ROOT . $file . 'jpg'))
+    if (file_exists(DIR . $file . 'jpg'))
         $html->set('ava', '/upload/avatars/' . $msg['uid'] . '.jpg');
-    elseif (file_exists(ROOT . $file . 'png'))
+    elseif (file_exists(DIR . $file . 'png'))
         $html->set('ava', '/upload/avatars/' . $msg['uid'] . '.png');
-    elseif (file_exists(ROOT . $file . 'gif'))
+    elseif (file_exists(DIR . $file . 'gif'))
         $html->set('ava', '/upload/avatars/' . $msg['uid'] . '.gif');
     else
         $html->set('ava', $cfg['http'] . 'template/images/avatar.png');

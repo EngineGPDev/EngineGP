@@ -11,13 +11,13 @@ class users
         $file = 'upload/avatars/' . $user . '.';
         $link = $cfg['http'] . 'upload/avatars/' . $user . '.';
 
-        if (file_exists(ROOT . $file . 'jpg'))
+        if (file_exists(DIR . $file . 'jpg'))
             return $link . 'jpg';
 
-        if (file_exists(ROOT . $file . 'png'))
+        if (file_exists(DIR . $file . 'png'))
             return $link . 'png';
 
-        if (file_exists(ROOT . $file . 'gif'))
+        if (file_exists(DIR . $file . 'gif'))
             return $link . 'gif';
 
         return $cfg['http'] . 'template/images/avatar.png';

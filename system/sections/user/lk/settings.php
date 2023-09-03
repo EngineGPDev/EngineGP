@@ -19,7 +19,7 @@ if (isset($url['action']) and in_array($url['action'], array('upload', 'news', '
 
             $aData = explode(',', $file);
 
-            if (file_put_contents(ROOT . 'upload/avatars/' . $user['id'] . '.' . $type, base64_decode(str_replace(' ', '+', $aData[1]))))
+            if (file_put_contents(DIR . 'upload/avatars/' . $user['id'] . '.' . $type, base64_decode(str_replace(' ', '+', $aData[1]))))
                 exit($user['id'] . ':ok');
 
             exit('Ошибка загрузки: убедитесь, что изображение не повреждено и имеет правильный формат.');

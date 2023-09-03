@@ -56,22 +56,10 @@ class html
 
     public function get($name, $path = '')
     {
-        global $device, $cfg;
-
-        $path_root = $device == '!mobile' ? '' : 'megp/';
-
-        $path = $path_root . $path;
+        global $cfg;
 
         if ($path != '')
             $name = str_replace('//', '/', $path . '/' . $name);
-
-        if (!file_exists($this->dir . '/' . $name . '.html')) {
-            $route = explode('/', $name);
-            $namefile = end($route);
-            $dir = $this->dir . str_replace($namefile, '', $name);
-
-            die('Error: html file <u>' . $namefile . '.html</u> not found in: <u>' . $dir . '</u>');
-        }
 
         $this->template = file_get_contents($this->dir . '/' . $name . '.html');
         $this->select_template = $this->template;

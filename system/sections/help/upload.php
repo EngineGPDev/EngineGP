@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 // Проверка на авторизацию
 sys::noauth();
 
-$updir = ROOT . 'upload/';
+$updir = DIR . 'upload/';
 
 $file = isset($_POST['value']) ? $_POST['value'] : exit;
 $name = isset($_POST['name']) ? $_POST['name'] : exit;
