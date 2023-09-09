@@ -68,4 +68,3 @@ while ($tarif = $sql->get($tarifs)) {
 $mcache->set($mkey, array('s' => $list), false, 15);
 
 sys::outjs(array('s' => $list));
-?>

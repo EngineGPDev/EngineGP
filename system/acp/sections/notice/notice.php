@@ -73,4 +73,3 @@ if ($notice['unit']) {
 $html->set('colors', str_replace('"' . $notice['color'] . '"', '"' . $notice['color'] . '" selected', '<option value="red">Красный</option><option value="green">Зеленый</option><option value="blue">Синий</option>'));
 
 $html->pack('main');
-?>

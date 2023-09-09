@@ -39,4 +39,3 @@ else {
     $html->set('pages', '');
     $html->pack('main');
 }
-?>

@@ -29,4 +29,3 @@ $html->set('jobs_app', $sql->num());
 $html->pack('menu');
 
 include(SEC . 'jobs/' . $section . '.php');
-?>

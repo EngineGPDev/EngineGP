@@ -47,4 +47,3 @@ $html->get('add', 'sections/wiki');
 $html->set('cats', $cats);
 
 $html->pack('main');
-?>

@@ -112,4 +112,3 @@ class action extends actions
     }
 }
 
-?>

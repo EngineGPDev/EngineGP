@@ -54,4 +54,3 @@ else {
 
     $html->pack('main');
 }
-?>

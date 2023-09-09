@@ -39,4 +39,3 @@ $aStyle = array(
         'progress' => array('R' => 136, 'G' => 156, 'B' => 99, 'BoxBorderR' => 46, 'BoxBorderG' => 50, 'BoxBorderB' => 37)
     ),
 );
-?>

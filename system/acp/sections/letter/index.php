@@ -21,4 +21,3 @@ $html->get('index', 'sections/letter');
 $html->set('list', $list);
 
 $html->pack('main');
-?>

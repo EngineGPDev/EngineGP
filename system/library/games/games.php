@@ -777,4 +777,3 @@ class games
     }
 }
 
-?>

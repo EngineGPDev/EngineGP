@@ -235,4 +235,3 @@ class tarif extends tarifs
     }
 }
 
-?>

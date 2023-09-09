@@ -149,4 +149,3 @@ $aScfg_form = array(
     'sv_maxcmdrate' => '<input value="[sv_maxcmdrate]" name="config[\'sv_maxcmdrate\']">'
 
 );
-?>

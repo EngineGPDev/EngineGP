@@ -21,4 +21,3 @@ $html->get('cats', 'sections/wiki');
 $html->set('list', $list);
 
 $html->pack('main');
-?>

@@ -133,4 +133,3 @@ class scan extends scans
     }
 }
 
-?>

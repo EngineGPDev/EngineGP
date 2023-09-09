@@ -571,4 +571,3 @@ class pImage extends pDraw
     }
 }
 
-?>

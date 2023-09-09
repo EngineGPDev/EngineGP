@@ -37,4 +37,3 @@ $html->pack('menu');
 $inc = $section != 'index' ? 'service' : 'index';
 
 include(SEC . 'boost/' . $inc . '.php');
-?>

@@ -80,4 +80,3 @@ $html->get('add', 'sections/promo');
 $html->set('tarifs', $tarifs);
 
 $html->pack('main');
-?>

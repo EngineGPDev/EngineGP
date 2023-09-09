@@ -101,4 +101,3 @@ $aScfg_form = array(
     'mp_mapvoteratio' => '<input value="[mp_mapvoteratio]" name="config[\'mp_mapvoteratio\']">',
     'mp_forcechasecam' => '<select name="config[\'mp_forcechasecam\']"><option value="0">Можно наблюдать за всеми с любого ракурса</option><option value="1">Можно наблюдать только за игроками своей команды</option><option value="2">Наблюдение будет доступно лишь с места вашей смерти. Тоесть, камеру нельзя будет двигать</option></select>'
 );
-?>

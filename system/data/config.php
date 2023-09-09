@@ -303,4 +303,3 @@ $cfg = array(
         'csgo' => false
     )
 );
-?>

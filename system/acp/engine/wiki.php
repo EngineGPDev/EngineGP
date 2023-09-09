@@ -28,4 +28,3 @@ foreach ($aSection as $noactive)
 $html->pack('menu');
 
 include(SEC . 'wiki/' . $section . '.php');
-?>

@@ -506,4 +506,3 @@ $aWebdbConf = array(
 );
 
 $aWebothPath = array();
-?>

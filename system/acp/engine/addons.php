@@ -35,4 +35,3 @@ $html->set('plugins', $sql->num());
 $html->pack('menu');
 
 include(SEC . 'addons/' . $section . '.php');
-?>

@@ -43,4 +43,3 @@ $aScfg_form = array(
     'sv_hibernate_when_empty' => '<input value="[sv_hibernate_when_empty]" name="config[\'sv_hibernate_when_empty\']">',
     'sv_setsteamaccount' => '<input value="[sv_setsteamaccount]" name="config[\'sv_setsteamaccount\']">'
 );
-?>

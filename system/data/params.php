@@ -246,5 +246,3 @@ class params
         'mc' => 'start.jar'
     );
 }
-
-?>

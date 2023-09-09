@@ -25,4 +25,3 @@ foreach ($aSection as $noactive)
 $html->pack('menu');
 
 include(SEC . 'pages/' . $section . '.php');
-?>

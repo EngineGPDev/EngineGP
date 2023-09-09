@@ -107,4 +107,3 @@ class action extends actions
     }
 }
 
-?>

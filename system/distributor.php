@@ -188,4 +188,3 @@ if ($auth) {
     $html->unitall('admin', 'all', 0, 1);
     $html->unitall('support', 'all', 0, 1);
 }
-?>

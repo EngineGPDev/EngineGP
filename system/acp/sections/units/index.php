@@ -25,4 +25,3 @@ else {
 
     $html->pack('main');
 }
-?>

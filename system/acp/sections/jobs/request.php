@@ -70,4 +70,3 @@ if ($id) {
     $html->set('list', $list);
     $html->pack('main');
 }
-?>

@@ -65,4 +65,3 @@ if ($go) {
 $html->get('add', 'sections/units');
 
 $html->pack('main');
-?>

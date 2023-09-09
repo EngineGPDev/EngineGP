@@ -49,4 +49,3 @@ $aGname = array(
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP'
 );
-?>

@@ -24,4 +24,3 @@ foreach ($aSection as $noactive)
 $html->pack('menu');
 
 include(SEC . 'letter/' . $section . '.php');
-?>

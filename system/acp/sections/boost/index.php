@@ -77,4 +77,3 @@ $html->set('cur', $cfg['currency']);
 $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
 
 $html->pack('main');
-?>

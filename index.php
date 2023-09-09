@@ -51,4 +51,3 @@ include(SYS . 'distributor.php');
 
 // Выхлоп
 echo $html->arr['all'];
-?>

@@ -94,4 +94,3 @@ while ($ctrl = $sql->get($ctrls)) {
 $mcache->set($mkey, array('s' => $list), false, 15);
 
 sys::outjs(array('s' => $list));
-?>

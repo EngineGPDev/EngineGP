@@ -59,4 +59,3 @@ $html->set('hosting', $sql->num());
 $html->pack('menu');
 
 include(SEC . 'web/' . $section . '.php');
-?>

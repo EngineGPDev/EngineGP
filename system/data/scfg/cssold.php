@@ -123,4 +123,3 @@ $aScfg_form = array(
     'net_maxfilesize' => '<input value="[net_maxfilesize]" name="config[\'net_maxfilesize\']">',
     'phys_timescale' => '<input value="[phys_timescale]" name="config[\'phys_timescale\']">'
 );
-?>

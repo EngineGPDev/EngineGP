@@ -30,4 +30,3 @@ $html->set('units', $sql->num());
 $html->pack('menu');
 
 include(SEC . 'units/' . $section . '.php');
-?>

@@ -80,4 +80,3 @@ foreach (array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc') as $g
 $html->set('show', $unit['show'] == 1 ? '<option value="1">Доступна</option><option value="0">Недоступна</option>' : '<option value="0">Недоступна</option><option value="1">Доступна</option>');
 
 $html->pack('main');
-?>

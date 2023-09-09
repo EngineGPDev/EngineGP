@@ -33,4 +33,3 @@ $html->get('stats', 'sections/promo');
 $html->set('list', $list);
 
 $html->pack('main');
-?>

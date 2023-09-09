@@ -267,4 +267,3 @@ foreach (array('ftp_use', 'plugins_use', 'console_use', 'stats_use', 'copy_use',
 }
 
 $html->pack('main');
-?>

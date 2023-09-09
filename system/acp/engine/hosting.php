@@ -6,4 +6,3 @@ $info = '<i class="fa fa-globe"></i> Список вирт. хостингов';
 
 $html->get('menu', 'sections/hosting');
 $html->pack('menu');
-?>

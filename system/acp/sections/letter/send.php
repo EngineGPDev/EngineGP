@@ -50,4 +50,3 @@ if ($noletter == '')
     $noletter = 'отправлено всем.';
 
 sys::outjs(array('s' => $noletter));
-?>

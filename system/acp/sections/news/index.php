@@ -36,4 +36,3 @@ else {
 
     $html->pack('main');
 }
-?>

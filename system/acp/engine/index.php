@@ -84,4 +84,3 @@ if ($html->arr['main'] == '') {
     $mcache->set($mcache_name, $html->arr['main'], false, 10);
 } else
     $html->arr['main'] = str_replace('[cashback]', $html->arr['cashback'], $html->arr['main']);
-?>

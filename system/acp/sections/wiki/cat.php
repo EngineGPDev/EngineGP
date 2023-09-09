@@ -28,4 +28,3 @@ $html->set('id', $wiki['id']);
 $html->set('sort', $wiki['sort']);
 
 $html->pack('main');
-?>

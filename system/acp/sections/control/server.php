@@ -101,4 +101,3 @@ $html->set('overdue', $ctrl['overdue'] == 0 ? 'Установить' : date('d/m
 $html->set('block', $ctrl['block'] == 0 ? 'Заблокировать' : date('d/m/Y H:i', $ctrl['block']));
 
 $html->pack('main');
-?>

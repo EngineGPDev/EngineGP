@@ -33,4 +33,3 @@ if ($go) {
 $html->get('add', 'sections/news');
 
 $html->pack('main');
-?>

@@ -153,4 +153,3 @@ $sql->query('UPDATE `users` set '
     . '`extend`="' . $aData['extend'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'));
-?>

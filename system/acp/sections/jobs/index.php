@@ -34,4 +34,3 @@ if (isset($url['edit']) && $url['edit']) {
     $html->set('list', $list);
     $html->pack('main');
 }
-?>
