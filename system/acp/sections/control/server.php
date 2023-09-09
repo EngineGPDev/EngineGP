@@ -51,7 +51,7 @@ if ($go) {
     $aData['limit'] = isset($_POST['sql_ftp']) ? sys::int($_POST['limit']) : $ctrl['limit'];
     $aData['price'] = isset($_POST['price']) ? sys::int($_POST['price']) : $ctrl['price'];
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (sys::valid($aData['address'] . ':22', 'other', $aValid['address']))
         $aData['address'] = $ctrl['address'];

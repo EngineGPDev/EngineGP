@@ -11,8 +11,8 @@ $html->pack('types');
 
 $type = false;
 
-include(DATA . 'maps.php');
-include(LIB . 'games/games.php');
+require(DATA . 'maps.php');
+require(LIB . 'games/games.php');
 
 if (isset($url['type']) and array_key_exists($url['type'], $aFindMap[$server['game']]))
     $type = $url['type'];

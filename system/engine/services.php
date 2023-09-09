@@ -29,5 +29,5 @@ if (!in_array($section, array('cs', 'css', 'csgo', 'cssold', 'mc', 'mta', 'samp'
     $html->nav('Список услуг', $cfg['http'] . 'services');
     $html->nav($title);
 
-    include(SEC . 'services/' . $section . '.php');
+    require(SEC . 'services/' . $section . '.php');
 }

@@ -58,4 +58,4 @@ $html->set('hosting', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'web/' . $section . '.php');
+require(SEC . 'web/' . $section . '.php');

@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 $aAction = array('script', 'sqlpasswd', 'proftpd', 'proftpd_modules', 'proftpd_sql', 'proftpd_passwd', 'proftpd_sqldump', 'rclocal', 'nginx', 'mysqlaptconfig', 'endinstall');
 
 if (!isset($url['action']) || !in_array($url['action'], $aAction))
-    include(ENG . '404.php');
+    require(ENG . '404.php');
 
 $del = true;
 
@@ -23,7 +23,7 @@ switch ($url['action']) {
     case 'sqlpasswd':
         $sql->query('SELECT `id`, `sql_passwd` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
         if (!$sql->num())
-            include(ENG . '404.php');
+            require(ENG . '404.php');
 
         $unit = $sql->get();
 
@@ -40,7 +40,7 @@ switch ($url['action']) {
     case 'proftpd_sql':
         $sql->query('SELECT `id`, `sql_passwd` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
         if (!$sql->num())
-            include(ENG . '404.php');
+            require(ENG . '404.php');
 
         $unit = $sql->get();
 
@@ -52,7 +52,7 @@ switch ($url['action']) {
     case 'proftpd_passwd':
         $sql->query('SELECT `id`, `sql_passwd` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
         if (!$sql->num())
-            include(ENG . '404.php');
+            require(ENG . '404.php');
 
         $unit = $sql->get();
 

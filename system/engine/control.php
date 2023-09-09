@@ -7,7 +7,7 @@ sys::noauth();
 
 $title = 'Список подключенных серверов';
 
-include(LIB . 'control/control.php');
+require(LIB . 'control/control.php');
 
 if ($id) {
     if ($user['group'] == 'admin')
@@ -25,7 +25,7 @@ if ($id) {
     $ctrl = $sql->get();
 
     if (in_array($ctrl['status'], array('install', 'overdue', 'blocked', 'reboot')) && !in_array($section, array('extend', 'scan')))
-        include(SEC . 'control/noaccess.php');
+        require(SEC . 'control/noaccess.php');
     else {
         if (!$section)
             $section = 'index';
@@ -33,9 +33,9 @@ if ($id) {
         $sid = array_key_exists('server', $url) ? sys::int($url['server']) : false;
 
         if ($sid)
-            include(SEC . 'control/servers/' . $section . '.php');
+            require(SEC . 'control/servers/' . $section . '.php');
         else
-            include(SEC . 'control/' . $section . '.php');
+            require(SEC . 'control/' . $section . '.php');
     }
 } else {
     $html->nav($title);

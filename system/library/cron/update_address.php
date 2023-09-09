@@ -21,7 +21,7 @@ class update_address extends cron
                 $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
                 $unit = $sql->get();
 
-                include(LIB . 'games/games.php');
+                require(LIB . 'games/games.php');
 
                 // Очистка правил FireWall
                 games::iptables($add_buy['server'], 'remove', NULL, NULL, $server['unit'], false);

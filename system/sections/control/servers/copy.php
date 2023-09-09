@@ -7,4 +7,4 @@ $server = $sql->get();
 
 ctrl::nav($server, $id, $sid, 'copy');
 
-include(ctrl::route($server, 'copy', $go));
+require(ctrl::route($server, 'copy', $go));

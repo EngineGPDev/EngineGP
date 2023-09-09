@@ -110,7 +110,7 @@ $html->nav('Друзья');
 $owners = $sql->query('SELECT `id`, `user`, `rights`, `time` FROM `owners` WHERE `server`="' . $id . '" AND `time`>"' . $start_point . '" ORDER BY `id` ASC LIMIT 5');
 
 if ($sql->num())
-    include(LIB . 'games/games.php');
+    require(LIB . 'games/games.php');
 
 while ($owner = $sql->get($owners)) {
     $sql->query('SELECT `login` FROM `users` WHERE `id`="' . $owner['user'] . '" LIMIT 1');

@@ -64,13 +64,13 @@ if ($go) {
         . "\t" . '$to = "' . $us['mail'] . '";' . PHP_EOL
         . "\t" . '$vk = "' . $vk . '";' . PHP_EOL
         . "\t" . '$skype = "' . $skype . '";' . PHP_EOL
-        . "\t" . 'require_once "core.php";' . PHP_EOL
+        . "\t" . 'require "core.php";' . PHP_EOL
         . "\t" . '$db = new DataBase();' . PHP_EOL
         . "\t" . '$eng = new Engine();' . PHP_EOL
         . "\t" . '$at = new Auth();' . PHP_EOL
         . '';
 
-    include(LIB . 'web/free.php');
+    require(LIB . 'web/free.php');
 
     web::install($aData, $name_mcache);
 }

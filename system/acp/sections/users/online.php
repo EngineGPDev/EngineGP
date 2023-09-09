@@ -12,7 +12,7 @@ $aPage = sys::page($page, $sql->num(), 20);
 
 sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users/section');
 
-include(LIB . 'geo.php');
+require(LIB . 'geo.php');
 
 $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 

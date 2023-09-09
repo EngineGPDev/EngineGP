@@ -4,7 +4,7 @@ if (!DEFINED('EGP'))
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 
-include(DATA . 'web.php');
+require(DATA . 'web.php');
 
 // Если выбран подраздел
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_array($url['action'], array_merge($aAction[$url['subsection']], array('install', 'manage')))) {
@@ -13,7 +13,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_arr
     else
         $html->nav('Web', $cfg['http'] . 'servers/id/' . $id . '/section/web');
 
-    include(SEC . 'web/' . $url['subsection'] . '/free/' . $url['action'] . '.php');
+    require(SEC . 'web/' . $url['subsection'] . '/free/' . $url['action'] . '.php');
 } else {
     $html->nav('Web');
 

@@ -33,4 +33,4 @@ $html->set('overdue', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'control/' . $section . '.php');
+require(SEC . 'control/' . $section . '.php');

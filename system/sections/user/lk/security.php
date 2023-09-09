@@ -97,7 +97,7 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
             if (sys::valid($address, 'ip'))
                 sys::outjs(array('e' => 'Указанный адрес имеет неверный формат.'));
 
-            include(LIB . 'geo.php');
+            require(LIB . 'geo.php');
 
             $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 

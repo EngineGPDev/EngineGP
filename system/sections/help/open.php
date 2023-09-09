@@ -4,7 +4,7 @@ if (!DEFINED('EGP'))
 
 // Закрытие / Удаление вопроса
 if (isset($url['action']) and in_array($url['action'], array('close', 'delete')))
-    include(SEC . 'help/action/' . $url['action'] . '.php');
+    require(SEC . 'help/action/' . $url['action'] . '.php');
 
 // Массив статусов вопроса
 $status = array(

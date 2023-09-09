@@ -319,7 +319,7 @@ class sys
     {
         global $cfg;
 
-        require_once(LIB . 'smtp.php');
+        require(LIB . 'smtp.php');
 
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
@@ -682,7 +682,7 @@ class sys
         if ($section != 'error' || !$cfg['text_group'])
             $group = 'all';
 
-        include(DATA . 'text/' . $section . '.php');
+        require(DATA . 'text/' . $section . '.php');
 
         return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
     }

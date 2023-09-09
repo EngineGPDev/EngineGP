@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 if (!$go || !isset($url['server']))
     exit;
 
-include(LIB . 'web/free.php');
+require(LIB . 'web/free.php');
 
 $aData = array();
 

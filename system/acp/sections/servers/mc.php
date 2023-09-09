@@ -3,7 +3,7 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if ($id)
-    include(SEC . 'servers/server.php');
+    require(SEC . 'servers/server.php');
 else {
     $list = '';
 

@@ -29,10 +29,10 @@ if (!file_exists(DIR . 'vendor/autoload.php')) {
 require(DIR . 'vendor/autoload.php');
 
 // Настройки
-include(DATA . 'config.php');
-include(DATA . 'engine.php');
-include(DATA . 'mysql.php');
-include(DATA . 'params.php');
+require(DATA . 'config.php');
+require(DATA . 'engine.php');
+require(DATA . 'mysql.php');
+require(DATA . 'params.php');
 
 // Проверка ключа и указания параметра
 if ($argv[1] != $cfg['cron_key'])
@@ -40,7 +40,7 @@ if ($argv[1] != $cfg['cron_key'])
 $task = $argv[2];
 
 // Библиотеки
-include(LIB . 'sql.php');
-include(LIB . 'html.php');
-include(LIB . 'system.php');
-include(LIB . 'cron.php');
+require(LIB . 'sql.php');
+require(LIB . 'html.php');
+require(LIB . 'system.php');
+require(LIB . 'cron.php');

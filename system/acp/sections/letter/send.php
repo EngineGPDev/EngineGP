@@ -19,7 +19,7 @@ if (!is_array($aData['users']) || !count($aData['users']))
 
 $noletter = '';
 
-include(LIB . 'smtp.php');
+require(LIB . 'smtp.php');
 
 foreach ($aData['users'] as $id => $cheked) {
     if ($cheked != 'on')

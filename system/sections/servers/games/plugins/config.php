@@ -28,7 +28,7 @@ $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['un
 $unit = $sql->get();
 
 if (!isset($ssh))
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)

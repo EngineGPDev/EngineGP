@@ -533,7 +533,7 @@ class games
     {
         global $user, $sql;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             if ($go)
@@ -644,7 +644,7 @@ class games
         if (sys::valid($address, 'ip'))
             sys::outjs(array('e' => sys::text('servers', 'firewall')), $mcache);
 
-        include(LIB . 'geo.php');
+        require(LIB . 'geo.php');
 
         $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
@@ -674,7 +674,7 @@ class games
             $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
             $unit = $sql->get();
 
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address']))
                 return array('e' => sys::text('all', 'ssh'));

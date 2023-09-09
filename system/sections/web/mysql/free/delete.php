@@ -40,7 +40,7 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
     );
 }
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);

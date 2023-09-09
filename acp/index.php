@@ -34,20 +34,20 @@ if (!file_exists(DIR . 'vendor/autoload.php')) {
 require(DIR . 'vendor/autoload.php');
 
 // Настройки
-include(DATA . 'config.php');
-include(DATA . 'mysql.php');
-include(DATA . 'params.php');
-include(DATA . 'acpengine.php');
+require(DATA . 'config.php');
+require(DATA . 'mysql.php');
+require(DATA . 'params.php');
+require(DATA . 'acpengine.php');
 
 // Библиотеки
-include(LIB . 'sql.php');
-include(LIB . 'html.php');
-include(LIB . 'acpsystem.php');
+require(LIB . 'sql.php');
+require(LIB . 'html.php');
+require(LIB . 'acpsystem.php');
 
 $uip = sys::ip();
 
 // Распределитель
-include(ACP . 'distributor.php');
+require(ACP . 'distributor.php');
 
 // Выхлоп
 echo $html->arr['all'];

@@ -29,4 +29,4 @@ $html->set('tarifs', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'tarifs/' . $section . '.php');
+require(SEC . 'tarifs/' . $section . '.php');

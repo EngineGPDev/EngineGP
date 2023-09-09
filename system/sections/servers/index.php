@@ -7,4 +7,4 @@ $server = $sql->get();
 
 sys::nav($server, $id, 'index');
 
-include(SEC . 'servers/' . $server['game'] . '/index.php');
+require(SEC . 'servers/' . $server['game'] . '/index.php');

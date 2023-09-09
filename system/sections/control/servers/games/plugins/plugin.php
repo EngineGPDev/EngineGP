@@ -29,7 +29,7 @@ $html->nav($plugin['name']);
 if ($mcache->get('ctrl_server_plugin_' . $pid . $sid) != '')
     $html->arr['main'] = $mcache->get('ctrl_server_plugin_' . $pid . $sid);
 else {
-    include(LIB . 'control/plugins.php');
+    require(LIB . 'control/plugins.php');
 
     // Построение списка редактируемых файлов
     $aConf = array();

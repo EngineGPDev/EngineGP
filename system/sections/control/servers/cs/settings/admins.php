@@ -8,7 +8,7 @@ if ($go) {
     $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
     $unit = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);

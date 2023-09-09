@@ -4,7 +4,7 @@ if (!DEFINED('EGP'))
 
 // Отправка сообщения / Удаление сообщения
 if (isset($url['action']) and in_array($url['action'], array('reply', 'remove', 'read', 'write')))
-    include(SEC . 'help/action/' . $url['action'] . '.php');
+    require(SEC . 'help/action/' . $url['action'] . '.php');
 
 if (!$id)
     sys::back($cfg['http'] . 'help/section/open');
@@ -31,8 +31,8 @@ $aGroup = array(
     'user' => 'Клиент'
 );
 
-include(LIB . 'help.php');
-include(LIB . 'users.php');
+require(LIB . 'help.php');
+require(LIB . 'users.php');
 
 $aSender = array();
 

@@ -3,7 +3,7 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if (isset($url['subsection']) and $url['subsection'] == 'search')
-    include(SEC . 'boost/sysearch.php');
+    require(SEC . 'boost/sysearch.php');
 
 $list = '';
 

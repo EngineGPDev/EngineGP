@@ -12,7 +12,7 @@ class web_delete extends cron
         $web = $sql->get();
 
         if ($web['type'] == 'hosting') {
-            include(DATA . 'web.php');
+            require(DATA . 'web.php');
 
             $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], array('login' => $web['login']))), true);
 
@@ -22,7 +22,7 @@ class web_delete extends cron
             $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
         }
 
-        include(LIB . 'web/free.php');
+        require(LIB . 'web/free.php');
 
         $aData = array(
             'type' => $web['type'],

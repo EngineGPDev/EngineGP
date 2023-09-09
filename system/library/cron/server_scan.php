@@ -8,7 +8,7 @@ class server_scan extends cron
     {
         global $argv;
 
-        include(LIB . 'games/' . $argv[3] . '/scan.php');
+        require(LIB . 'games/' . $argv[3] . '/scan.php');
 
         scan::mon($argv[4], true);
         scan::resources($argv[4]);

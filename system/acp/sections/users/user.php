@@ -20,11 +20,11 @@ $sql->query('SELECT * FROM `users` WHERE `id`="' . $id . '" LIMIT 1');
 $us = $sql->get();
 
 if ($go)
-    include(SEC . 'users/action.php');
+    require(SEC . 'users/action.php');
 
 $auth_list = '';
 
-include(LIB . 'geo.php');
+require(LIB . 'geo.php');
 
 $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 

@@ -6,7 +6,7 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
     $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
     $panel = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address']))
         sys::outjs(array('e' => 'PANEL не удалось создать связь.'));

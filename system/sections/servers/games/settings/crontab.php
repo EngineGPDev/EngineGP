@@ -11,7 +11,7 @@ if ($go) {
     $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
     $panel = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address']))
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
@@ -67,7 +67,7 @@ if ($go) {
     $sql->query('INSERT INTO `crontab` set `server`="' . $id . '"');
     $cid = $sql->id();
 
-    include(LIB . 'games/games.php');
+    require(LIB . 'games/games.php');
 
     $cron_rule = games::crontab($id, $cid, $data);
 

@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 $html->nav('Список подключенных серверов', $cfg['http'] . 'control');
 
 if (in_array($ctrl['status'], array('install', 'overdue', 'blocked')))
-    include(SEC . 'control/noaccess.php');
+    require(SEC . 'control/noaccess.php');
 else {
     if ($go) {
         $game = isset($url['game']) ? $url['game'] : sys::outjs(array('e' => 'Необходимо указать игру'));
@@ -52,7 +52,7 @@ else {
             $screen = 'rm ' . $zip . '; wget ' . $cfg['control_server'] . '/' . $zip . '; unzip -d . ' . $zip . '; rm ' . $zip . ';';
         }
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (!$ssh->auth($ctrl['passwd'], $ctrl['address']))
             sys::outjs(array('e' => 'Неудалось создать связь с физическим сервером'));

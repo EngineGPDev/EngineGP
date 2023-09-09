@@ -12,7 +12,7 @@ if ($go) {
     $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if ($server['status'] == 'off')
         sys::out(sys::text('servers', 'off'));

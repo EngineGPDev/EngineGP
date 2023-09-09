@@ -8,4 +8,4 @@ $tarif = $sql->get();
 // Подразделы
 $aSub = array('extend', 'plan', 'address', 'addextend', 'unit', 'slots');
 
-include(SEC . 'servers/games/tarif.php');
+require(SEC . 'servers/games/tarif.php');

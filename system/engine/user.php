@@ -4,7 +4,7 @@ if (!DEFINED('EGP'))
 
 // Подключение раздела
 if (!in_array($section, array('auth', 'recovery', 'replenish', 'signup', 'lk', 'quit')))
-    include(ENG . '404.php');
+    require(ENG . '404.php');
 
 $aTitle = array(
     'auth' => 'Авторизация',
@@ -22,5 +22,5 @@ if ($section == 'lk')
 else
     $html->nav($title);
 
-include(SEC . 'user/' . $section . '.php');
+require(SEC . 'user/' . $section . '.php');
 

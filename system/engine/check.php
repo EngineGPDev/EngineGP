@@ -4,5 +4,5 @@ if (!DEFINED('EGP'))
 
 $title = 'Проверка плагина';
 
-include(SEC . 'check/index.php');
+require(SEC . 'check/index.php');
 

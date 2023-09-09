@@ -29,7 +29,7 @@ $html->nav($plugin['name']);
 if ($mcache->get('server_plugin_' . $pid . $id) != '')
     $html->arr['main'] = $mcache->get('server_plugin_' . $pid . $id);
 else {
-    include(LIB . 'games/plugins.php');
+    require(LIB . 'games/plugins.php');
 
     // Построение списка редактируемых файлов
     $aConf = array();

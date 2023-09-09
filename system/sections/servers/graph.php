@@ -7,4 +7,4 @@ $server = $sql->get();
 
 sys::nav($server, $id, 'graph');
 
-include(sys::route($server, 'graph', $go));
+require(sys::route($server, 'graph', $go));

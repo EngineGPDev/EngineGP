@@ -3,10 +3,10 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if (isset($url['subsection']) and $url['subsection'] == 'search')
-    include(SEC . 'tarifs/search.php');
+    require(SEC . 'tarifs/search.php');
 
 if ($id)
-    include(SEC . 'tarifs/tarif.php');
+    require(SEC . 'tarifs/tarif.php');
 else {
     $sort_page = '';
     $sort_sql = 'ORDER BY `id` ASC';

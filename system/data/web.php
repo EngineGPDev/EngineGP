@@ -490,12 +490,12 @@ $aWebSQL = array(
 
 $aWebdbConf = array(
     'csbans' => array(
-        'file' => '/include/db.config.inc.php',
+        'file' => '/require/db.config.inc.php',
         'chmod' => 0644
     ),
 
     'csstats' => array(
-        'file' => '/include/config.php',
+        'file' => '/require/config.php',
         'chmod' => 0644
     ),
 

@@ -35,7 +35,7 @@ $aData['img'] = array();
 if (iconv_strlen($aData['text'], 'UTF-8') < 2 || iconv_strlen(str_replace(array(' ', "\t", "\n"), '', $aData['text']), 'UTF-8') > 1000)
     sys::outjs(array('e' => 'Длина сообщения не должна быть менее 2 и не превышать 1000 символов.'), $nmch);
 
-include(LIB . 'help.php');
+require(LIB . 'help.php');
 
 // Обработка сообщения
 $aData['text'] = help::text($aData['text']);

@@ -25,7 +25,7 @@ if (!$sql->num())
 
 $web = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if ($aWebUnit['unit'][$url['subsection']] == 'local') {
     $sql->query('SELECT `address`, `passwd`, `domain` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');

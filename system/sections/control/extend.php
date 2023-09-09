@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 $sql->query('SELECT `price`, `time` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
-include(LIB . 'games/games.php');
+require(LIB . 'games/games.php');
 
 if ($go) {
     if (!isset($url['time']) || !in_array($url['time'], $cfg['control_time']))

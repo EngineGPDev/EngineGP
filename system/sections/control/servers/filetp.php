@@ -10,7 +10,7 @@ ctrl::nav($server, $id, $sid, 'filetp');
 $frouter = explode('/', ctrl::route($server, 'filetp', $go));
 
 if (end($frouter) == 'noaccess.php')
-    include(SEC . 'control/servers/noaccess.php');
+    require(SEC . 'control/servers/noaccess.php');
 else {
     $sql->query('SELECT `uid`, `ftp`, `ftp_passwd` FROM `control_servers` WHERE `id`="' . $sid . '" LIMIT 1');
     $server = array_merge($server, $sql->get());
@@ -42,13 +42,13 @@ else {
             $sql->query('SELECT `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
             $unit = array_merge($unit, $sql->get());
 
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
             // Проверка соединения с ssh сервером
             if (!$ssh->auth($unit['passwd'], $unit['address']))
                 sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/filetp');
         } else {
-            include(LIB . 'ftp.php');
+            require(LIB . 'ftp.php');
 
             $ftp = new ftp;
 
@@ -155,7 +155,7 @@ else {
                     $logs = $mcache->get('ctrl_filetp_logs_' . $sid);
 
                     if (!$logs) {
-                        include(LIB . 'ftp.php');
+                        require(LIB . 'ftp.php');
 
                         $ftp = new ftp;
 

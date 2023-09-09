@@ -246,7 +246,7 @@ class service
     {
         global $cfg, $sql, $user, $start_point;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         // Массив данных локации (адрес,пароль)
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $aSDATA['unit'] . '" LIMIT 1');

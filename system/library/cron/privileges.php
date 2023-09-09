@@ -40,7 +40,7 @@ class privileges extends cron
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         // �������� ssh ���������� �� � ��������
         if (!$ssh->auth($unit['passwd'], $unit['address']))

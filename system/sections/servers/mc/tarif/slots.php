@@ -93,7 +93,7 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
         $sql->query('UPDATE `servers` set `time`="' . $time . '", `slots`="' . $slots . '" ' . $start . ', `ram`=' . $ram . ' WHERE `id`="' . $id . '" LIMIT 1');
 
         if (in_array($server['status'], array('working', 'start', 'restart')) and $slots < $server['slots_start']) {
-            include(LIB . 'games/' . $server['game'] . '/action.php');
+            require(LIB . 'games/' . $server['game'] . '/action.php');
 
             action::start($id, 'restart');
         }
@@ -135,7 +135,7 @@ if ($go) {
     $sql->query('UPDATE `servers` set `slots`="' . $slots_new . '" ' . $start . ', `ram`=' . $ram . ' WHERE `id`="' . $id . '" LIMIT 1');
 
     if (in_array($server['status'], array('working', 'start', 'restart')) and $slots_new != $server['slots_start']) {
-        include(LIB . 'games/' . $server['game'] . '/action.php');
+        require(LIB . 'games/' . $server['game'] . '/action.php');
 
         action::start($id, 'restart');
     }

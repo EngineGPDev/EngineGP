@@ -137,5 +137,5 @@ if ($go) {
     $html->set('failed', $count_failed);
     $html->pack('compilers');
 
-    include(SEC . 'check/index.php');
+    require(SEC . 'check/index.php');
 }

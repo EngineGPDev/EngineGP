@@ -20,12 +20,12 @@ if ($go) {
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
 
-        include(SEC . 'servers/games/copy/' . $url['subsection'] . '.php');
+        require(SEC . 'servers/games/copy/' . $url['subsection'] . '.php');
     }
 }
 

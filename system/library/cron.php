@@ -72,6 +72,6 @@ class cron
     }
 }
 
-include(CRON . $task . '.php');
+require(CRON . $task . '.php');
 
 new $task();

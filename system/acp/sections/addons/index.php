@@ -3,10 +3,10 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if (isset($url['subsection']) and $url['subsection'] == 'search')
-    include(SEC . 'addons/search.php');
+    require(SEC . 'addons/search.php');
 
 if ($id)
-    include(SEC . 'addons/plugin.php');
+    require(SEC . 'addons/plugin.php');
 else {
     $sort_page = '';
     $sort_sql = 'ORDER BY `id` ASC';

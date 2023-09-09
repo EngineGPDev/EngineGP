@@ -7,4 +7,4 @@ $server = $sql->get();
 
 sys::nav($server, $id, 'owners');
 
-include(sys::route($server, 'owners', $go, true));
+require(sys::route($server, 'owners', $go, true));

@@ -24,10 +24,10 @@ if (in_array($url['subsection'], array('index', 'settings', 'auth', 'logs', 'sec
     $title = isset($aTitle[$url['subsection']]) ? $aTitle[$url['subsection']] : '';
     $html->nav($title);
 
-    include(LIB . 'users.php');
+    require(LIB . 'users.php');
 
     users::nav($url['subsection']);
 
-    include(SEC . 'user/lk/' . $url['subsection'] . '.php');
+    require(SEC . 'user/lk/' . $url['subsection'] . '.php');
 } else
-    include(ENG . '404.php');
+    require(ENG . '404.php');

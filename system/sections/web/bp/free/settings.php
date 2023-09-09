@@ -26,10 +26,10 @@ if (!$sql->num())
 
 $web = $sql->get();
 
-include(DATA . 'web.php');
+require(DATA . 'web.php');
 
-include(LIB . 'web/free.php');
-include(LIB . 'ssh.php');
+require(LIB . 'web/free.php');
+require(LIB . 'ssh.php');
 
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 

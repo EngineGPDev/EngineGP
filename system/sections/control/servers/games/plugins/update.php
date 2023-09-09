@@ -29,7 +29,7 @@ $sql->query('SELECT `id`, `cfg`, `incompatible`, `required` FROM `plugins_update
 
 $plugin = $sql->get();
 
-include(LIB . 'control/plugins.php');
+require(LIB . 'control/plugins.php');
 
 // Проверка на наличие несовместимости с уже установленными плагинами
 plugins::incompatible($sid, $plugin['incompatible'], $nmch);
@@ -41,7 +41,7 @@ $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" 
 $unit = $sql->get();
 
 if (!isset($ssh))
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);

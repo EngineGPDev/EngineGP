@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 $html->nav('Блокировка на оборудовании');
 
 if (isset($url['action'])) {
-    include(LIB . 'games/games.php');
+    require(LIB . 'games/games.php');
 
     // Получение информации адреса
     if ($url['action'] == 'info')

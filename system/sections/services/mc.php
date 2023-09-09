@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'games/games.php');
+require(LIB . 'games/games.php');
 
 // Обработка заказа
 if ($go) {
@@ -14,7 +14,7 @@ if ($go) {
 
     $mcache->set('buy_server', true, false, 3);
 
-    include(LIB . 'games/' . $section . '/service.php');
+    require(LIB . 'games/' . $section . '/service.php');
 
     // Входные данные
     $aData = array(
@@ -37,7 +37,7 @@ if ($go) {
     sys::outjs(array('s' => 'ok', 'id' => $id));
 }
 
-include(LIB . 'games/services.php');
+require(LIB . 'games/services.php');
 
 $check = false;
 

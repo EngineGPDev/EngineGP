@@ -6,7 +6,7 @@ if (!DEFINED('EGP')) {
 
 // Подключаем разделы
 if (isset($url['id'])) {
-    require_once SEC . 'monitoring/server.php';
+    require SEC . 'monitoring/server.php';
 } else {
-    require_once SEC . 'monitoring/all.php';
+    require SEC . 'monitoring/all.php';
 }

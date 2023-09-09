@@ -9,7 +9,7 @@ $html->get('menu', 'sections/plugins');
 
 $html->pack('menu');
 
-include(SEC . 'plugins/' . $section . '.php');
+require(SEC . 'plugins/' . $section . '.php');
 
 
 if ($_FILES['plugin']['error'] === UPLOAD_ERR_OK) {
@@ -21,7 +21,7 @@ if ($_FILES['plugin']['error'] === UPLOAD_ERR_OK) {
         // Проверяем, что в архиве есть файлы, необходимые для работы плагина
         if (file_exists('/path/to/plugins/plugin.php')) {
             // Загружаем класс плагина
-            require_once '/path/to/plugins/plugin.php';
+            require '/path/to/plugins/plugin.php';
             // Создаем экземпляр класса плагина
             $plugin = new Plugin();
             // Регистрируем плагин в системе

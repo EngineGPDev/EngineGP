@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(DATA . 'boost.php');
+require(DATA . 'boost.php');
 
 if ($go) {
     $aData = array();
@@ -44,7 +44,7 @@ if ($go) {
     if ($user['balance'] < $sum)
         sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']), $name_mcache);
 
-    include(LIB . 'games/boost.php');
+    require(LIB . 'games/boost.php');
 
     $boost = new boost($aBoost[$server['game']][$aData['site']]['key'], $aBoost[$server['game']][$aData['site']]['api']);
 
@@ -56,7 +56,7 @@ if ($go) {
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-    include(LIB . 'games/games.php');
+    require(LIB . 'games/games.php');
 
     // Реф. система
     games::part($user['id'], $sum);

@@ -10,7 +10,7 @@ $server = array_merge($server, $sql->get());
 $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $unit = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');

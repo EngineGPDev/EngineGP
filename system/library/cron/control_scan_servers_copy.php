@@ -28,7 +28,7 @@ class control_scan_servers_copy extends cron
         $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))

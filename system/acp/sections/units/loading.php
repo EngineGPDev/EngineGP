@@ -6,7 +6,7 @@ if ($id) {
     $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
     $unit = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (isset($url['service']) and in_array($url['service'], array('apache2', 'nginx', 'mysql', 'unit', 'geo', 'ungeo'))) {
         if (!$ssh->auth($unit['passwd'], $unit['address']))

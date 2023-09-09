@@ -49,7 +49,7 @@ if ($go) {
     $sql->query('UPDATE `servers` set `time`="' . $time . '", `fps`="' . $fps . '", `tickrate`="' . $tickrate . '" WHERE `id`="' . $id . '" LIMIT 1');
 
     if (in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
-        include(LIB . 'games/' . $server['game'] . '/action.php');
+        require(LIB . 'games/' . $server['game'] . '/action.php');
 
         action::start($id, 'restart');
     }

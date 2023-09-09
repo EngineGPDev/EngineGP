@@ -2,14 +2,14 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(DATA . 'boost.php');
+require(DATA . 'boost.php');
 
 $info = '<i class="fa fa-cloud"></i> Статистика BOOST CS: 1.6';
 
 $aSection = $aBoost['cs']['boost'];
 
 if ($section == 'search')
-    include(SEC . 'boost/search.php');
+    require(SEC . 'boost/search.php');
 
 if (!in_array($section, $aSection))
     $section = 'index';
@@ -36,4 +36,4 @@ $html->pack('menu');
 
 $inc = $section != 'index' ? 'service' : 'index';
 
-include(SEC . 'boost/' . $inc . '.php');
+require(SEC . 'boost/' . $inc . '.php');

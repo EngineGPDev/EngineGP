@@ -43,7 +43,7 @@ if (is_array($mcache->get('aut_' . $user['id'])) and $mcache->get('nser_' . $use
     $mcache->set('nser_' . $user['id'], $n, false, 60);
 }
 
-include(LIB . 'games/games.php');
+require(LIB . 'games/games.php');
 
 $sql->query('SELECT '
     . '`id`,'

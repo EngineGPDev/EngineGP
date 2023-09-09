@@ -11,7 +11,7 @@ if ($go) {
     $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);

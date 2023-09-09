@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'games/scans.php');
+require(LIB . 'games/scans.php');
 
 class scan extends scans
 {
@@ -15,7 +15,7 @@ class scan extends scans
 
         list($ip, $port) = explode(':', $server['address']);
 
-        include(LIB . 'games/query/McQuery.php');
+        require(LIB . 'games/query/McQuery.php');
 
         $sq = new McQuery($ip, $port);
 

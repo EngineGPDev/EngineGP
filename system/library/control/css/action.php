@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'control/actions.php');
+require(LIB . 'control/actions.php');
 
 class action extends actions
 {
@@ -13,7 +13,7 @@ class action extends actions
         $sql->query('SELECT `uid`, `unit`, `game`, `address`, `slots`, `name`, `tickrate`, `map_start`, `vac`, `time_start`, `core_fix` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `address`, `passwd`, `fcpu` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -104,7 +104,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `name`, `ftp`, `core_fix` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();

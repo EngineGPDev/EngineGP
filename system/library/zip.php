@@ -49,7 +49,7 @@ if (!defined('PCLZIP_SEPARATOR')) {
 // ----- Error configuration
 // 0 : PclZip Class integrated error handling
 // 1 : PclError external library error handling. By enabling this
-//     you must ensure that you have included PclError library.
+//     you must ensure that you have required PclError library.
 // [2,...] : reserved for futur use
 if (!defined('PCLZIP_ERROR_EXTERNAL')) {
     define('PCLZIP_ERROR_EXTERNAL', 0);
@@ -811,7 +811,7 @@ class PclZip
     //   The extracted files or folders are identified by their index in the
     //   archive (from 0 to n).
     //   Note that if the index identify a folder, only the folder entry is
-    //   extracted, not all the files included in the archive.
+    //   extracted, not all the files required in the archive.
     // Parameters :
     //   $p_index : A single index (integer) or a string of indexes of files to
     //              extract. The form of the string is "0,4-6,8-12" with only numbers

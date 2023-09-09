@@ -4,7 +4,7 @@ if (!DEFINED('EGP'))
 
 // Установка
 if ($go) {
-    include(LIB . 'web/free.php');
+    require(LIB . 'web/free.php');
 
     $aData = array();
 

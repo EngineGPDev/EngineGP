@@ -41,7 +41,7 @@ class scans
         $sql->query('SELECT `address`, `passwd`, `ram`, `hdd` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return $resources;
@@ -96,7 +96,7 @@ class scans
         $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return 'unit error connect';

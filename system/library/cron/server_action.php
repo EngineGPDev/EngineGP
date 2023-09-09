@@ -21,7 +21,7 @@ class server_action extends cron
             $sql->query('SELECT `uid`, `unit` FROM `servers` WHERE `id`="' . $argv[5] . '" LIMIT 1');
             $server = $sql->get();
 
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
             $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
             $unit = $sql->get();
@@ -41,7 +41,7 @@ class server_action extends cron
             return NULL;
         }
 
-        include(LIB . 'games/' . $argv[4] . '/action.php');
+        require(LIB . 'games/' . $argv[4] . '/action.php');
 
         if ($argv[3] == 'restart')
             action::start($argv[5], 'restart');

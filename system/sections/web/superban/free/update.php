@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 if (!$go)
     exit;
 
-include(LIB . 'web/free.php');
+require(LIB . 'web/free.php');
 
 $aData = array(
     'type' => $url['subsection'],

@@ -6,11 +6,11 @@ class rcon
 {
     public static function cmd($server, $cmd = 'status')
     {
-        include(LIB . 'games/query/Buffer.php');
-        include(LIB . 'games/query/BaseSocket.php');
-        include(LIB . 'games/query/Socket.php');
-        include(LIB . 'games/query/GoldSourceRcon.php');
-        include(LIB . 'games/query/SourceQuery.php');
+        require(LIB . 'games/query/Buffer.php');
+        require(LIB . 'games/query/BaseSocket.php');
+        require(LIB . 'games/query/Socket.php');
+        require(LIB . 'games/query/GoldSourceRcon.php');
+        require(LIB . 'games/query/SourceQuery.php');
 
         $sq = new SourceQuery();
 
@@ -75,7 +75,7 @@ class rcon
     {
         global $cfg, $sql, $user;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();

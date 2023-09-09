@@ -6,7 +6,7 @@ if ($go) {
     $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
     $unit = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (isset($url['service']) and in_array($url['service'], array('apache2', 'nginx', 'mysql', 'unit'))) {
         if (!$ssh->auth($unit['passwd'], $unit['address']))

@@ -8,7 +8,7 @@ if ($ctrl['status'] != 'working')
 $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($ctrl['passwd'], $ctrl['address']))
     sys::outjs(array('e' => 'Неудалось создать связь с физическим сервером'));

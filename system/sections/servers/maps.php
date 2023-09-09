@@ -7,4 +7,4 @@ $server = $sql->get();
 
 sys::nav($server, $id, 'maps');
 
-include(sys::route($server, 'maps', $go));
+require(sys::route($server, 'maps', $go));

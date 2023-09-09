@@ -8,7 +8,7 @@ class control_server_scan extends cron
     {
         global $argv;
 
-        include(LIB . 'control/' . $argv[3] . '/scan.php');
+        require(LIB . 'control/' . $argv[3] . '/scan.php');
 
         scan::mon($argv[4], true);
         scan::resources($argv[4]);

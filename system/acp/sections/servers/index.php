@@ -3,10 +3,10 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if (isset($url['subsection']) and $url['subsection'] == 'search')
-    include(SEC . 'servers/search.php');
+    require(SEC . 'servers/search.php');
 
 if ($id)
-    include(SEC . 'servers/server.php');
+    require(SEC . 'servers/server.php');
 else {
     $list = '';
 

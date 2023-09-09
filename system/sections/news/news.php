@@ -7,7 +7,7 @@ $html->nav('Список новостей', $cfg['http'] . 'news');
 $sql->query('SELECT `id`, `name`, `full_text`, `views`, `tags`, `date` FROM `news` WHERE `id`="' . $id . '" LIMIT 1');
 
 if (!$sql->num())
-    include(ENG . '404.php');
+    require(ENG . '404.php');
 
 $news = $sql->get();
 

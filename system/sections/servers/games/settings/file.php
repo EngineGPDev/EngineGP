@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 // Редактируемый файл
 $file = isset($url['file']) ? $url['file'] : sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 
-include(DATA . 'filedits.php');
+require(DATA . 'filedits.php');
 
 // Проверка наличия в конфиге
 if (!in_array($file, $aEdits[$server['game']]['all']['files']) && !in_array($file, $aEdits[$server['game']][$tarif['name']]['files']))
@@ -19,7 +19,7 @@ $unit = $sql->get();
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)

@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'control/scans.php');
+require(LIB . 'control/scans.php');
 
 class scan extends scans
 {
@@ -10,10 +10,10 @@ class scan extends scans
     {
         global $cfg, $sql, $html, $mcache;
 
-        include(LIB . 'games/query/Buffer.php');
-        include(LIB . 'games/query/BaseSocket.php');
-        include(LIB . 'games/query/Socket.php');
-        include(LIB . 'games/query/SourceQuery.php');
+        require(LIB . 'games/query/Buffer.php');
+        require(LIB . 'games/query/BaseSocket.php');
+        require(LIB . 'games/query/Socket.php');
+        require(LIB . 'games/query/SourceQuery.php');
 
         $sq = new SourceQuery();
 

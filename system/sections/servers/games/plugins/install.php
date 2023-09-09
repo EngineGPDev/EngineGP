@@ -51,7 +51,7 @@ $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array(
 if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
     exit;
 
-include(LIB . 'games/plugins.php');
+require(LIB . 'games/plugins.php');
 
 // Проверка на наличие несовместимости с уже установленными плагинами
 plugins::incompatible($id, $plugin['incompatible'], $nmch);
@@ -63,7 +63,7 @@ $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['un
 $unit = $sql->get();
 
 if (!isset($ssh))
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);

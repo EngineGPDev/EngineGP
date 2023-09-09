@@ -7,7 +7,7 @@ $html->nav('Параметры server.cfg');
 $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $unit = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)
@@ -16,7 +16,7 @@ if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 }
 
-include(DATA . 'scfg/' . $server['game'] . '.php');
+require(DATA . 'scfg/' . $server['game'] . '.php');
 
 $file = '/servers/' . $server['uid'] . '/cstrike/cfg/server.cfg';
 

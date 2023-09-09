@@ -11,6 +11,6 @@ if ($server['status'] == 'blocked') {
     if ($go)
         sys::out('Раздел недоступен');
 
-    include(SEC . 'servers/noaccess.php');
+    require(SEC . 'servers/noaccess.php');
 } else
-    include(SEC . 'servers/' . $server['game'] . '/tarif.php');
+    require(SEC . 'servers/' . $server['game'] . '/tarif.php');

@@ -65,7 +65,7 @@ if ($go) {
     if (!in_array($aData['game'], $aGames))
         sys::outjs(array('e' => 'Необходимо выбрать игру'));
 
-    include(LIB . 'zip.php');
+    require(LIB . 'zip.php');
 
     $sql->query('SELECT `id` FROM `plugins` WHERE `id`="' . $aData['update'] . '" LIMIT 1');
     if ($sql->num()) {

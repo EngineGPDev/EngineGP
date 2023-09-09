@@ -8,7 +8,7 @@ class web
     {
         global $cfg, $sql, $start_point;
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         if (!$aWeb[$aData['server']['game']][$aData['type']])
             sys::outjs(array('e' => 'Дополнительная услуга недоступна для установки.'), $mcache);
@@ -84,7 +84,7 @@ class web
                 sys::outjs(array('e' => 'Пароль должен состоять из букв a-z и цифр.'), $mcache);
         }
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $unit = web::unit($aWebUnit, $aData['type'], $aData['server']['unit']);
 
@@ -218,7 +218,7 @@ class web
     {
         global $sql, $start_point;
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         $stack = web::stack($aData, '`id`, `uid`, `unit`, `login`, `desing`, `domain`, `update`');
 
@@ -228,14 +228,14 @@ class web
         $web = $sql->get($stack);
 
         // Проверка времени последнего обновления
-        include(LIB . 'games/games.php');
+        require(LIB . 'games/games.php');
 
         $upd = $web['update'] + 86400;
 
         if ($upd > $start_point)
             sys::outjs(array('e' => 'Для повторного обновления должно пройти: ' . games::date('max', $upd)));
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
@@ -275,7 +275,7 @@ class web
     {
         global $sql;
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         $stack = web::stack($aData, '`id`, `uid`, `unit`, `domain`, `login`');
 
@@ -284,7 +284,7 @@ class web
 
         $web = $sql->get($stack);
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
@@ -334,7 +334,7 @@ class web
     {
         global $cfg, $sql, $start_point;
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         $sql->query('SELECT `id`, `uid`, `unit`, `game`, `user`, `tarif`, `address`, `status`, `name` FROM `servers` WHERE `id`="' . $aData['server'] . '" AND `user`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num())
@@ -360,7 +360,7 @@ class web
 
         $web = $sql->get($stack);
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `passwd`, `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -413,7 +413,7 @@ class web
     {
         global $sql;
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         $stack = web::stack($aData);
 
@@ -424,7 +424,7 @@ class web
 
         $passwd = sys::passwd($aWebParam[$aData['type']]['passwd']);
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
@@ -448,7 +448,7 @@ class web
     {
         global $sql;
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         switch ($aWebInstall[$aData['server']['game']][$aData['type']]) {
             case 'server':

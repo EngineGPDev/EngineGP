@@ -21,7 +21,7 @@ class control_server_action extends cron
             $sql->query('SELECT `uid`, `unit` FROM `control_servers` WHERE `id`="' . $argv[5] . '" LIMIT 1');
             $server = $sql->get();
 
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
             $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
             $unit = $sql->get();
@@ -41,7 +41,7 @@ class control_server_action extends cron
             return NULL;
         }
 
-        include(LIB . 'control/' . $argv[4] . '/action.php');
+        require(LIB . 'control/' . $argv[4] . '/action.php');
 
         if ($argv[3] == 'restart')
             action::start($argv[5], 'restart');

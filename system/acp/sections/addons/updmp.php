@@ -33,7 +33,7 @@ if ($go) {
     if (!in_array($game, array('cs', 'cssold', 'css', 'csgo')))
         sys::outjs(array('e' => 'Необходимо выбрать игру'));
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     $sql->query('SELECT `id`, `passwd`, `address` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
     if (!$sql->num())

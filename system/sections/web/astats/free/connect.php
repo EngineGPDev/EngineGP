@@ -36,7 +36,7 @@ $aData['config'] = '<?php' . PHP_EOL . 'return array(' . PHP_EOL;
 
 $i = 0;
 
-include(LIB . 'web/free.php');
+require(LIB . 'web/free.php');
 
 foreach ($aData['server'] as $sid) {
     $sql->query('SELECT `id`, `uid`, `unit`, `user`, `address`, `game`, `ftp_use`, `ftp`, `ftp_root`, `ftp_passwd` FROM `servers` WHERE `id`="' . $sid . '" AND `user`="' . $server['user'] . '" AND `game`="cs" LIMIT 1');
@@ -76,7 +76,7 @@ foreach ($aData['server'] as $sid) {
 
 }
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 

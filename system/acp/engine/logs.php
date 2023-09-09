@@ -29,4 +29,4 @@ foreach ($aSection as $noactive)
 
 $html->pack('menu');
 
-include(SEC . 'logs/' . $section . '.php');
+require(SEC . 'logs/' . $section . '.php');

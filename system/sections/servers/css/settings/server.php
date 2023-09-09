@@ -10,7 +10,7 @@ $unit = $sql->get();
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)
@@ -19,7 +19,7 @@ if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
-include(DATA . 'scfg/' . $server['game'] . '.php');
+require(DATA . 'scfg/' . $server['game'] . '.php');
 
 // Сохранение изменений
 if ($go) {

@@ -48,4 +48,4 @@ $aDate = explode('.', $date);
 
 $time = mktime($aDate[0], $aDate[1], $aDate[2], $aDate[4], $aDate[3], $aDate[5]);
 
-include(SEC . 'servers/games/tarif/unit.php');
+require(SEC . 'servers/games/tarif/unit.php');

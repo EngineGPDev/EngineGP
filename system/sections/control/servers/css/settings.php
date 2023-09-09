@@ -19,9 +19,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $nmch = sys::rep_act('ctrl_server_settings_go_' . $sid, 10);
 
     if (in_array($url['subsection'], $aRouteSub['settings']))
-        include(SEC . 'control/servers/games/settings/' . $url['subsection'] . '.php');
+        require(SEC . 'control/servers/games/settings/' . $url['subsection'] . '.php');
     else
-        include(SEC . 'control/servers/' . $server['game'] . '/settings/' . $url['subsection'] . '.php');
+        require(SEC . 'control/servers/' . $server['game'] . '/settings/' . $url['subsection'] . '.php');
 } else {
     $html->nav('Настройки');
 
@@ -30,7 +30,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     else {
         $aEditslist = 1;
         $ctrlmod = true;
-        include(DATA . 'filedits.php');
+        require(DATA . 'filedits.php');
 
         // Построение списка доступных сборок
         $aPacks = $cfg['control_packs'][$server['game']];
@@ -41,7 +41,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         foreach ($aPacks as $pack => $desc)
             $packs .= '<option value="' . $pack . '">' . $desc . '</option>';
 
-        include(SEC . 'control/servers/' . $server['game'] . '/settings/start.php');
+        require(SEC . 'control/servers/' . $server['game'] . '/settings/start.php');
 
         $html->get('settings', 'sections/control/servers/' . $server['game']);
         $html->set('id', $id);

@@ -15,7 +15,7 @@ if ($mcache->get($nmch))
 
 $mcache->set($nmch, true, false, 10);
 
-include(LIB . 'games/' . $server['game'] . '/action.php');
+require(LIB . 'games/' . $server['game'] . '/action.php');
 
 switch ($url['action']) {
     case 'stop':

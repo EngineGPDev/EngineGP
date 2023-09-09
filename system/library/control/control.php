@@ -48,7 +48,7 @@ class ctrl
     {
         global $sql;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $aData = array(
             'cpu' => '0%',
@@ -76,7 +76,7 @@ class ctrl
     {
         global $sql;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $aData = array(
             'cpu' => 'произошла ошибка',
@@ -107,7 +107,7 @@ class ctrl
         global $cfg, $sql, $start_point, $mcache;
 
         if (!$ssh)
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
         $sql->query('SELECT `address`, `passwd`, `time`, `overdue`, `block`, `status` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
         $ctrl = $sql->get();
@@ -234,7 +234,7 @@ class ctrl
     {
         global $start_point;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             if ($count)
@@ -266,7 +266,7 @@ class ctrl
             $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $unit . '" LIMIT 1');
             $unit = $sql->get();
 
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address']))
                 return array('e' => sys::text('all', 'ssh'));

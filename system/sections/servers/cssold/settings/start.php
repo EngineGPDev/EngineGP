@@ -11,9 +11,9 @@ $unit = $sql->get();
 $sql->query('SELECT `install`, `fps`, `tickrate`, `price` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-include(LIB . 'games/games.php');
-include(LIB . 'games/tarifs.php');
-include(LIB . 'games/' . $server['game'] . '/tarif.php');
+require(LIB . 'games/games.php');
+require(LIB . 'games/tarifs.php');
+require(LIB . 'games/' . $server['game'] . '/tarif.php');
 
 // Вывод списка карт
 if (isset($url['maps']))
@@ -72,7 +72,7 @@ if ($go and $url['save']) {
             sys::outjs(array('s' => 'ok'), $nmch);
 
         case 'fastdl':
-            include(LIB . 'ssh.php');
+            require(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address']))
                 sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);

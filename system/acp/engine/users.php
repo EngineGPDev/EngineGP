@@ -40,4 +40,4 @@ $html->set('signup', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'users/' . $section . '.php');
+require(SEC . 'users/' . $section . '.php');

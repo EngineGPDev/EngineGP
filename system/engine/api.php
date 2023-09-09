@@ -16,15 +16,15 @@ $api = $sql->get();
 
 $id = $api['server'];
 
-include(LIB . 'games/games.php');
-include(LIB . 'api.php');
+require(LIB . 'games/games.php');
+require(LIB . 'api.php');
 
 if (in_array($action, array('start', 'restart', 'stop', 'change', 'reinstall', 'update'))) {
     $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
     if (!$sql->num())
         sys::outjs(array('e' => 'сервер не найден'));
 
-    include(SEC . 'servers/action.php');
+    require(SEC . 'servers/action.php');
 }
 
 switch ($action) {

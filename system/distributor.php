@@ -82,13 +82,13 @@ $title = '';
 // Навигация
 $html->nav($cfg['name'], $cfg['http']);
 
-include(DATA . 'header.php');
+require(DATA . 'header.php');
 
 // Подключение файла
 if (in_array($route, $aRoute))
-    include(ENG . $route . '.php');
+    require(ENG . $route . '.php');
 else
-    include(ENG . '404.php');
+    require(ENG . '404.php');
 
 // Обновление ссылок
 if (isset($html->arr['main'])) {

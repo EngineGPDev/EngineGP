@@ -78,7 +78,7 @@ if ($go) {
     // Време аренды
     $tarif['time'] = $time;
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     // Удаление данных с текущей локации
     tarif::unit_old($oldTarif, $oldUnit, $server, $nmch);

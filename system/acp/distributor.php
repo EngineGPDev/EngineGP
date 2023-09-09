@@ -60,10 +60,10 @@ if (!$auth)
 
 // Подключение файла
 if (in_array($route, $aRoute))
-    include(ENG . $route . '.php');
+    require(ENG . $route . '.php');
 else {
     $route = 'index';
-    include(ENG . 'index.php');
+    require(ENG . 'index.php');
 }
 
 // Обновление ссылок

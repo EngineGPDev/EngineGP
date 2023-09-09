@@ -2,18 +2,18 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'games/games.php');
-include(LIB . 'games/tarifs.php');
-include(LIB . 'games/' . $server['game'] . '/tarif.php');
+require(LIB . 'games/games.php');
+require(LIB . 'games/tarifs.php');
+require(LIB . 'games/' . $server['game'] . '/tarif.php');
 
 // Выполнение операции
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $nmch = sys::rep_act('server_tarif_go_' . $id, 10);
 
     if (file_exists(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php'))
-        include(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php');
+        require(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php');
     else
-        include(SEC . 'servers/games/tarif/' . $url['subsection'] . '.php');
+        require(SEC . 'servers/games/tarif/' . $url['subsection'] . '.php');
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

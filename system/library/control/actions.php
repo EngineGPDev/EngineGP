@@ -8,7 +8,7 @@ class actions
     {
         global $cfg, $sql, $user;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `address`, `name` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -43,7 +43,7 @@ class actions
         if ($mcache->get('ctrl_server_maps_change_' . $id) != '' && !$map)
             return array('maps' => $mcache->get('ctrl_server_maps_change_' . $id));
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `online`, `players`, `name` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -109,7 +109,7 @@ class actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `address`, `game`, `name`, `pack`, `ftp`, `core_fix` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -190,7 +190,7 @@ class actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `address`, `game`, `name`, `pack`, `ftp` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -260,7 +260,7 @@ class actions
     {
         global $cfg, $sql, $user;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `slots`, `address` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();

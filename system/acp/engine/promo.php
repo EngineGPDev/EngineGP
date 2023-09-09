@@ -32,4 +32,4 @@ $html->set('end', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'promo/' . $section . '.php');
+require(SEC . 'promo/' . $section . '.php');

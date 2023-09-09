@@ -8,8 +8,8 @@ class scan_control extends cron
     {
         global $cfg, $sql;
 
-        include(LIB . 'ssh.php');
-        include(LIB . 'control/control.php');
+        require(LIB . 'ssh.php');
+        require(LIB . 'control/control.php');
 
         $sql->query('SELECT `id` FROM `control` ORDER BY `id` ASC');
         while ($ctrl = $sql->get())

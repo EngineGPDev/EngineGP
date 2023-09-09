@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'games/games.php');
+require(LIB . 'games/games.php');
 
 // Обработка заказа
 if ($go) {
@@ -46,7 +46,7 @@ if ($go) {
     if ($user['balance'] < $sum)
         sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']));
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     // Проверка ssh соединения с физ. сервером
     if (!$ssh->auth($aData['passwd'], $aData['address']))

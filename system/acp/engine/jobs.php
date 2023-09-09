@@ -28,4 +28,4 @@ $sql->query('SELECT `id` FROM `jobs_app`');
 $html->set('jobs_app', $sql->num());
 $html->pack('menu');
 
-include(SEC . 'jobs/' . $section . '.php');
+require(SEC . 'jobs/' . $section . '.php');

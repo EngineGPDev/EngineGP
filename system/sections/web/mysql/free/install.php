@@ -25,7 +25,7 @@ if ($go) {
     if ($sql->num())
         sys::outjs(array('s' => 'ok'), $nmch);
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if ($aWebUnit['unit'][$url['subsection']] == 'local') {
         $sql->query('SELECT `address`, `passwd`, `domain` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');

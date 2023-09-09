@@ -15,7 +15,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
     $nmch = sys::rep_act('ctrl_server_plugins_go_' . $sid, 10);
 
-    include(SEC . 'control/servers/games/plugins/' . $url['subsection'] . '.php');
+    require(SEC . 'control/servers/games/plugins/' . $url['subsection'] . '.php');
 } else {
     $html->nav('Плагины');
 
@@ -23,7 +23,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     if ($mcache->get('ctrl_server_plugins_' . $sid) != '')
         $html->arr['main'] = $mcache->get('ctrl_server_plugins_' . $sid);
     else {
-        include(LIB . 'games/plugins.php');
+        require(LIB . 'games/plugins.php');
 
         // Категории
         $cats = $sql->query('SELECT `id`, `name` FROM `plugins_category` WHERE `game`="' . $server['game'] . '" ORDER BY `sort` ASC');

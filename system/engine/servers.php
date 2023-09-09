@@ -79,7 +79,7 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
 
     $file_section = file_exists(SEC . 'servers/' . $section . '.php');
     if ($file_section)
-        include(SEC . 'servers/' . $section . '.php');
+        require(SEC . 'servers/' . $section . '.php');
     else
         sys::back($cfg['http'] . 'servers/id/' . $id);
 
@@ -89,8 +89,8 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
     if ($user['group'] == 'user' and $mcache->get('servers_' . $user['id']) != '')
         $html->arr['main'] = $mcache->get('servers_' . $user['id']);
     else {
-        include(SEC . 'servers/list.php');
-        include(SEC . 'servers/owners_list.php');
+        require(SEC . 'servers/list.php');
+        require(SEC . 'servers/owners_list.php');
 
         $html->get('servers', 'sections/servers');
         $html->set('list', isset($html->arr['list']) ? $html->arr['list'] : 'У вас нет игровых серверов', true);

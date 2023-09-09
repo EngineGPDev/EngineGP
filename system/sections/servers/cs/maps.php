@@ -17,7 +17,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     if ($go)
         $nmch = sys::rep_act('server_maps_go_' . $id, 10);
 
-    include(SEC . 'servers/' . $server['game'] . '/maps/' . $url['subsection'] . '.php');
+    require(SEC . 'servers/' . $server['game'] . '/maps/' . $url['subsection'] . '.php');
 } else {
     $html->nav('Карты');
 
@@ -26,7 +26,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $unit = $sql->get();
 
     if (!isset($ssh))
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         if ($go)

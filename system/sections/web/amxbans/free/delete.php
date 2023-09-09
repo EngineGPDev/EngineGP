@@ -8,7 +8,7 @@ if (!$go)
 if ($user['group'] != 'admin')
     sys::outjs(array('i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'), $nmch);
 
-include(LIB . 'web/free.php');
+require(LIB . 'web/free.php');
 
 $aData = array(
     'type' => $url['subsection'],

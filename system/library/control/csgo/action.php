@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(LIB . 'control/actions.php');
+require(LIB . 'control/actions.php');
 
 class action extends actions
 {
@@ -13,7 +13,7 @@ class action extends actions
         $sql->query('SELECT `uid`, `unit`, `game`, `address`, `slots`, `name`, `tickrate`, `map_start`, `vac`, `time_start`, `core_fix`, `pingboost` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `address`, `passwd`, `fcpu` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -40,7 +40,7 @@ class action extends actions
         // Проверка наличия стартовой карты
         $ssh->set('cd /servers/' . $server['uid'] . '/csgo/maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\'');
 
-        include_once(LIB . 'games/games.php');
+        require(LIB . 'games/games.php');
 
         if (games::map($server['map_start'], $ssh->get()))
             return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.bsp')));
@@ -126,9 +126,9 @@ class action extends actions
         if ($mcache->get('ctrl_server_maps_change_' . $id) != '' and !$map)
             return array('maps' => $mcache->get('ctrl_server_maps_change_' . $id));
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
-        include(LIB . 'games/games.php');
+        require(LIB . 'games/games.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `online`, `players`, `name` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -207,7 +207,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `name`, `ftp`, `core_fix` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();

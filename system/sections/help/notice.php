@@ -32,7 +32,7 @@ $msg = $sql->get();
 if (strip_tags($msg['text'], '<br>,<p>') != $msg['text'])
     sys::outjs(array('reply' => ''));
 
-include(LIB . 'help.php');
+require(LIB . 'help.php');
 
 $html->get('notice', 'sections/help');
 

@@ -24,7 +24,7 @@ class server_delete extends cron
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
@@ -59,7 +59,7 @@ class server_delete extends cron
 
         $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
-        include(LIB . 'games/games.php');
+        require(LIB . 'games/games.php');
 
         // Очистка правил FireWall
         games::iptables($server['id'], 'remove', NULL, NULL, NULL, false, $ssh);
@@ -108,7 +108,7 @@ class server_delete extends cron
             $sql->query('DELETE FROM `address_buy` WHERE `id`="' . $add['id'] . '" LIMIT 1');
         }
 
-        include(DATA . 'web.php');
+        require(DATA . 'web.php');
 
         $sql->query('SELECT `id` FROM `servers` WHERE `id`!="' . $server['id'] . '" AND `user`="' . $server['user'] . '" AND `unit`="' . $server['unit'] . '" LIMIT 1');
         if ($sql->num()) {

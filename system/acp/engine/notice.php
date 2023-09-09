@@ -28,4 +28,4 @@ $html->set('active', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'notice/' . $section . '.php');
+require(SEC . 'notice/' . $section . '.php');

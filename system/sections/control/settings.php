@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 $html->nav('Список подключенных серверов', $cfg['http'] . 'control');
 
 if (in_array($ctrl['status'], array('install', 'overdue', 'blocked')))
-    include(SEC . 'control/noaccess.php');
+    require(SEC . 'control/noaccess.php');
 else {
     $sql->query('SELECT `address`, `passwd`, `fcpu`, `ram`, `hdd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
     $ctrl = $sql->get();
@@ -18,7 +18,7 @@ else {
         $aData['ram'] = isset($_POST['ram']) ? sys::int($_POST['ram']) : $ctrl['ram'];
         $aData['hdd'] = isset($_POST['hdd']) ? sys::int($_POST['hdd']) : $ctrl['hdd'];
 
-        include(LIB . 'ssh.php');
+        require(LIB . 'ssh.php');
 
         if (sys::strlen($aData['passwd']) > 32)
             sys::outjs(array('e' => 'Указанный пароль слишком длинный'));

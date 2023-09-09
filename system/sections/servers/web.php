@@ -7,4 +7,4 @@ $server = $sql->get();
 
 sys::nav($server, $id, 'web');
 
-include(sys::route($server, 'web', $go));
+require(sys::route($server, 'web', $go));

@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 $sql->query('SELECT `game` FROM `control_servers` WHERE `id`="' . $sid . '" LIMIT 1');
 $server = $sql->get();
 
-include(LIB . 'control/' . $server['game'] . '/scan.php');
+require(LIB . 'control/' . $server['game'] . '/scan.php');
 
 // Запрошена информация (статус, онлайн, название)
 if (isset($url['mon']))

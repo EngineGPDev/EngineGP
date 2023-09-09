@@ -35,7 +35,7 @@ if ($go) {
     if (in_array('', $aData))
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     if (!$ssh->auth($aData['passwd'], $aData['address']))
         sys::outjs(array('e' => 'Не удалось создать связь с локацией'));

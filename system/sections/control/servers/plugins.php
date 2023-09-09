@@ -7,4 +7,4 @@ $server = $sql->get();
 
 ctrl::nav($server, $id, $sid, 'plugins');
 
-include(ctrl::route($server, 'plugins', $go));
+require(ctrl::route($server, 'plugins', $go));

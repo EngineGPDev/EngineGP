@@ -5,7 +5,7 @@ if (!DEFINED('EGP'))
 // Редактируемый файл
 $file = isset($url['file']) ? $url['file'] : sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 
-include(DATA . 'filedits.php');
+require(DATA . 'filedits.php');
 
 // Проверка наличия в конфиге
 if (!in_array($file, $aEdits[$server['game']]['all']['files']))
@@ -16,7 +16,7 @@ $html->nav('Редактирование файла: ' . $file);
 $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $unit = $sql->get();
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)

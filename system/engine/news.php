@@ -5,10 +5,10 @@ if (!DEFINED('EGP'))
 $title = 'Список новостей';
 
 if ($id)
-    include(SEC . 'news/news.php');
+    require(SEC . 'news/news.php');
 else {
     if ((array_key_exists('page', $url) && count($url) != 1) || (!array_key_exists('page', $url) && count($url)))
-        include(ENG . '404.php');
+        require(ENG . '404.php');
 
-    include(SEC . 'news/index.php');
+    require(SEC . 'news/index.php');
 }

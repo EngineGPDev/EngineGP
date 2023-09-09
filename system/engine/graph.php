@@ -14,14 +14,14 @@ if (!$sql->num())
 
 $graph = $sql->get();
 
-include(LIB . 'games/graph/pData.php');
-include(LIB . 'games/graph/pDraw.php');
-include(LIB . 'games/graph/pImage.php');
+require(LIB . 'games/graph/pData.php');
+require(LIB . 'games/graph/pDraw.php');
+require(LIB . 'games/graph/pImage.php');
 
 if (isset($url['type'])) {
-    include(DATA . 'graph.php');
+    require(DATA . 'graph.php');
 
-    include(LIB . 'games/graph.php');
+    require(LIB . 'games/graph.php');
 
     $style = isset($url['style']) ? $url['style'] : 'default';
 

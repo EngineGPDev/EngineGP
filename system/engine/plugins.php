@@ -14,7 +14,7 @@ if (!isset($url['game']) || !array_key_exists($url['game'], $aGame))
 
 $title = 'Доступные плагины для установки';
 
-include(LIB . 'games/plugins.php');
+require(LIB . 'games/plugins.php');
 
 if ($id) {
     $sql->query('SELECT `upd` FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');

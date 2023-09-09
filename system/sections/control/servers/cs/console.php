@@ -9,7 +9,7 @@ if ($go) {
     $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
     $unit = $sql->get();
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     $command = isset($_POST['command']) ? sys::cmd($_POST['command']) : '';
 

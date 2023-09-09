@@ -25,7 +25,7 @@ if ($go) {
     if ($user['balance'] < $add['price'])
         sys::outjs(array('e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
 
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
     $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
     $unit = $sql->get();

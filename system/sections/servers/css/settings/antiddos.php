@@ -15,7 +15,7 @@ $unit = $sql->get();
 if (!isset($url['type']) || !in_array($url['type'], array('0', '1', '2')))
     sys::outjs(array('e' => 'Неправильно передан параметр.'), $name_mcache);
 
-include(LIB . 'ssh.php');
+require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::outjs(array('e' => sys::text('error', 'ssh', $user['group'])), $name_mcache);

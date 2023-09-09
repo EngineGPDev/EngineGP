@@ -17,9 +17,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $nmch = sys::rep_act('server_settings_go_' . $id, 10);
 
     if (in_array($url['subsection'], $aRouteSub['settings']))
-        include(SEC . 'servers/games/settings/' . $url['subsection'] . '.php');
+        require(SEC . 'servers/games/settings/' . $url['subsection'] . '.php');
     else
-        include(SEC . 'servers/' . $server['game'] . '/settings/' . $url['subsection'] . '.php');
+        require(SEC . 'servers/' . $server['game'] . '/settings/' . $url['subsection'] . '.php');
 } else {
     $html->nav('Настройки');
 
@@ -30,7 +30,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $tarif = $sql->get();
 
         $aEditslist = 1;
-        include(DATA . 'filedits.php');
+        require(DATA . 'filedits.php');
 
         // Построение списка доступных сборок
         $aPacks = sys::b64djs($tarif['packs']);
@@ -45,7 +45,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
             . '<option value="1">Индивидуальная защита (Заблокировать всех кроме: RU, UA)</option>'
             . '<option value="2">Индивидуальная защита (Заблокировать всех кроме: AM, BY, UA, RU, KZ)</option>';
 
-        include(SEC . 'servers/' . $server['game'] . '/settings/start.php');
+        require(SEC . 'servers/' . $server['game'] . '/settings/start.php');
 
         $html->get('settings', 'sections/servers/' . $server['game']);
         $html->set('id', $id);

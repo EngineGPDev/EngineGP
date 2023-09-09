@@ -27,4 +27,4 @@ $html->set('news', $sql->num());
 
 $html->pack('menu');
 
-include(SEC . 'news/' . $section . '.php');
+require(SEC . 'news/' . $section . '.php');

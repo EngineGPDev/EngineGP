@@ -2,13 +2,13 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-include(DATA . 'web.php');
+require(DATA . 'web.php');
 
 if (isset($url['subsection']) and $url['subsection'] == 'search')
-    include(SEC . 'web/search.php');
+    require(SEC . 'web/search.php');
 
 if ($id)
-    include(SEC . 'web/web.php');
+    require(SEC . 'web/web.php');
 else {
     $list = '';
 

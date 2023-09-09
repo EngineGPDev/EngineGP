@@ -18,7 +18,7 @@ $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" 
 $unit = $sql->get();
 
 if (!isset($ssh))
-    include(LIB . 'ssh.php');
+    require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
@@ -41,7 +41,7 @@ $ssh->set('cd ' . $dir . ' && screen -dmS delete_upd_' . $start_point . ' '
     . 'wget --no-check-certificate ' . $cfg['plugins'] . 'delete/' . $frm . '.rm && '
     . 'chmod 755 ' . $frm . '.rm; ./' . $frm . '.rm; rm ' . $frm . '.rm"');
 
-include(LIB . 'control/plugins.php');
+require(LIB . 'control/plugins.php');
 
 // Удаление добавленного при установке текста в файлах
 $sql->query('SELECT `text`, `file` FROM `plugins_write` ' . $qsql);
