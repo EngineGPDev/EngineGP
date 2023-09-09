@@ -79,4 +79,3 @@ else {
     $html->set('id', $id);
     $html->pack('main');
 }
-?>

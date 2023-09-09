@@ -56,4 +56,3 @@ if (!$server['test']) {
     if ($server['port'] != 27015)
         tarif::address($server, $id);
 }
-?>

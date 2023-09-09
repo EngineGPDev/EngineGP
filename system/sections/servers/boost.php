@@ -8,4 +8,3 @@ $server = $sql->get();
 sys::nav($server, $id, 'boost');
 
 include(sys::route($server, 'boost', $go));
-?>

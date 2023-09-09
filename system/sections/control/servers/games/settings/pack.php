@@ -16,4 +16,3 @@ if (!array_key_exists($pack, $aPacks))
 $sql->query('UPDATE `control_servers` set `pack`="' . $pack . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), 'ctrl_server_settings_' . $sid);
-?>

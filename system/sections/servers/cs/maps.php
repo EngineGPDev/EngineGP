@@ -81,4 +81,3 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $mcache->set('server_maps_' . $id, $html->arr['main'], false, 3);
     }
 }
-?>

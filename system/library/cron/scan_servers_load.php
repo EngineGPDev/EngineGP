@@ -89,4 +89,3 @@ class scan_servers_load extends cron
     }
 }
 
-?>

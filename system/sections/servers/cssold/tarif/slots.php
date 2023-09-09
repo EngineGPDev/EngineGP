@@ -29,4 +29,3 @@ $max = $tarif['slots_max'] - $server['slots'];
 $sum = round(($server['time'] - $start_point) / 86400 * ($aPrice[$server['tickrate'] . '_' . $server['fps']] / 30) * $slots, 2);
 
 include(SEC . 'servers/games/tarif/slots.php');
-?>

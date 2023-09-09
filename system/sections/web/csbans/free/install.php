@@ -29,7 +29,7 @@ if ($go) {
         . '    $config->db_pass = "[passwd]";' . PHP_EOL
         . '    $config->db_db = "[login]";' . PHP_EOL
         . '    $config->db_prefix = "amx";' . PHP_EOL
-        . '?>';
+        . '';
 
     web::install($aData, $nmch);
 }
@@ -56,4 +56,3 @@ $html->set('desing', $desing);
 $html->set('domains', $domains);
 
 $html->pack('main');
-?>

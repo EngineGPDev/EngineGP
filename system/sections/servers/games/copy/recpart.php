@@ -48,4 +48,3 @@ $mcache->delete('server_plugins_' . $id);
 $sql->query('UPDATE `servers` set `status`="recovery" WHERE `id`="' . $id . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

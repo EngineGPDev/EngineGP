@@ -33,4 +33,3 @@ class control_delete extends cron
     }
 }
 
-?>

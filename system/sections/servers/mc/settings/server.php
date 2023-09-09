@@ -102,4 +102,3 @@ $html->set('id', $id);
 $html->set('cfg', $html->arr['list']);
 
 $html->pack('main');
-?>

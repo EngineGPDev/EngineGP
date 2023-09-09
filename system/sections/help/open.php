@@ -105,4 +105,3 @@ if ($user['group'] == 'admin')
     $html->unitall('admin', 'main', 1);
 else
     $html->unitall('admin', 'main');
-?>

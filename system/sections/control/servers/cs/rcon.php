@@ -50,4 +50,3 @@ $html->set('id', $id);
 $html->set('server', $sid);
 
 $html->pack('main');
-?>

@@ -83,4 +83,3 @@ class mysql
 }
 
 $sql = new mysql;
-?>

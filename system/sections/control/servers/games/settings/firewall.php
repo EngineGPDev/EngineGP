@@ -33,4 +33,3 @@ $html->set('id', $id);
 $html->set('server', $sid);
 $html->set('firewall', isset($html->arr['firewall']) ? $html->arr['firewall'] : '');
 $html->pack('main');
-?>

@@ -59,4 +59,3 @@ class control_scan_servers_down extends cron
     }
 }
 
-?>

@@ -56,4 +56,3 @@ else
     $html->unit('notice_help');
 
 $html->pack('main');
-?>

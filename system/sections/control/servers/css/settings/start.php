@@ -167,4 +167,3 @@ $html->set('slots', str_replace('"' . $server['slots'] . '"', '"' . $server['slo
 $html->set('tickrate', str_replace($server['tickrate'] . '"', $server['tickrate'] . '" selected="select"', $tickrate));
 
 $html->pack('start');
-?>

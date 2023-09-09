@@ -31,4 +31,3 @@ $html->set('tags', sys::tags($news['tags']));
 $html->set('date', sys::today($news['date']));
 
 $html->pack('main');
-?>

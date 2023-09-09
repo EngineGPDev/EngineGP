@@ -214,4 +214,3 @@ if (isset($url['select'])) {
 $html->get('index', 'sections/services/privileges');
 
 $html->pack('main');
-?>

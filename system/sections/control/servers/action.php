@@ -69,4 +69,3 @@ switch ($url['action']) {
 }
 
 exit;
-?>

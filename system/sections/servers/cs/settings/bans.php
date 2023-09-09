@@ -154,4 +154,3 @@ $html->set('banned', isset($html->arr['banned']) ? $html->arr['banned'] : '');
 $html->set('listip', isset($html->arr['listip']) ? $html->arr['listip'] : '');
 
 $html->pack('main');
-?>

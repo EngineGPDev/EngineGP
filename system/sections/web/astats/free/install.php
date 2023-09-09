@@ -43,4 +43,3 @@ $html->set('desing', $desing);
 $html->set('domains', $domains);
 
 $html->pack('main');
-?>

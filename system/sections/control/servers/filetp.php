@@ -194,4 +194,3 @@ else {
         $mcache->set('ctrl_server_filetp_' . $sid, $html->arr['main'], false, 10);
     }
 }
-?>

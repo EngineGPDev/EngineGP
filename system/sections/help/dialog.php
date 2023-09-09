@@ -191,4 +191,3 @@ if ($help['close']) {
 }
 
 $html->pack('main');
-?>

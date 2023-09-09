@@ -40,4 +40,3 @@ class update_address extends cron
     }
 }
 
-?>

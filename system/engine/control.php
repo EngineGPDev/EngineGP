@@ -66,4 +66,3 @@ if ($id) {
     $html->set('updates_control', $js);
     $html->pack('main');
 }
-?>

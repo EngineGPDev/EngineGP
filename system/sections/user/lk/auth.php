@@ -30,4 +30,3 @@ $html->get('auth', 'sections/user/lk');
 $html->set('auth', isset($html->arr['auth']) ? $html->arr['auth'] : '', true);
 
 $html->pack('main');
-?>

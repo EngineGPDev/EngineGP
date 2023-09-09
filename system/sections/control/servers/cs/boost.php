@@ -97,4 +97,3 @@ else {
 
     $mcache->set('ctrl_server_boost_' . $sid, $html->arr['main'], false, 4);
 }
-?>

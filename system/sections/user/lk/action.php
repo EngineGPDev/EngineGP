@@ -179,4 +179,3 @@ if ($go) {
             sys::outjs(array('s' => 'ok'), $name_mcache);
     }
 }
-?>

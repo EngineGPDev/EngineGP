@@ -66,4 +66,4 @@ foreach ($in_aMaps as $name => $sel)
     }
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>
+

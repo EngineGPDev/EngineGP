@@ -6,4 +6,3 @@ $title = 'Проверка плагина';
 
 include(SEC . 'check/index.php');
 
-?>

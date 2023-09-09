@@ -17,4 +17,3 @@ if (in_array($server['status'], array('working', 'start', 'restart', 'change')))
     shell_exec('php cron.php ' . $cfg['cron_key'] . ' control_server_action restart cs ' . $sid);
 
 sys::outjs(array('s' => 'ok'));
-?>

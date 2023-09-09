@@ -85,4 +85,3 @@ if ($plugin['cfg'])
 
 sys::outjs(array('s' => 'ok'), $nmch);
 
-?>

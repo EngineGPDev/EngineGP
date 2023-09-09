@@ -58,4 +58,3 @@ class control_threads extends cron
     }
 }
 
-?>

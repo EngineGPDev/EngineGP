@@ -131,4 +131,3 @@ $html->set('id', $user['id']);
 $html->set('services', $services);
 
 $html->pack('main');
-?>

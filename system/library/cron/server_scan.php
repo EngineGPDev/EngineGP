@@ -17,4 +17,3 @@ class server_scan extends cron
     }
 }
 
-?>

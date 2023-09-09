@@ -71,4 +71,3 @@ switch ($url['action']) {
 }
 
 sys::outfile($tmp, $url['action'], $del);
-?>

@@ -49,4 +49,3 @@ class scan_servers_copy extends cron
     }
 }
 
-?>

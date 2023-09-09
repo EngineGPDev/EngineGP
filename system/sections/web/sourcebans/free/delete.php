@@ -16,4 +16,3 @@ $aData = array(
 );
 
 web::delete($aData, $nmch);
-?>

@@ -49,4 +49,3 @@ $sql->query('INSERT INTO `control_copy` set `user`="' . $ctrl['user'] . '_' . $i
 $mcache->delete('ctrl_server_copy_' . $sid);
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

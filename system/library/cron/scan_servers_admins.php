@@ -67,4 +67,3 @@ class scan_servers_admins extends cron
     }
 }
 
-?>

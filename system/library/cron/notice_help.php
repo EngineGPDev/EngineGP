@@ -29,4 +29,3 @@ class notice_help extends cron
     }
 }
 
-?>

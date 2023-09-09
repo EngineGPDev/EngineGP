@@ -111,4 +111,3 @@ else
 
 $html->set('crontab', isset($html->arr['crontab']) ? $html->arr['crontab'] : '');
 $html->pack('main');
-?>

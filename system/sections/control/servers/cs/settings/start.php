@@ -179,4 +179,3 @@ $html->set('pingboost', $pingboost);
 $html->set('fps', str_replace($server['fps'] . '"', $server['fps'] . '" selected="select"', $fps));
 
 $html->pack('start');
-?>

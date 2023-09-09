@@ -112,4 +112,3 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
 
 $html->get('recovery', 'sections/user');
 $html->pack('main');
-?>

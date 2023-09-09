@@ -180,4 +180,3 @@ $html->set('tickrate', str_replace($server['tickrate'] . '"', $server['tickrate'
 $html->set('fps', str_replace($server['fps'] . '"', $server['fps'] . '" selected="select"', $fps));
 
 $html->pack('start');
-?>

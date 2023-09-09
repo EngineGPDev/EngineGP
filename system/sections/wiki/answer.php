@@ -40,4 +40,3 @@ $html->set('question', $wiki['name']);
 $html->set('text', htmlspecialchars_decode($answer['text']));
 $html->set('tags', $tags != '' ? $tags : 'Теги отсутствуют');
 $html->pack('main');
-?>

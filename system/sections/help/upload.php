@@ -27,4 +27,3 @@ if (file_put_contents($updir . $rdmName, base64_decode(str_replace(' ', '+', $aD
 }
 
 exit('Ошибка загрузки: убедитесь, что изображение не повреждено и имеет правильный формат.');
-?>

@@ -33,4 +33,3 @@ class control_install extends cron
     }
 }
 
-?>

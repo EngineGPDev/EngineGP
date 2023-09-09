@@ -101,4 +101,3 @@ class control_scan_servers extends cron
     }
 }
 
-?>

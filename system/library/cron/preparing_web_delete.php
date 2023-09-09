@@ -16,4 +16,3 @@ class preparing_web_delete extends cron
     }
 }
 
-?>

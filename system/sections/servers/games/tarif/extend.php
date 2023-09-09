@@ -66,4 +66,3 @@ if ($go) {
 
 // Выхлоп цены
 sys::outjs(array('s' => $sum));
-?>

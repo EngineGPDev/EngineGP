@@ -46,4 +46,3 @@ class graph_servers_day extends cron
     }
 }
 
-?>

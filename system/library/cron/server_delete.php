@@ -142,4 +142,3 @@ class server_delete extends cron
     }
 }
 
-?>

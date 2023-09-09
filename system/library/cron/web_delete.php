@@ -33,4 +33,3 @@ class web_delete extends cron
     }
 }
 
-?>

@@ -139,4 +139,3 @@ if ($go) {
 
     include(SEC . 'check/index.php');
 }
-?>

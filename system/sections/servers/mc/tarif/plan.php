@@ -65,4 +65,3 @@ if ($go) {
 
 // Выхлоп информации
 sys::outjs(array('s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'), $nmch);
-?>

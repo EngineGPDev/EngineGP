@@ -183,4 +183,3 @@ $html->arr['plugins'] = isset($html->arr['plugins']) ? $html->arr['plugins'] : '
 $mcache->set($mkey, $html->arr['plugins'], false, 15);
 
 sys::outjs(array('s' => $html->arr['plugins']), $nmch);
-?>

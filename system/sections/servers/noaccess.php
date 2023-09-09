@@ -21,4 +21,3 @@ else {
 }
 
 $html->pack('main');
-?>

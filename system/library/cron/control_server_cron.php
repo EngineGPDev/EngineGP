@@ -22,4 +22,3 @@ class control_server_cron extends cron
     }
 }
 
-?>

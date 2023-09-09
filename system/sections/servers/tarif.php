@@ -14,4 +14,3 @@ if ($server['status'] == 'blocked') {
     include(SEC . 'servers/noaccess.php');
 } else
     include(SEC . 'servers/' . $server['game'] . '/tarif.php');
-?>

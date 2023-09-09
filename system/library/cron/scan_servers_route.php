@@ -98,4 +98,3 @@ class scan_servers_route extends cron
     }
 }
 
-?>

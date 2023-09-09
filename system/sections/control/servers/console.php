@@ -8,4 +8,3 @@ $server = $sql->get();
 ctrl::nav($server, $id, $sid, 'console');
 
 include(ctrl::route($server, 'console', $go));
-?>

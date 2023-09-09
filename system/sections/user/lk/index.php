@@ -77,4 +77,3 @@ else
     $html->unit('wmr', false, true);
 
 $html->pack('main');
-?>

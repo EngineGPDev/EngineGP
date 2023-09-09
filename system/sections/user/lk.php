@@ -31,4 +31,3 @@ if (in_array($url['subsection'], array('index', 'settings', 'auth', 'logs', 'sec
     include(SEC . 'user/lk/' . $url['subsection'] . '.php');
 } else
     include(ENG . '404.php');
-?>

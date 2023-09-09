@@ -21,4 +21,3 @@ if (in_array($server['status'], array('working', 'start', 'restart', 'change')))
 
     sys::outjs(array('s' => 'ok'));
 }
-?>

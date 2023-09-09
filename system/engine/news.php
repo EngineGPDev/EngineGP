@@ -12,4 +12,3 @@ else {
 
     include(SEC . 'news/index.php');
 }
-?>

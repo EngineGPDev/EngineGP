@@ -34,4 +34,3 @@ if ($go) {
 
     sys::outjs(array('s' => 'ok'), $nmch);
 }
-?>

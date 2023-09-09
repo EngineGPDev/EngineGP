@@ -78,4 +78,3 @@ $html->set('data', htmlspecialchars($ssh->get()));
 
 $html->pack('main');
 
-?>

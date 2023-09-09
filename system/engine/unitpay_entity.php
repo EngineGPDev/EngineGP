@@ -114,4 +114,3 @@ switch ($_GET['method']) {
     case 'error':
         sys::outjs(array('result' => array('message' => 'Запрос успешно обработан')));
 }
-?>

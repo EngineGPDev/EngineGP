@@ -150,4 +150,3 @@ class html
 }
 
 $html = new html;
-?>

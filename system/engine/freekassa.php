@@ -85,4 +85,3 @@ $sql->query('UPDATE `users` set `balance`="' . $money . '" WHERE `id`="' . $user
 $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="Пополнение баланса на сумму: ' . $sum . ' ' . $cfg['currency'] . '", `date`="' . $start_point . '", `type`="replenish", `money`="' . $sum . '"');
 
 sys::out('YES');
-?>

@@ -30,4 +30,3 @@ if (!$sql->num()) {
 
     include(SEC . 'help/' . $section . '.php');
 }
-?>

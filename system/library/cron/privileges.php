@@ -94,4 +94,3 @@ class privileges extends cron
     }
 }
 
-?>

@@ -212,4 +212,3 @@ else {
         $mcache->set('server_filetp_' . $id, $html->arr['main'], false, 10);
     }
 }
-?>

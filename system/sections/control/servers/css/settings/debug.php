@@ -22,4 +22,3 @@ $html->get('debug', 'sections/control/servers/games/settings');
 $html->set('log', htmlspecialchars($ssh->get(), NULL, ''));
 
 $html->pack('main');
-?>

@@ -9,4 +9,3 @@ $tarif = $sql->get();
 $aSub = array('extend', 'address', 'addextend', 'unit', 'slots');
 
 include(SEC . 'servers/games/tarif.php');
-?>

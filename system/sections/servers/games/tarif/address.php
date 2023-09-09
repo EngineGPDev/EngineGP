@@ -60,4 +60,3 @@ if ($go) {
 }
 
 sys::outjs(array('s' => $add['price']));
-?>

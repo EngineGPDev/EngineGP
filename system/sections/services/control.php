@@ -108,4 +108,3 @@ if ($cfg['settlement_period']) {
 } else
     $html->unit('settlement_period', false, true);
 $html->pack('main');
-?>

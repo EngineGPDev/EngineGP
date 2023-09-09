@@ -111,4 +111,3 @@ while ($msg = $sql->get($q_Msgs)) {
 $html->get('dialog', 'sections/chat');
 $html->set('chats', isset($html->arr['msg_all']) ? $html->arr['msg_all'] : '');
 $html->pack('main');
-?>

@@ -142,4 +142,3 @@ if ($sql->num()) {
     $html->unit('privileges');
 
 $html->pack('main');
-?>

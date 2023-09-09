@@ -27,4 +27,3 @@ class notice_server_overdue extends cron
     }
 }
 
-?>

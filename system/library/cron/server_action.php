@@ -52,4 +52,3 @@ class server_action extends cron
     }
 }
 
-?>

@@ -133,4 +133,3 @@ sys::outjs(array(
     'bp_wmr' => $aData['$purse'],
     'bp_sign_key' => $aData['$secret_key'],
     'bp_webmoney' => $webmoney), $name_mcache);
-?>

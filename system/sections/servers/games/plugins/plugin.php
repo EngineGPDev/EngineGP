@@ -81,4 +81,3 @@ else {
 
     $mcache->set('server_plugin_' . $pid . $id, $html->arr['main'], false, 60);
 }
-?>

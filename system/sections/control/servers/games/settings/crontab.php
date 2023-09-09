@@ -103,4 +103,3 @@ $html->set('server', $sid);
 $html->set('time', date('H:i:s', $start_point));
 $html->set('crontab', isset($html->arr['crontab']) ? $html->arr['crontab'] : '');
 $html->pack('main');
-?>

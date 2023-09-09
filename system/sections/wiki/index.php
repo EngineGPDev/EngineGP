@@ -23,4 +23,3 @@ $html->get('category', 'sections/wiki');
 $html->set('list', isset($html->arr['category']) ? $html->arr['category'] : '');
 
 $html->pack('main');
-?>

@@ -8,4 +8,3 @@ $server = $sql->get();
 sys::nav($server, $id, 'graph');
 
 include(sys::route($server, 'graph', $go));
-?>

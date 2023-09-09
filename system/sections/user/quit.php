@@ -14,4 +14,3 @@ $sql->query('UPDATE `users` set `time`="' . ($start_point - 10) . '" WHERE `id`=
 
 sys::users($users, $user, $authkey, true);
 sys::back($cfg['http']);
-?>

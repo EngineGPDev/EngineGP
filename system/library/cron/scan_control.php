@@ -19,4 +19,3 @@ class scan_control extends cron
     }
 }
 
-?>

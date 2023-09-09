@@ -50,7 +50,7 @@ if ($go) {
         . '  define(\'DB_NAME\', "[login]");' . PHP_EOL
         . '  define(\'DB_PREFIX\', "sb");' . PHP_EOL
         . '  define(\'DB_PORT\', "3306");' . PHP_EOL
-        . '  ?>';
+        . '  ';
 
     web::install($aData, $nmch);
 }
@@ -77,4 +77,3 @@ $html->set('desing', $desing);
 $html->set('domains', $domains);
 
 $html->pack('main');
-?>

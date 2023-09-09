@@ -14,4 +14,3 @@ $status = array(
 $html->get('noaccess');
 $html->set('status', $status[$server['status']]);
 $html->pack('main');
-?>

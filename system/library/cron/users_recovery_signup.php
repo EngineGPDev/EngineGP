@@ -17,4 +17,3 @@ class users_recovery_signup extends cron
     }
 }
 
-?>

@@ -31,4 +31,3 @@ if (!in_array($section, array('cs', 'css', 'csgo', 'cssold', 'mc', 'mta', 'samp'
 
     include(SEC . 'services/' . $section . '.php');
 }
-?>

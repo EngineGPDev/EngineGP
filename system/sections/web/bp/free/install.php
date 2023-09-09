@@ -68,7 +68,7 @@ if ($go) {
         . "\t" . '$db = new DataBase();' . PHP_EOL
         . "\t" . '$eng = new Engine();' . PHP_EOL
         . "\t" . '$at = new Auth();' . PHP_EOL
-        . '?>';
+        . '';
 
     include(LIB . 'web/free.php');
 
@@ -98,4 +98,3 @@ $html->set('desing', $desing);
 $html->set('domains', $domains);
 
 $html->pack('main');
-?>

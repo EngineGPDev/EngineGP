@@ -27,4 +27,3 @@ $html->set('img', sys::status($server['status'], $server['game'], $server['map']
 $html->set('btn', $btn);
 
 $html->pack('main');
-?>

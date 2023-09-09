@@ -44,7 +44,7 @@ if ($go) {
         . '    $csstats_table_players = "csstats_players";' . PHP_EOL
         . '    $csstats_table_settings = "csstats_settings";' . PHP_EOL
         . '    $server_address[] = "[address]";' . PHP_EOL
-        . '?>';
+        . '';
 
     web::install($aData, $nmch);
 }
@@ -71,4 +71,3 @@ $html->set('desing', $desing);
 $html->set('domains', $domains);
 
 $html->pack('main');
-?>
