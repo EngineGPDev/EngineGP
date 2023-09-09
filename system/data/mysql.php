@@ -1,9 +1,9 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-DEFINE('USER_DATABASE', 'root');
-DEFINE('PASSWORD_DATABASE', 'SQLPASS'); // пароль mysql
-DEFINE('NAME_DATABASE', 'enginegp');
-DEFINE('CONNECT_DATABASE', 'localhost');
-DEFINE('ERROR_DATABASE', FALSE);
+define('USER_DATABASE', 'root');
+define('PASSWORD_DATABASE', 'SQLPASS'); // пароль mysql
+define('NAME_DATABASE', 'enginegp');
+define('CONNECT_DATABASE', 'localhost');
+define('ERROR_DATABASE', FALSE);

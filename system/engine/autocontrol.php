@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $aAction = array('script', 'sqlpasswd', 'proftpd', 'proftpd_modules', 'proftpd_sql', 'proftpd_passwd', 'proftpd_sqldump', 'rclocal', 'nginx', 'mysqlaptconfig', 'endinstall');

@@ -81,7 +81,7 @@ $cfg['SaveDir'] = '';
 //$cfg['RowActionType'] = 'icons';
 
 /**
- * Defines whether a user should be displayed a "show all (records)"
+ * defines whether a user should be displayed a "show all (records)"
  * button in browse mode or not.
  * default = false
  */

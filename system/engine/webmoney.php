@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $check = strtoupper(hash('sha256', $_POST['LMI_PAYEE_PURSE']

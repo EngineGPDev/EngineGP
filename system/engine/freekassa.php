@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if (!isset($_POST['MERCHANT_ID']) || $_POST['MERCHANT_ID'] != $cfg['freekassa_id'])

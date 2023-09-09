@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $q_Servers = $sql->query('SELECT `unit`, `tarif` FROM `servers` WHERE `user`="' . $user['id'] . '" ORDER BY `id` ASC');

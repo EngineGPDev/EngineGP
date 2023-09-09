@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 // --------------------------------------------------------------------------------
 // PhpConcept Library - Zip Module 2.8.2
@@ -1307,7 +1307,7 @@ class PclZip
 
 
 // --------------------------------------------------------------------------------
-// ***** UNDER THIS LINE ARE DEFINED PRIVATE INTERNAL FUNCTIONS *****
+// ***** UNDER THIS LINE ARE defined PRIVATE INTERNAL FUNCTIONS *****
 // *****                                                        *****
 // *****       THESES FUNCTIONS MUST NOT BE USED DIRECTLY       *****
 // --------------------------------------------------------------------------------

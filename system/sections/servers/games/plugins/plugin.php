@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $pid = isset($url['plugin']) ? sys::int($url['plugin']) : sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');

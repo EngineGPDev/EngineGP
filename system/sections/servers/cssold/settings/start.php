@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $sql->query('SELECT `uid`, `slots`, `slots_start`, `map_start`, `vac`, `fastdl`, `autorestart`, `fps`, `tickrate` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');

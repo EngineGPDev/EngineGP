@@ -1,5 +1,5 @@
 <?php
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 $sql->query('SELECT `name`, `lastname`, `patronymic`, `mail`, `wmr`, `phone`, `contacts`, `date`, `part_money`, `rental`, `extend` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
