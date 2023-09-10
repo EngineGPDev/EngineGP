@@ -14,7 +14,7 @@ require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
@@ -23,7 +23,7 @@ require(DATA . 'scfg/' . $server['game'] . '.php');
 
 // Сохранение изменений
 if ($go) {
-    $servercfg = isset($_POST['config']) ? $_POST['config'] : '';
+    $servercfg = $_POST['config'] ?? '';
 
     $config = '';
 
@@ -33,7 +33,7 @@ if ($go) {
 
     foreach ($servercfg as $cvar => $val)
         if ($val != '')
-            $config .= str_replace("'", '', $cvar) . ' ' . $val . "\n";
+            $config .= str_replace("'", '', (string) $cvar) . ' ' . $val . "\n";
 
     // Временый файл
     $temp = sys::temp($config . $config_end);
@@ -44,7 +44,7 @@ if ($go) {
 
     unlink($temp);
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Чтение файла - server.cfg
@@ -52,9 +52,9 @@ $file = $tarif['install'] . $server['uid'] . '/server.cfg';
 
 $ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep -ve "^#\|^[[:space:]]*$"');
 
-$fScfg = explode("\n", strip_tags($ssh->get()));
+$fScfg = explode("\n", strip_tags((string) $ssh->get()));
 
-$servercfg = array();
+$servercfg = [];
 $other = '';
 
 // Убираем пробелы и генерируем массив
@@ -79,7 +79,7 @@ foreach ($fScfg as $line) {
 
     // Добавляем данные в массив
     if (array_key_exists($cvar, $aScfg))
-        $servercfg[$cvar] = trim($val);
+        $servercfg[$cvar] = trim((string) $val);
     else
         $other .= $line . "\n";
 }
@@ -89,10 +89,10 @@ foreach ($aScfg as $name => $desc) {
         $servercfg[$name] = '';
 
     // Формирование формы
-    if (strpos($aScfg_form[$name], 'select'))
-        $form = str_replace('value="' . $servercfg[$name] . '"', 'value="' . $servercfg[$name] . '" selected="select"', $aScfg_form[$name]);
+    if (strpos((string) $aScfg_form[$name], 'select'))
+        $form = str_replace('value="' . $servercfg[$name] . '"', 'value="' . $servercfg[$name] . '" selected="select"', (string) $aScfg_form[$name]);
     else
-        $form = str_replace('[' . $name . ']', $servercfg[$name], $aScfg_form[$name]);
+        $form = str_replace('[' . $name . ']', $servercfg[$name], (string) $aScfg_form[$name]);
 
     $html->get('servercfg_list', 'sections/servers/games/settings');
 

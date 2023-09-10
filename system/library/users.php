@@ -27,7 +27,7 @@ class users
     {
         global $cfg, $html;
 
-        $aUnit = array('index', 'settings', 'auth', 'logs', 'security');
+        $aUnit = ['index', 'settings', 'auth', 'logs', 'security'];
 
         $html->get('gmenu', 'sections/user');
 

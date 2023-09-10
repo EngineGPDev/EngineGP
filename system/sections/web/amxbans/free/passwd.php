@@ -7,9 +7,6 @@ if (!$go)
 
 require(LIB . 'web/free.php');
 
-$aData = array(
-    'type' => $url['subsection'],
-    'server' => array_merge($server, array('id' => $id))
-);
+$aData = ['type' => $url['subsection'], 'server' => array_merge($server, ['id' => $id])];
 
 web::passwd($aData, $nmch);

@@ -4,15 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-cubes"></i> Управление дополнениями';
 
-$aSection = array(
-    'index',
-    'update',
-    'addcat',
-    'addpl',
-    'cats',
-    'updmp',
-    'delete'
-);
+$aSection = ['index', 'update', 'addcat', 'addpl', 'cats', 'updmp', 'delete'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

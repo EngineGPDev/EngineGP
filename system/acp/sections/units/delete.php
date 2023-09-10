@@ -9,14 +9,14 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
     require(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address']))
-        sys::outjs(array('e' => 'PANEL не удалось создать связь.'));
+        sys::outjs(['e' => 'PANEL не удалось создать связь.']);
 
     $servers = $sql->query('SELECT `id`, `user`, `game` FROM `servers` WHERE `unit`="' . $id . '"');
     while ($server = $sql->get($servers)) {
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');
         while ($cron = $sql->get($crons)) {
             $ssh->set('echo "" >> /etc/crontab && cat /etc/crontab');
-            $crontab = str_replace($cron['cron'], '', $ssh->get());
+            $crontab = str_replace($cron['cron'], '', (string) $ssh->get());
 
             // Временный файл
             $temp = sys::temp($crontab);
@@ -54,9 +54,9 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 } else {
     $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $id . '" LIMIT 1');
     if ($sql->num())
-        sys::outjs(array('e' => 'Нельзя удалить локацию с серверами.'));
+        sys::outjs(['e' => 'Нельзя удалить локацию с серверами.']);
 }
 
 $sql->query('DELETE FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

@@ -15,7 +15,7 @@ $category = $sql->get();
 
 $sql->query('SELECT `id`, `name`, `tags`, `date` FROM `wiki` WHERE `cat`="' . $cat . '" ORDER BY `id` ASC');
 while ($quest = $sql->get()) {
-    $aTags = explode(',', $quest['tags']);
+    $aTags = explode(',', (string) $quest['tags']);
 
     $tags = '';
 
@@ -38,6 +38,6 @@ while ($quest = $sql->get()) {
 $html->get('question', 'sections/wiki');
 
 $html->set('category', $category['name']);
-$html->set('list', isset($html->arr['question']) ? $html->arr['question'] : '');
+$html->set('list', $html->arr['question'] ?? '');
 
 $html->pack('main');

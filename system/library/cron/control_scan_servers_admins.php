@@ -49,7 +49,7 @@ class control_scan_servers_admins extends cron
             $cmd = 'cd /servers/' . $server['uid'] . ';';
 
             while ($admin = $sql->get($admins)) {
-                $cmd .= 'sed -i -e \'s/' . escapeshellcmd(htmlspecialchars_decode($admin['text'])) . '//g\' ' . cron::$admins_file[$game] . ';';
+                $cmd .= 'sed -i -e \'s/' . escapeshellcmd(htmlspecialchars_decode((string) $admin['text'])) . '//g\' ' . cron::$admins_file[$game] . ';';
 
                 $sql->query('UPDATE `admins_' . $game . '` set `active`="0" WHERE `id`="' . $admin['id'] . '" LIMIT 1');
             }

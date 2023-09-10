@@ -20,10 +20,10 @@ if ($id) {
     if ($go) {
         $sql->query('SELECT `id` FROM `jobs_app` WHERE `user`="' . $user['id'] . '" AND `job`="' . $id . '" LIMIT 1');
         if ($sql->num())
-            sys::outjs(array('e' => 'Вы уже подали заявку, ожидайте, пожалуйста, ответа от Администрации.'));
+            sys::outjs(['e' => 'Вы уже подали заявку, ожидайте, пожалуйста, ответа от Администрации.']);
 
         if ($_POST['contact'] == '')
-            sys::outjs(array('e' => 'Необходимо указать контакты для связи!'));
+            sys::outjs(['e' => 'Необходимо указать контакты для связи!']);
 
         sys::noauth();
 
@@ -34,7 +34,7 @@ if ($id) {
             . '`job`="' . $id . '",'
             . '`date`="' . $start_point . '"');
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     if ($jobs !== null) {
@@ -72,7 +72,7 @@ if ($id) {
 
 $html->get('index', 'jobs');
 if (!$id)
-    $html->set('jobs', isset($html->arr['jobs_list']) ? $html->arr['jobs_list'] : '<div class="informer red center">На данный момент у нас нет свободных вакансий.</div>');
+    $html->set('jobs', $html->arr['jobs_list'] ?? '<div class="informer red center">На данный момент у нас нет свободных вакансий.</div>');
 else
     $html->set('jobs', '');
 

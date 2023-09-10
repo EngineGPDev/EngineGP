@@ -33,7 +33,7 @@ class server_action extends cron
             $sql->query('SELECT `commands` FROM `crontab` WHERE `id`="' . $argv[6] . '" LIMIT 1');
             $cron = $sql->get();
 
-            $aCmd = explode("\n", base64_decode($cron['commands']));
+            $aCmd = explode("\n", base64_decode((string) $cron['commands']));
 
             foreach ($aCmd as $cmd)
                 $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . sys::cmd($cmd) . '"\015\'; sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');

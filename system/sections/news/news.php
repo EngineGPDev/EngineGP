@@ -13,7 +13,7 @@ $news = $sql->get();
 
 $sql->query('UPDATE `news` set `views`="' . ($news['views'] + 1) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-$text = htmlspecialchars_decode($news['full_text']);
+$text = htmlspecialchars_decode((string) $news['full_text']);
 
 $title = $news['name'];
 $description = $text;
@@ -24,7 +24,7 @@ $html->nav($news['name']);
 $html->get('news', 'sections/news');
 
 $html->set('id', $news['id']);
-$html->set('name', htmlspecialchars_decode($news['name']));
+$html->set('name', htmlspecialchars_decode((string) $news['name']));
 $html->set('text', $text);
 $html->set('views', $news['views']);
 $html->set('tags', sys::tags($news['tags']));

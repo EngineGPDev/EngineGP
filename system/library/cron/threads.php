@@ -8,7 +8,7 @@ class threads extends cron
     {
         global $sql, $cfg, $argv;
 
-        $aUnit = array();
+        $aUnit = [];
         $sql->query('SELECT `id` FROM `units` ORDER BY `id` ASC');
 
         if (!$sql->num())
@@ -54,7 +54,7 @@ class threads extends cron
 
         foreach ($threads as $thread) {
             foreach ($thread as $screen => $servers)
-                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', (string) $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
         }
 
         $start_point = $_SERVER['REQUEST_TIME'];

@@ -23,9 +23,9 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
 
-        list($ip, $port) = explode(':', $server['address']);
+        [$ip, $port] = explode(':', (string) $server['address']);
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -35,7 +35,7 @@ class action extends actions
 
         // Если включена система автораспределения и не установлен фиксированный поток
         if ($cfg['cpu_route'] and !$server['core_fix']) {
-            $proc_stat = array();
+            $proc_stat = [];
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
@@ -43,8 +43,8 @@ class action extends actions
         // Проверка наличия стартовой карты
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.');
 
-        if ($server['map_start'] != '' and !in_array($server['map_start'], str_replace('.bsp', '', explode("\n", $ssh->get()))))
-            return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.bsp')));
+        if ($server['map_start'] != '' and !in_array($server['map_start'], str_replace('.bsp', '', explode("\n", (string) $ssh->get()))))
+            return ['e' => sys::updtext(sys::text('servers', 'nomap'), ['map' => $server['map_start'] . '.bsp'])];
 
         // Если система автораспределения продолжить парсинг загрузки процессора
         if (isset($proc_stat)) {
@@ -54,7 +54,7 @@ class action extends actions
             $core = sys::cpu_idle($proc_stat, $server['unit'], false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core))
-                return array('e' => sys::text('error', 'cpu'));
+                return ['e' => sys::text('error', 'cpu')];
 
             $taskset = 'taskset -c ' . $core;
         }
@@ -105,10 +105,10 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 }
 

@@ -50,7 +50,7 @@ while ($tarif = $sql->get($tarifs)) {
     $list .= '<td class="text-center">' . $all_servers . ' шт./' . $overdue_servers . ' шт.</td>';
     $list .= '<td class="text-center">' . $money_all . ' ' . $cfg['currency'] . '</td>';
     $list .= '<td class="text-center">' . $money_month . ' ' . $cfg['currency'] . '</td>';
-    $list .= '<td class="text-center">' . strtoupper($tarif['game']) . '</td>';
+    $list .= '<td class="text-center">' . strtoupper((string) $tarif['game']) . '</td>';
     $list .= '</tr>';
 }
 
@@ -58,7 +58,7 @@ $html->get('stats', 'sections/tarifs');
 
 $html->set('list', $list);
 
-$html->set('month', mb_strtolower(params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
+$html->set('month', mb_strtolower((string) params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
 
 $html->set('all_money', $all_money);
 $html->set('all_money_month', $all_money_month);

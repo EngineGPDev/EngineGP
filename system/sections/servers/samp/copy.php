@@ -4,7 +4,7 @@ if (!defined('EGP'))
 
 if ($go) {
     // Подразделы
-    $aSub = array('fullcopy', 'create', 'recfull', 'recpart', 'remove', 'check');
+    $aSub = ['fullcopy', 'create', 'recfull', 'recpart', 'remove', 'check'];
 
     // Если выбран подраздел
     if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
@@ -12,7 +12,7 @@ if ($go) {
             $nmch = sys::rep_act('server_copy_go_' . $id, 10);
 
         if ($server['status'] != 'off' and $url['subsection'] != 'remove')
-            sys::outjs(array('e' => 'Игровой сервер должен быть выключен'), $nmch);
+            sys::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
@@ -23,7 +23,7 @@ if ($go) {
         require(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
         require(SEC . 'servers/games/copy/' . $url['subsection'] . '.php');
     }
@@ -70,8 +70,8 @@ else {
 
     $html->set('id', $id);
 
-    $html->set('list', isset($html->arr['list']) ? $html->arr['list'] : '');
-    $html->set('copy', isset($html->arr['copy']) ? $html->arr['copy'] : 'Резервные копии отсутствуют.');
+    $html->set('list', $html->arr['list'] ?? '');
+    $html->set('copy', $html->arr['copy'] ?? 'Резервные копии отсутствуют.');
 
     $html->pack('main');
 

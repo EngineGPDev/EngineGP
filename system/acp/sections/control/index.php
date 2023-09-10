@@ -10,14 +10,7 @@ if ($id)
 else {
     $list = '';
 
-    $status = array(
-        'working' => '<span class="text-green">Работает</span>',
-        'reboot' => 'перезагружается',
-        'error' => '<span class="text-red">Не отвечает</span>',
-        'install' => 'Настраивается',
-        'overdue' => 'Просрочен',
-        'blocked' => 'Заблокирован'
-    );
+    $status = ['working' => '<span class="text-green">Работает</span>', 'reboot' => 'перезагружается', 'error' => '<span class="text-red">Не отвечает</span>', 'install' => 'Настраивается', 'overdue' => 'Просрочен', 'blocked' => 'Заблокирован'];
 
     $sql->query('SELECT `id` FROM `control` WHERE `user`!="-1"');
 
@@ -46,8 +39,8 @@ else {
 
     $html->get('index', 'sections/control');
     $html->set('list', $list);
-    $url_search = isset($url['search']) ? $url['search'] : '';
+    $url_search = $url['search'] ?? '';
     $html->set('url_search', $url_search);
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
     $html->pack('main');
 }

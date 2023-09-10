@@ -5,19 +5,19 @@ if (!defined('EGP'))
 $sql->query('SELECT `notice_news`, `notice_help` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
 $user = array_merge($user, $sql->get());
 
-if (isset($url['action']) and in_array($url['action'], array('upload', 'news', 'help', 'important'))) {
+if (isset($url['action']) and in_array($url['action'], ['upload', 'news', 'help', 'important'])) {
     switch ($url['action']) {
         case 'upload':
-            $file = isset($_POST['value']) ? $_POST['value'] : exit;
-            $name = isset($_POST['name']) ? $_POST['name'] : exit;
+            $file = $_POST['value'] ?? exit;
+            $name = $_POST['name'] ?? exit;
 
-            $pname = explode('.', $name);
+            $pname = explode('.', (string) $name);
             $type = strtolower(end($pname));
 
-            if (!in_array($type, array('png', 'gif', 'jpg', 'bmp')))
+            if (!in_array($type, ['png', 'gif', 'jpg', 'bmp']))
                 exit('Допустимый формат изображений: png, gif, jpg, bmp.');
 
-            $aData = explode(',', $file);
+            $aData = explode(',', (string) $file);
 
             if (file_put_contents(DIR . 'upload/avatars/' . $user['id'] . '.' . $type, base64_decode(str_replace(' ', '+', $aData[1]))))
                 exit($user['id'] . ':ok');
@@ -29,14 +29,14 @@ if (isset($url['action']) and in_array($url['action'], array('upload', 'news', '
 
             $sql->query('UPDATE `users` set `notice_news`="' . $notice . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
         case 'help':
             $notice = $user['notice_help'] ? 0 : 1;
 
             $sql->query('UPDATE `users` set `notice_help`="' . $notice . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
     }
 }
 

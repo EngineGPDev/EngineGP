@@ -6,37 +6,37 @@ $sql->query('SELECT `name`, `text`, `full_text`, `tags` FROM `news` WHERE `id`="
 $news = $sql->get();
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : htmlspecialchars_decode($news['name']);
-    $aData['text'] = isset($_POST['text']) ? sys::bbc(trim($_POST['text'])) : htmlspecialchars_decode($news['text']);
-    $aData['full'] = isset($_POST['full']) ? sys::bbc(trim($_POST['full'])) : htmlspecialchars_decode($news['full_text']);
-    $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : htmlspecialchars_decode($news['tags']);
+    $aData['name'] = isset($_POST['name']) ? trim((string) $_POST['name']) : htmlspecialchars_decode((string) $news['name']);
+    $aData['text'] = isset($_POST['text']) ? sys::bbc(trim((string) $_POST['text'])) : htmlspecialchars_decode((string) $news['text']);
+    $aData['full'] = isset($_POST['full']) ? sys::bbc(trim((string) $_POST['full'])) : htmlspecialchars_decode((string) $news['full_text']);
+    $aData['tags'] = isset($_POST['tags']) ? trim((string) $_POST['tags']) : htmlspecialchars_decode((string) $news['tags']);
 
     if (in_array('', $aData))
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
 
     if (sys::strlen($aData['name']) > 50)
-        sys::outjs(array('e' => 'Заголовок не должен превышать 50 символов.'));
+        sys::outjs(['e' => 'Заголовок не должен превышать 50 символов.']);
 
     if (sys::strlen($aData['tags']) > 100)
-        sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+        sys::outjs(['e' => 'Теги не должен превышать 100 символов.']);
 
     $sql->query('UPDATE `news` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
-        . '`text`="' . htmlspecialchars($aData['text']) . '",'
-        . '`full_text`="' . htmlspecialchars($aData['full']) . '",'
+        . '`text`="' . htmlspecialchars((string) $aData['text']) . '",'
+        . '`full_text`="' . htmlspecialchars((string) $aData['full']) . '",'
         . '`tags`="' . htmlspecialchars($aData['tags']) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('news', 'sections/news');
 
 $html->set('id', $id);
-$html->set('name', htmlspecialchars_decode($news['name']));
-$html->set('text', htmlspecialchars_decode($news['text']));
-$html->set('full', htmlspecialchars_decode($news['full_text']));
-$html->set('tags', htmlspecialchars_decode($news['tags']));
+$html->set('name', htmlspecialchars_decode((string) $news['name']));
+$html->set('text', htmlspecialchars_decode((string) $news['text']));
+$html->set('full', htmlspecialchars_decode((string) $news['full_text']));
+$html->set('tags', htmlspecialchars_decode((string) $news['tags']));
 
 $html->pack('main');

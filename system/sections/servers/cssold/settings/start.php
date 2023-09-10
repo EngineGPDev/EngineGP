@@ -21,24 +21,24 @@ if (isset($url['maps']))
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+            $map = isset($url['value']) ? trim((string) $url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
             if ($map != $server['map_start'])
                 games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $map, true, $nmch);
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'vac':
             if ($value != $server['vac'])
                 $sql->query('UPDATE `servers` set `vac`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'slots':
             $slots = $value > $server['slots'] ? $server['slots'] : $value;
@@ -48,37 +48,37 @@ if ($go and $url['save']) {
                 $sql->query('UPDATE `servers` set `slots_start`="' . $slots . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'autorestart':
             if ($value != $server['autorestart'])
                 $sql->query('UPDATE `servers` set `autorestart`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'fps':
-            if (!tarif::price($tarif['price']) and in_array($value, explode(':', $tarif['fps'])))
+            if (!tarif::price($tarif['price']) and in_array($value, explode(':', (string) $tarif['fps'])))
                 $sql->query('UPDATE `servers` set `fps`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'tickrate':
-            if (!tarif::price($tarif['price']) and in_array($value, explode(':', $tarif['tickrate'])))
+            if (!tarif::price($tarif['price']) and in_array($value, explode(':', (string) $tarif['tickrate'])))
                 $sql->query('UPDATE `servers` set `tickrate`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'fastdl':
             require(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address']))
-                sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+                sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
             if ($value) {
-                $fastdl = 'sv_downloadurl "http://' . sys::first(explode(':', $unit['address'])) . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
+                $fastdl = 'sv_downloadurl "http://' . sys::first(explode(':', (string) $unit['address'])) . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
                     . 'sv_consistency 1' . PHP_EOL
                     . 'sv_allowupload 1' . PHP_EOL
                     . 'sv_allowdownload 1';
@@ -101,7 +101,7 @@ if ($go and $url['save']) {
             $sql->query('UPDATE `servers` set `fastdl`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 
@@ -124,7 +124,7 @@ $fps = '<option value="' . $server['fps'] . '">' . $server['fps'] . ' FPS</optio
 $tickrate = '<option value="' . $server['tickrate'] . '">' . $server['tickrate'] . ' TickRate</option>';
 
 if (!tarif::price($tarif['price'])) {
-    $aFps = explode(':', $tarif['fps']);
+    $aFps = explode(':', (string) $tarif['fps']);
 
     unset($aFps[array_search($server['fps'], $aFps)]);
 
@@ -132,7 +132,7 @@ if (!tarif::price($tarif['price'])) {
         foreach ($aFps as $value)
             $fps .= '<option value="' . $value . '">' . $value . ' FPS</option>';
 
-    $aTick = explode(':', $tarif['tickrate']);
+    $aTick = explode(':', (string) $tarif['tickrate']);
 
     unset($aTick[array_search($server['tickrate'], $aTick)]);
 

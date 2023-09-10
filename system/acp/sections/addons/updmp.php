@@ -4,9 +4,9 @@ if (!defined('EGP'))
 
 if (isset($url['get']) and $url['get'] == 'list') {
     $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::out();
-    $game = isset($url['game']) ? $url['game'] : sys::out();
+    $game = $url['game'] ?? sys::out();
 
-    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo')))
+    if (!in_array($game, ['cs', 'cssold', 'css', 'csgo']))
         sys::out();
 
     $maps = '';
@@ -24,31 +24,31 @@ if (isset($url['get']) and $url['get'] == 'list') {
 }
 
 if ($go) {
-    $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::outjs(array('e' => 'Необходимо выбрать локацию'));
-    $game = isset($url['game']) ? $url['game'] : sys::outjs(array('e' => 'Необходимо выбрать игру'));
+    $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::outjs(['e' => 'Необходимо выбрать локацию']);
+    $game = $url['game'] ?? sys::outjs(['e' => 'Необходимо выбрать игру']);
 
     if (!$unit)
-        sys::outjs(array('e' => 'Необходимо выбрать локацию'));
+        sys::outjs(['e' => 'Необходимо выбрать локацию']);
 
-    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo')))
-        sys::outjs(array('e' => 'Необходимо выбрать игру'));
+    if (!in_array($game, ['cs', 'cssold', 'css', 'csgo']))
+        sys::outjs(['e' => 'Необходимо выбрать игру']);
 
     require(LIB . 'ssh.php');
 
     $sql->query('SELECT `id`, `passwd`, `address` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
     if (!$sql->num())
-        sys::outjs(array('e' => 'Локация не найдена'));
+        sys::outjs(['e' => 'Локация не найдена']);
 
     $unit = $sql->get();
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
-        sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+        sys::outjs(['e' => 'Не удалось создать связь с локацией']);
 
     $sql->query('DELETE FROM `maps` WHERE `unit`="' . $unit['id'] . '" AND `game`="' . $game . '"');
 
     $maps = $ssh->get('cd /path/maps/' . $game . ' && ls | grep .bsp | grep -v .bsp.');
 
-    $aMaps = explode("\n", $maps);
+    $aMaps = explode("\n", (string) $maps);
 
     array_pop($aMaps);
 
@@ -58,7 +58,7 @@ if ($go) {
         $sql->query('INSERT INTO `maps` set `unit`="' . $unit['id'] . '", `game`="' . $game . '", `name`="' . $name . '"');
     }
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $units = '';

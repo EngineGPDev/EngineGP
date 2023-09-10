@@ -2,12 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$aGame = array(
-    'cs' => 'Counter-Strike: 1.6',
-    'cssold' => 'Counter-Strike: Source v34',
-    'css' => 'Counter-Strike: Source',
-    'csgo' => 'Counter-Strike: Global Offensive'
-);
+$aGame = ['cs' => 'Counter-Strike: 1.6', 'cssold' => 'Counter-Strike: Source v34', 'css' => 'Counter-Strike: Source', 'csgo' => 'Counter-Strike: Global Offensive'];
 
 if (!isset($url['game']) || !array_key_exists($url['game'], $aGame))
     $url['game'] = 'cs';
@@ -46,7 +41,7 @@ if ($id) {
         $aConf[] = $config['file'];
 
         // Данные файла
-        $file = explode('/', $config['file']);
+        $file = explode('/', (string) $config['file']);
 
         $html->get('config_list', 'sections/plugins');
 
@@ -64,8 +59,8 @@ if ($id) {
 
     $html->set('game', $url['game']);
     $html->set('name', $plugin['name']);
-    $html->set('info', htmlspecialchars_decode($plugin['info']));
-    $html->set('desc', htmlspecialchars_decode($plugin['desc']));
+    $html->set('info', htmlspecialchars_decode((string) $plugin['info']));
+    $html->set('desc', htmlspecialchars_decode((string) $plugin['desc']));
 
     // Картинки
     if (!empty($images)) {
@@ -83,7 +78,7 @@ if ($id) {
 
     $html->pack('main');
 
-    $plugin['name'] = strip_tags($plugin['name']);
+    $plugin['name'] = strip_tags((string) $plugin['name']);
 
     $title = $plugin['name'];
     $html->nav('Доступные плагины для установки', $cfg['http'] . 'plugins/game/' . $url['game']);
@@ -126,8 +121,8 @@ if (!isset($html->arr['main'])) {
 
                 plugins::status($plugin['status']);
 
-                $html->set('name', htmlspecialchars_decode($plugin['name']));
-                $html->set('desc', htmlspecialchars_decode($plugin['desc']));
+                $html->set('name', htmlspecialchars_decode((string) $plugin['name']));
+                $html->set('desc', htmlspecialchars_decode((string) $plugin['desc']));
 
                 if (!empty($images)) {
                     $html->unit('images', 1);
@@ -142,7 +137,7 @@ if (!isset($html->arr['main'])) {
             $html->get('category', 'sections/plugins');
 
             $html->set('name', $cat['name']);
-            $html->set('plugins', isset($html->arr['plugins']) ? $html->arr['plugins'] : 'Доступных для установки плагинов нет.', 1);
+            $html->set('plugins', $html->arr['plugins'] ?? 'Доступных для установки плагинов нет.', 1);
 
             $html->pack('addons');
         }
@@ -150,7 +145,7 @@ if (!isset($html->arr['main'])) {
         $html->get('plugins', 'sections/plugins');
 
         $html->set('game', $aGame[$url['game']]);
-        $html->set('addons', isset($html->arr['addons']) ? $html->arr['addons'] : '');
+        $html->set('addons', $html->arr['addons'] ?? '');
 
         $html->pack('main');
 

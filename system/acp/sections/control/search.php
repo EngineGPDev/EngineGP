@@ -2,7 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$text = isset($_POST['text']) ? trim($_POST['text']) : '';
+$text = isset($_POST['text']) ? trim((string) $_POST['text']) : '';
 
 $mkey = md5($text . 'control');
 
@@ -15,18 +15,18 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 $select = '`id`, `user`, `address`, `time`, `date`, `status`, `limit`, `price` FROM `control` WHERE `user`!="-1" AND';
 
 $check = explode('=', $text);
 
-if (in_array($check[0], array('limit', 'price', 'user', 'status'))) {
+if (in_array($check[0], ['limit', 'price', 'user', 'status'])) {
     $val = trim($check[1]);
 
     switch ($check[0]) {
@@ -43,10 +43,10 @@ if (in_array($check[0], array('limit', 'price', 'user', 'status'))) {
             break;
 
         case 'status':
-            if (in_array($val, array('working', 'error', 'reboot', 'overdue', 'blocked', 'install')))
+            if (in_array($val, ['working', 'error', 'reboot', 'overdue', 'blocked', 'install']))
                 $ctrls = $sql->query('SELECT ' . $select . ' `status`="' . $val . '" ORDER BY `id` ASC');
     }
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $ctrls = $sql->query('SELECT ' . $select . ' `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -57,19 +57,12 @@ else {
 
 if (!$sql->num($ctrls)) {
     if ($go)
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
-$status = array(
-    'working' => '<span class="text-green">Работает</span>',
-    'reboot' => 'перезагружается',
-    'error' => '<span class="text-red">Не отвечает</span>',
-    'install' => 'Настраивается',
-    'overdue' => 'Просрочен',
-    'blocked' => 'Заблокирован'
-);
+$status = ['working' => '<span class="text-green">Работает</span>', 'reboot' => 'перезагружается', 'error' => '<span class="text-red">Не отвечает</span>', 'install' => 'Настраивается', 'overdue' => 'Просрочен', 'blocked' => 'Заблокирован'];
 
 $list = '';
 
@@ -91,6 +84,6 @@ while ($ctrl = $sql->get($ctrls)) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

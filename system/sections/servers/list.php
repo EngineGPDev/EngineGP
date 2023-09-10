@@ -6,8 +6,8 @@ $q_Servers = $sql->query('SELECT `unit`, `tarif` FROM `servers` WHERE `user`="' 
 
 $n = $sql->num($q_Servers);
 
-$aUnits = array();
-$aTarifs = array();
+$aUnits = [];
+$aTarifs = [];
 
 // Проверка массивов в кеше
 if (is_array($mcache->get('aut_' . $user['id'])) and $mcache->get('nser_' . $user['id']) == $n) {
@@ -20,24 +20,19 @@ if (is_array($mcache->get('aut_' . $user['id'])) and $mcache->get('nser_' . $use
             $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
             $unit = $sql->get();
 
-            $aUnits[$server['unit']] = array(
-                'name' => $unit['name']
-            );
+            $aUnits[$server['unit']] = ['name' => $unit['name']];
         }
 
         if (!array_key_exists($server['tarif'], $aTarifs)) {
             $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
             $tarif = $sql->get();
 
-            $aTarifs[$server['tarif']] = array(
-                'name' => $tarif['name'],
-                'packs' => sys::b64djs($tarif['packs'])
-            );
+            $aTarifs[$server['tarif']] = ['name' => $tarif['name'], 'packs' => sys::b64djs($tarif['packs'])];
         }
     }
 
     // Запись массивов в кеш
-    $mcache->set('aut_' . $user['id'], array($aUnits, $aTarifs), false, 60);
+    $mcache->set('aut_' . $user['id'], [$aUnits, $aTarifs], false, 60);
 
     // Запись кол-во серверов в кеш
     $mcache->set('nser_' . $user['id'], $n, false, 60);
@@ -81,7 +76,7 @@ while ($server = $sql->get()) {
         games::info_tarif(
             $server['game'],
             $aTarifs[$server['tarif']]['name'],
-            array('fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram'])
+            ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]
         )
     );
 
@@ -93,7 +88,7 @@ while ($server = $sql->get()) {
     $html->set('name', $server['name']);
     $html->set('fps', $server['fps']);
     $html->set('status', sys::status($server['status'], $server['game'], $server['map']));
-    $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img', $server['game']));
+    $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img'));
     $html->set('time_end', $time_end);
     $html->set('time', sys::today($server['time']));
     $html->set('date', sys::today($server['date']));

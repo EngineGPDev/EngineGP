@@ -14,17 +14,17 @@ if ($go) {
     require(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
-    $aData = array();
+    $aData = [];
 
-    $aData['active'] = isset($_POST['active']) ? $_POST['active'] : '';
-    $aData['value'] = isset($_POST['value']) ? $_POST['value'] : '';
-    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
-    $aData['flags'] = isset($_POST['flags']) ? $_POST['flags'] : '';
+    $aData['active'] = $_POST['active'] ?? '';
+    $aData['value'] = $_POST['value'] ?? '';
+    $aData['passwd'] = $_POST['passwd'] ?? '';
+    $aData['flags'] = $_POST['flags'] ?? '';
     $aData['immunity'] = isset($_POST['immunity']) ? sys::int($_POST['immunity']) : '';
-    $aData['time'] = isset($_POST['time']) ? $_POST['time'] : '';
-    $aData['info'] = isset($_POST['info']) ? $_POST['info'] : '';
+    $aData['time'] = $_POST['time'] ?? '';
+    $aData['info'] = $_POST['info'] ?? '';
 
     // Удаление текущих записей
     $sql->query('DELETE FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '"');
@@ -33,7 +33,7 @@ if ($go) {
 
     foreach ($aData['value'] as $index => $val) {
         if ($val != '') {
-            $aDate = isset($aData['time'][$index]) ? explode('.', $aData['time'][$index]) : explode('.', date('d.m.Y', $start_point));
+            $aDate = isset($aData['time'][$index]) ? explode('.', (string) $aData['time'][$index]) : explode('.', date('d.m.Y', $start_point));
 
             if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2]))
                 $aDate = explode('.', date('d.m.Y', $start_point));
@@ -41,22 +41,22 @@ if ($go) {
             $time = mktime(0, 0, 0, $aDate[1], $aDate[0], $aDate[2]);
 
             $aData['active'][$index] = isset($aData['active'][$index]) ? 1 : 0;
-            $aData['passwd'][$index] = isset($aData['passwd'][$index]) ? $aData['passwd'][$index] : '';
-            $aData['flags'][$index] = isset($aData['flags'][$index]) ? $aData['flags'][$index] : '';
-            $aData['info'][$index] = isset($aData['info'][$index]) ? $aData['info'][$index] : '';
+            $aData['passwd'][$index] ??= '';
+            $aData['flags'][$index] ??= '';
+            $aData['info'][$index] ??= '';
 
             $text = '"' . $val . '" "' . $aData['immunity'][$index] . ':' . $aData['flags'][$index] . '" "' . $aData['passwd'][$index] . '"';
 
             $sql->query('INSERT INTO `admins_' . $server['game'] . '` set'
                 . '`server`="' . $id . '",'
-                . '`value`="' . htmlspecialchars($val) . '",'
+                . '`value`="' . htmlspecialchars((string) $val) . '",'
                 . '`active`="' . $aData['active'][$index] . '",'
-                . '`passwd`="' . htmlspecialchars($aData['passwd'][$index]) . '",'
-                . '`flags`="' . htmlspecialchars($aData['flags'][$index]) . '",'
+                . '`passwd`="' . htmlspecialchars((string) $aData['passwd'][$index]) . '",'
+                . '`flags`="' . htmlspecialchars((string) $aData['flags'][$index]) . '",'
                 . '`immunity`="' . $aData['immunity'][$index] . '",'
                 . '`time`="' . $time . '",'
                 . '`text`="' . htmlspecialchars($text) . '",'
-                . '`info`="' . htmlspecialchars($aData['info'][$index]) . '"');
+                . '`info`="' . htmlspecialchars((string) $aData['info'][$index]) . '"');
 
             if ($aData['active'][$index])
                 $usini .= $text . PHP_EOL;
@@ -73,7 +73,7 @@ if ($go) {
 
     $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \" sm_reloadadmins\"\015'");
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Построение списка добавленных админов
@@ -103,7 +103,7 @@ $max = $sql->get();
 $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
-$html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
+$html->set('admins', $html->arr['admins'] ?? '');
 $html->set('index', $max['id'] < 1 ? 0 : $max['id']);
 
 $html->pack('main');

@@ -15,11 +15,11 @@ class SampQuery
 
     public function getInfo()
     {
-        @fwrite($this->stack, $this->assemblePacket('i'));
+        @fwrite($this->stack, (string) $this->assemblePacket('i'));
 
         fread($this->stack, 11);
 
-        $serverInfo = array();
+        $serverInfo = [];
 
         $serverInfo['password'] = sys::int(ord(fread($this->stack, 1)));
 
@@ -45,11 +45,11 @@ class SampQuery
 
     public function getDetailedPlayers()
     {
-        @fwrite($this->stack, $this->assemblePacket('d'));
+        @fwrite($this->stack, (string) $this->assemblePacket('d'));
         fread($this->stack, 11);
 
         $playerCount = ord(fread($this->stack, 2));
-        $players = array();
+        $players = [];
 
         for ($i = 0; $i < $playerCount; ++$i) {
             $player['playerid'] = ord(fread($this->stack, 1));
@@ -84,8 +84,8 @@ class SampQuery
         if (isset($string[3]))
             $int += (ord($string[3]) << 24);
 
-        if ($int >= 4294967294)
-            $int -= 4294967296;
+        if ($int >= 4_294_967_294)
+            $int -= 4_294_967_296;
 
         return $int;
     }
@@ -107,7 +107,7 @@ class SampQuery
     public function connect()
     {
         $connected = false;
-        fwrite($this->stack, $this->assemblePacket('p0101'));
+        fwrite($this->stack, (string) $this->assemblePacket('p0101'));
 
         if (fread($this->stack, 10)) {
             if (fread($this->stack, 5) == 'p0101')

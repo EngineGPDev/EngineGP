@@ -18,9 +18,9 @@ $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handle
 $whoops->pushHandler($loggingInFile);
 
 // Парсинг адреса
-$url = is_array(sys::url()) ? sys::url() : array();
+$url = is_array(sys::url()) ? sys::url() : [];
 $route = sys::url(false);
-$section = isset($url['section']) ? $url['section'] : false;
+$section = $url['section'] ?? false;
 
 $id = array_key_exists('id', $url) ? sys::int($url['id']) : false;
 $go = array_key_exists('go', $url);
@@ -34,11 +34,11 @@ if (isset($_GET['account']))
 $auth = false;
 
 // Проверка cookie на авторизацию
-$aAuth = array();
+$aAuth = [];
 
-$aAuth['login'] = isset($_COOKIE['egp_login']) ? $_COOKIE['egp_login'] : '';
-$aAuth['passwd'] = isset($_COOKIE['egp_passwd']) ? $_COOKIE['egp_passwd'] : '';
-$aAuth['authkeycheck'] = isset($_COOKIE['egp_authkeycheck']) ? $_COOKIE['egp_authkeycheck'] : '';
+$aAuth['login'] = $_COOKIE['egp_login'] ?? '';
+$aAuth['passwd'] = $_COOKIE['egp_passwd'] ?? '';
+$aAuth['authkeycheck'] = $_COOKIE['egp_authkeycheck'] ?? '';
 
 $authkey = md5($aAuth['login'] . $uip . $aAuth['passwd']);
 $userkey = md5($aAuth['login'] . $authkey . $aAuth['passwd']);
@@ -46,14 +46,14 @@ $userkey = md5($aAuth['login'] . $authkey . $aAuth['passwd']);
 if (!in_array('', $aAuth) && $authkey == $aAuth['authkeycheck']) {
     $users = $mcache->get('users_auth');
 
-    $user = isset($users[$userkey]) ? $users[$userkey] : 0;
+    $user = $users[$userkey] ?? 0;
 
     if (!$user) {
         if ((!sys::valid($aAuth['login'], 'other', $aValid['login'])) && !sys::valid($aAuth['passwd'], 'md5')) {
             $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aAuth['login'] . '" AND `passwd`="' . $aAuth['passwd'] . '" LIMIT 1');
             if ($sql->num()) {
                 $sql->query('SELECT `id`, `login`, `passwd`, `balance`, `group`, `level`, `time` FROM `users` WHERE `login`="' . $aAuth['login'] . '" AND `passwd`="' . $aAuth['passwd'] . '" LIMIT 1');
-                $user = array_merge(array('authkey' => $authkey), $sql->get());
+                $user = array_merge(['authkey' => $authkey], $sql->get());
 
                 $auth = 1;
 
@@ -95,19 +95,9 @@ if (isset($html->arr['main'])) {
     $html->upd(
         'main',
 
-        array(
-            '[home]',
-            '[js]',
-            '[css]',
-            '[img]'
-        ),
+        ['[home]', '[js]', '[css]', '[img]'],
 
-        array(
-            $cfg['http'],
-            $cfg['http'] . 'template/js/',
-            $cfg['http'] . 'template/css/',
-            $cfg['http'] . 'template/images/'
-        )
+        [$cfg['http'], $cfg['http'] . 'template/js/', $cfg['http'] . 'template/css/', $cfg['http'] . 'template/images/']
     );
 }
 
@@ -139,12 +129,12 @@ $html->set('cur', $cfg['currency']);
 if ($auth) {
     $html->set('login', $user['login']);
     $html->set('balance', round($user['balance'], 2));
-    $html->set('other_menu', isset($html->arr['vmenu']) ? $html->arr['vmenu'] : '');
+    $html->set('other_menu', $html->arr['vmenu'] ?? '');
 } else
     $html->set('other_menu', '');
 
-$html->set('nav', isset($html->arr['nav']) ? $html->arr['nav'] : '', true);
-$html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
+$html->set('nav', $html->arr['nav'] ?? '', true);
+$html->set('main', $html->arr['main'] ?? '', true);
 
 $sql->query('SELECT `id`, `login`, `time` FROM `users` ORDER BY `id` ASC');
 $online = '';

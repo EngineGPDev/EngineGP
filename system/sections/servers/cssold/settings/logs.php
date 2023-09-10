@@ -29,7 +29,7 @@ if (isset($url['log'])) {
 
     $html->set('id', $id);
     $html->set('name', $url['log']);
-    $html->set('log', htmlspecialchars($ssh->get()));
+    $html->set('log', htmlspecialchars((string) $ssh->get()));
     $html->set('uri', 'logs');
 
     $html->pack('main');
@@ -43,7 +43,7 @@ if (isset($url['log'])) {
     $ssh->set('cd ' . $folder . ' && du -ab --time | grep -e .log$ | awk \'{print $2" "$3"\/"$1"\/"$4}\' | sort -Mr');
 
     // Массив данных
-    $aData = explode("\n", $ssh->get());
+    $aData = explode("\n", (string) $ssh->get());
 
     if (isset($aData[count($aData) - 1]))
         unset($aData[count($aData) - 1]);
@@ -79,7 +79,7 @@ if (isset($url['log'])) {
 
     $html->set('id', $id);
     $html->set('uri', '');
-    $html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
+    $html->set('logs', $html->arr['logs'] ?? '');
 
     $html->pack('main');
 }

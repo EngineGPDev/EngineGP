@@ -23,9 +23,9 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
 
-        list($ip, $port) = explode(':', $server['address']);
+        [$ip, $port] = explode(':', (string) $server['address']);
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -63,31 +63,23 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function config($ip, $port, $slots, $config)
     {
-        $aLine = explode("\n", $config);
+        $aLine = explode("\n", (string) $config);
 
-        $search = array(
-            "#^server-ip=(.*?)$#is",
-            "#^server-port=(.*?)$#is",
-            "#^rcon\.port=(.*?)$#is",
-            "#^query\.port=(.*?)$#is",
-            "#^max-players=(.*?)$#is",
-            "#^enable-query=(.*?)$#is",
-            "#^debug=(.*?)$#is"
-        );
+        $search = ["#^server-ip=(.*?)$#is", "#^server-port=(.*?)$#is", "#^rcon\.port=(.*?)$#is", "#^query\.port=(.*?)$#is", "#^max-players=(.*?)$#is", "#^enable-query=(.*?)$#is", "#^debug=(.*?)$#is"];
 
         $config = '';
 
         foreach ($aLine as $line) {
-            if (str_replace(array(' ', "\t"), '', $line) != '')
-                $edit = trim(preg_replace($search, array('', '', '', '', '', '', ''), $line));
+            if (str_replace([' ', "\t"], '', $line) != '')
+                $edit = trim(preg_replace($search, ['', '', '', '', '', '', ''], $line));
 
             if ($edit != '')
                 $config .= $edit . PHP_EOL;

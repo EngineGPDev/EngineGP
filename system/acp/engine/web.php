@@ -4,15 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-cloud"></i> Список бесплатных услуг';
 
-$aSection = array(
-    'index',
-    'csbans',
-    'csstats',
-    'astats',
-    'sourcebans',
-    'mysql',
-    'hosting'
-);
+$aSection = ['index', 'csbans', 'csstats', 'astats', 'sourcebans', 'mysql', 'hosting'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

@@ -2,7 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-if (!$section || !in_array($section, array('dialog')))
+if (!$section || !in_array($section, ['dialog']))
     sys::back($cfg['http']);
 
 $q_Msgs = $sql->query('SELECT * FROM (SELECT `id`, `userid`, `msg`, `date` FROM `chat` ORDER BY `date` DESC LIMIT 30) t ORDER BY `date` ASC;');
@@ -34,4 +34,4 @@ while ($msg = $sql->get($q_Msgs)) {
     $html->pack('dialog');
 }
 
-sys::out(isset($html->arr['dialog']) ? $html->arr['dialog'] : '');
+sys::out($html->arr['dialog'] ?? '');

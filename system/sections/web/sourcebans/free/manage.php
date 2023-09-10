@@ -44,7 +44,7 @@ $html->set('id', $id);
 
 $html->set('url', $web['domain']);
 $html->set('passwd', $web['passwd']);
-$html->set('config', base64_decode($web['config']));
+$html->set('config', base64_decode((string) $web['config']));
 $html->set('servers', $options);
 
 if (in_array('update', $aAction[$url['subsection']]))

@@ -2,19 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$status = array(
-    'working' => '<span class="text-green">Работает</span>',
-    'off' => '<span class="text-red">Выключен</span>',
-    'start' => 'Запускается',
-    'restart' => 'Перезапускается',
-    'change' => 'Смена карты',
-    'install' => 'Устанавливается',
-    'reinstall' => 'Переустанавливается',
-    'update' => 'Обновляется',
-    'recovery' => 'Восстанавливается',
-    'overdue' => 'Просрочен',
-    'blocked' => 'Заблокирован'
-);
+$status = ['working' => '<span class="text-green">Работает</span>', 'off' => '<span class="text-red">Выключен</span>', 'start' => 'Запускается', 'restart' => 'Перезапускается', 'change' => 'Смена карты', 'install' => 'Устанавливается', 'reinstall' => 'Переустанавливается', 'update' => 'Обновляется', 'recovery' => 'Восстанавливается', 'overdue' => 'Просрочен', 'blocked' => 'Заблокирован'];
 
 $sql->query('SELECT * FROM `users` WHERE `id`="' . $id . '" LIMIT 1');
 $us = $sql->get();
@@ -31,7 +19,7 @@ $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 $sql->query('SELECT `ip`, `date`, `browser` FROM `auth` WHERE `user`="' . $id . '" ORDER BY `id` DESC LIMIT 15');
 while ($auth_info = $sql->get()) {
     $auth_list .= '<tr>';
-    $auth_list .= '<td>Авторизация через браузер: <b>' . sys::browser(base64_decode($auth_info['browser'])) . '</b></td>';
+    $auth_list .= '<td>Авторизация через браузер: <b>' . sys::browser(base64_decode((string) $auth_info['browser'])) . '</b></td>';
     $auth_list .= '<td>' . $auth_info['ip'] . '</td>';
     $auth_list .= '<td>' . sys::country($auth_info['ip']) . '</td>';
     $auth_list .= '<td>' . sys::today($auth_info['date']) . '</td>';
@@ -63,7 +51,7 @@ while ($server_user = $sql->get($servers_user)) {
     $serv_user .= '<td>' . $server_user['address'] . ' <a href="[home]servers/id/' . $server_user['id'] . '">(Перейти)</a></td>';
     $serv_user .= '<td>#' . $server_user['tarif'] . ' ' . $tarif['name'] . '</td>';
     $serv_user .= '<td>' . $status[$server_user['status']] . '</td>';
-    $serv_user .= '<td>' . strtoupper($aGname[$server_user['game']]) . '</td>';
+    $serv_user .= '<td>' . strtoupper((string) $aGname[$server_user['game']]) . '</td>';
     $serv_user .= '<td>' . $time_end = $server_user['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server_user['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server_user['time']) . '</td>';
     $serv_user .= '</tr>';
 }
@@ -94,7 +82,7 @@ foreach ($us as $i => $val)
 $html->set('time', $us['time'] < $start_point - 600 ? sys::today($us['time']) : sys::ago($us['time']));
 $html->set('date', sys::today($us['date']));
 
-$html->set('month', mb_strtolower(params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
+$html->set('month', mb_strtolower((string) params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
 $html->set('money_all', $money_all);
 $html->set('money_buy', $money_buy);
 $html->set('money_extend', $money_all - $money_buy);

@@ -5,9 +5,9 @@ if (!defined('EGP'))
 if (!$go)
     exit;
 
-$aData = array();
+$aData = [];
 
-$aData['server'] = isset($_POST['server']) ? $_POST['server'] : sys::outjs(array('e' => 'Необходимо выбрать игровой сервер.'), $nmch);
+$aData['server'] = $_POST['server'] ?? sys::outjs(['e' => 'Необходимо выбрать игровой сервер.'], $nmch);
 $aData['type'] = $url['subsection'];
 
 switch ($aWebInstall[$server['game']][$aData['type']]) {
@@ -28,7 +28,7 @@ switch ($aWebInstall[$server['game']][$aData['type']]) {
 }
 
 if (!$sql->num())
-    sys::outjs(array('e' => 'Дополнительная услуга не установлена.'), $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 
 $web = $sql->get();
 
@@ -45,13 +45,13 @@ foreach ($aData['server'] as $sid) {
 
     $server = $sql->get();
 
-    $address = explode(':', $server['address']);
+    $address = explode(':', (string) $server['address']);
 
     if (!$server['ftp_use'])
         continue;
 
     if (!$server['ftp'])
-        sys::outjs(array('r' => 'Для подключения игрового сервера необходимо включить FileTP.', 'url' => $cfg['http'] . 'servers/id/' . $sid . '/section/filetp'), $nmch);
+        sys::outjs(['r' => 'Для подключения игрового сервера необходимо включить FileTP.', 'url' => $cfg['http'] . 'servers/id/' . $sid . '/section/filetp'], $nmch);
 
     $stack = web::stack($aData, '`login`');
 
@@ -81,7 +81,7 @@ require(LIB . 'ssh.php');
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
-    sys::outjs(array('e' => sys::text('ssh', 'error')), $nmch);
+    sys::outjs(['e' => sys::text('ssh', 'error')], $nmch);
 
 // Директория дополнительной услуги
 $install = $aWebUnit['install'][$aWebUnit['unit'][$aData['type']]][$aData['type']] . $web['domain'];
@@ -91,4 +91,4 @@ $ssh->setfile($temp, $install . '/config/servers.config.php', 0644);
 
 unlink($temp);
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

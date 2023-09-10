@@ -53,4 +53,4 @@ if ($url['type'] == 'plugin') {
         $sql->query('DELETE FROM `plugins_category` WHERE `id`="' . $id . '" LIMIT 1');
 }
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

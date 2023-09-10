@@ -4,21 +4,8 @@ if (!defined('EGP'))
 
 class smtp
 {
-    public $smtp_username;
-    public $smtp_password;
-    public $smtp_host;
-    public $smtp_from;
-    public $smtp_port;
-    public $smtp_charset;
-
-    public function __construct($smtp_username, $smtp_password, $smtp_host, $smtp_from, $smtp_port = 25, $smtp_charset = 'utf-8')
+    public function __construct(public $smtp_username, public $smtp_password, public $smtp_host, public $smtp_from, public $smtp_port = 25, public $smtp_charset = 'utf-8')
     {
-        $this->smtp_username = $smtp_username;
-        $this->smtp_password = $smtp_password;
-        $this->smtp_host = $smtp_host;
-        $this->smtp_from = $smtp_from;
-        $this->smtp_port = $smtp_port;
-        $this->smtp_charset = $smtp_charset;
     }
 
     function send($mailTo, $subject, $message, $headers)
@@ -26,7 +13,7 @@ class smtp
         global $cfg;
 
         $contentMail = 'Date: ' . date('D, d M Y H:i:s') . " UT\r\n";
-        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode($subject) . "=?=\r\n";
+        $contentMail .= 'Subject: =?' . $this->smtp_charset . '?B?' . base64_encode((string) $subject) . "=?=\r\n";
         $contentMail .= $headers . "\r\n";
         $contentMail .= $message . "\r\n";
 
@@ -53,14 +40,14 @@ class smtp
                 throw new Exception('Autorization error');
             }
 
-            fputs($socket, base64_encode($this->smtp_username) . "\r\n");
+            fputs($socket, base64_encode((string) $this->smtp_username) . "\r\n");
 
             if (!$this->_parseServer($socket, '334')) {
                 fclose($socket);
                 throw new Exception('Autorization error');
             }
 
-            fputs($socket, base64_encode($this->smtp_password) . "\r\n");
+            fputs($socket, base64_encode((string) $this->smtp_password) . "\r\n");
 
             if (!$this->_parseServer($socket, '235')) {
                 fclose($socket);
@@ -74,7 +61,7 @@ class smtp
                 throw new Exception('Error of command sending: MAIL FROM');
             }
 
-            $mailTo = ltrim($mailTo, '<');
+            $mailTo = ltrim((string) $mailTo, '<');
             $mailTo = rtrim($mailTo, '>');
 
             fputs($socket, 'RCPT TO: <' . $mailTo . ">\r\n");

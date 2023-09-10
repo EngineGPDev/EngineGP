@@ -14,8 +14,8 @@ $sql->query('SELECT `id`, `name`, `text`, `views`, `tags`, `date` FROM `news` OR
 while ($news = $sql->get()) {
     $html->get('list', 'sections/news');
     $html->set('id', $news['id']);
-    $html->set('name', htmlspecialchars_decode($news['name']));
-    $html->set('text', htmlspecialchars_decode($news['text']));
+    $html->set('name', htmlspecialchars_decode((string) $news['name']));
+    $html->set('text', htmlspecialchars_decode((string) $news['text']));
     $html->set('views', $news['views']);
     $html->set('tags', sys::tags($news['tags']));
     $html->set('date', sys::today($news['date']));
@@ -23,6 +23,6 @@ while ($news = $sql->get()) {
 }
 
 $html->get('all', 'sections/news');
-$html->set('list', isset($html->arr['news']) ? $html->arr['news'] : '');
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('list', $html->arr['news'] ?? '');
+$html->set('pages', $html->arr['pages'] ?? '');
 $html->pack('main');

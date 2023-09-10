@@ -4,19 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-gamepad"></i> Список серверов';
 
-$aSection = array(
-    'index',
-    'cs',
-    'cssold',
-    'css',
-    'csgo',
-    'samp',
-    'crmp',
-    'mta',
-    'mc',
-    'overdue',
-    'delete'
-);
+$aSection = ['index', 'cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc', 'overdue', 'delete'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

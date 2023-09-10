@@ -8,7 +8,7 @@ class sys
     {
         $is_secure = false;
 
-        if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+        if (isset($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) == 'on') {
             $is_secure = true;
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
             $is_secure = true;
@@ -22,9 +22,9 @@ class sys
         if ($_SERVER['REQUEST_URI'] == '/')
             return $all ? NULL : 'index';
 
-        $url = array();
+        $url = [];
 
-        $string = str_replace('//', '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $string = str_replace('//', '/', parse_url((string) $_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $aUrl = explode('/', trim($string, ' /'));
 
         if (!$all)
@@ -93,7 +93,7 @@ class sys
                 $mcache->set('notice_' . $server['unit'], NULL, false, 10);
         }
 
-        $aUnit = array('index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost');
+        $aUnit = ['index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost'];
 
         $html->get('gmenu', 'sections/servers/' . $server['game']);
 
@@ -144,14 +144,14 @@ class sys
         $dir = '';
         $use = true;
 
-        if (in_array($inc, array('plugins', 'ftp', 'console', 'graph', 'copy', 'web'))) {
+        if (in_array($inc, ['plugins', 'ftp', 'console', 'graph', 'copy', 'web'])) {
             $server['graph_use'] = $server['stats_use'];
 
             if (!$server[$inc . '_use'])
                 $use = false;
         }
 
-        if (!$use || $server['time'] < $start_point || in_array($server['status'], array('install', 'reinstall', 'update', 'recovery', 'blocked'))) {
+        if (!$use || $server['time'] < $start_point || in_array($server['status'], ['install', 'reinstall', 'update', 'recovery', 'blocked'])) {
             if ($go)
                 sys::out('Раздел недоступен');
 
@@ -173,29 +173,29 @@ class sys
     public static function int($data, $width = false)
     {
         if ($width)
-            return preg_replace("([^0-9]{0, " . $width . "})", '', $data);
+            return preg_replace("([^0-9]{0, " . $width . "})", '', (string) $data);
 
-        return preg_replace("([^0-9])", '', $data);
+        return preg_replace("([^0-9])", '', (string) $data);
     }
 
     public static function b64js($data)
     {
-        return base64_encode(json_encode($data));
+        return base64_encode(json_encode($data, JSON_THROW_ON_ERROR));
     }
 
     public static function b64djs($data)
     {
-        return json_decode(base64_decode($data), true);
+        return json_decode(base64_decode((string) $data), true, 512, JSON_THROW_ON_ERROR);
     }
 
     public static function hb64($data)
     {
-        return base64_encode(htmlspecialchars($data));
+        return base64_encode(htmlspecialchars((string) $data));
     }
 
     public static function hb64d($data)
     {
-        return htmlspecialchars_decode(base64_decode($data));
+        return htmlspecialchars_decode(base64_decode((string) $data));
     }
 
     public static function outjs($val, $cache = false)
@@ -205,7 +205,7 @@ class sys
         if ($cache)
             $mcache->delete($cache);
 
-        die(json_encode($val));
+        die(json_encode($val, JSON_THROW_ON_ERROR));
     }
 
     public static function out($val = '', $cache = false)
@@ -248,65 +248,65 @@ class sys
 
     public static function valid($val, $type, $preg = '')
     {
-        $val = (isset($val) ? $val : '');
+        $val ??= '';
 
         switch ($type) {
             case 'promo':
-                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
+                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'en':
-                if (!preg_match("/^[A-Za-z0-9]$/", $val))
+                if (!preg_match("/^[A-Za-z0-9]$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'ru':
-                if (!preg_match("/^[А-Яа-я]$/u", $val))
+                if (!preg_match("/^[А-Яа-я]$/u", (string) $val))
                     return true;
 
                 return false;
 
             case 'wm':
-                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', $val))
+                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', (string) $val))
                     return true;
 
                 return false;
 
             case 'ip':
-                if (!preg_match('/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/', $val))
+                if (!preg_match('/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/', (string) $val))
                     return true;
 
                 return false;
 
             case 'steamid':
-                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", $val))
+                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'steamid3':
-                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", $val))
+                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", (string) $val))
                     return true;
 
                 return false;
 
             case 'num':
-                if (!preg_match('/[^0-9]/', $val))
+                if (!preg_match('/[^0-9]/', (string) $val))
                     return true;
 
                 return false;
 
             case 'md5':
-                if (!preg_match("/^[a-z0-9]{32,32}$/", $val))
+                if (!preg_match("/^[a-z0-9]{32,32}$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'other':
-                if (!preg_match($preg, $val))
+                if (!preg_match($preg, (string) $val))
                     return true;
 
                 return false;
@@ -324,8 +324,8 @@ class sys
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
         $text = str_replace(
-            array('[name]', '[text]', '[http]', '[img]', '[css]'),
-            array($cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'),
+            ['[name]', '[text]', '[http]', '[img]', '[css]'],
+            [$cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'],
             $tpl
         );
 
@@ -343,31 +343,24 @@ class sys
 
     public static function mail_domain($mail)
     {
-        $domain = explode('@', $mail);
+        $domain = explode('@', (string) $mail);
 
         $domain = end($domain);
 
-        if (in_array($domain, array('list.ru', 'bk.ru', 'inbox.ru')))
+        if (in_array($domain, ['list.ru', 'bk.ru', 'inbox.ru']))
             $domain = 'mail.ru';
 
-        switch ($domain) {
-            case 'mail.ru':
-                return $domain;
-
-            case 'yandex.ru':
-                return 'mail.yandex.ru';
-
-            case 'google.com':
-                return 'mail.google.com';
-
-            default:
-                return '';
-        }
+        return match ($domain) {
+            'mail.ru' => $domain,
+            'yandex.ru' => 'mail.yandex.ru',
+            'google.com' => 'mail.google.com',
+            default => '',
+        };
     }
 
     public static function domain($domain)
     {
-        $domain = explode('.', $domain);
+        $domain = explode('.', (string) $domain);
 
         unset($domain[0]);
 
@@ -377,7 +370,7 @@ class sys
     public static function updtext($text, $data)
     {
         foreach ($data as $name => $val)
-            $text = str_replace('[' . $name . ']', $val, $text);
+            $text = str_replace('[' . $name . ']', $val, (string) $text);
 
         return $text;
     }
@@ -385,20 +378,20 @@ class sys
     public static function login($mail, $lchar)
     {
         if (!$lchar)
-            return str_replace(array('.', '_', '+', '-'), '', sys::first(explode('@', $mail)));
+            return str_replace(['.', '_', '+', '-'], '', (string) sys::first(explode('@', (string) $mail)));
 
         $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
         $a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
         $selections = strlen($list) - 1;
         $start = strlen($a) - 1;
-        $b = rand(0, $start);
+        $b = random_int(0, $start);
         $start = $a[$b];
-        $login = array();
+        $login = [];
 
         $i = 0;
 
         for ($i; $i <= 10; $i += 1) {
-            $n = rand(0, $selections);
+            $n = random_int(0, $selections);
             $login[] = $list[$n];
         }
 
@@ -411,14 +404,14 @@ class sys
         $a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
         $selections = strlen($list) - 1;
         $start = strlen($a) - 1;
-        $b = rand(0, $start);
+        $b = random_int(0, $start);
         $start = $a[$b];
-        $passwd = array();
+        $passwd = [];
 
         $i = 0;
 
         for ($i; $i <= $length - 2; $i += 1) {
-            $n = rand(0, $selections);
+            $n = random_int(0, $selections);
             $passwd[] = $list[$n];
         }
 
@@ -427,7 +420,7 @@ class sys
 
     public static function passwdkey($passwd)
     {
-        return md5($passwd);
+        return md5((string) $passwd);
     }
 
     public static function cookie($name, $value, $expires)
@@ -444,7 +437,7 @@ class sys
 
         if ($auth) {
             if ($go)
-                sys::outjs(array('e' => sys::text('output', 'auth')));
+                sys::outjs(['e' => sys::text('output', 'auth')]);
 
             $link = 'user/section/lk';
 
@@ -460,7 +453,7 @@ class sys
 
         if (!$auth) {
             if ($go)
-                sys::outjs(array('e' => sys::text('output', 'noauth')));
+                sys::outjs(['e' => sys::text('output', 'noauth')]);
 
             $link = 'user/section/auth';
 
@@ -472,19 +465,19 @@ class sys
 
     public static function browser($agent)
     {
-        if (strpos($agent, 'Firefox') !== false)
+        if (str_contains((string) $agent, 'Firefox'))
             return 'Mozilla Firefox';
 
-        if (strpos($agent, 'Opera') !== false)
+        if (str_contains((string) $agent, 'Opera'))
             return 'Opera';
 
-        if (strpos($agent, 'Chrome') !== false)
+        if (str_contains((string) $agent, 'Chrome'))
             return 'Google Chrome';
 
-        if (strpos($agent, 'MSIE') !== false)
+        if (str_contains((string) $agent, 'MSIE'))
             return 'Internet Explorer';
 
-        if (strpos($agent, 'Safari') !== false)
+        if (str_contains((string) $agent, 'Safari'))
             return 'Safari';
 
         return 'Неизвестный';
@@ -504,20 +497,7 @@ class sys
         $minutes = floor(($check_time % 3600) / 60);
         $seconds = $check_time % 60;
 
-        $adata = array(
-            'min' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('ч.', 'ч.', 'ч.'),
-                'minutes' => array('мин.', 'мин.', 'мин.'),
-                'seconds' => array('сек.', 'сек.', 'сек.')
-            ),
-            'max' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('час', 'часа', 'часов'),
-                'minutes' => array('минуту', 'минуты', 'минут'),
-                'seconds' => array('секунду', 'секунды', 'секунд')
-            )
-        );
+        $adata = ['min' => ['days' => ['день', 'дня', 'дней'], 'hours' => ['ч.', 'ч.', 'ч.'], 'minutes' => ['мин.', 'мин.', 'мин.'], 'seconds' => ['сек.', 'сек.', 'сек.']], 'max' => ['days' => ['день', 'дня', 'дней'], 'hours' => ['час', 'часа', 'часов'], 'minutes' => ['минуту', 'минуты', 'минут'], 'seconds' => ['секунду', 'секунды', 'секунд']]];
 
         $text = '';
 
@@ -539,7 +519,7 @@ class sys
     public static function date_decl($digit, $expr, $onlyword = false)
     {
         if (!is_array($expr))
-            $expr = array_filter(explode(' ', $expr));
+            $expr = array_filter(explode(' ', (string) $expr));
 
         if (empty($expr[2]))
             $expr[2] = $expr[1];
@@ -596,7 +576,7 @@ class sys
 
     public static function day($time)
     {
-        $days = array('день', 'дня', 'дней');
+        $days = ['день', 'дня', 'дней'];
 
         $time = $time % 100;
 
@@ -618,33 +598,11 @@ class sys
     {
         global $cfg;
 
-        $lines = explode("\n", $text);
+        $lines = explode("\n", (string) $text);
 
-        $str_search = array(
-            "#\\\n#is",
-            "#\[spoiler\](.+?)\[\/spoiler\]#is",
-            "#\[sp\](.+?)\[\/sp\]#is",
-            "#\[b\](.+?)\[\/b\]#is",
-            "#\[u\](.+?)\[\/u\]#is",
-            "#\[code\](.+?)\[\/code\]#is",
-            "#\[quote\](.+?)\[\/quote\]#is",
-            "#\[url=(.+?)\](.+?)\[\/url\]#is",
-            "#\[img=(.+?)\] \[\/img\]#is",
-            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
-        );
+        $str_search = ["#\\\n#is", "#\[spoiler\](.+?)\[\/spoiler\]#is", "#\[sp\](.+?)\[\/sp\]#is", "#\[b\](.+?)\[\/b\]#is", "#\[u\](.+?)\[\/u\]#is", "#\[code\](.+?)\[\/code\]#is", "#\[quote\](.+?)\[\/quote\]#is", "#\[url=(.+?)\](.+?)\[\/url\]#is", "#\[img=(.+?)\] \[\/img\]#is", "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"];
 
-        $str_replace = array(
-            "<br />",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
-            "<b>\\1</b>",
-            "<u>\\1</u>",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
-            "<blockquote><p>\\1</p></blockquote>",
-            "<a href='\\1' target='_blank'>\\2</a>",
-            "<a href='\\1' target='_blank' style='display: block;'><img src='" . $cfg['url'] . "template/images/help_screenshot.png' alt='Изображение'></a>",
-            "<a href='\\2' target='_blank'> \\2</a>"
-        );
+        $str_replace = ["<br />", "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>", "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>", "<b>\\1</b>", "<u>\\1</u>", "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>", "<blockquote><p>\\1</p></blockquote>", "<a href='\\1' target='_blank'>\\2</a>", "<a href='\\1' target='_blank' style='display: block;'><img src='" . $cfg['url'] . "template/images/help_screenshot.png' alt='Изображение'></a>", "<a href='\\2' target='_blank'> \\2</a>"];
 
         $uptext = '';
 
@@ -654,12 +612,12 @@ class sys
         return $uptext;
     }
 
-    public static function first($array = array())
+    public static function first($array = [])
     {
         return $array[0];
     }
 
-    public static function back($url)
+    public static function back($url): never
     {
         exit(header('Refresh: 0; URL=' . $url));
     }
@@ -670,29 +628,29 @@ class sys
             return 0;
         }
 
-        return iconv_strlen($str, 'UTF-8');
+        return iconv_strlen((string) $str, 'UTF-8');
     }
 
     public static function text($section, $name)
     {
         global $cfg, $user;
 
-        $group = isset($user['group']) ? $user['group'] : 'user';
+        $group = $user['group'] ?? 'user';
 
         if ($section != 'error' || !$cfg['text_group'])
             $group = 'all';
 
         require(DATA . 'text/' . $section . '.php');
 
-        return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
+        return $text[$name][$group] ?? $text[$name];
     }
 
     public static function key($param = 'defegp')
     {
-        return md5(sha1(rand(1, 15) . $param . rand(16, 30) . rand(200, 1000) . rand(1, 100)));
+        return md5(sha1(random_int(1, 15) . $param . random_int(16, 30) . random_int(200, 1000) . random_int(1, 100)));
     }
 
-    public static function captcha($type, $ip)
+    public static function captcha($type, $ip): never
     {
         global $mcache;
 
@@ -704,8 +662,8 @@ class sys
         $symbols_fon = 20;
         $font = LIB . 'captcha/text.ttf';
 
-        $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '9');
-        $colors = array('20', '50', '80', '100');
+        $chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '9'];
+        $colors = ['20', '50', '80', '100'];
 
         $src = imagecreatetruecolor($width, $height);
         $fon = imagecolorallocate($src, 255, 255, 255);
@@ -714,25 +672,25 @@ class sys
 
         $i = 0;
         for ($i; $i < $symbols_fon; $i += 1) {
-            $color = imagecolorallocatealpha($src, rand(0, 255), rand(0, 255), rand(0, 255), 100);
-            $char = $chars[rand(0, sizeof($chars) - 1)];
-            $size = rand($font_size - 2, $font_size + 2);
+            $color = imagecolorallocatealpha($src, random_int(0, 255), random_int(0, 255), random_int(0, 255), 100);
+            $char = $chars[random_int(0, sizeof($chars) - 1)];
+            $size = random_int($font_size - 2, $font_size + 2);
 
-            imagettftext($src, $size, rand(0, 45), rand($width * 0.1, $width - $width * 0.1), rand($height * 0.2, $height), $color, $font, $char);
+            imagettftext($src, $size, random_int(0, 45), random_int($width * 0.1, $width - $width * 0.1), random_int($height * 0.2, $height), $color, $font, $char);
         }
 
         $i = 0;
         for ($i; $i < $symbols; $i += 1) {
-            $color = imagecolorallocatealpha($src, $colors[rand(0, sizeof($colors) - 1)], $colors[rand(0, sizeof($colors) - 1)], $colors[rand(0, sizeof($colors) - 1)], rand(20, 40));
-            $char = $chars[rand(0, sizeof($chars) - 1)];
-            $size = rand($font_size * ((int)2.1) - 2, $font_size * ((int)2.1) + 2);
+            $color = imagecolorallocatealpha($src, $colors[random_int(0, sizeof($colors) - 1)], $colors[random_int(0, sizeof($colors) - 1)], $colors[random_int(0, sizeof($colors) - 1)], random_int(20, 40));
+            $char = $chars[random_int(0, sizeof($chars) - 1)];
+            $size = random_int($font_size * ((int)2.1) - 2, $font_size * ((int)2.1) + 2);
 
-            $x = ($i + 1) * $font_size + rand(6, 8);
-            $y = (($height * 2) / 3) + rand(3, 7);
+            $x = ($i + 1) * $font_size + random_int(6, 8);
+            $y = (($height * 2) / 3) + random_int(3, 7);
 
             $cod .= $char;
 
-            imagettftext($src, $size, rand(0, 15), $x, $y, $color, $font, $char);
+            imagettftext($src, $size, random_int(0, 15), $x, $y, $color, $font, $char);
         }
 
         $mcache->set($type . '_captcha_' . $ip, $cod, false, 120);
@@ -751,7 +709,7 @@ class sys
         if (!$cfg['recaptcha'] and $mcache->get($type . '_captcha_valid_' . $ip))
             return false;
 
-        if ($mcache->get($type . '_captcha_' . $ip) != strtolower($cod)) {
+        if ($mcache->get($type . '_captcha_' . $ip) != strtolower((string) $cod)) {
             $mcache->set($type . '_captcha_valid_' . $ip, true, false, 60);
 
             return true;
@@ -762,7 +720,7 @@ class sys
 
     public static function ismail($data)
     {
-        $aData = explode('@', $data);
+        $aData = explode('@', (string) $data);
 
         if (count($aData) > 1)
             return true;
@@ -772,7 +730,7 @@ class sys
 
     public static function smscode()
     {
-        return rand(1, 9) . rand(100, 500) . rand(10, 99);
+        return random_int(1, 9) . random_int(100, 500) . random_int(10, 99);
     }
 
     public static function code($length = 8)
@@ -781,14 +739,14 @@ class sys
         $a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
         $selections = strlen($list) - 1;
         $start = strlen($a) - 1;
-        $b = rand(0, $start);
+        $b = random_int(0, $start);
         $start = $a[$b];
-        $code = array();
+        $code = [];
 
         $i = 0;
 
         for ($i; $i <= $length - 2; $i += 1) {
-            $n = rand(0, $selections);
+            $n = random_int(0, $selections);
             $code[] = $list[$n];
         }
 
@@ -799,7 +757,7 @@ class sys
     {
         global $cfg;
 
-        $out = file_get_contents($cfg['sms_gateway'] . '&' . $cfg['sms_to'] . '=' . $phone . '&' . $cfg['sms_text'] . '=' . urlencode($text));
+        $out = file_get_contents($cfg['sms_gateway'] . '&' . $cfg['sms_to'] . '=' . $phone . '&' . $cfg['sms_text'] . '=' . urlencode((string) $text));
 
         $aOut = explode("\n", $out);
 
@@ -811,25 +769,25 @@ class sys
 
     public static function find($text, $find)
     {
-        $words = explode(' ', $find);
+        $words = explode(' ', (string) $find);
 
         foreach ($words as $word)
             if (strlen($word) >= 2)
-                $text = preg_replace('#' . quotemeta($word) . '#iu', '<span style="color: #F66A6A;">$0</span>', $text);
+                $text = preg_replace('#' . quotemeta($word) . '#iu', '<span style="color: #F66A6A;">$0</span>', (string) $text);
 
         return $text;
     }
 
     public static function str_first_replace($search, $replace, $text)
     {
-        $pos = strpos($text, $search);
+        $pos = strpos((string) $text, (string) $search);
 
-        return $pos !== false ? substr_replace($text, $replace, $pos, strlen($search)) : $text;
+        return $pos !== false ? substr_replace((string) $text, (string) $replace, $pos, strlen((string) $search)) : $text;
     }
 
     public static function cmd($command)
     {
-        $text = preg_replace('/\\$/', '$ы', trim($command));
+        $text = preg_replace('/\\$/', '$ы', trim((string) $command));
 
         mb_internal_encoding('UTF-8');
 
@@ -841,21 +799,21 @@ class sys
 
     public static function map($map)
     {
-        $name = quotemeta(trim($map));
+        $name = quotemeta(trim((string) $map));
 
-        if (substr($name, -1) == '$')
+        if (str_ends_with($name, '$'))
             $name = substr($name, 0, -2) . '$';
 
-        return str_replace(array('\.', '\*'), array('.', '*'), $name);
+        return str_replace(['\.', '\*'], ['.', '*'], $name);
     }
 
     public static function temp($text)
     {
-        $temp = TEMP . md5(time() . rand(5, 100) . rand(10, 20) . rand(1, 20) . rand(40, 80));
+        $temp = TEMP . md5(time() . random_int(5, 100) . random_int(10, 20) . random_int(1, 20) . random_int(40, 80));
 
         $file = fopen($temp, "w");
 
-        fputs($file, $text);
+        fputs($file, (string) $text);
 
         fclose($file);
 
@@ -864,14 +822,14 @@ class sys
 
     public static function size($val)
     {
-        $aSize = array(' Байт', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб');
+        $aSize = [' Байт', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб'];
 
-        return $val ? round($val / pow(1024, ($i = floor(log($val, 1024)))), 2) . $aSize[$i] : '0 Байт';
+        return $val ? round($val / 1024 ** ($i = floor(log($val, 1024))), 2) . $aSize[$i] : '0 Байт';
     }
 
     public static function unidate($date)
     {
-        $aDate = explode('-', $date);
+        $aDate = explode('-', (string) $date);
 
         $aFirst = explode(' ', $aDate[2]);
 
@@ -900,11 +858,7 @@ class sys
         if ($page == '')
             $page = 1;
 
-        $aPage = array(
-            'page' => $page,
-            'num' => $num_go,
-            'ceil' => $ceil
-        );
+        $aPage = ['page' => $page, 'num' => $num_go, 'ceil' => $ceil];
 
         return $aPage;
     }
@@ -912,7 +866,7 @@ class sys
     public static function page_list($countnum, $actnum)
     {
         if ($countnum == 0 || $countnum == 1)
-            return array();
+            return [];
 
         if ($countnum > 10) {
             if ($actnum <= 4 || $actnum + 3 >= $countnum) {
@@ -1031,7 +985,7 @@ class sys
         while (!feof($stack)) {
             $str = fgets($stack, 128);
 
-            if (strpos($str, 'route:') !== FALSE) {
+            if (str_contains($str, 'route:')) {
                 $subnetwork = trim(str_replace('route:', '', $str));
 
                 break;
@@ -1051,7 +1005,7 @@ class sys
             return NULL;
 
         if ($mcache->get($name))
-            sys::outjs(array('e' => sys::text('other', 'mcache')));
+            sys::outjs(['e' => sys::text('other', 'mcache')]);
 
         $mcache->set($name, true, false, $time);
 
@@ -1068,7 +1022,7 @@ class sys
         return false;
     }
 
-    public static function cpu_idle($pros_stat = array(), $unit = false, $fcpu = false, $ctrl = false)
+    public static function cpu_idle($pros_stat = [], $unit = false, $fcpu = false, $ctrl = false)
     {
         return sys::cpu_get_idle(sys::parse_cpu($pros_stat[0]), sys::parse_cpu($pros_stat[1]), $unit, $fcpu, $ctrl);
     }
@@ -1077,19 +1031,19 @@ class sys
     {
         global $sql;
 
-        if (count($first) !== count($second))
+        if ((is_countable($first) ? count($first) : 0) !== (is_countable($second) ? count($second) : 0))
             return;
 
-        $cpus = array();
+        $cpus = [];
 
-        for ($i = 0, $l = count($first); $i < $l; $i += 1) {
-            $dif = array();
+        for ($i = 0, $l = is_countable($first) ? count($first) : 0; $i < $l; $i += 1) {
+            $dif = [];
             $dif['use'] = $second[$i]['use'] - $first[$i]['use'];
             $dif['nice'] = $second[$i]['nice'] - $first[$i]['nice'];
             $dif['sys'] = $second[$i]['sys'] - $first[$i]['sys'];
             $dif['idle'] = $second[$i]['idle'] - $first[$i]['idle'];
             $total = array_sum($dif);
-            $cpu = array();
+            $cpu = [];
 
             foreach ($dif as $x => $y)
                 $cpu[$x] = $y ? round($y / $total * 100, 1) : 0;
@@ -1100,14 +1054,14 @@ class sys
         if ($fcpu)
             return $cpus;
 
-        $threads = array();
+        $threads = [];
 
-        $l = count($first);
+        $l = is_countable($first) ? count($first) : 0;
 
         for ($i = 0; $i < $l; $i += 1)
             $threads[$i] = $cpus['cpu' . $i]['idle'];
 
-        if (count($first) > 1)
+        if ((is_countable($first) ? count($first) : 0) > 1)
             unset($threads[0]);
 
         $max = max($threads);
@@ -1134,36 +1088,26 @@ class sys
 
     public static function parse_cpu($data)
     {
-        $data = explode("\n", $data);
+        $data = explode("\n", (string) $data);
 
-        $cpu = array();
+        $cpu = [];
 
         foreach ($data as $line) {
             if (preg_match('/^cpu[0-9]/', $line)) {
                 $info = explode(' ', $line);
 
-                $cpu[] = array(
-                    'use' => $info[1],
-                    'nice' => $info[2],
-                    'sys' => $info[3],
-                    'idle' => $info[4]
-                );
+                $cpu[] = ['use' => $info[1], 'nice' => $info[2], 'sys' => $info[3], 'idle' => $info[4]];
             }
         }
 
         return $cpu;
     }
 
-    public static function reset_mcache($nmch, $id, $data = array(), $ctrl = false)
+    public static function reset_mcache($nmch, $id, $data = [], $ctrl = false)
     {
         global $mcache;
 
-        $cache = array(
-            'name' => $data['name'],
-            'status' => sys::status($data['status'], $data['game']),
-            'online' => $data['online'],
-            'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">',
-        );
+        $cache = ['name' => $data['name'], 'status' => sys::status($data['status'], $data['game']), 'online' => $data['online'], 'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">'];
 
         $cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) : sys::buttons($id, $data['status'], $data['game']);
 
@@ -1182,7 +1126,7 @@ class sys
         switch ($status) {
             case 'working':
                 if ($get == 'img') {
-                    if (in_array($game, array('samp', 'crmp', 'mta', 'mc')))
+                    if (in_array($game, ['samp', 'crmp', 'mta', 'mc']))
                         $map = $game;
 
                     return sys::img($map, $game);
@@ -1259,7 +1203,7 @@ class sys
         $filename = 'http://cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
         $file_headers = @get_headers($filename);
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-        if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' || trim($file_headers[0]) == 'HTTP/1.1 403 Forbidden') {
+        if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' || trim((string) $file_headers[0]) == 'HTTP/1.1 403 Forbidden') {
             return $cfg['http'] . 'template/images/status/none.jpg';
         } else {
             return '' . $protocol . 'cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
@@ -1273,11 +1217,11 @@ class sys
         if (isset($html->arr['buttons']))
             unset($html->arr['buttons']);
 
-        $other = in_array($game, array('samp', 'crmp', 'mta', 'mc'));
+        $other = in_array($game, ['samp', 'crmp', 'mta', 'mc']);
 
         $dir = $ctrl ? 'control/servers' : 'servers';
 
-        if (in_array($status, array('working', 'change', 'start', 'restart'))) {
+        if (in_array($status, ['working', 'change', 'start', 'restart'])) {
             $html->get('stop', 'sections/' . $dir . '/buttons');
 
             $html->set('id', $id);
@@ -1345,11 +1289,7 @@ class sys
 
     public static function entoru($month)
     {
-        $ru = array(
-            1 => 'Янв', 2 => 'Фев', 3 => 'Мар', 4 => 'Апр',
-            5 => 'Май', 6 => 'Июн', 7 => 'Июл', 8 => 'Авг',
-            9 => 'Сен', 10 => 'Окт', 11 => 'Ноя', 12 => 'Дек'
-        );
+        $ru = [1 => 'Янв', 2 => 'Фев', 3 => 'Мар', 4 => 'Апр', 5 => 'Май', 6 => 'Июн', 7 => 'Июл', 8 => 'Авг', 9 => 'Сен', 10 => 'Окт', 11 => 'Ноя', 12 => 'Дек'];
 
         return $ru[$month];
     }
@@ -1362,7 +1302,7 @@ class sys
             global $description;
 
             if (isset($description)) {
-                $text = str_replace(array('"', '-'), array('', '—'), strip_tags($description));
+                $text = str_replace(['"', '-'], ['', '—'], strip_tags((string) $description));
 
                 if (strlen($text) > 160) {
                     mb_internal_encoding('UTF-8');
@@ -1376,7 +1316,7 @@ class sys
             global $keywords;
 
             if (isset($keywords))
-                return str_replace(array('"', '-'), array('', '—'), strip_tags($keywords));
+                return str_replace(['"', '-'], ['', '—'], strip_tags((string) $keywords));
         }
 
         return array_key_exists($route, $header) ? $header[$route][$head] : $header['index'][$head];
@@ -1384,7 +1324,7 @@ class sys
 
     public static function tags($tags)
     {
-        $aTags = explode(',', $tags);
+        $aTags = explode(',', (string) $tags);
 
         $text = '';
 
@@ -1403,7 +1343,7 @@ class sys
             $info = $sql->get();
 
             if ($info['benefit'] > $start_point)
-                sys::outjs(array('e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])), $nmch);
+                sys::outjs(['e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])], $nmch);
         }
 
         return NULL;

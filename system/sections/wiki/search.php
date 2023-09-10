@@ -5,18 +5,18 @@ if (!defined('EGP'))
 if (!isset($nmch))
     $nmch = false;
 
-$text = isset($_POST['text']) ? $_POST['text'] : (isset($url['tag']) ? urldecode($url['tag']) : sys::outjs(array('none' => '')));
+$text = $_POST['text'] ?? (isset($url['tag']) ? urldecode((string) $url['tag']) : sys::outjs(['none' => '']));
 
 $mkey = md5($text . 'wiki');
 
 if ($mcache->get($mkey) != '' and !isset($url['tag']))
-    sys::outjs(array('s' => $mcache->get($mkey)));
+    sys::outjs(['s' => $mcache->get($mkey)]);
 
 if (!isset($text[2]) and !isset($url['tag']))
-    sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
+    sys::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
 
-$aWiki_q = array();
-$aNswer_q = array();
+$aWiki_q = [];
+$aNswer_q = [];
 
 // Поиск по вопросу
 $wiki_q = $sql->query('SELECT `id` FROM `wiki` WHERE `name` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') OR `tags` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') LIMIT 5');
@@ -27,14 +27,14 @@ $answer_q = $sql->query('SELECT `wiki` FROM `wiki_answer` WHERE `text` LIKE FROM
 // Если нет ниодного совпадения по вводимому тексту
 if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
     // Поиск по словам
-    if (!strpos($text, ' ')) {
+    if (!strpos((string) $text, ' ')) {
         $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-        sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+        sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
     }
 
     // Массив слов
-    $aText = explode(' ', $text);
+    $aText = explode(' ', (string) $text);
 
     // Метка, которая изменится в процессе, если будет найдено хоть одно совпадение
     $sWord = false;
@@ -64,11 +64,11 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
 if (!count($aWiki_q) and !count($aNswer_q) and !isset($url['tag'])) {
     $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-    sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
 }
 
 // Защита от дублирования
-$aResult = array();
+$aResult = [];
 
 foreach ($aWiki_q as $index => $wiki_q) {
     // Генерация списка (совпадение по вопросу)
@@ -80,7 +80,7 @@ foreach ($aWiki_q as $index => $wiki_q) {
         $sql->query('SELECT `id`, `name`, `tags`, `date` FROM `wiki` WHERE `id`="' . $wiki['id'] . '" LIMIT 1');
         $quest = $sql->get();
 
-        $aTags = explode(',', $quest['tags']);
+        $aTags = explode(',', (string) $quest['tags']);
 
         $tags = '';
 
@@ -115,7 +115,7 @@ foreach ($aNswer_q as $index => $answer_q) {
         $sql->query('SELECT `id`, `name`, `tags`, `date` FROM `wiki` WHERE `id`="' . $answer['wiki'] . '" LIMIT 1');
         $quest = $sql->get();
 
-        $aTags = explode(',', $quest['tags']);
+        $aTags = explode(',', (string) $quest['tags']);
 
         $tags = '';
 
@@ -138,12 +138,12 @@ foreach ($aNswer_q as $index => $answer_q) {
     }
 }
 
-$html->arr['question'] = isset($html->arr['question']) ? $html->arr['question'] : 'По вашему запросу ничего не найдено';
+$html->arr['question'] ??= 'По вашему запросу ничего не найдено';
 
 $mcache->set($mkey, $html->arr['question'], false, 15);
 
 if (!isset($url['tag']))
-    sys::outjs(array('s' => $html->arr['question']), $nmch);
+    sys::outjs(['s' => $html->arr['question']], $nmch);
 
 $html->nav('Категории вопросов', $cfg['http'] . 'wiki');
 $html->nav('Поиск по тегам');

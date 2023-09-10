@@ -4,16 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-clipboard"></i> Логи операций';
 
-$aSection = array(
-    'index',
-    'buy',
-    'extend',
-    'boost',
-    'cashout',
-    'part',
-    'search',
-    'replenish'
-);
+$aSection = ['index', 'buy', 'extend', 'boost', 'cashout', 'part', 'search', 'replenish'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

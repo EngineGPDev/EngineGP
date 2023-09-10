@@ -35,7 +35,7 @@ class tarifs
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $sUnit = $sql->get();
 
-        if (sys::first(explode(':', $sUnit['address'])) != sys::first(explode(':', $server['address']))) {
+        if (sys::first(explode(':', (string) $sUnit['address'])) != sys::first(explode(':', (string) $server['address']))) {
             if ($cfg['buy_address'][$server['game']])
                 tarif::address_extend($server['address'], $sid);
 
@@ -104,12 +104,12 @@ class tarifs
         if (!$address)
             return 0;
 
-        $ip = sys::first(explode(':', $server['address']));
+        $ip = sys::first(explode(':', (string) $server['address']));
 
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        if ($address and sys::first(explode(':', $unit['address'])) != $ip) {
+        if ($address and sys::first(explode(':', (string) $unit['address'])) != $ip) {
             $sql->query('SELECT `price` FROM `address` WHERE `ip`="' . $ip . '" LIMIT 1');
 
             if ($sql->num()) {
@@ -160,7 +160,7 @@ class tarifs
 
     public static function price($plan)
     {
-        $aPrice = explode(':', $plan);
+        $aPrice = explode(':', (string) $plan);
 
         $check = $aPrice[0];
 
@@ -182,7 +182,7 @@ class tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -223,12 +223,12 @@ class tarifs
         $panel = $sql->get();
 
         if (!$ssh->auth($panel['passwd'], $panel['address']))
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');
         while ($cron = $sql->get($crons)) {
             $ssh->set('echo "" >> /etc/crontab && cat /etc/crontab');
-            $crontab = str_replace($cron['cron'], '', $ssh->get());
+            $crontab = str_replace($cron['cron'], '', (string) $ssh->get());
 
             // Временный файл
             $temp = sys::temp($crontab);

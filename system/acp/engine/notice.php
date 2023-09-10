@@ -4,12 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-bullhorn"></i> Управление уведомлениями';
 
-$aSection = array(
-    'index',
-    'add',
-    'end',
-    'delete'
-);
+$aSection = ['index', 'add', 'end', 'delete'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

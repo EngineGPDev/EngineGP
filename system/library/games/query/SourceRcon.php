@@ -4,13 +4,11 @@ if (!defined('EGP'))
 
 class SourceRcon
 {
-    private $Socket;
     private $RconSocket;
-    private $RconRequestId;
+    private ?int $RconRequestId = null;
 
-    public function __construct($Socket)
+    public function __construct(private $Socket)
     {
-        $this->Socket = $Socket;
     }
 
     public function Close()
@@ -60,7 +58,7 @@ class SourceRcon
 
         $Data = $Buffer->Get();
 
-        $Remaining = $PacketSize - StrLen($Data);
+        $Remaining = $PacketSize - StrLen((string) $Data);
 
         while ($Remaining > 0) {
             $Data2 = FRead($this->RconSocket, $Remaining);
@@ -96,7 +94,7 @@ class SourceRcon
 
         $Data = $Buffer->Get();
 
-        if (StrLen($Data) >= 4000) {
+        if (StrLen((string) $Data) >= 4000) {
             do {
                 $this->Write(SourceQuery::SERVERDATA_RESPONSE_VALUE);
 
@@ -116,7 +114,7 @@ class SourceRcon
             } while (true);
         }
 
-        return rtrim($Data, "\0");
+        return rtrim((string) $Data, "\0");
     }
 
     public function Authorize($Password)

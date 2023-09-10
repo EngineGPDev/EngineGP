@@ -42,7 +42,7 @@ class Socket extends BaseSocket
         $Buffer = new Buffer();
         $Buffer->Set(FRead($this->Socket, $Length));
 
-        $this->ReadInternal($Buffer, $Length, [$this, 'Sherlock']);
+        $this->ReadInternal($Buffer, $Length, $this->Sherlock(...));
 
         return $Buffer;
     }

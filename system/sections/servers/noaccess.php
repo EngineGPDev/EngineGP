@@ -7,13 +7,7 @@ $html->nav('Раздел недоступен');
 if ($server['time'] < $start_point)
     $html->get('overdue');
 else {
-    $status = array(
-        'install' => 'установки',
-        'reinstall' => 'переустановки',
-        'update' => 'обновления',
-        'recovery' => 'восстановления',
-        'blocked' => 'блокировки'
-    );
+    $status = ['install' => 'установки', 'reinstall' => 'переустановки', 'update' => 'обновления', 'recovery' => 'восстановления', 'blocked' => 'блокировки'];
 
     $html->get('noaccess');
 

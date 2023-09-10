@@ -32,7 +32,7 @@ while ($server = $sql->get()) {
     $html->set('online', $server['online']);
     $html->set('name', $server['name']);
     $html->set('status', sys::status($server['status'], $server['game'], $server['map']));
-    $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img', $server['game']));
+    $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img'));
     $html->set('btn', $btn);
 
     $html->pack('list');
@@ -45,7 +45,7 @@ while ($server = $sql->get()) {
 
 $html->get('servers', 'sections/control/servers');
 
-$html->set('list', isset($html->arr['list']) ? $html->arr['list'] : 'Нет установленных серверов');
+$html->set('list', $html->arr['list'] ?? 'Нет установленных серверов');
 $html->set('wait_servers', $wait_servers);
 $html->set('updates_servers', $updates_servers);
 

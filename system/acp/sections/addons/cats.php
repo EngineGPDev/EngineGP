@@ -10,7 +10,7 @@ while ($cat = $sql->get($cats)) {
     $list .= '<tr>';
     $list .= '<td>' . $cat['id'] . '</td>';
     $list .= '<td>' . $cat['name'] . '</td>';
-    $list .= '<td class="text-center">' . strtoupper($cat['game']) . '</td>';
+    $list .= '<td class="text-center">' . strtoupper((string) $cat['game']) . '</td>';
     $list .= '<td class="text-center">' . $plugins . ' шт.</td>';
     $list .= '<td class="text-center">' . $cat['sort'] . '</td>';
     $list .= '<td><a href="#" onclick="return cats_delete(\'' . $cat['id'] . '\')" class="text-red">Удалить</a></td>';

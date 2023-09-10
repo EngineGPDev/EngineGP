@@ -4,7 +4,7 @@ if (!defined('EGP'))
 
 $title = 'Ответы на вопросы';
 
-if (in_array($section, array('answer', 'question', 'search', 'msearch')))
+if (in_array($section, ['answer', 'question', 'search', 'msearch']))
     require(SEC . 'wiki/' . $section . '.php');
 else
     require(SEC . 'wiki/index.php');

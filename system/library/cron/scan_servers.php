@@ -46,7 +46,7 @@ class scan_servers extends cron
             }
 
             // Если аренда закончилась, а сервер не просрочен (и не заблокирован)
-            if ($server['time'] < $start_point && !in_array($server['status'], array('overdue', 'blocked'))) {
+            if ($server['time'] < $start_point && !in_array($server['status'], ['overdue', 'blocked'])) {
                 // Убить процессы
                 $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
                     . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');

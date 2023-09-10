@@ -84,7 +84,7 @@ class server_delete extends cron
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');
         while ($cron = $sql->get($crons)) {
             $ssh->set('echo "" >> /etc/crontab && cat /etc/crontab');
-            $crontab = str_replace($cron['cron'], '', $ssh->get());
+            $crontab = str_replace($cron['cron'], '', (string) $ssh->get());
 
             // Временный файл
             $temp = sys::temp($crontab);

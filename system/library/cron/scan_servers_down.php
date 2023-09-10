@@ -47,7 +47,7 @@ class scan_servers_down extends cron
             if ($server['status'] != 'working')
                 continue;
 
-            if (!in_array(trim($ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server['address'] . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), array('DOWN', 'no')))
+            if (!in_array(trim((string) $ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server['address'] . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), ['DOWN', 'no']))
                 continue;
 
             exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $game . ' ' . $id . '"');

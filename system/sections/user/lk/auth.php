@@ -8,7 +8,7 @@ $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 // Генерация списка авторизаций
 $qBro = $sql->query('SELECT `ip`, `date`, `browser` FROM `auth` WHERE `user`="' . $user['id'] . '" ORDER BY `id` DESC LIMIT 20');
 while ($aBro = $sql->get($qBro)) {
-    $browser = base64_decode($aBro['browser']);
+    $browser = base64_decode((string) $aBro['browser']);
 
     $cData = $SxGeo->getCityFull($aBro['ip']);
     $ico = sys::country($cData['country']['iso']);
@@ -27,6 +27,6 @@ while ($aBro = $sql->get($qBro)) {
 
 $html->get('auth', 'sections/user/lk');
 
-$html->set('auth', isset($html->arr['auth']) ? $html->arr['auth'] : '', true);
+$html->set('auth', $html->arr['auth'] ?? '', true);
 
 $html->pack('main');

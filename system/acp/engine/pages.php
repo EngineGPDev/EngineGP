@@ -4,11 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-file-text-o"></i> Управление старницами';
 
-$aSection = array(
-    'index',
-    'add',
-    'delete'
-);
+$aSection = ['index', 'add', 'delete'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

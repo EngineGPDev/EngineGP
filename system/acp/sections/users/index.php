@@ -11,7 +11,7 @@ else {
     $sort_page = '';
     $sort_sql = 'ORDER BY `id` ASC';
 
-    if (isset($url['sort']) and in_array($url['sort'], array('id', 'balance', 'group'))) {
+    if (isset($url['sort']) and in_array($url['sort'], ['id', 'balance', 'group'])) {
         $sort = 'asc';
 
         if (isset($url['sorting']))
@@ -20,12 +20,12 @@ else {
         $sort_page = '/sort/' . $url['sort'] . '/sorting/' . $sort;
         $sort_sql = 'ORDER BY `' . $url['sort'] . '` ' . $sort;
 
-        $sort_icon = array($url['sort'] => $sort);
+        $sort_icon = [$url['sort'] => $sort];
     }
 
     $list = '';
 
-    $aGroup = array('user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор');
+    $aGroup = ['user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор'];
 
     $sql->query('SELECT `id` FROM `users`');
 
@@ -56,7 +56,7 @@ else {
 
     $html->set('list', $list);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

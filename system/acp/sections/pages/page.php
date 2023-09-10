@@ -6,13 +6,13 @@ $sql->query('SELECT `name`, `file` FROM `pages` WHERE `id`="' . $id . '" LIMIT 1
 $page = $sql->get();
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : $page['name'];
-    $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : file_get_contents(FILES . 'pages/' . $page['file']);
+    $aData['name'] = isset($_POST['name']) ? trim((string) $_POST['name']) : $page['name'];
+    $aData['text'] = isset($_POST['text']) ? trim((string) $_POST['text']) : file_get_contents(FILES . 'pages/' . $page['file']);
 
     if (in_array('', $aData))
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
 
     $file = fopen(FILES . 'pages/' . $page['file'], "w");
 
@@ -20,15 +20,15 @@ if ($go) {
 
     fclose($file);
 
-    $sql->query('UPDATE `pages` set `name`="' . htmlspecialchars($aData['name']) . '" WHERE `id`="' . $id . '" LIMIT 1');
+    $sql->query('UPDATE `pages` set `name`="' . htmlspecialchars((string) $aData['name']) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('page', 'sections/pages');
 
 $html->set('id', $id);
-$html->set('name', htmlspecialchars_decode($page['name']));
+$html->set('name', htmlspecialchars_decode((string) $page['name']));
 
 $html->set('text', htmlspecialchars(file_get_contents(FILES . 'pages/' . $page['file'])));
 

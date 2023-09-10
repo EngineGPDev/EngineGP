@@ -4,11 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-dropbox"></i> Контроль';
 
-$aSection = array(
-    'index',
-    'overdue',
-    'delete'
-);
+$aSection = ['index', 'overdue', 'delete'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

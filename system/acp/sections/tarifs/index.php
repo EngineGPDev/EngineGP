@@ -11,7 +11,7 @@ else {
     $sort_page = '';
     $sort_sql = 'ORDER BY `id` ASC';
 
-    if (isset($url['sort']) and in_array($url['sort'], array('id', 'unit', 'game'))) {
+    if (isset($url['sort']) and in_array($url['sort'], ['id', 'unit', 'game'])) {
         $sort = 'asc';
 
         if (isset($url['sorting']))
@@ -20,7 +20,7 @@ else {
         $sort_page = '/sort/' . $url['sort'] . '/sorting/' . $sort;
         $sort_sql = 'ORDER BY `' . $url['sort'] . '` ' . $sort;
 
-        $sort_icon = array($url['sort'] => $sort);
+        $sort_icon = [$url['sort'] => $sort];
     }
 
     $list = '';
@@ -46,7 +46,7 @@ else {
         }
         $list .= '<td>' . $tarif['slots_min'] . '-' . $tarif['slots_max'] . '</td>';
         $list .= '<td>' . $tarif['port_min'] . '-' . $tarif['port_max'] . '</td>';
-        $list .= '<td>' . strtoupper($tarif['game']) . '</td>';
+        $list .= '<td>' . strtoupper((string) $tarif['game']) . '</td>';
         $list .= '<td><a href="' . $cfg['http'] . 'acp/tarifs/section/copy/id/' . $tarif['id'] . '">Копировать</a></td>';
         $list .= '<td><a href="#" onclick="return tarifs_delete(\'' . $tarif['id'] . '\')" class="text-red">Удалить</a></td>';
         $list .= '</tr>';
@@ -63,7 +63,7 @@ else {
 
     $html->set('list', $list);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

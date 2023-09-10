@@ -5,7 +5,7 @@ if (!defined('EGP'))
 // Установка
 if ($go) {
     if (!$aWeb[$server['game']][$url['subsection']])
-        sys::outjs(array('e' => 'Дополнительная услуга недоступна для установки.'), $nmch);
+        sys::outjs(['e' => 'Дополнительная услуга недоступна для установки.'], $nmch);
 
     // Проверка на наличие уже установленной выбранной услуги
     switch ($aWebInstall[$server['game']][$url['subsection']]) {
@@ -23,7 +23,7 @@ if ($go) {
     }
 
     if ($sql->num())
-        sys::outjs(array('s' => 'ok'), $nmch);
+        sys::outjs(['s' => 'ok'], $nmch);
 
     require(LIB . 'ssh.php');
 
@@ -33,16 +33,13 @@ if ($go) {
 
         $pma = $unit['domain'];
     } else {
-        $unit = array(
-            'address' => $aWebUnit['address'],
-            'passwd' => $aWebUnit['passwd'],
-        );
+        $unit = ['address' => $aWebUnit['address'], 'passwd' => $aWebUnit['passwd']];
 
         $pma = $aWebUnit['pma'];
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
-        sys::outjs(array('e' => sys::text('ssh', 'error')), $nmch);
+        sys::outjs(['e' => sys::text('ssh', 'error')], $nmch);
 
     if (isset($_POST['passwd'])) {
         // Если не указан пароль сгенерировать
@@ -51,11 +48,11 @@ if ($go) {
         else {
             // Проверка длинны пароля
             if (!isset($_POST['passwd'][5]) || isset($_POST['passwd'][16]))
-                sys::outjs(array('e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'), $nmch);
+                sys::outjs(['e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'], $nmch);
 
             // Проверка валидности пароля
             if (sys::valid($_POST['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/"))
-                sys::outjs(array('e' => 'Пароль должен состоять из букв a-z и цифр.'), $nmch);
+                sys::outjs(['e' => 'Пароль должен состоять из букв a-z и цифр.'], $nmch);
 
             $passwd = $_POST['passwd'];
         }
@@ -82,7 +79,7 @@ if ($go) {
         . '`login`="' . $login . '", `date`="' . $start_point . '" '
         . 'WHERE `id`="' . $wid . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $html->nav('Установка ' . $aWebname[$url['subsection']]);

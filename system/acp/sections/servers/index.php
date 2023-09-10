@@ -10,24 +10,12 @@ if ($id)
 else {
     $list = '';
 
-    $status = array(
-        'working' => '<span class="text-green">Работает</span>',
-        'off' => '<span class="text-red">Выключен</span>',
-        'start' => 'Запускается',
-        'restart' => 'Перезапускается',
-        'change' => 'Смена карты',
-        'install' => 'Устанавливается',
-        'reinstall' => 'Переустанавливается',
-        'update' => 'Обновляется',
-        'recovery' => 'Восстанавливается',
-        'overdue' => 'Просрочен',
-        'blocked' => 'Заблокирован'
-    );
+    $status = ['working' => '<span class="text-green">Работает</span>', 'off' => '<span class="text-red">Выключен</span>', 'start' => 'Запускается', 'restart' => 'Перезапускается', 'change' => 'Смена карты', 'install' => 'Устанавливается', 'reinstall' => 'Переустанавливается', 'update' => 'Обновляется', 'recovery' => 'Восстанавливается', 'overdue' => 'Просрочен', 'blocked' => 'Заблокирован'];
 
     $select = 'WHERE `user`!="-1"';
     $url_search = '';
 
-    if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif'))) {
+    if (isset($url['search']) and in_array($url['search'], ['unit', 'tarif'])) {
         $select = 'WHERE `' . $url['search'] . '`="' . sys::int($url[$url['search']]) . '" AND `user`!="-1"';
         $url_search = '/search/' . $url['search'] . '/' . $url['search'] . '/' . $url[$url['search']];
     }
@@ -51,7 +39,7 @@ else {
         $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/id/' . $server['id'] . '">' . $server['name'] . '</a></td>';
         $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/search/unit/unit/' . $server['unit'] . '">#' . $server['unit'] . ' ' . $unit['name'] . '</a></td>';
         $list .= '<td class="text-center">' . $server['slots'] . ' шт.</td>';
-        $list .= '<td class="text-center">' . strtoupper($server['game']) . '</td>';
+        $list .= '<td class="text-center">' . strtoupper((string) $server['game']) . '</td>';
         $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'servers/id/' . $server['id'] . '" target="_blank">Перейти</a></td>';
         $list .= '</tr>';
 
@@ -71,7 +59,7 @@ else {
 
     $html->set('url_search', $url_search);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

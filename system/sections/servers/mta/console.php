@@ -18,14 +18,14 @@ if ($go) {
 
     if ($server['status'] == 'off') {
         if ($command)
-            sys::outjs(array('e' => sys::text('servers', 'off')));
+            sys::outjs(['e' => sys::text('servers', 'off')]);
 
         sys::out(sys::text('servers', 'off'));
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         if ($command)
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
 
         sys::out(sys::text('error', 'ssh'));
     }
@@ -35,13 +35,13 @@ if ($go) {
     $filecmd = $dir . 'logs/server.log';
 
     if ($command) {
-        if (strtolower($command) == 'clear')
+        if (strtolower((string) $command) == 'clear')
             $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "echo \"Очистка консоли\n\" > ' . $filecmd . '"');
         else
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . $command . '"\015\';'
                 . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $filecmd_copy = $dir . 'oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log';
@@ -51,7 +51,7 @@ if ($go) {
     if ($weight > 524288)
         $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "mkdir -p ' . $dir . 'oldstart; cat ' . $filecmd . ' >> ' . $filecmd_copy . '; echo \"Выполнена очистка консоли, слишком большой объем данных\n\" > ' . $filecmd . '"');
 
-    sys::out(htmlspecialchars($ssh->get('cat ' . $filecmd), NULL, ''));
+    sys::out(htmlspecialchars((string) $ssh->get('cat ' . $filecmd), NULL, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

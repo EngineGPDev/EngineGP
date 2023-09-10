@@ -2,7 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$text = isset($_POST['text']) ? trim($_POST['text']) : '';
+$text = isset($_POST['text']) ? trim((string) $_POST['text']) : '';
 
 $mkey = md5($text . $id);
 
@@ -15,19 +15,19 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
-if (substr($text, 0, 5) == 'game=') {
+if (str_starts_with($text, 'game=')) {
     $game = trim(substr($text, 5));
 
-    if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+    if (in_array($game, ['cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc']))
         $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `game`="' . $game . '" ORDER BY `id` ASC');
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -43,16 +43,16 @@ else {
 
 if (!$sql->num($webs)) {
     if ($go)
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
 
 while ($web = $sql->get($webs)) {
     if (!$web['unit'])
-        $unit = array('name' => 'Веб хостинг');
+        $unit = ['name' => 'Веб хостинг'];
     else {
         $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $web['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -77,6 +77,6 @@ while ($web = $sql->get($webs)) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

@@ -13,7 +13,7 @@ class plugins
         if (isset($html->arr['images']))
             unset($html->arr['images']);
 
-        $aImg = explode("\n", $images);
+        $aImg = explode("\n", (string) $images);
 
         foreach ($aImg as $img) {
             $html->get('plugin_images', 'sections/control/servers/games/plugins');
@@ -24,7 +24,7 @@ class plugins
             $html->pack('images');
         }
 
-        return isset($html->arr['images']) ? $html->arr['images'] : '';
+        return $html->arr['images'] ?? '';
     }
 
     public static function status($status)
@@ -55,7 +55,7 @@ class plugins
         if ($required == '')
             return NULL;
 
-        $aRequi = explode(':', $required);
+        $aRequi = explode(':', (string) $required);
 
         foreach ($aRequi as $pl) {
             $sql->query('SELECT `id` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $pl . '" LIMIT 1');
@@ -64,7 +64,7 @@ class plugins
                 $plRequi = $sql->get();
 
                 if ($choice != '') {
-                    $aChoice = explode(' ', $choice);
+                    $aChoice = explode(' ', (string) $choice);
 
                     foreach ($aChoice as $plugins) {
                         $aPlugins = explode(':', $plugins);
@@ -80,16 +80,16 @@ class plugins
                                     $data = $sql->get();
                                 }
 
-                                $options .= '<option value="' . $plugin . '">' . strip_tags($data['name']) . '</option>';
+                                $options .= '<option value="' . $plugin . '">' . strip_tags((string) $data['name']) . '</option>';
                             }
 
                             if ($options != '')
-                                sys::outjs(array('e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options), $mcache);
+                                sys::outjs(['e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options], $mcache);
                         }
                     }
                 }
 
-                sys::outjs(array('e' => 'Для данного плагина требуется установка родителя', 'required' => true, 'pid' => $pl, 'pname' => htmlspecialchars_decode($plRequi['name'])), $mcache);
+                sys::outjs(['e' => 'Для данного плагина требуется установка родителя', 'required' => true, 'pid' => $pl, 'pname' => htmlspecialchars_decode((string) $plRequi['name'])], $mcache);
             }
         }
 
@@ -103,7 +103,7 @@ class plugins
         if ($incompatible == '')
             return NULL;
 
-        $aIncomp = explode(':', $incompatible);
+        $aIncomp = explode(':', (string) $incompatible);
 
         foreach ($aIncomp as $pl) {
             $sql->query('SELECT `id` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $pl . '" LIMIT 1');
@@ -111,7 +111,7 @@ class plugins
                 $sql->query('SELECT `name` FROM `plugins` WHERE `id`="' . $pl . '" LIMIT 1');
                 $plIncomp = $sql->get();
 
-                sys::outjs(array('e' => 'Данный плагин несовместим с уже установленным плагином', 'pid' => $pl, 'pname' => htmlspecialchars_decode($plIncomp['name'])), $mcache);
+                sys::outjs(['e' => 'Данный плагин несовместим с уже установленным плагином', 'pid' => $pl, 'pname' => htmlspecialchars_decode((string) $plIncomp['name'])], $mcache);
             }
         }
 
@@ -124,7 +124,7 @@ class plugins
 
         // Если регулярное выражение
         if (isset($clear['regex']) and $clear['regex']) {
-            $file = preg_replace($clear['text'], '', $ssh->get('sudo -u server' . $uid . ' cat ' . $dir . $clear['file']));
+            $file = preg_replace($clear['text'], '', (string) $ssh->get('sudo -u server' . $uid . ' cat ' . $dir . $clear['file']));
 
             // Временный файл
             $temp = sys::temp($file);
@@ -137,7 +137,7 @@ class plugins
 
         } else
             // Удаление текста из файла
-            $query = 'sudo -u server' . $uid . ' sed -i ' . "'s/" . str_replace('/', '\/', htmlspecialchars_decode($clear['text'])) . "//g'" . ' ' . $dir . $clear['file'] . ';';
+            $query = 'sudo -u server' . $uid . ' sed -i ' . "'s/" . str_replace('/', '\/', htmlspecialchars_decode((string) $clear['text'])) . "//g'" . ' ' . $dir . $clear['file'] . ';';
 
         $ssh->set($query . 'sudo -u server' . $uid . ' sed -i ' . "'/./!d'" . ' ' . $dir . $clear['file']);
 
@@ -152,14 +152,14 @@ class plugins
         $query = 'sudo -u server' . $uid . ' echo "" >> ' . $dir . $write['file'] . ';';
 
         // Исключить дублирование, путем удаления добавляемого текста
-        $query .= 'sudo -u server' . $uid . ' sed -i ' . "'s/" . str_replace('/', '\/', htmlspecialchars_decode($write['text'])) . "//g'" . ' ' . $dir . $write['file'] . ';';
+        $query .= 'sudo -u server' . $uid . ' sed -i ' . "'s/" . str_replace('/', '\/', htmlspecialchars_decode((string) $write['text'])) . "//g'" . ' ' . $dir . $write['file'] . ';';
 
         // Добавление текста в начало файла
         if ($write['top'])
-            $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' sed -i ' . "'1i " . str_replace(array('/', "'", '\"'), array('\/', "\'", '"'), htmlspecialchars_decode($write['text'])) . "'" . ' ' . $dir . $write['file'] . ';';
+            $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' sed -i ' . "'1i " . str_replace(['/', "'", '\"'], ['\/', "\'", '"'], htmlspecialchars_decode((string) $write['text'])) . "'" . ' ' . $dir . $write['file'] . ';';
         else
             // Добавление текста в конец файла
-            $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' echo "' . str_replace('"', '\"', htmlspecialchars_decode($write['text'])) . '" >> ' . $dir . $write['file'] . ';';
+            $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' echo "' . str_replace('"', '\"', htmlspecialchars_decode((string) $write['text'])) . '" >> ' . $dir . $write['file'] . ';';
 
         $ssh->set($query . 'sudo -u server' . $uid . ' sed -i ' . "'/./!d'" . ' ' . $dir . $clear['file']);
 

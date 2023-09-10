@@ -3,17 +3,13 @@ if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 // Закрытие / Удаление вопроса
-if (isset($url['action']) and in_array($url['action'], array('close', 'delete')))
+if (isset($url['action']) and in_array($url['action'], ['close', 'delete']))
     require(SEC . 'help/action/' . $url['action'] . '.php');
 
 // Массив статусов вопроса
-$status = array(
-    0 => 'Есть ответ',
-    1 => 'Ожидается ответ',
-    2 => 'Прочитан'
-);
+$status = [0 => 'Есть ответ', 1 => 'Ожидается ответ', 2 => 'Прочитан'];
 
-if (in_array($user['group'], array('admin', 'support')))
+if (in_array($user['group'], ['admin', 'support']))
     $sql->query('SELECT `id` FROM `help` WHERE `close`="0"');
 else
     $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0"');
@@ -22,17 +18,17 @@ $aPage = sys::page($page, $sql->num(), 20);
 
 sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'help/section/open');
 
-if (in_array($user['group'], array('admin', 'support')))
+if (in_array($user['group'], ['admin', 'support']))
     $helps = $sql->query('SELECT `id`, `user`, `type`, `service`, `status`, `date`, `time`, `title` FROM `help` WHERE `close`="0" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
 else
     $helps = $sql->query('SELECT `id`, `type`, `service`, `status`, `date`, `time`, `title` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
 
 // Массив пользователей
-$uArr = array();
+$uArr = [];
 
 while ($help = $sql->get($helps)) {
     // Создатель вопроса
-    if (in_array($user['group'], array('admin', 'support')) and !isset($uArr[$help['user']])) {
+    if (in_array($user['group'], ['admin', 'support']) and !isset($uArr[$help['user']])) {
         $sql->query('SELECT `login` FROM `users` WHERE `id`="' . $help['user'] . '" LIMIT 1');
 
         if (!$sql->num())
@@ -87,13 +83,13 @@ while ($help = $sql->get($helps)) {
 
 $html->get('open', 'sections/help');
 
-$html->set('question', isset($html->arr['question']) ? $html->arr['question'] : '');
+$html->set('question', $html->arr['question'] ?? '');
 
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('pages', $html->arr['pages'] ?? '');
 
 $html->pack('main');
 
-if (!in_array($user['group'], array('admin', 'support'))) {
+if (!in_array($user['group'], ['admin', 'support'])) {
     $html->unitall('user', 'main', 1);
     $html->unitall('support', 'main');
 } else {

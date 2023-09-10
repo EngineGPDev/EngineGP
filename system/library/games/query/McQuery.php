@@ -17,21 +17,15 @@ class McQuery
     {
         $Data = $this->WriteData(0x00, $this->GetChallenge() . Pack('c*', 0x00, 0x00, 0x00, 0x00));
 
-        $server_info = array();
+        $server_info = [];
 
-        $Data = substr($Data, 11);
+        $Data = substr((string) $Data, 11);
         $Data = explode("\x00\x00\x01player_\x00\x00", $Data);
         $aData = explode("\x00", $Data[0]);
 
         $last = '';
 
-        $keys = array(
-            'hostname' => 'hostname',
-            'version' => 'version',
-            'plugins' => 'plugins',
-            'map' => 'map',
-            'numplayers' => 'online'
-        );
+        $keys = ['hostname' => 'hostname', 'version' => 'version', 'plugins' => 'plugins', 'map' => 'map', 'numplayers' => 'online'];
 
         foreach ($aData as $index => $val) {
             if (~$index & 1) {
@@ -56,7 +50,7 @@ class McQuery
         $server_info['players_list'] = explode("\x00", substr($Data[1], 0, -2));
 
         if (!isset($server_info['players_list'][1]))
-            $server_info['players_list'] = array();
+            $server_info['players_list'] = [];
 
         return $server_info;
     }

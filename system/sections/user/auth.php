@@ -18,23 +18,23 @@ if ($go) {
     $nmch = 'go_auth_' . $uip;
 
     if ($mcache->get($nmch))
-        sys::outjs(array('e' => sys::text('other', 'mcache')), $nmch);
+        sys::outjs(['e' => sys::text('other', 'mcache')], $nmch);
 
     $mcache->set($nmch, 1, false, 15);
 
     // Проверка капчи
     if (!isset($_POST['captcha']) || sys::captcha_check('auth', $uip, $_POST['captcha']))
-        sys::outjs(array('e' => sys::text('other', 'captcha')), $nmch);
+        sys::outjs(['e' => sys::text('other', 'captcha')], $nmch);
 
-    $aData = array();
+    $aData = [];
 
-    $aData['login'] = isset($_POST['login']) ? $_POST['login'] : '';
+    $aData['login'] = $_POST['login'] ?? '';
     $aData['passwd'] = isset($_POST['passwd']) ? sys::passwdkey($_POST['passwd']) : '';
 
     // Проверка входных данных
     foreach ($aData as $val)
         if ($val == '')
-            sys::outjs(array('e' => sys::text('input', 'all')), $nmch);
+            sys::outjs(['e' => sys::text('input', 'all')], $nmch);
 
     // Проверка логина/почты на валидность
     if (sys::valid($aData['login'], 'other', $aValid['mail']) and sys::valid($aData['login'], 'other', $aValid['login'])) {
@@ -44,7 +44,7 @@ if ($go) {
         if (sys::ismail($aData['login']))
             $out = 'mail';
 
-        sys::outjs(array('e' => sys::text('input', $out . '_valid')), $nmch);
+        sys::outjs(['e' => sys::text('input', $out . '_valid')], $nmch);
     }
 
     $sql_q = '`login`';
@@ -56,7 +56,7 @@ if ($go) {
     // Проверка существования пользователя
     $sql->query('SELECT `id`, `login`, `mail`, `security_ip`, `security_code` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" AND `passwd`="' . $aData['passwd'] . '" LIMIT 1');
     if (!$sql->num())
-        sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
+        sys::outjs(['e' => sys::text('input', 'auth')], $nmch);
 
     $user = $sql->get();
 
@@ -71,35 +71,35 @@ if ($go) {
                 $sql->query('SELECT `id` FROM `security` WHERE `user`="' . $user['id'] . '" AND `address`="' . $subnetwork . '" LIMIT 1');
 
                 if (!$sql->num())
-                    sys::outjs(array('e' => 'Ваш ip адрес не найден в числе указаных адресов для авторизации.'), $nmch);
+                    sys::outjs(['e' => 'Ваш ip адрес не найден в числе указаных адресов для авторизации.'], $nmch);
             } else
-                sys::outjs(array('e' => 'Ваш ip адрес не найден в числе указаных адресов для авторизации.'), $nmch);
+                sys::outjs(['e' => 'Ваш ip адрес не найден в числе указаных адресов для авторизации.'], $nmch);
         }
     }
 
     // Если включена защита по коду
     if ($user['security_code']) {
-        $code = isset($_POST['code']) ? $_POST['code'] : '';
+        $code = $_POST['code'] ?? '';
 
         if ($code == '' || $code != $mcache->get('auth_code_security_' . $user['id'])) {
             $ncod = sys::code();
 
             // Отправка сообщения на почту
-            if (sys::mail('Авторизация', sys::updtext(sys::text('mail', 'security_code'), array('site' => $cfg['name'], 'code' => $ncod)), $user['mail'])) {
+            if (sys::mail('Авторизация', sys::updtext(sys::text('mail', 'security_code'), ['site' => $cfg['name'], 'code' => $ncod]), $user['mail'])) {
                 $mcache->set('auth_code_security_' . $user['id'], $ncod, false, 180);
 
                 if ($code == '')
-                    sys::outjs(array('i' => 'На вашу почту отправлено письмо с кодом подтверждения.', 'mail' => sys::mail_domain($user['mail'])), $nmch);
+                    sys::outjs(['i' => 'На вашу почту отправлено письмо с кодом подтверждения.', 'mail' => sys::mail_domain($user['mail'])], $nmch);
 
-                sys::outjs(array('i' => 'На вашу почту отправлено письмо с кодом подтверждения снова.', 'mail' => sys::mail_domain($user['mail'])), $nmch);
+                sys::outjs(['i' => 'На вашу почту отправлено письмо с кодом подтверждения снова.', 'mail' => sys::mail_domain($user['mail'])], $nmch);
             }
 
             // Выхлоп: не удалось отправить письмо
-            sys::outjs(array('e' => sys::text('error', 'mail')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
         }
     }
 
-    $_SERVER['HTTP_USER_AGENT'] = mb_substr($_SERVER['HTTP_USER_AGENT'], 0, 200);
+    $_SERVER['HTTP_USER_AGENT'] = mb_substr((string) $_SERVER['HTTP_USER_AGENT'], 0, 200);
 
     // Обновление информации о пользователе
     $sql->query('UPDATE `users` set `ip`="' . $uip . '", `browser`="' . sys::browser($_SERVER['HTTP_USER_AGENT']) . '", `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
@@ -113,7 +113,7 @@ if ($go) {
     sys::cookie('egp_authkeycheck', md5($user['login'] . $uip . $aData['passwd']), 14);
 
     // Выхлоп удачной авторизации
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $html->get('auth', 'sections/user');

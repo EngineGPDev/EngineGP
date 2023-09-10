@@ -15,7 +15,7 @@ if (!isset($ssh))
     require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
@@ -28,10 +28,10 @@ $hdd = ceil(sys::int($ssh->get()) / ($server['hdd'] / 100));
 $hdd = $hdd > 100 ? 100 : $hdd;
 
 if ($hdd == 100)
-    sys::outjs(array('e' => 'Невозможно выполнить установку, нет свободного места'), $nmch);
+    sys::outjs(['e' => 'Невозможно выполнить установку, нет свободного места'], $nmch);
 
 // Массив переданных карт
-$in_aMaps = isset($_POST['maps']) ? $_POST['maps'] : array();
+$in_aMaps = $_POST['maps'] ?? [];
 
 // Обработка выборки
 foreach ($in_aMaps as $mid => $sel)
@@ -51,5 +51,5 @@ foreach ($in_aMaps as $mid => $sel)
         $ssh->set('sudo -u server' . $server['uid'] . ' screen -dmS mc' . $start_point . $id . ' sh -c \'' . $cp . '\'');
     }
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);
 

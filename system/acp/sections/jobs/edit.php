@@ -12,10 +12,10 @@ if ($go) {
 
     $data = ['name', 'job', 'desc', 'status'];
     foreach ($data as $idata)
-        $aData[$idata] = isset($_POST[$idata]) ? $_POST[$idata] : '';
+        $aData[$idata] = $_POST[$idata] ?? '';
 
     if (in_array('', $aData))
-        sys::outjs(array('e' => 'Необходимо заполнить все поля!'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля!']);
 
     $sql->query('UPDATE `jobs` set'
         . '`name`="' . $aData['name'] . '",'
@@ -24,7 +24,7 @@ if ($go) {
         . '`status`="' . $aData['status'] . '",'
         . '`date`="' . $start_point . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('edit', 'sections/jobs');

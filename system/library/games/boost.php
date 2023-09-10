@@ -4,42 +4,32 @@ if (!defined('EGP'))
 
 class boost
 {
-    private $partner_key = '';
-    private $service_url = '';
-
-    function __construct($key, $url)
+    function __construct(private $partner_key, private $service_url)
     {
-        $this->partner_key = $key;
-        $this->service_url = $url;
     }
 
     public function def($data)
     {
-        $aData = array(
-            'service' => 'boost',
-            'period' => $data['period'],
-            'address' => $data['address'],
-            'game' => 'cs16'
-        );
+        $aData = ['service' => 'boost', 'period' => $data['period'], 'address' => $data['address'], 'game' => 'cs16'];
 
-        $out = json_decode($this->defaultcurl(json_encode($aData)), true);
+        $out = json_decode((string) $this->defaultcurl(json_encode($aData, JSON_THROW_ON_ERROR)), true, 512, JSON_THROW_ON_ERROR);
 
         if ($out['message'] == 'Услуга уже присутствует')
-            $out = json_decode($this->defaultcurl(json_encode($aData), 'prolong'), true);
+            $out = json_decode((string) $this->defaultcurl(json_encode($aData, JSON_THROW_ON_ERROR), 'prolong'), true, 512, JSON_THROW_ON_ERROR);
 
         if (!array_key_exists('status', $out))
-            array('error' => 'Не удалось приобрести услугу, повторите запрос позже.');
+            ['error' => 'Не удалось приобрести услугу, повторите запрос позже.'];
 
         if (!$out['status'])
             return true;
 
-        return array('error' => $out['message']);
+        return ['error' => $out['message']];
     }
 
     private function defaultcurl($data, $action = 'buy')
     {
         if (!($curl = curl_init()))
-            array('error' => 'FAIL: curl_init().');
+            ['error' => 'FAIL: curl_init().'];
 
         curl_setopt($curl, CURLOPT_URL, $this->service_url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -55,28 +45,14 @@ class boost
 
     public function vipms($data)
     {
-        $aData = array(
-            'format' => 'POST',
-            'country' => 'RU',
-            'hoster_id' => 1,
-            'key' => $this->partner_key,
-            'full_address' => $data['address'],
-            'service_id' => $data['period']
-        );
+        $aData = ['format' => 'POST', 'country' => 'RU', 'hoster_id' => 1, 'key' => $this->partner_key, 'full_address' => $data['address'], 'service_id' => $data['period']];
 
         return $this->othercurl($aData);
     }
 
     public function fulls($data)
     {
-        $aData = array(
-            'format' => 'POST',
-            'country' => 'RU',
-            'hoster_id' => 1,
-            'key' => $this->partner_key,
-            'full_address' => $data['address'],
-            'service_id' => $data['period']
-        );
+        $aData = ['format' => 'POST', 'country' => 'RU', 'hoster_id' => 1, 'key' => $this->partner_key, 'full_address' => $data['address'], 'service_id' => $data['period']];
 
         return $this->othercurl($aData);
     }
@@ -84,7 +60,7 @@ class boost
     private function othercurl($aData)
     {
         if (!($curl = curl_init()))
-            array('error' => 'FAIL: curl_init().');
+            ['error' => 'FAIL: curl_init().'];
 
         curl_setopt($curl, CURLOPT_URL, $this->service_url . '?' . urldecode(http_build_query($aData)));
         curl_setopt($curl, CURLOPT_POST, true);
@@ -99,15 +75,9 @@ class boost
         if ($result == 'OK')
             return true;
 
-        $aErr = array(
-            1 => 'BAD_HOSTER_ID',
-            2 => 'HOSTER_NOT_FOUND',
-            3 => 'BAD_HOSTER_IP',
-            4 => 'FORM_INVALID',
-            5 => 'BAD_SERVICE_ID'
-        );
+        $aErr = [1 => 'BAD_HOSTER_ID', 2 => 'HOSTER_NOT_FOUND', 3 => 'BAD_HOSTER_IP', 4 => 'FORM_INVALID', 5 => 'BAD_SERVICE_ID'];
 
-        return array('error' => $aErr[$result]);
+        return ['error' => $aErr[$result]];
     }
 }
 

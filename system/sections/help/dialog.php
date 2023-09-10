@@ -3,13 +3,13 @@ if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 // Отправка сообщения / Удаление сообщения
-if (isset($url['action']) and in_array($url['action'], array('reply', 'remove', 'read', 'write')))
+if (isset($url['action']) and in_array($url['action'], ['reply', 'remove', 'read', 'write']))
     require(SEC . 'help/action/' . $url['action'] . '.php');
 
 if (!$id)
     sys::back($cfg['http'] . 'help/section/open');
 
-if (in_array($user['group'], array('admin', 'support')))
+if (in_array($user['group'], ['admin', 'support']))
     $sql->query('SELECT `type`, `service`, `status`, `date`, `close` FROM `help` WHERE `id`="' . $id . '" LIMIT 1');
 else
     $sql->query('SELECT `type`, `service`, `status`, `date`, `close` FROM `help` WHERE `id`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
@@ -25,16 +25,12 @@ if ($user['group'] == 'user' and !$help['status']) {
     $help['status'] = 2;
 }
 
-$aGroup = array(
-    'admin' => 'Администратор',
-    'support' => 'Техническая поддержка',
-    'user' => 'Клиент'
-);
+$aGroup = ['admin' => 'Администратор', 'support' => 'Техническая поддержка', 'user' => 'Клиент'];
 
 require(LIB . 'help.php');
 require(LIB . 'users.php');
 
-$aSender = array();
+$aSender = [];
 
 $dialogs = $sql->query('SELECT `id`, `user`, `text`, `img`, `time` FROM `help_dialogs` WHERE `help`="' . $id . '" ORDER BY `id` DESC LIMIT 50');
 while ($dialog = $sql->get($dialogs)) {
@@ -135,14 +131,10 @@ while ($dialog = $sql->get($dialogs)) {
 }
 
 // Массив статусов вопроса
-$status = array(
-    0 => 'Есть ответ',
-    1 => 'Ожидается ответ',
-    2 => 'Прочитан'
-);
+$status = [0 => 'Есть ответ', 1 => 'Ожидается ответ', 2 => 'Прочитан'];
 
 if (isset($url['ajax']))
-    sys::outjs(array('dialog' => (isset($html->arr['dialog']) ? $html->arr['dialog'] : ''), 'status' => ($help['close'] ? 'Вопрос решен' : $status[$help['status']])));
+    sys::outjs(['dialog' => ($html->arr['dialog'] ?? ''), 'status' => ($help['close'] ? 'Вопрос решен' : $status[$help['status']])]);
 
 // Краткая информация вопроса
 switch ($help['type']) {
@@ -172,7 +164,7 @@ $html->set('id', $id);
 $html->set('date', sys::today($help['date']));
 $html->set('status', $help['close'] ? 'Вопрос решен' : $status[$help['status']]);
 $html->set('service', $service);
-$html->set('dialog', isset($html->arr['dialog']) ? $html->arr['dialog'] : '');
+$html->set('dialog', $html->arr['dialog'] ?? '');
 
 if ($user['group'] == 'user') {
     $html->unit('!user');

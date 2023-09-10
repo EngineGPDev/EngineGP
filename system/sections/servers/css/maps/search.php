@@ -2,7 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$text = isset($_POST['text']) ? str_ireplace('.bsp', '', $_POST['text']) : '';
+$text = isset($_POST['text']) ? str_ireplace('.bsp', '', (string) $_POST['text']) : '';
 
 $mkey = md5($text . $id);
 
@@ -17,23 +17,23 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go)
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 // Поиск по картам
 if ($text[0] == '^') {
-    $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` REGEXP FROM_BASE64(\'' . base64_encode(str_replace('_', '\_', $text) . '') . '\') ORDER BY `name` ASC LIMIT 12');
+    $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` REGEXP FROM_BASE64(\'' . base64_encode((string) (str_replace('_', '\_', $text) . '')) . '\') ORDER BY `name` ASC LIMIT 12');
     $text = substr($text, 1);
 } else
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') ORDER BY `name` ASC LIMIT 12');
 
 if (!$sql->num()) {
     if ($go)
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $i = 0;
@@ -53,6 +53,6 @@ while ($map = $sql->get()) {
     $html->pack('maps');
 }
 
-$mcache->set($mkey, array('maps' => $html->arr['maps'], 'mapsjs' => $mapsjs), false, 15);
+$mcache->set($mkey, ['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs], false, 15);
 
-sys::outjs(array('maps' => $html->arr['maps'], 'mapsjs' => $mapsjs));
+sys::outjs(['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs]);

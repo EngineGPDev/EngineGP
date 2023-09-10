@@ -14,9 +14,9 @@ class web_delete extends cron
         if ($web['type'] == 'hosting') {
             require(DATA . 'web.php');
 
-            $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], array('login' => $web['login']))), true);
+            $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], ['login' => $web['login']])), true, 512, JSON_THROW_ON_ERROR);
 
-            if (!isset($result['result']) || strtolower($result['result']) != 'ok')
+            if (!isset($result['result']) || strtolower((string) $result['result']) != 'ok')
                 continue;
 
             $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
@@ -24,12 +24,9 @@ class web_delete extends cron
 
         require(LIB . 'web/free.php');
 
-        $aData = array(
-            'type' => $web['type'],
-            'server' => array('id' => $web['server'], 'unit' => $web['unit'], 'user' => 0, 'game' => 'system')
-        );
+        $aData = ['type' => $web['type'], 'server' => ['id' => $web['server'], 'unit' => $web['unit'], 'user' => 0, 'game' => 'system']];
 
-        web::delete($aData, false);
+        web::delete(false, $aData);
     }
 }
 

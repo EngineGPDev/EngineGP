@@ -57,13 +57,13 @@ if ($go) {
     if (isset($_POST) && !empty($_POST)) {
 
         if (!isset($_FILES['file'])) {
-            sys::outjs(array('e' => 'Необходимо указать проверяемый файл.'));
+            sys::outjs(['e' => 'Необходимо указать проверяемый файл.']);
         }
 
         $file = $_FILES['file'];
 
-        if (substr($file['name'], -4) != '.sma') {
-            sys::outjs(array('e' => 'Только .sma разрешается загружать'));
+        if (!str_ends_with((string) $file['name'], '.sma')) {
+            sys::outjs(['e' => 'Только .sma разрешается загружать']);
         }
 
         $text = file_get_contents($file['tmp_name']);
@@ -75,7 +75,7 @@ if ($go) {
             $strNum = $key + 1;
 
             foreach ($badCommands as $cmd) {
-                if (strpos($str, $cmd) !== false) {
+                if (str_contains($str, $cmd)) {
                     $errors[$strNum] = $cmd;
                 }
             }
@@ -89,10 +89,10 @@ if ($go) {
             $outputErrors .= '</tbody>';
         } else {
             if (!isset($outputErrors)) {
-                sys::outjs(array('s' => 'Вредоносный код не найден.'));
+                sys::outjs(['s' => 'Вредоносный код не найден.']);
             }
         }
-        sys::outjs(array('sma' => $outputErrors));
+        sys::outjs(['sma' => $outputErrors]);
     }
 }
 

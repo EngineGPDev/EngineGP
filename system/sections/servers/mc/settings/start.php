@@ -11,7 +11,7 @@ require(LIB . 'games/games.php');
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'slots':
@@ -22,7 +22,7 @@ if ($go and $url['save']) {
                 $sql->query('UPDATE `servers` set `slots_start`="' . $slots . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 

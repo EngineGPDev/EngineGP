@@ -2,11 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$aGroup = array(
-    'admin' => 'Администратор',
-    'support' => 'Техническая поддержка',
-    'user' => 'Клиент'
-);
+$aGroup = ['admin' => 'Администратор', 'support' => 'Техническая поддержка', 'user' => 'Клиент'];
 
 $write_st = isset($url['write']) ? true : false;
 
@@ -25,7 +21,7 @@ if ($id) {
         $mcache->replace($nmch, $cache, false, 10);
     } else {
         if ($write_st)
-            $mcache->set($nmch, array($user['id'] => $user['group'] . '|' . $start_point), false, 10);
+            $mcache->set($nmch, [$user['id'] => $user['group'] . '|' . $start_point], false, 10);
     }
 
     if ($user['group'] == 'user')
@@ -38,7 +34,7 @@ if ($id) {
 
     if (is_array($cache))
         foreach ($cache as $writer => $data) {
-            list($group, $time) = explode('|', $data);
+            [$group, $time] = explode('|', (string) $data);
 
             if ($time + 9 > $start_point)
                 $write_now .= '<a href="#' . $writer . '" target="_blank">#' . $writer . ' (' . $aGroup[$group] . ')</a>, ';

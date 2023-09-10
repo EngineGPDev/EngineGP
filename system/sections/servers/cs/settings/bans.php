@@ -20,14 +20,14 @@ $folder = $tarif['install'] . $server['uid'] . '/cstrike';
 
 // Если бан/разбан/проверка
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['value'] = isset($_POST['value']) ? trim($_POST['value']) : sys::outjs(array('e' => sys::text('servers', 'bans')), $nmch);
+    $aData['value'] = isset($_POST['value']) ? trim((string) $_POST['value']) : sys::outjs(['e' => sys::text('servers', 'bans')], $nmch);
     $aData['amxbans'] = isset($_POST['amxbans']) ? true : false;
 
     // Проверка входных данных
     if (sys::valid($aData['value'], 'steamid') and sys::valid($aData['value'], 'ip'))
-        sys::outjs(array('e' => sys::text('servers', 'bans')), $nmch);
+        sys::outjs(['e' => sys::text('servers', 'bans')], $nmch);
 
     // Если указан steamid
     if (sys::valid($aData['value'], 'ip')) {
@@ -42,10 +42,10 @@ if ($go) {
 
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' banned.cfg | awk \'{print $3}\'');
 
-            if ($aData['value'] != trim($ssh->get()))
+            if ($aData['value'] != trim((string) $ssh->get()))
                 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "echo \"banid 0.0 ' . $aData['value'] . '\" >> ' . $folder . '/banned.cfg"');
 
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // разбан   
         } elseif (isset($url['action']) and $url['action'] == 'unban') {
@@ -61,15 +61,15 @@ if ($go) {
                 $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"writeid\"\015'");
             }
 
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
             // проверка
         } else {
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' banned.cfg | awk \'{print $3}\'');
 
-            if ($aData['value'] == trim($ssh->get()))
-                sys::outjs(array('ban' => 'Данный SteamID <u>найден</u> в файле banned.cfg'), $nmch);
+            if ($aData['value'] == trim((string) $ssh->get()))
+                sys::outjs(['ban' => 'Данный SteamID <u>найден</u> в файле banned.cfg'], $nmch);
 
-            sys::outjs(array('unban' => 'Данный SteamID <u>не найден</u> в файле banned.cfg'), $nmch);
+            sys::outjs(['unban' => 'Данный SteamID <u>не найден</u> в файле banned.cfg'], $nmch);
         }
     } else {
         // бан
@@ -83,10 +83,10 @@ if ($go) {
 
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' listip.cfg | awk \'{print $3}\'');
 
-            if ($aData['value'] != trim($ssh->get()))
+            if ($aData['value'] != trim((string) $ssh->get()))
                 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "echo \"addip 0.0 ' . $aData['value'] . '\" >> ' . $folder . '/listip.cfg"');
 
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // разбан   
         } elseif (isset($url['action']) and $url['action'] == 'unban') {
@@ -102,26 +102,26 @@ if ($go) {
                 $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"writeip\"\015'");
             }
 
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
             // проверка
         } else {
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' listip.cfg | awk \'{print $3}\'');
 
-            if ($aData['value'] == trim($ssh->get()))
-                sys::outjs(array('ban' => 'Данный IP <u>найден</u> в файле listip.cfg'), $nmch);
+            if ($aData['value'] == trim((string) $ssh->get()))
+                sys::outjs(['ban' => 'Данный IP <u>найден</u> в файле listip.cfg'], $nmch);
 
-            sys::outjs(array('unban' => 'Данный IP <u>не найден</u> в файле listip.cfg'), $nmch);
+            sys::outjs(['unban' => 'Данный IP <u>не найден</u> в файле listip.cfg'], $nmch);
         }
     }
 }
 
 // Содержимое banned.cfg
 $ssh->set('cd ' . $folder . ' && cat banned.cfg | awk \'{print $3}\' | grep STEAM_');
-$aBanned = explode("\n", $ssh->get());
+$aBanned = explode("\n", (string) $ssh->get());
 
 // Содержимое listip.cfg
 $ssh->set('cd ' . $folder . ' && cat listip.cfg | awk \'{print $3}\' | egrep "(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}"');
-$aListip = explode("\n", $ssh->get());
+$aListip = explode("\n", (string) $ssh->get());
 
 if (isset($aBanned[count($aBanned) - 1]) and $aBanned[count($aBanned) - 1] == '')
     unset($aBanned[count($aBanned) - 1]);
@@ -150,7 +150,7 @@ foreach ($aListip as $line => $ip) {
 $html->get('bans', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
-$html->set('banned', isset($html->arr['banned']) ? $html->arr['banned'] : '');
-$html->set('listip', isset($html->arr['listip']) ? $html->arr['listip'] : '');
+$html->set('banned', $html->arr['banned'] ?? '');
+$html->set('listip', $html->arr['listip'] ?? '');
 
 $html->pack('main');

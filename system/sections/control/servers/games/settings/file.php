@@ -3,7 +3,7 @@ if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 // Редактируемый файл
-$file = isset($url['file']) ? $url['file'] : sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
+$file = $url['file'] ?? sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 
 require(DATA . 'filedits.php');
 
@@ -20,7 +20,7 @@ require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 }
@@ -29,7 +29,7 @@ if (!$ssh->auth($unit['passwd'], $unit['address'])) {
 $path = '/servers/' . $server['uid'] . '/' . $aEdits[$server['game']]['all']['path'][$file] . $file;
 
 if ($go) {
-    $data = isset($_POST['data']) ? $_POST['data'] : '';
+    $data = $_POST['data'] ?? '';
 
     $temp = sys::temp($data);
 
@@ -41,7 +41,7 @@ if ($go) {
 
     unlink($temp);
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $path . '; cat ' . $path . '"');
@@ -51,6 +51,6 @@ $html->get('file', 'sections/control/servers/games/settings');
 $html->set('id', $id);
 $html->set('server', $sid);
 $html->set('file', $file);
-$html->set('data', htmlspecialchars($ssh->get()));
+$html->set('data', htmlspecialchars((string) $ssh->get()));
 
 $html->pack('main');

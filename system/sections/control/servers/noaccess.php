@@ -4,12 +4,7 @@ if (!defined('EGP'))
 
 $html->nav('Раздел недоступен');
 
-$status = array(
-    'install' => 'установки',
-    'reinstall' => 'переустановки',
-    'update' => 'обновления',
-    'recovery' => 'восстановления'
-);
+$status = ['install' => 'установки', 'reinstall' => 'переустановки', 'update' => 'обновления', 'recovery' => 'восстановления'];
 
 $html->get('noaccess');
 $html->set('status', $status[$server['status']]);

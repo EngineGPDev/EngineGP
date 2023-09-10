@@ -4,15 +4,15 @@ if (!defined('EGP'))
 
 $sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" ORDER BY `id` DESC LIMIT 3');
 if ($sql->num() > 2)
-    sys::outjs(array('e' => 'Для создания новой копии необходимо удалить старые.'), $nmch);
+    sys::outjs(['e' => 'Для создания новой копии необходимо удалить старые.'], $nmch);
 
 $sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" AND `status`="0" LIMIT 1');
 if ($sql->num())
-    sys::outjs(array('e' => 'Для создания новой копии дождитесь создания предыдущей.'), $nmch);
+    sys::outjs(['e' => 'Для создания новой копии дождитесь создания предыдущей.'], $nmch);
 
-$aSel = array();
+$aSel = [];
 
-$aData = isset($_POST['copy']) ? $_POST['copy'] : sys::outjs(array('e' => 'Для создания копии необходимо выбрать директории/файлы.'), $nmch);
+$aData = $_POST['copy'] ?? sys::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
 
 foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
     if (!isset($aData['\'' . $name . '\'']))
@@ -22,7 +22,7 @@ foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
 }
 
 if (!count($aSel))
-    sys::outjs(array('e' => 'Для создания копии необходимо выбрать директории/файлы.'), $nmch);
+    sys::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
 
 $copy = '';
 $info = '';
@@ -48,4 +48,4 @@ $sql->query('INSERT INTO `copy` set `user`="' . $server['user'] . '_' . $server[
 // Очистка кеша
 $mcache->delete('server_copy_' . $id);
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

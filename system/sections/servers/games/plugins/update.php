@@ -22,7 +22,7 @@ if (!$sql->num())
 // Проверка установки обновления плагина
 $sql->query('SELECT `id` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '" AND `upd`="' . $plugin['id'] . '" LIMIT 1');
 if ($sql->num())
-    sys::outjs(array('e' => 'Данный плагин уже обновлен'));
+    sys::outjs(['e' => 'Данный плагин уже обновлен']);
 
 // Данные обновления
 $sql->query('SELECT `id`, `cfg`, `incompatible`, `required` FROM `plugins_update` WHERE `id`="' . $plugin['id'] . '" LIMIT 1');
@@ -44,7 +44,7 @@ if (!isset($ssh))
     require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
@@ -81,7 +81,7 @@ $sql->query('UPDATE `plugins_install` set `upd`="' . $plugin['id'] . '", `time`=
 $mcache->delete('server_plugins_' . $id);
 
 if ($plugin['cfg'])
-    sys::outjs(array('s' => 'cfg'), $nmch);
+    sys::outjs(['s' => 'cfg'], $nmch);
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);
 

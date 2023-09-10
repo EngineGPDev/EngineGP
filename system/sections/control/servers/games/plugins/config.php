@@ -32,7 +32,7 @@ if (!isset($ssh))
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go)
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
@@ -41,14 +41,14 @@ $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '
 $tarif = $sql->get();
 
 // Данные файла
-$file = explode('/', $config['file']);
+$file = explode('/', (string) $config['file']);
 
 // Полный путь файла
 $path = $tarif['install'] . $server['uid'] . '/' . $config['file'];
 
 // Сохранение
 if ($go) {
-    $data = isset($_POST['data']) ? $_POST['data'] : '';
+    $data = $_POST['data'] ?? '';
 
     $temp = sys::temp($data);
 
@@ -60,7 +60,7 @@ if ($go) {
 
     unlink($temp);
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $path . '; cat ' . $path . '"');
@@ -74,7 +74,7 @@ $html->set('id', $id);
 $html->set('file', $fid);
 $html->set('plugin', $config['plugin']);
 $html->set('name', end($file));
-$html->set('data', htmlspecialchars($ssh->get()));
+$html->set('data', htmlspecialchars((string) $ssh->get()));
 
 $html->pack('main');
 

@@ -10,7 +10,7 @@ $nmc = 'cashback_' . $id;
 
 // Проверка сессии
 if ($mcache->get($nmc))
-    sys::outjs(array('e' => $text['mcache']), $nmc);
+    sys::outjs(['e' => $text['mcache']], $nmc);
 
 // Создание сессии
 $mcache->set($nmc, 1, false, 10);
@@ -20,9 +20,9 @@ if ($id) {
     $cb = $sql->get();
 
     if (!$cb['status'])
-        sys::outjs(array('e' => 'Данная заявка уже была обработана'), $nmc);
+        sys::outjs(['e' => 'Данная заявка уже была обработана'], $nmc);
 
-    $purse = $cb['purse']{0} == 'R' ? 'webmoney' : 'qiwi';
+    $purse = $cb['purse'][0] == 'R' ? 'webmoney' : 'qiwi';
 
     // Запрос на шлюз
     if ($cfg['part_gateway'] == 'unitpay') {
@@ -30,28 +30,28 @@ if ($id) {
 
         $json = file_get_contents('https://unitpay.ru/api?method=massPayment&params[sum]=' . $sum . '&params[purse]=' . $cb['purse'] . '&params[login]=' . $cfg['unitpay_mail'] . '&params[transactionId]=' . $id . ' &params[secretKey]=' . $cfg['unitpay_api'] . '&params[paymentType]=' . $purse);
 
-        $array = json_decode($json, true);
+        $array = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         // Упешный вывод средств
-        if (is_array($array) and isset($array['result']) and in_array($array['result']['status'], array('success', 'not_completed '))) {
+        if (is_array($array) and isset($array['result']) and in_array($array['result']['status'], ['success', 'not_completed '])) {
             $sql->query('UPDATE `cashback` set `status`="0" WHERE `id`="' . $id . '" LIMIT 1');
             $sql->query('INSERT INTO `logs` set `user`="' . $cb['user'] . '", `text`="' . sys::updtext(sys::text('logs', 'cashback'),
-                    array('purse' => $purse, 'money' => $cb['money'])) . '", `date`="' . $start_point . '", `type`="cashback", `money`="' . $cb['money'] . '"');
+                    ['purse' => $purse, 'money' => $cb['money']]) . '", `date`="' . $start_point . '", `type`="cashback", `money`="' . $cb['money'] . '"');
 
-            sys::outjs(array('s' => 'Запрос на вывод средств был успешно выполнен'), $nmc);
+            sys::outjs(['s' => 'Запрос на вывод средств был успешно выполнен'], $nmc);
         }
 
         if (!is_array($array))
-            sys::outjs(array('e' => 'Неудалось выполнить запрос'), $nmc);
+            sys::outjs(['e' => 'Неудалось выполнить запрос'], $nmc);
 
-        sys::outjs(array('e' => $array['error']['message']), $nmc);
+        sys::outjs(['e' => $array['error']['message']], $nmc);
     }
 
     $sql->query('UPDATE `cashback` set `status`="0" WHERE `id`="' . $id . '" LIMIT 1');
     $sql->query('INSERT INTO `logs` set `user`="' . $cb['user'] . '", `text`="' . sys::updtext(sys::text('logs', 'cashback'),
-            array('purse' => $purse, 'money' => $cb['money'])) . '", `date`="' . $start_point . '", `type`="cashback", `money`="' . $cb['money'] . '"');
+            ['purse' => $purse, 'money' => $cb['money']]) . '", `date`="' . $start_point . '", `type`="cashback", `money`="' . $cb['money'] . '"');
 
-    sys::outjs(array('s' => 'Запрос на вывод средств был успешно выполнен в ручном режиме'), $nmc);
+    sys::outjs(['s' => 'Запрос на вывод средств был успешно выполнен в ручном режиме'], $nmc);
 }
 
-sys::outjs(array('e' => 'Не передан идентификатор заявки'), $nmc);
+sys::outjs(['e' => 'Не передан идентификатор заявки'], $nmc);

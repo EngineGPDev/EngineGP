@@ -4,13 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-server"></i> Управление локациями';
 
-$aSection = array(
-    'index',
-    'add',
-    'loading',
-    'stats',
-    'delete'
-);
+$aSection = ['index', 'add', 'loading', 'stats', 'delete'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

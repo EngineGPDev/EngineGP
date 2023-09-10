@@ -8,29 +8,29 @@ else
     $sql->query('SELECT `id` FROM `help` WHERE `status`="1" AND `close`="0" LIMIT 1');
 
 if (!$sql->num())
-    sys::outjs(array('empty' => ''));
+    sys::outjs(['empty' => '']);
 
 if ($user['group'] != 'user') {
     $sql->query('SELECT `time` FROM `help` WHERE `status`="1" AND `close`="0" ORDER BY `time` DESC LIMIT 1');
     if ($sql->num()) {
         $help = $sql->get();
 
-        sys::outjs(array('reply' => $help['time']));
+        sys::outjs(['reply' => $help['time']]);
     }
 
-    sys::outjs(array('empty' => ''));
+    sys::outjs(['empty' => '']);
 }
 
 $help = $sql->get();
 
 $sql->query('SELECT `text`, `time` FROM `help_dialogs` WHERE `help`="' . $help['id'] . '" AND `user`!="' . $user['id'] . '" AND `time`>"' . ($start_point - 15) . '" ORDER BY `id` DESC LIMIT 1');
 if (!$sql->num())
-    sys::outjs(array('reply' => ''));
+    sys::outjs(['reply' => '']);
 
 $msg = $sql->get();
 
-if (strip_tags($msg['text'], '<br>,<p>') != $msg['text'])
-    sys::outjs(array('reply' => ''));
+if (strip_tags((string) $msg['text'], '<br>,<p>') != $msg['text'])
+    sys::outjs(['reply' => '']);
 
 require(LIB . 'help.php');
 
@@ -43,4 +43,4 @@ $html->set('ago', help::ago($msg['time']));
 
 $html->pack('notice');
 
-sys::outjs(array('notice' => $html->arr['notice']));
+sys::outjs(['notice' => $html->arr['notice']]);

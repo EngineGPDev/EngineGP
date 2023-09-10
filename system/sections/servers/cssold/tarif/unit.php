@@ -5,14 +5,14 @@ if (!defined('EGP'))
 if (!isset($nmch))
     $nmch = false;
 
-$uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
+$uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86400 || $server['test'])
     exit;
 
 $sql->query('SELECT `id`, `unit`, `packs`, `fps`, `tickrate`, `price` FROM `tarifs` WHERE `unit`="' . $uid . '" AND `game`="' . $server['game'] . '" AND `name`="' . $tarif['name'] . '" AND `id`!="' . $server['tarif'] . '" AND `show`="1" ORDER BY `unit`');
 if (!$sql->num())
-    sys::outjs(array('e' => 'Не найден подходящий тариф.'), $nmch);
+    sys::outjs(['e' => 'Не найден подходящий тариф.'], $nmch);
 
 $oldTarif = $tarif;
 
@@ -25,12 +25,12 @@ $aPriceold = sys::b64djs($oldTarif['price']);
 
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
 if (!$sql->num())
-    sys::outjs(array('e' => 'Выбранная локация не доступна.'), $nmch);
+    sys::outjs(['e' => 'Выбранная локация не доступна.'], $nmch);
 
 $aPrice = sys::b64djs($tarif['price']);
 
 if (!array_key_exists($server['tickrate'] . '_' . $server['fps'], $aPrice))
-    sys::outjs(array('e' => 'Не найден подходящий тарифный план.'), $nmch);
+    sys::outjs(['e' => 'Не найден подходящий тарифный план.'], $nmch);
 
 // Цена за 1 день (при новом тарифном плане)
 $price = $aPrice[$server['tickrate'] . '_' . $server['fps']] / 30 * $server['slots'];

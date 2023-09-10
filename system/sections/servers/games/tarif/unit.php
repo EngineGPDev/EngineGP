@@ -5,23 +5,23 @@ if (!defined('EGP'))
 // Выполнение операции
 if ($go) {
     if ($server['status'] != 'off')
-        sys::outjs(array('e' => 'Игровой сервер должен быть выключен'), $nmch);
+        sys::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
 
-    $pack = isset($url['pack']) ? $url['pack'] : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
+    $pack = $url['pack'] ?? sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
     // Проверка сборки
-    if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true)))
-        sys::outjs(array('e' => 'Сборка не найдена.'));
+    if (!array_key_exists($pack, sys::b64djs($tarif['packs'])))
+        sys::outjs(['e' => 'Сборка не найдена.']);
 
     $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `core_fix`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
-    $tarif = array_merge(array('pack' => $pack), $sql->get());
+    $tarif = array_merge(['pack' => $pack], $sql->get());
 
     $sql->query('SELECT `name`, `address`, `passwd` FROM `units` WHERE `id`="' . $tarif['unit'] . '" LIMIT 1');
     $unit = $sql->get();
 
     // Выделенный адрес игрового сервера
     if (!empty($tarif['ip'])) {
-        $aIp = explode(':', $tarif['ip']);
+        $aIp = explode(':', (string) $tarif['ip']);
 
         $ip = false;
         $port = params::$aDefPort[$server['game']];
@@ -38,7 +38,7 @@ if ($go) {
             }
         }
     } else {
-        $ip = sys::first(explode(':', $unit['address']));
+        $ip = sys::first(explode(':', (string) $unit['address']));
         $port = false;
 
         // Проверка наличия свободного порта
@@ -55,7 +55,7 @@ if ($go) {
     $core = 0;
 
     if ($tarif['core_fix'] != '') {
-        $aCore = explode(',', $tarif['core_fix']);
+        $aCore = explode(',', (string) $tarif['core_fix']);
 
         foreach ($aCore as $cpu) {
             $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $tarif['unit'] . '" AND `tarif`="' . $tarif['id'] . '" AND `core_fix`="' . $cpu . '" AND `core_fix_one`="1" LIMIT 1');
@@ -71,7 +71,7 @@ if ($go) {
     }
 
     if (!$ip || !$port || !$core)
-        sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
+        sys::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
 
     $server['id'] = $id;
 
@@ -85,7 +85,7 @@ if ($go) {
 
     $mcache->delete('server_filetp_' . $id);
 
-    $adUnit = explode(':', $unit['address']);
+    $adUnit = explode(':', (string) $unit['address']);
 
     $server['address'] = $ip . ':' . $port;
 
@@ -95,16 +95,16 @@ if ($go) {
     // Запись логов
     $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_unit') . '", `time`="' . $start_point . '"');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Генерация списка сборок
 $packs = '';
-$aPack = sys::b64djs($tarif['packs'], true);
+$aPack = sys::b64djs($tarif['packs']);
 
 if (is_array($aPack))
     foreach ($aPack as $index => $name)
         $packs .= '<option value="' . $index . '">' . $name . '</option>';
 
 // Выхлоп информации
-sys::outjs(array('s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')', 'p' => $packs));
+sys::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')', 'p' => $packs]);

@@ -9,22 +9,22 @@ $sql->query('SELECT `text` FROM `wiki_answer` WHERE `wiki`="' . $id . '" LIMIT 1
 $wiki = array_merge($wiki, $sql->get());
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : htmlspecialchars_decode($wiki['name']);
-    $aData['text'] = isset($_POST['text']) ? sys::bbc(trim($_POST['text'])) : htmlspecialchars_decode($wiki['text']);
+    $aData['name'] = isset($_POST['name']) ? trim((string) $_POST['name']) : htmlspecialchars_decode((string) $wiki['name']);
+    $aData['text'] = isset($_POST['text']) ? sys::bbc(trim((string) $_POST['text'])) : htmlspecialchars_decode((string) $wiki['text']);
     $aData['cat'] = isset($_POST['cat']) ? sys::int($_POST['cat']) : $wiki['cat'];
-    $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : htmlspecialchars_decode($wiki['tags']);
+    $aData['tags'] = isset($_POST['tags']) ? trim((string) $_POST['tags']) : htmlspecialchars_decode((string) $wiki['tags']);
 
     if (in_array('', $aData))
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
 
     if (sys::strlen($aData['tags']) > 100)
-        sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+        sys::outjs(['e' => 'Теги не должен превышать 100 символов.']);
 
     $sql->query('SELECT `id` FROM `wiki_category` WHERE `id`="' . $aData['cat'] . '" LIMIT 1');
     if (!$sql->num())
-        sys::outjs(array('e' => 'Указанная категория не найдена'));
+        sys::outjs(['e' => 'Указанная категория не найдена']);
 
     $sql->query('UPDATE `wiki` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
@@ -34,9 +34,9 @@ if ($go) {
 
     $sql->query('UPDATE `wiki_answer` set '
         . '`cat`="' . $aData['cat'] . '",'
-        . '`text`="' . htmlspecialchars($aData['text']) . '" WHERE `wiki`="' . $id . '" LIMIT 1');
+        . '`text`="' . htmlspecialchars((string) $aData['text']) . '" WHERE `wiki`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $cats = '';
@@ -48,9 +48,9 @@ while ($cat = $sql->get())
 $html->get('wiki', 'sections/wiki');
 
 $html->set('id', $id);
-$html->set('name', htmlspecialchars_decode($wiki['name']));
-$html->set('text', htmlspecialchars_decode($wiki['text']));
-$html->set('tags', htmlspecialchars_decode($wiki['tags']));
+$html->set('name', htmlspecialchars_decode((string) $wiki['name']));
+$html->set('text', htmlspecialchars_decode((string) $wiki['text']));
+$html->set('tags', htmlspecialchars_decode((string) $wiki['tags']));
 $html->set('cats', str_replace('"' . $wiki['cat'] . '"', '"' . $wiki['cat'] . '" selected', $cats));
 
 $html->pack('main');

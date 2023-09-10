@@ -4,15 +4,12 @@ if (!defined('EGP'))
 
 class GoldSourceRcon
 {
-    private $Socket;
-
     private $RconPassword;
-    private $RconRequestId;
-    private $RconChallenge;
+    private ?int $RconRequestId = null;
+    private int|string|null $RconChallenge = null;
 
-    public function __construct($Socket)
+    public function __construct(private $Socket)
     {
-        $this->Socket = $Socket;
     }
 
     public function Close()
@@ -47,12 +44,12 @@ class GoldSourceRcon
 
             if ($ReadMore) {
                 if ($Buffer->GetByte() !== SourceQuery::S2A_RCON)
-                    sys::outjs(array('e' => 'неправильный rcon запрос.'));
+                    sys::outjs(['e' => 'неправильный rcon запрос.']);
 
                 $Packet = $Buffer->Get();
                 $StringBuffer .= $Packet;
 
-                $ReadMore = StrLen($Packet) > 1000;
+                $ReadMore = StrLen((string) $Packet) > 1000;
 
                 if ($ReadMore)
                     $Buffer = $this->Socket->Read();
@@ -62,10 +59,10 @@ class GoldSourceRcon
         $Trimmed = trim($StringBuffer);
 
         if ($Trimmed === 'Bad rcon_password.')
-            sys::outjs(array('e' => 'rcon_password из server.cfg не подходит.'));
+            sys::outjs(['e' => 'rcon_password из server.cfg не подходит.']);
 
         else if ($Trimmed === 'You have been banned from this server.')
-            sys::outjs(array('e' => 'Игровой сервер заблокировал доступ.'));
+            sys::outjs(['e' => 'Игровой сервер заблокировал доступ.']);
 
         $Buffer->Set($Trimmed);
 
@@ -94,8 +91,8 @@ class GoldSourceRcon
         $Buffer = $this->Socket->Read();
 
         if ($Buffer->Get(14) !== 'challenge rcon')
-            sys::outjs(array('e' => 'Не удалось выполнить rcon запрос.'));
+            sys::outjs(['e' => 'Не удалось выполнить rcon запрос.']);
 
-        $this->RconChallenge = Trim($Buffer->Get());
+        $this->RconChallenge = Trim((string) $Buffer->Get());
     }
 }

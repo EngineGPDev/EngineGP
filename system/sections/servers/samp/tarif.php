@@ -6,6 +6,6 @@ $sql->query('SELECT `name`, `slots_min`, `slots_max`, `install`, `timext`, `disc
 $tarif = $sql->get();
 
 // Подразделы
-$aSub = array('extend', 'address', 'addextend', 'unit', 'slots');
+$aSub = ['extend', 'address', 'addextend', 'unit', 'slots'];
 
 require(SEC . 'servers/games/tarif.php');

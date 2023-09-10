@@ -4,11 +4,7 @@ if (!defined('EGP'))
 
 $info = '<i class="fa fa-envelope-open"></i> Вакансии';
 
-$aSection = array(
-    'index',
-    'add',
-    'request'
-);
+$aSection = ['index', 'add', 'request'];
 
 if (!in_array($section, $aSection))
     $section = 'index';

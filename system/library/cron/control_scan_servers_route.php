@@ -38,12 +38,12 @@ class control_scan_servers_route extends cron
 
         sleep(1);
 
-        $aCpu = sys::cpu_idle(array($first, $ssh->get('cat /proc/stat')), $unit['fcpu'], true);
+        $aCpu = sys::cpu_idle([$first, $ssh->get('cat /proc/stat')], $unit['fcpu'], true);
 
         array_shift($aCpu);
 
-        $idle = array();
-        $uses = array();
+        $idle = [];
+        $uses = [];
 
         foreach ($aCpu as $cpu => $data) {
             $core = sys::int($cpu) + 1;
@@ -74,7 +74,7 @@ class control_scan_servers_route extends cron
 
                 $core = array_search(max($idle), $idle);
 
-                $aPid = explode("\n", $ssh->get('ps aux | grep -v grep | grep ' . $server['uid'] . ' | awk \'{print $2}\''));
+                $aPid = explode("\n", (string) $ssh->get('ps aux | grep -v grep | grep ' . $server['uid'] . ' | awk \'{print $2}\''));
 
                 if (count($aPid) < 2)
                     continue;

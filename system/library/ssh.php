@@ -4,8 +4,8 @@ if (!defined('EGP'))
 
 class ssh
 {
-    var $conn;
-    var $stream;
+    public $conn;
+    public $stream;
 
     public function auth($passwd, $address)
     {
@@ -17,8 +17,8 @@ class ssh
 
     public function connect($address)
     {
-        if (strpos($address, ':') !== false) {
-            list($host, $port) = explode(':', $address);
+        if (str_contains((string) $address, ':')) {
+            [$host, $port] = explode(':', (string) $address);
         } else {
             $host = $address;
             $port = 22;

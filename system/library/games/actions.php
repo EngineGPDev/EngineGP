@@ -18,7 +18,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -29,10 +29,10 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function change($id, $map = false)
@@ -41,7 +41,7 @@ class actions
 
         // Если в кеше есть карты
         if ($mcache->get('server_maps_change_' . $id) != '' && !$map)
-            return array('maps' => $mcache->get('server_maps_change_' . $id));
+            return ['maps' => $mcache->get('server_maps_change_' . $id)];
 
         require(LIB . 'ssh.php');
 
@@ -56,10 +56,10 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
 
         // Массив карт игрового сервера (папка "maps")
-        $aMaps = explode("\n", $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.'));
+        $aMaps = explode("\n", (string) $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.'));
 
         // Удаление пустого элемента
         unset($aMaps[count($aMaps) - 1]);
@@ -71,7 +71,7 @@ class actions
         if ($map) {
             // Проверка наличия выбранной карты
             if (!in_array($map, $aMaps))
-                return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.bsp')));
+                return ['e' => sys::updtext(sys::text('servers', 'change'), ['map' => $map . '.bsp'])];
 
             // Отправка команды changelevel
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
@@ -82,10 +82,10 @@ class actions
             // Сброс кеша
             actions::clmcache($id);
 
-            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])));
-            sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']));
+            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode((string) $server['players'])]);
+            sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']]);
 
-            return array('s' => 'ok');
+            return ['s' => 'ok'];
         }
 
         // Сортировка списка карт
@@ -104,7 +104,7 @@ class actions
         // Запись карт в кеш
         $mcache->set('server_maps_change_' . $id, $html->arr['maps'], false, 30);
 
-        return array('maps' => $html->arr['maps']);
+        return ['maps' => $html->arr['maps']];
     }
 
     public static function reinstall($id)
@@ -120,7 +120,7 @@ class actions
         $reinstall = $server['reinstall'] + $cfg['reinstall'][$server['game']] * 60;
 
         if ($reinstall > $start_point && $user['group'] != 'admin')
-            return array('e' => sys::updtext(sys::text('servers', 'reinstall'), array('time' => sys::date('max', $reinstall))));
+            return ['e' => sys::updtext(sys::text('servers', 'reinstall'), ['time' => sys::date('max', $reinstall)])];
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -130,7 +130,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -139,7 +139,7 @@ class actions
 
         // Если включена система автораспределения и не установлен фиксированный поток
         if ($cfg['cpu_route'] && !$server['core_fix']) {
-            $proc_stat = array();
+            $proc_stat = [];
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
@@ -158,7 +158,7 @@ class actions
             $core = sys::cpu_idle($proc_stat, $server['unit'], false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core))
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+                return ['e' => 'Не удается выполнить операцию, нет свободного потока.'];
 
             $taskset = 'taskset -c ' . $core;
         }
@@ -187,7 +187,7 @@ class actions
             $aPlugins = sys::b64djs($tarif['plugins_install']);
 
             if (isset($aPlugins[$server['pack']])) {
-                $plugins = explode(',', $aPlugins[$server['pack']]);
+                $plugins = explode(',', (string) $aPlugins[$server['pack']]);
 
                 foreach ($plugins as $plugin)
                     if ($plugin)
@@ -206,10 +206,10 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function update($id)
@@ -225,7 +225,7 @@ class actions
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
         if ($update > $start_point && $user['group'] != 'admin')
-            return array('e' => sys::updtext(sys::text('servers', 'update'), array('time' => sys::date('max', $update))));
+            return ['e' => sys::updtext(sys::text('servers', 'update'), ['time' => sys::date('max', $update)])];
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -235,7 +235,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -244,7 +244,7 @@ class actions
 
         // Если включена система автораспределения и не установлен фиксированный поток
         if ($cfg['cpu_route'] && !$server['core_fix']) {
-            $proc_stat = array();
+            $proc_stat = [];
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
@@ -263,7 +263,7 @@ class actions
             $core = sys::cpu_idle($proc_stat, $server['unit'], false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core))
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+                return ['e' => 'Не удается выполнить операцию, нет свободного потока.'];
 
             $taskset = 'taskset -c ' . $core;
         }
@@ -289,10 +289,10 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function clmcache($id)

@@ -4,30 +4,30 @@ if (!defined('EGP'))
 
 class SourceQuery
 {
-    const GOLDSOURCE = 0;
-    const SOURCE = 1;
-    const A2S_PING = 0x69;
-    const A2S_INFO = 0x54;
-    const A2S_PLAYER = 0x55;
-    const A2S_RULES = 0x56;
-    const A2S_SERVERQUERY_GETCHALLENGE = 0x57;
-    const S2A_PING = 0x6A;
-    const S2A_CHALLENGE = 0x41;
-    const S2A_INFO = 0x49;
-    const S2A_INFO_OLD = 0x6D;
-    const S2A_PLAYER = 0x44;
-    const S2A_RULES = 0x45;
-    const S2A_RCON = 0x6C;
-    const SERVERDATA_EXECCOMMAND = 2;
-    const SERVERDATA_AUTH = 3;
-    const SERVERDATA_RESPONSE_VALUE = 0;
-    const SERVERDATA_AUTH_RESPONSE = 2;
+    final public const GOLDSOURCE = 0;
+    final public const SOURCE = 1;
+    final public const A2S_PING = 0x69;
+    final public const A2S_INFO = 0x54;
+    final public const A2S_PLAYER = 0x55;
+    final public const A2S_RULES = 0x56;
+    final public const A2S_SERVERQUERY_GETCHALLENGE = 0x57;
+    final public const S2A_PING = 0x6A;
+    final public const S2A_CHALLENGE = 0x41;
+    final public const S2A_INFO = 0x49;
+    final public const S2A_INFO_OLD = 0x6D;
+    final public const S2A_PLAYER = 0x44;
+    final public const S2A_RULES = 0x45;
+    final public const S2A_RCON = 0x6C;
+    final public const SERVERDATA_EXECCOMMAND = 2;
+    final public const SERVERDATA_AUTH = 3;
+    final public const SERVERDATA_RESPONSE_VALUE = 0;
+    final public const SERVERDATA_AUTH_RESPONSE = 2;
 
-    private $Rcon;
-    private $Socket;
-    private $Connected;
+    private null|\GoldSourceRcon|\SourceRcon $Rcon = null;
+    private readonly \BaseSocket|\Socket $Socket;
+    private ?bool $Connected = null;
     private $Challenge;
-    private $UseOldGetChallengeMethod;
+    private ?bool $UseOldGetChallengeMethod = null;
 
     public function __construct(BaseSocket $Socket = null)
     {

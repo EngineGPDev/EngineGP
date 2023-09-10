@@ -9,7 +9,7 @@ sys::auth();
 if (isset($url['captcha']))
     sys::captcha('signup', $uip);
 
-$aData = array();
+$aData = [];
 
 // Сбор данных из $_POST в $aData
 if (isset($_POST['mail'])) {
@@ -17,7 +17,7 @@ if (isset($_POST['mail'])) {
         if (!$add)
             continue;
 
-        $aData[$name] = isset($_POST[$name]) ? trim($_POST[$name]) : '';
+        $aData[$name] = isset($_POST[$name]) ? trim((string) $_POST[$name]) : '';
     }
 }
 
@@ -26,52 +26,52 @@ if ($go) {
     $nmch = 'go_signup_' . $uip;
 
     if ($mcache->get($nmch))
-        sys::outjs(array('e' => sys::text('other', 'mcache')), $nmch);
+        sys::outjs(['e' => sys::text('other', 'mcache')], $nmch);
 
     $mcache->set($nmch, 1, false, 15);
 
     // Проверка капчи
     if (!isset($_POST['captcha']) || sys::captcha_check('signup', $uip, $_POST['captcha']))
-        sys::outjs(array('e' => sys::text('other', 'captcha')), $nmch);
+        sys::outjs(['e' => sys::text('other', 'captcha')], $nmch);
 
     // Проверка входных данных
     foreach ($aData as $input => $val) {
         // Если не заполнено поле
         if ($val == '')
-            sys::outjs(array('e' => sys::text('input', 'all')), $nmch);
+            sys::outjs(['e' => sys::text('input', 'all')], $nmch);
 
         // Проверка данных на валидность
         if (sys::valid($val, 'other', $aValid[$input]))
-            sys::outjs(array('e' => sys::text('input', $input . '_valid')), $nmch);
+            sys::outjs(['e' => sys::text('input', $input . '_valid')], $nmch);
     }
 
     // Проверка логина на занятость
     if (isset($aData['login'])) {
         $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aData['login'] . '" LIMIT 1');
         if ($sql->num())
-            sys::outjs(array('e' => sys::text('input', 'login_use')), $nmch);
+            sys::outjs(['e' => sys::text('input', 'login_use')], $nmch);
     }
 
     if (!isset($aData['mail']))
-        sys::outjs(array('e' => sys::text('input', 'mail_valid')), $nmch);
+        sys::outjs(['e' => sys::text('input', 'mail_valid')], $nmch);
 
     // Проверка почты на занятость
     $sql->query('SELECT `id` FROM `users` WHERE `mail`="' . $aData['mail'] . '" LIMIT 1');
     if ($sql->num())
-        sys::outjs(array('e' => sys::text('input', 'mail_use')), $nmch);
+        sys::outjs(['e' => sys::text('input', 'mail_use')], $nmch);
 
     // Проверка телефона на занятость
     if (isset($aData['phone'])) {
         $sql->query('SELECT `id` FROM `users` WHERE `phone`="' . $aData['phone'] . '" LIMIT 1');
         if ($sql->num())
-            sys::outjs(array('e' => sys::text('input', 'phone_use')), $nmch);
+            sys::outjs(['e' => sys::text('input', 'phone_use')], $nmch);
     }
 
     // Проверка контактов на занятость
     if (isset($aData['contacts'])) {
         $sql->query('SELECT `id` FROM `users` WHERE `contacts`="' . $aData['contacts'] . '" LIMIT 1');
         if ($sql->num())
-            sys::outjs(array('e' => sys::text('input', 'use_contacts')), $nmch);
+            sys::outjs(['e' => sys::text('input', 'use_contacts')], $nmch);
     }
 
     // Проверка почты на подачу регистрации
@@ -85,14 +85,11 @@ if ($go) {
             'Регистрация',
             sys::updtext(
                 sys::text('mail', 'signup'),
-                array(
-                    'site' => $cfg['name'],
-                    'url' => $cfg['http'] . 'user/section/signup/confirm/' . $signup['key']
-                )
+                ['site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/signup/confirm/' . $signup['key']]
             ),
             $aData['mail']
         );
-        sys::outjs(array('s' => sys::text('output', 'remail'), 'mail' => sys::mail_domain($aData['mail'])), $nmch);
+        sys::outjs(['s' => sys::text('output', 'remail'), 'mail' => sys::mail_domain($aData['mail'])], $nmch);
     }
 
     // Генерация ключа
@@ -104,11 +101,11 @@ if ($go) {
     $sql->query('INSERT INTO `signup` set `mail`="' . $aData['mail'] . '", `key`="' . $key . '", `data`="' . $data . '", `date`="' . $start_point . '"');
 
     // Отправка сообщения на почту
-    if (sys::mail('Регистрация', sys::updtext(sys::text('mail', 'signup'), array('site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/signup/confirm/' . $key)), $aData['mail']))
-        sys::outjs(array('s' => sys::text('output', 'mail'), 'mail' => sys::mail_domain($aData['mail'])), $nmch);
+    if (sys::mail('Регистрация', sys::updtext(sys::text('mail', 'signup'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/signup/confirm/' . $key]), $aData['mail']))
+        sys::outjs(['s' => sys::text('output', 'mail'), 'mail' => sys::mail_domain($aData['mail'])], $nmch);
 
     // Выхлоп: не удалось отправить письмо
-    sys::outjs(array('e' => sys::text('error', 'mail')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
 }
 
 // Завершение регистрации
@@ -120,7 +117,7 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
         $aData = sys::b64djs($signup['data']);
 
         foreach ($aSignup['input'] as $name => $add)
-            $aNData[$name] = isset($aData[$name]) ? $aData[$name] : '';
+            $aNData[$name] = $aData[$name] ?? '';
 
         unset($aData);
 
@@ -162,11 +159,11 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
         $sql->query('DELETE FROM `signup` WHERE `id`="' . $signup['id'] . '" LIMIT 1');
 
         // Отправка сообщения на почту
-        if (sys::mail('Завершение регистрации', sys::updtext(sys::text('mail', 'signup_end'), array('site' => $cfg['name'], 'login' => $aNData['login'], 'passwd' => $aNData['passwd'])), $aNData['mail']))
+        if (sys::mail('Завершение регистрации', sys::updtext(sys::text('mail', 'signup_end'), ['site' => $cfg['name'], 'login' => $aNData['login'], 'passwd' => $aNData['passwd']]), $aNData['mail']))
             sys::outhtml(sys::text('output', 'signup'), 5, 'http://' . sys::mail_domain($aNData['mail']));
 
         // Выхлоп: не удалось отправить письмо
-        sys::outjs(array('e' => sys::text('error', 'mail')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
     }
 
     sys::outhtml(sys::text('error', 'signup'), 5);

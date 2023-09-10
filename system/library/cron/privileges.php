@@ -31,7 +31,7 @@ class privileges extends cron
                 unset($servers[$i]);
         }
 
-        if (!count($servers))
+        if (!(is_countable($servers) ? count($servers) : 0))
             return NULL;
 
         $sql->query('SELECT `unit` FROM `servers` WHERE `id`="' . end($servers) . '" LIMIT 1');
@@ -51,7 +51,7 @@ class privileges extends cron
         foreach ($servers as $id) {
             $sql->query('DELETE FROM `privileges_buy` WHERE `date`<"' . $time . '" AND status`="0" LIMIT 5');
 
-            $aMail = array();
+            $aMail = [];
 
             $sql->query('SELECT `uid`, `tarif` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
             $server = $sql->get();
@@ -65,9 +65,9 @@ class privileges extends cron
 
             $privileges = $sql->query('SELECT `id`, `text`, `sql`, `mail` FROM `privileges_buy` WHERE `server`="' . $id . '" AND `status`="1" LIMIT 3');
             while ($privilege = $sql->get($privileges)) {
-                $text .= base64_decode($privilege['text']) . PHP_EOL;
+                $text .= base64_decode((string) $privilege['text']) . PHP_EOL;
 
-                $sql->query(base64_decode($privilege['sql']));
+                $sql->query(base64_decode((string) $privilege['sql']));
                 $sql->query('DELETE FROM `privileges_buy` WHERE `id`="' . $privilege['id'] . '" LIMIT 1');
 
                 $aMail[] = $privilege['mail'];

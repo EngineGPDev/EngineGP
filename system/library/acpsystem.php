@@ -9,9 +9,9 @@ class sys
         if ($_SERVER['REQUEST_URI'] == '/acp/')
             return $all ? NULL : 'index';
 
-        $url = array();
+        $url = [];
 
-        $string = str_replace('//', '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $string = str_replace('//', '/', parse_url((string) $_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $aUrl = explode('/', trim($string, ' /'));
 
         array_shift($aUrl);
@@ -33,24 +33,24 @@ class sys
     public static function int($data, $width = false)
     {
         if ($width)
-            return preg_replace("([^0-9]{0, " . $width . "})", '', $data);
+            return preg_replace("([^0-9]{0, " . $width . "})", '', (string) $data);
 
-        return preg_replace("([^0-9])", '', $data);
+        return preg_replace("([^0-9])", '', (string) $data);
     }
 
-    public static function first($array = array())
+    public static function first($array = [])
     {
         return $array[0];
     }
 
     public static function b64js($data)
     {
-        return base64_encode(json_encode($data));
+        return base64_encode(json_encode($data, JSON_THROW_ON_ERROR));
     }
 
     public static function b64djs($data)
     {
-        return json_decode(base64_decode($data), true);
+        return json_decode(base64_decode((string) $data), true, 512, JSON_THROW_ON_ERROR);
     }
 
     public static function outjs($val, $cache = false)
@@ -60,7 +60,7 @@ class sys
         if ($cache)
             $mcache->delete($cache);
 
-        die(json_encode($val));
+        die(json_encode($val, JSON_THROW_ON_ERROR));
     }
 
     public static function out($val = '', $cache = false)
@@ -75,64 +75,64 @@ class sys
 
     public static function valid($val, $type, $preg = '')
     {
-        $val = isset($val) ? $val : '';
+        $val ??= '';
         switch ($type) {
             case 'promo':
-                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
+                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'en':
-                if (!preg_match("/^[A-Za-z0-9]$/", $val))
+                if (!preg_match("/^[A-Za-z0-9]$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'ru':
-                if (!preg_match("/^[А-Яа-я]$/u", $val))
+                if (!preg_match("/^[А-Яа-я]$/u", (string) $val))
                     return true;
 
                 return false;
 
             case 'wm':
-                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', $val))
+                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', (string) $val))
                     return true;
 
                 return false;
 
             case 'ip':
-                if (!preg_match("/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/", $val))
+                if (!preg_match("/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'steamid':
-                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", $val))
+                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'steamid3':
-                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", $val))
+                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", (string) $val))
                     return true;
 
                 return false;
 
             case 'num':
-                if (!preg_match('/[^0-9]/', $val))
+                if (!preg_match('/[^0-9]/', (string) $val))
                     return true;
 
                 return false;
 
             case 'md5':
-                if (!preg_match("/^[a-z0-9]{32,32}$/", $val))
+                if (!preg_match("/^[a-z0-9]{32,32}$/", (string) $val))
                     return true;
 
                 return false;
 
             case 'other':
-                if (!preg_match($preg, $val))
+                if (!preg_match($preg, (string) $val))
                     return true;
 
                 return false;
@@ -163,11 +163,7 @@ class sys
         if ($page == '')
             $page = 1;
 
-        $aPage = array(
-            'page' => $page,
-            'num' => $num_go,
-            'ceil' => $ceil
-        );
+        $aPage = ['page' => $page, 'num' => $num_go, 'ceil' => $ceil];
 
         return $aPage;
     }
@@ -175,7 +171,7 @@ class sys
     public static function page_list($countnum, $actnum)
     {
         if ($countnum == 0 || $countnum == 1)
-            return array();
+            return [];
 
         if ($countnum > 10) {
             if ($actnum <= 4 || $actnum + 3 >= $countnum) {
@@ -260,16 +256,16 @@ class sys
         if (!$diff)
             $diff = 1;
 
-        $seconds = array('секунду', 'секунды', 'секунд');
-        $minutes = array('минуту', 'минуты', 'минут');
-        $hours = array('час', 'часа', 'часов');
-        $days = array('день', 'дня', 'дней');
-        $weeks = array('неделю', 'недели', 'недель');
-        $months = array('месяц', 'месяца', 'месяцев');
-        $years = array('год', 'года', 'лет');
+        $seconds = ['секунду', 'секунды', 'секунд'];
+        $minutes = ['минуту', 'минуты', 'минут'];
+        $hours = ['час', 'часа', 'часов'];
+        $days = ['день', 'дня', 'дней'];
+        $weeks = ['неделю', 'недели', 'недель'];
+        $months = ['месяц', 'месяца', 'месяцев'];
+        $years = ['год', 'года', 'лет'];
 
-        $phrase = array($seconds, $minutes, $hours, $days, $weeks, $months, $years);
-        $length = array(1, 60, 3600, 86400, 604800, 2630880, 31570560);
+        $phrase = [$seconds, $minutes, $hours, $days, $weeks, $months, $years];
+        $length = [1, 60, 3600, 86400, 604800, 2_630_880, 31_570_560];
 
         for ($i = 6; ($i >= 0) and (($no = $diff / $length[$i]) <= 1); $i -= 1) ;
 
@@ -287,7 +283,7 @@ class sys
 
     private static function parse_ago($number, $titles)
     {
-        $cases = array(2, 0, 1, 1, 1, 2);
+        $cases = [2, 0, 1, 1, 1, 2];
 
         return $titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
@@ -306,20 +302,7 @@ class sys
         $minutes = floor(($check_time % 3600) / 60);
         $seconds = $check_time % 60;
 
-        $adata = array(
-            'min' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('ч.', 'ч.', 'ч.'),
-                'minutes' => array('мин.', 'мин.', 'мин.'),
-                'seconds' => array('сек.', 'сек.', 'сек.')
-            ),
-            'max' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('час', 'часа', 'часов'),
-                'minutes' => array('минуту', 'минуты', 'минут'),
-                'seconds' => array('секунду', 'секунды', 'секунд')
-            )
-        );
+        $adata = ['min' => ['days' => ['день', 'дня', 'дней'], 'hours' => ['ч.', 'ч.', 'ч.'], 'minutes' => ['мин.', 'мин.', 'мин.'], 'seconds' => ['сек.', 'сек.', 'сек.']], 'max' => ['days' => ['день', 'дня', 'дней'], 'hours' => ['час', 'часа', 'часов'], 'minutes' => ['минуту', 'минуты', 'минут'], 'seconds' => ['секунду', 'секунды', 'секунд']]];
 
         $text = '';
 
@@ -341,7 +324,7 @@ class sys
     public static function date_decl($digit, $expr, $onlyword = false)
     {
         if (!is_array($expr))
-            $expr = array_filter(explode(' ', $expr));
+            $expr = array_filter(explode(' ', (string) $expr));
 
         if (empty($expr[2]))
             $expr[2] = $expr[1];
@@ -398,19 +381,19 @@ class sys
 
     public static function browser($agent)
     {
-        if (strpos($agent, 'Firefox') !== false)
+        if (str_contains((string) $agent, 'Firefox'))
             return 'Mozilla Firefox';
 
-        if (strpos($agent, 'Opera') !== false)
+        if (str_contains((string) $agent, 'Opera'))
             return 'Opera';
 
-        if (strpos($agent, 'Chrome') !== false)
+        if (str_contains((string) $agent, 'Chrome'))
             return 'Google Chrome';
 
-        if (strpos($agent, 'MSIE') !== false)
+        if (str_contains((string) $agent, 'MSIE'))
             return 'Internet Explorer';
 
-        if (strpos($agent, 'Safari') !== false)
+        if (str_contains((string) $agent, 'Safari'))
             return 'Safari';
 
         return 'Неизвестный';
@@ -430,7 +413,7 @@ class sys
         while (!feof($stack)) {
             $str = fgets($stack, 128);
 
-            if (strpos($str, 'route:') !== FALSE) {
+            if (str_contains($str, 'route:')) {
                 $subnetwork = trim(str_replace('route:', '', $str));
 
                 break;
@@ -463,40 +446,40 @@ class sys
 
     public static function ram_load($data)
     {
-        $aData = explode(' ', $data);
+        $aData = explode(' ', (string) $data);
 
         return ceil(($aData[0] - ($aData[1] + $aData[2] + $aData[3])) * 100 / $aData[0]);
     }
 
     public static function cpu_load($data)
     {
-        $aData = explode(' ', $data);
+        $aData = explode(' ', (string) $data);
 
         $load = ceil($aData[0] / $aData[1]);
 
         return $load > 100 ? 100 : $load;
     }
 
-    public static function cpu_idle($pros_stat = array(), $fcpu = false)
+    public static function cpu_idle($pros_stat = [], $fcpu = false)
     {
         return sys::cpu_get_idle(sys::parse_cpu($pros_stat[0]), sys::parse_cpu($pros_stat[1]), $fcpu);
     }
 
     public static function cpu_get_idle($first, $second, $fcpu)
     {
-        if (count($first) !== count($second))
+        if ((is_countable($first) ? count($first) : 0) !== (is_countable($second) ? count($second) : 0))
             return;
 
-        $cpus = array();
+        $cpus = [];
 
-        for ($i = 0, $l = count($first); $i < $l; $i += 1) {
-            $dif = array();
+        for ($i = 0, $l = is_countable($first) ? count($first) : 0; $i < $l; $i += 1) {
+            $dif = [];
             $dif['use'] = $second[$i]['use'] - $first[$i]['use'];
             $dif['nice'] = $second[$i]['nice'] - $first[$i]['nice'];
             $dif['sys'] = $second[$i]['sys'] - $first[$i]['sys'];
             $dif['idle'] = $second[$i]['idle'] - $first[$i]['idle'];
             $total = array_sum($dif);
-            $cpu = array();
+            $cpu = [];
 
             foreach ($dif as $x => $y)
                 $cpu[$x] = $y ? round($y / $total * 100, 1) : 0;
@@ -507,14 +490,14 @@ class sys
         if ($fcpu)
             return $cpus;
 
-        $threads = array();
+        $threads = [];
 
-        $l = count($first);
+        $l = is_countable($first) ? count($first) : 0;
 
         for ($i = 0; $i < $l; $i += 1)
             $threads[$i] = $cpus['cpu' . $i]['idle'];
 
-        if (count($first) > 1)
+        if ((is_countable($first) ? count($first) : 0) > 1)
             unset($threads[0]);
 
         $max = max($threads);
@@ -524,20 +507,15 @@ class sys
 
     public static function parse_cpu($data)
     {
-        $data = explode("\n", $data);
+        $data = explode("\n", (string) $data);
 
-        $cpu = array();
+        $cpu = [];
 
         foreach ($data as $line) {
             if (preg_match('/^cpu[0-9]/', $line)) {
                 $info = explode(' ', $line);
 
-                $cpu[] = array(
-                    'use' => $info[1],
-                    'nice' => $info[2],
-                    'sys' => $info[3],
-                    'idle' => $info[4]
-                );
+                $cpu[] = ['use' => $info[1], 'nice' => $info[2], 'sys' => $info[3], 'idle' => $info[4]];
             }
         }
 
@@ -546,23 +524,23 @@ class sys
 
     public static function checkdate($time)
     {
-        $time = explode(' ', $time);
+        $time = explode(' ', (string) $time);
 
         if (count($time) != 2)
-            sys::outjs(array('e' => 'Указанная дата неправильная.'));
+            sys::outjs(['e' => 'Указанная дата неправильная.']);
 
         $aDate = explode('/', $time[0]);
         $aTime = explode(':', $time[1]);
 
         if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2]))
-            sys::outjs(array('e' => 'Указанная дата неправильная.'));
+            sys::outjs(['e' => 'Указанная дата неправильная.']);
 
         return mktime($aTime[0], $aTime[1], 0, $aDate[1], $aDate[0], $aDate[2]);
     }
 
     public static function passwdkey($passwd)
     {
-        return md5($passwd);
+        return md5((string) $passwd);
     }
 
     public static function mail($name, $text, $mail)
@@ -574,8 +552,8 @@ class sys
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
         $text = str_replace(
-            array('[name]', '[text]', '[http]', '[img]', '[css]'),
-            array($cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'),
+            ['[name]', '[text]', '[http]', '[img]', '[css]'],
+            [$cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'],
             $tpl
         );
 
@@ -625,7 +603,7 @@ class sys
 
     public static function status($data)
     {
-        if (strpos($data, 'is running') || strpos($data, '(running)'))
+        if (strpos((string) $data, 'is running') || strpos((string) $data, '(running)'))
             return true;
 
         return false;
@@ -633,38 +611,18 @@ class sys
 
     public static function strlen($str)
     {
-        return iconv_strlen($str, 'UTF-8');
+        return iconv_strlen((string) $str, 'UTF-8');
     }
 
     public static function bbc($text)
     {
         global $cfg;
 
-        $lines = explode("\n", $text);
+        $lines = explode("\n", (string) $text);
 
-        $str_search = array(
-            "#\[spoiler\](.+?)\[\/spoiler\]#is",
-            "#\[sp\](.+?)\[\/sp\]#is",
-            "#\[b\](.+?)\[\/b\]#is",
-            "#\[u\](.+?)\[\/u\]#is",
-            "#\[code\](.+?)\[\/code\]#is",
-            "#<code>(.+?)<\/code>#isUe",
-            "#\[quote\](.+?)\[\/quote\]#is",
-            "#\[url=(.+?)\](.+?)\[\/url\]#is",
-            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
-        );
+        $str_search = ["#\[spoiler\](.+?)\[\/spoiler\]#is", "#\[sp\](.+?)\[\/sp\]#is", "#\[b\](.+?)\[\/b\]#is", "#\[u\](.+?)\[\/u\]#is", "#\[code\](.+?)\[\/code\]#is", "#<code>(.+?)<\/code>#isUe", "#\[quote\](.+?)\[\/quote\]#is", "#\[url=(.+?)\](.+?)\[\/url\]#is", "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"];
 
-        $str_replace = array(
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
-            "<b>\\1</b>",
-            "<u>\\1</u>",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
-            "'<code>'.htmlspecialchars('$1').'</code>'",
-            "<blockquote><p>\\1</p></blockquote>",
-            "<a href='\\1'>\\2</a>",
-            "<a href='\\2'>\\2</a>"
-        );
+        $str_replace = ["<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>", "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>", "<b>\\1</b>", "<u>\\1</u>", "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>", "'<code>'.htmlspecialchars('$1').'</code>'", "<blockquote><p>\\1</p></blockquote>", "<a href='\\1'>\\2</a>", "<a href='\\2'>\\2</a>"];
 
         $uptext = '';
 
@@ -678,20 +636,20 @@ class sys
     {
         global $cfg, $user;
 
-        $group = isset($user['group']) ? $user['group'] : 'user';
+        $group = $user['group'] ?? 'user';
 
         if ($section != 'error' || !$cfg['text_group'])
             $group = 'all';
 
         require(DATA . 'text/' . $section . '.php');
 
-        return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
+        return $text[$name][$group] ?? $text[$name];
     }
 
     public static function updtext($text, $data)
     {
         foreach ($data as $name => $val)
-            $text = str_replace('[' . $name . ']', $val, $text);
+            $text = str_replace('[' . $name . ']', $val, (string) $text);
 
         return $text;
     }

@@ -4,10 +4,10 @@ if (!defined('EGP'))
 
 class html
 {
-    var $dir = TPL;
-    var $template = null;
-    var $data = array();
-    var $unitblock = array();
+    public $dir = TPL;
+    public $template = null;
+    public $data = [];
+    public $unitblock = [];
     public $arr;
     public $select_template;
 
@@ -23,14 +23,14 @@ class html
 
     public function unit($name, $var = false, $mirror = false)
     {
-        $block = str_replace($name, "'\\|" . $name . "\\|(.*?)\\|_" . $name . "\\|'si", $name);
+        $block = str_replace($name, "'\\|" . $name . "\\|(.*?)\\|_" . $name . "\\|'si", (string) $name);
 
         $var = $var ? '\\1' : '';
 
         $this->unitblock[$block] = $var;
 
         if ($mirror) {
-            $block = str_replace($name, "'\\|!" . $name . "\\|(.*?)\\|_!" . $name . "\\|'si", $name);
+            $block = str_replace($name, "'\\|!" . $name . "\\|(.*?)\\|_!" . $name . "\\|'si", (string) $name);
 
             $var = !$var ? '\\1' : '';
 
@@ -80,19 +80,19 @@ class html
     public function pack($compile)
     {
         if (isset($this->unitblock)) {
-            $find_preg = array();
-            $replace_preg = array();
+            $find_preg = [];
+            $replace_preg = [];
 
             foreach ($this->unitblock as $key_find => $key_replace) {
                 $find_preg[] = $key_find;
                 $replace_preg[] = $key_replace;
             }
 
-            $this->select_template = preg_replace($find_preg, $replace_preg, $this->select_template);
+            $this->select_template = preg_replace($find_preg, $replace_preg, (string) $this->select_template);
         }
 
-        $find = array();
-        $replace = array();
+        $find = [];
+        $replace = [];
 
         if (isset($this->data)) {
             foreach ($this->data as $key_find => $key_replace) {
@@ -101,7 +101,7 @@ class html
             }
         }
 
-        $this->select_template = str_replace($find, $replace, $this->select_template);
+        $this->select_template = str_replace($find, $replace, (string) $this->select_template);
 
         if (isset($this->arr[$compile]))
             $this->arr[$compile] .= $this->select_template;
@@ -113,23 +113,23 @@ class html
         return NULL;
     }
 
-    public function upd($name, $old = array(), $new = array())
+    public function upd($name, $old = [], $new = [])
     {
-        $this->arr[$name] = str_replace($old, $new, $this->arr[$name]);
+        $this->arr[$name] = str_replace($old, $new, (string) $this->arr[$name]);
 
         return NULL;
     }
 
-    public function unitall($name, $arr = array(), $var = false, $mirror = false)
+    public function unitall($name, $arr = [], $var = false, $mirror = false)
     {
-        $block = str_replace($name, "'\\|" . $name . "\\|(.*?)\\|_" . $name . "\\|'si", $name);
+        $block = str_replace($name, "'\\|" . $name . "\\|(.*?)\\|_" . $name . "\\|'si", (string) $name);
 
         $var = $var ? '\\1' : '';
 
         $this->unitblock[$block] = $var;
 
         if ($mirror) {
-            $block = str_replace($name, "'\\|!" . $name . "\\|(.*?)\\|_!" . $name . "\\|'si", $name);
+            $block = str_replace($name, "'\\|!" . $name . "\\|(.*?)\\|_!" . $name . "\\|'si", (string) $name);
 
             $var = !$var ? '\\1' : '';
 
@@ -142,7 +142,7 @@ class html
                 $replace_preg[] = $key_replace;
             }
 
-            $this->arr[$arr] = preg_replace($find_preg, $replace_preg, $this->arr[$arr]);
+            $this->arr[$arr] = preg_replace($find_preg, $replace_preg, (string) $this->arr[$arr]);
         }
 
         return NULL;

@@ -12,9 +12,9 @@ $sql->query('SELECT * FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
 if ($go) {
-    if (isset($url['type']) and in_array($url['type'], array('overdue', 'block', 'tarif'))) {
+    if (isset($url['type']) and in_array($url['type'], ['overdue', 'block', 'tarif'])) {
         if ($url['type'] != 'tarif') {
-            $time = isset($_POST['time']) ? trim($_POST['time']) : sys::outjs(array('e' => 'Необходимо указать дату.'));
+            $time = isset($_POST['time']) ? trim((string) $_POST['time']) : sys::outjs(['e' => 'Необходимо указать дату.']);
 
             $date = sys::checkdate($time);
         }
@@ -22,14 +22,14 @@ if ($go) {
         switch ($url['type']) {
             case 'overdue':
                 if ($ctrl['time'] > $start_point)
-                    sys::outjs(array('e' => 'Игровой сервер должен быть просрочен.'));
+                    sys::outjs(['e' => 'Игровой сервер должен быть просрочен.']);
 
                 $sql->query('UPDATE `control` set `overdue`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
                 break;
 
             case 'block':
                 if ($ctrl['status'] != ('off' || 'overdue'))
-                    sys::outjs(array('e' => 'Игровой сервер должен быть выключен.'));
+                    sys::outjs(['e' => 'Игровой сервер должен быть выключен.']);
 
                 if ($date < $start_point)
                     $sql->query('UPDATE `control` set `status`="off", `block`="0" WHERE `id`="' . $id . '" LIMIT 1');
@@ -37,17 +37,17 @@ if ($go) {
                     $sql->query('UPDATE `control` set `status`="blocked", `block`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
         }
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
-    $aData = array();
+    $aData = [];
 
     $aData['user'] = isset($_POST['user']) ? sys::int($_POST['user']) : $ctrl['user'];
-    $aData['address'] = isset($_POST['address']) ? trim($_POST['address']) : $ctrl['address'];
-    $aData['passwd'] = isset($_POST['passwd']) ? trim($_POST['passwd']) : $ctrl['passwd'];
-    $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : $ctrl['time'];
-    $aData['sql_passwd'] = isset($_POST['sql_passwd']) ? trim($_POST['sql_passwd']) : $ctrl['sql_passwd'];
-    $aData['sql_ftp'] = isset($_POST['sql_ftp']) ? trim($_POST['sql_ftp']) : $ctrl['sql_ftp'];
+    $aData['address'] = isset($_POST['address']) ? trim((string) $_POST['address']) : $ctrl['address'];
+    $aData['passwd'] = isset($_POST['passwd']) ? trim((string) $_POST['passwd']) : $ctrl['passwd'];
+    $aData['time'] = isset($_POST['time']) ? trim((string) $_POST['time']) : $ctrl['time'];
+    $aData['sql_passwd'] = isset($_POST['sql_passwd']) ? trim((string) $_POST['sql_passwd']) : $ctrl['sql_passwd'];
+    $aData['sql_ftp'] = isset($_POST['sql_ftp']) ? trim((string) $_POST['sql_ftp']) : $ctrl['sql_ftp'];
     $aData['limit'] = isset($_POST['sql_ftp']) ? sys::int($_POST['limit']) : $ctrl['limit'];
     $aData['price'] = isset($_POST['price']) ? sys::int($_POST['price']) : $ctrl['price'];
 
@@ -63,12 +63,12 @@ if ($go) {
         $aData['sql_ftp'] = $ctrl['sql_ftp'];
 
     if (!$ssh->auth($aData['passwd'], $aData['address']))
-        sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+        sys::outjs(['e' => 'Не удалось создать связь с локацией']);
 
     if ($ctrl['user'] != $aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num())
-            sys::outjs(array('e' => 'Пользователь не найден.'));
+            sys::outjs(['e' => 'Пользователь не найден.']);
     }
 
     $aData['time'] = sys::checkdate($aData['time']);
@@ -83,7 +83,7 @@ if ($go) {
         . '`limit`="' . $aData['limit'] . '",'
         . '`price`="' . $aData['price'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('server', 'sections/control');

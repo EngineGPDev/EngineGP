@@ -4,11 +4,11 @@ if (!defined('EGP'))
 
 class mysql
 {
-    var $sql_id = false;
-    var $sql_connect = false;
-    var $query = false;
-    var $query_id = false;
-    var $mysqlerror = '';
+    public $sql_id = false;
+    public $sql_connect = false;
+    public $query = false;
+    public $query_id = false;
+    public $mysqlerror = '';
 
     public function connect_mysql($c, $u, $p, $n)
     {
@@ -71,7 +71,7 @@ class mysql
         global $go;
 
         if ($go)
-            sys::outjs(array('e' => 'Query: ' . $query . '<br>Error:<br>' . $error));
+            sys::outjs(['e' => 'Query: ' . $query . '<br>Error:<br>' . $error]);
 
         if ($query != '')
             echo 'Query: ' . $query . '<br>';

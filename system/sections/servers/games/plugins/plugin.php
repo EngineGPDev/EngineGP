@@ -32,7 +32,7 @@ else {
     require(LIB . 'games/plugins.php');
 
     // Построение списка редактируемых файлов
-    $aConf = array();
+    $aConf = [];
 
     $sql->query('SELECT `id`, `file` FROM `plugins_config` WHERE (`plugin`="' . $pid . '" AND `update`="0") OR (`plugin`="' . $pid . '" AND `update`="' . $install['upd'] . '") ORDER BY `sort`, `id` ASC');
     while ($config = $sql->get()) {
@@ -43,7 +43,7 @@ else {
         $aConf[] = $config['file'];
 
         // Данные файла
-        $file = explode('/', $config['file']);
+        $file = explode('/', (string) $config['file']);
 
         $html->get('config_list', 'sections/servers/games/plugins');
 
@@ -61,7 +61,7 @@ else {
 
     $html->set('id', $id);
     $html->set('name', $plugin['name']);
-    $html->set('info', htmlspecialchars_decode($plugin['info']));
+    $html->set('info', htmlspecialchars_decode((string) $plugin['info']));
 
     // Картинки
     if (!empty($images)) {

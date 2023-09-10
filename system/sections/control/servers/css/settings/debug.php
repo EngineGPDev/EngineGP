@@ -19,6 +19,6 @@ $ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep "CRASH: " | grep
 
 $html->get('debug', 'sections/control/servers/games/settings');
 
-$html->set('log', htmlspecialchars($ssh->get(), NULL, ''));
+$html->set('log', htmlspecialchars((string) $ssh->get(), NULL, ''));
 
 $html->pack('main');

@@ -25,7 +25,7 @@ class scan extends scans
         if (is_array($mcache->get($nmch)))
             return $mcache->get($nmch);
 
-        $out = array();
+        $out = [];
 
         $info = scan::info($sq, $id);
 
@@ -47,7 +47,7 @@ class scan extends scans
             $out['buttons'] = sys::buttons($id, $server['status']);
 
             if ($players_get)
-                $out['players'] = base64_decode($server['players']);
+                $out['players'] = base64_decode((string) $server['players']);
 
             $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
@@ -57,7 +57,7 @@ class scan extends scans
         if ($players_get)
             $players = scan::info($sq, $id, true);
 
-        $out['name'] = htmlspecialchars($info['name']);
+        $out['name'] = htmlspecialchars((string) $info['name']);
         $out['status'] = sys::status('working', $server['game'], $info['map']);
         $out['online'] = $info['online'];
         $out['image'] = '<img src="' . sys::status('working', $server['game'], $info['map'], 'img') . '">';
@@ -76,7 +76,7 @@ class scan extends scans
                 $html->pack('list');
             }
 
-            $out['players'] = isset($html->arr['list']) ? $html->arr['list'] : '';
+            $out['players'] = $html->arr['list'] ?? '';
         }
 
         $sql->query('UPDATE `servers` set '
@@ -86,7 +86,7 @@ class scan extends scans
             . '`status`="working" WHERE `id`="' . $id . '" LIMIT 1');
 
         if ($players_get)
-            $sql->query('UPDATE `servers` set `players`="' . base64_encode($out['players']) . '" WHERE `id`="' . $id . '" LIMIT 1');
+            $sql->query('UPDATE `servers` set `players`="' . base64_encode((string) $out['players']) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
@@ -100,7 +100,7 @@ class scan extends scans
         $sql->query('SELECT `address` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        list($ip, $port) = explode(':', $server['address']);
+        [$ip, $port] = explode(':', (string) $server['address']);
 
         $sq->Connect($ip, $port, 1, SourceQuery::GOLDSOURCE);
 
@@ -108,7 +108,7 @@ class scan extends scans
             $players = $sq->GetPlayers();
 
             $i = 1;
-            $data = array();
+            $data = [];
 
             foreach ($players as $n => $player) {
                 $data[$i]['i'] = $i;
@@ -127,7 +127,7 @@ class scan extends scans
         $server['name'] = $data['HostName'];
         $server['map'] = $data['Map'];
         $server['online'] = $data['Players'];
-        $server['status'] = strlen($server['map']) > 3 ? true : false;
+        $server['status'] = strlen((string) $server['map']) > 3 ? true : false;
 
         return $server;
     }

@@ -5,18 +5,18 @@ if (!defined('EGP'))
 if (!isset($nmch))
     $nmch = false;
 
-$text = isset($_POST['text']) ? $_POST['text'] : sys::outjs(array('none' => ''));
+$text = $_POST['text'] ?? sys::outjs(['none' => '']);
 
 $mkey = md5($sid . $text . $id);
 
 if ($mcache->get($mkey) != '')
-    sys::outjs(array('s' => $mcache->get($mkey)));
+    sys::outjs(['s' => $mcache->get($mkey)]);
 
 if (!isset($text[2]))
-    sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
+    sys::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
 
-$sPlugins = array();
-$sUpdate = array();
+$sPlugins = [];
+$sUpdate = [];
 
 // Поиск по плагинам
 $plugins = $sql->query('SELECT `id`, `packs` FROM `plugins` WHERE `game`="' . $server['game'] . '" AND `name` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') OR `desc` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') LIMIT 5');
@@ -32,9 +32,9 @@ if (!$sql->num($plugins)) {
 // Если нет ниодного совпадения по вводимому тексту
 if (!$sql->num($plugins)) {
     // Поиск по словам
-    if (strpos($text, ' ')) {
+    if (strpos((string) $text, ' ')) {
         // Массив слов
-        $aText = explode(' ', $text);
+        $aText = explode(' ', (string) $text);
 
         // Метка, которая изменится в процессе, если будет найдено хоть одно совпадение
         $sWord = false;
@@ -66,12 +66,12 @@ if (!$sql->num($plugins)) {
         if (!$sWord) {
             $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-            sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+            sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
         }
     } else {
         $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-        sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+        sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
     }
 } else {
     $sPlugins[] = $plugins;
@@ -79,7 +79,7 @@ if (!$sql->num($plugins)) {
 }
 
 // Массив для исклуючения дублирования
-$aPlugins = array();
+$aPlugins = [];
 
 foreach ($sPlugins as $index => $plugins) {
     while ($plugin = $sql->get($plugins)) {
@@ -88,7 +88,7 @@ foreach ($sPlugins as $index => $plugins) {
             continue;
 
         // Проверка на доступность плагина к установленной на сервере сборке
-        $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
+        $packs = strpos((string) $plugin['packs'], ':') ? explode(':', (string) $plugin['packs']) : [$plugin['packs']];
         if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
             continue;
 
@@ -172,15 +172,15 @@ foreach ($sPlugins as $index => $plugins) {
         if ($install)
             $html->set('time', $time);
 
-        $html->set('name', sys::find(htmlspecialchars_decode($plugin['name']), $text));
-        $html->set('desc', sys::find(htmlspecialchars_decode($plugin['desc']), $text));
+        $html->set('name', sys::find(htmlspecialchars_decode((string) $plugin['name']), $text));
+        $html->set('desc', sys::find(htmlspecialchars_decode((string) $plugin['desc']), $text));
 
         $html->pack('plugins');
     }
 }
 
-$html->arr['plugins'] = isset($html->arr['plugins']) ? $html->arr['plugins'] : '';
+$html->arr['plugins'] ??= '';
 
 $mcache->set($mkey, $html->arr['plugins'], false, 15);
 
-sys::outjs(array('s' => $html->arr['plugins']), $nmch);
+sys::outjs(['s' => $html->arr['plugins']], $nmch);

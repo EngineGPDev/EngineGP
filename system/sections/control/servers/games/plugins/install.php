@@ -17,7 +17,7 @@ $plugin = $sql->get();
 // Проверка установки плагина
 $sql->query('SELECT `id` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $pid . '" LIMIT 1');
 if ($sql->num())
-    sys::outjs(array('e' => 'Данный плагин уже установлен'));
+    sys::outjs(['e' => 'Данный плагин уже установлен']);
 
 $upd = false;
 
@@ -42,12 +42,12 @@ if ($plugin['price']) {
     else {
         // Проверка баланса
         if ($user['balance'] < $plugin['price'])
-            sys::outjs(array('e' => 'У вас не хватает ' . (round($plugin['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']), $name_mcache);
+            sys::outjs(['e' => 'У вас не хватает ' . (round($plugin['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $name_mcache);
     }
 }
 
 // Проверка на доступность плагина к установленной на сервере сборке
-$packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
+$packs = strpos((string) $plugin['packs'], ':') ? explode(':', (string) $plugin['packs']) : [$plugin['packs']];
 if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
     exit;
 
@@ -66,7 +66,7 @@ if (!isset($ssh))
     require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
 if ($upd) {
     $qsql = 'WHERE `update`="' . $plugin['id'] . '" ORDER BY `id` ASC';
@@ -107,11 +107,11 @@ while ($write = $sql->get())
 if (!$buy and $plugin['price']) {
     $sql->query('UPDATE `users` set `balance`=`balance`-"' . $plugin['price'] . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-    $sql->query('INSERT INTO `control_plugins_buy` set `plugin`="' . $pid . '", `key`="' . md5(strip_tags($plugin['name'])) . '", `server`="' . $sid . '", `price`="' . $plugin['price'] . '", `time`="' . $start_point . '"');
+    $sql->query('INSERT INTO `control_plugins_buy` set `plugin`="' . $pid . '", `key`="' . md5(strip_tags((string) $plugin['name'])) . '", `server`="' . $sid . '", `price`="' . $plugin['price'] . '", `time`="' . $start_point . '"');
 
     // Запись логов
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'ctrl_buy_plugin'),
-            array('plugin' => strip_tags($plugin['name']), 'money' => $plugin['price'], 'id' => $sid)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $plugin['price'] . '"');
+            ['plugin' => strip_tags((string) $plugin['name']), 'money' => $plugin['price'], 'id' => $sid]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $plugin['price'] . '"');
 }
 
 // Запись данных в базу
@@ -121,7 +121,7 @@ $sql->query('INSERT INTO `control_plugins_install` set `server`="' . $sid . '", 
 $mcache->delete('ctrl_server_plugins_' . $sid);
 
 if ($plugin['cfg'])
-    sys::outjs(array('s' => 'cfg'), $nmch);
+    sys::outjs(['s' => 'cfg'], $nmch);
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);
 

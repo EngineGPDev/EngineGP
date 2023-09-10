@@ -3,7 +3,7 @@ if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 // Проверка на авторизацию
-sys::noauth($auth, $go);
+sys::noauth();
 
 sys::cookie('egp_login', 'quit', -1);
 sys::cookie('egp_passwd', 'quit', -1);

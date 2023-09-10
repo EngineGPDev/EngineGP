@@ -26,7 +26,7 @@ while ($cb = $sql->get($cbs)) {
     $html->pack('cashback');
 }
 
-$html->arr['cashback'] = isset($html->arr['cashback']) ? $html->arr['cashback'] : '';
+$html->arr['cashback'] ??= '';
 
 if ($html->arr['main'] == '') {
     $sql->query('SELECT `id` FROM `users`');
@@ -35,8 +35,8 @@ if ($html->arr['main'] == '') {
     $sql->query('SELECT `id`, `game`, `slots` FROM `servers`');
     $servers = $sql->num();
 
-    $aSlots = array('cs' => 0, 'cssold' => 0, 'css' => 0, 'csgo' => 0, 'samp' => 0, 'crmp' => 0, 'mta' => 0, 'mc' => 0);
-    $aServers = array('cs' => 0, 'cssold' => 0, 'css' => 0, 'csgo' => 0, 'samp' => 0, 'crmp' => 0, 'mta' => 0, 'mc' => 0);
+    $aSlots = ['cs' => 0, 'cssold' => 0, 'css' => 0, 'csgo' => 0, 'samp' => 0, 'crmp' => 0, 'mta' => 0, 'mc' => 0];
+    $aServers = ['cs' => 0, 'cssold' => 0, 'css' => 0, 'csgo' => 0, 'samp' => 0, 'crmp' => 0, 'mta' => 0, 'mc' => 0];
 
     while ($server = $sql->get()) {
         $aSlots[$server['game']] += $server['slots'];
@@ -83,4 +83,4 @@ if ($html->arr['main'] == '') {
 
     $mcache->set($mcache_name, $html->arr['main'], false, 10);
 } else
-    $html->arr['main'] = str_replace('[cashback]', $html->arr['cashback'], $html->arr['main']);
+    $html->arr['main'] = str_replace('[cashback]', $html->arr['cashback'], (string) $html->arr['main']);

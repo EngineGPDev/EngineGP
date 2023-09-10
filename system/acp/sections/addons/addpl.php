@@ -2,12 +2,12 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$aGames = array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc');
-$types = array('cfg', 'txt', 'ini', 'js');
+$aGames = ['cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc'];
+$types = ['cfg', 'txt', 'ini', 'js'];
 
 if (isset($url['get'])) {
     if ($url['get'] == 'cat') {
-        $game = isset($url['game']) ? $url['game'] : sys::out();
+        $game = $url['game'] ?? sys::out();
 
         if (!in_array($game, $aGames))
             sys::out();
@@ -23,47 +23,47 @@ if (isset($url['get'])) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
-    $aData['game'] = isset($_POST['game']) ? trim($_POST['game']) : '';
+    $aData['name'] = isset($_POST['name']) ? trim((string) $_POST['name']) : '';
+    $aData['game'] = isset($_POST['game']) ? trim((string) $_POST['game']) : '';
     $aData['cat'] = isset($_POST['category']) ? ceil($_POST['category']) : 0;
     $aData['status'] = isset($_POST['status']) ? ceil($_POST['status']) : 0;
-    $aData['packs'] = isset($_POST['packs']) ? trim($_POST['packs']) : '';
-    $aData['desc'] = isset($_POST['desc']) ? trim($_POST['desc']) : '';
-    $aData['info'] = isset($_POST['info']) ? trim($_POST['info']) : '';
-    $aData['images'] = isset($_POST['images']) ? trim($_POST['images']) : '';
-    $aData['incompatible'] = isset($_POST['incompatible']) ? trim($_POST['incompatible']) : '';
-    $aData['choice'] = isset($_POST['choice']) ? trim($_POST['choice']) : '';
-    $aData['required'] = isset($_POST['required']) ? trim($_POST['required']) : '';
+    $aData['packs'] = isset($_POST['packs']) ? trim((string) $_POST['packs']) : '';
+    $aData['desc'] = isset($_POST['desc']) ? trim((string) $_POST['desc']) : '';
+    $aData['info'] = isset($_POST['info']) ? trim((string) $_POST['info']) : '';
+    $aData['images'] = isset($_POST['images']) ? trim((string) $_POST['images']) : '';
+    $aData['incompatible'] = isset($_POST['incompatible']) ? trim((string) $_POST['incompatible']) : '';
+    $aData['choice'] = isset($_POST['choice']) ? trim((string) $_POST['choice']) : '';
+    $aData['required'] = isset($_POST['required']) ? trim((string) $_POST['required']) : '';
     $aData['update'] = isset($_POST['update']) ? ceil($_POST['update']) : 0;
     $aData['delete'] = isset($_POST['delete']) ? ceil($_POST['delete']) : 0;
-    $aData['aecfg'] = isset($_POST['aecfg']) ? $_POST['aecfg'] : 0;
+    $aData['aecfg'] = $_POST['aecfg'] ?? 0;
     $aData['sort'] = isset($_POST['sort']) ? ceil($_POST['sort']) : 0;
     $aData['price'] = isset($_POST['price']) ? ceil($_POST['price']) : 0;
 
-    $aData['config_files_file'] = isset($_POST['config_files_file']) ? $_POST['config_files_file'] : array();
-    $aData['config_files_sort'] = isset($_POST['config_files_sort']) ? $_POST['config_files_sort'] : array();
-    $aData['config_clear_file'] = isset($_POST['config_clear_file']) ? $_POST['config_clear_file'] : array();
-    $aData['config_clear_text'] = isset($_POST['config_clear_text']) ? $_POST['config_clear_text'] : array();
-    $aData['config_write_file'] = isset($_POST['config_write_file']) ? $_POST['config_write_file'] : array();
-    $aData['config_write_text'] = isset($_POST['config_write_text']) ? $_POST['config_write_text'] : array();
-    $aData['config_write_top'] = isset($_POST['config_write_top']) ? $_POST['config_write_top'] : array();
-    $aData['config_write_del_file'] = isset($_POST['config_write_del_file']) ? $_POST['config_write_del_file'] : array();
-    $aData['config_write_del_text'] = isset($_POST['config_write_del_text']) ? $_POST['config_write_del_text'] : array();
-    $aData['config_write_del_top'] = isset($_POST['config_write_del_top']) ? $_POST['config_write_del_top'] : array();
-    $aData['files_delete_file'] = isset($_POST['files_delete_file']) ? $_POST['files_delete_file'] : array();
+    $aData['config_files_file'] = $_POST['config_files_file'] ?? [];
+    $aData['config_files_sort'] = $_POST['config_files_sort'] ?? [];
+    $aData['config_clear_file'] = $_POST['config_clear_file'] ?? [];
+    $aData['config_clear_text'] = $_POST['config_clear_text'] ?? [];
+    $aData['config_write_file'] = $_POST['config_write_file'] ?? [];
+    $aData['config_write_text'] = $_POST['config_write_text'] ?? [];
+    $aData['config_write_top'] = $_POST['config_write_top'] ?? [];
+    $aData['config_write_del_file'] = $_POST['config_write_del_file'] ?? [];
+    $aData['config_write_del_text'] = $_POST['config_write_del_text'] ?? [];
+    $aData['config_write_del_top'] = $_POST['config_write_del_top'] ?? [];
+    $aData['files_delete_file'] = $_POST['files_delete_file'] ?? [];
 
     $aData['cfg'] = 0;
 
     if ($aData['name'] == '')
-        sys::outjs(array('e' => 'Необходимо указать название'));
+        sys::outjs(['e' => 'Необходимо указать название']);
 
     if (sys::strlen($aData['name']) > 50)
-        sys::outjs(array('e' => 'Длина названия не должна превышать 50 символов.'));
+        sys::outjs(['e' => 'Длина названия не должна превышать 50 символов.']);
 
     if (!in_array($aData['game'], $aGames))
-        sys::outjs(array('e' => 'Необходимо выбрать игру'));
+        sys::outjs(['e' => 'Необходимо выбрать игру']);
 
     require(LIB . 'zip.php');
 
@@ -80,13 +80,13 @@ if ($go) {
         $aData['update'] = 0;
     }
 
-    $edit = array();
+    $edit = [];
 
     if (!$aData['update']) {
         if (!move_uploaded_file($_FILES['file']['tmp_name'], FILES . 'plugins/install/' . $id . '.zip')) {
             $sql->query('DELETE FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 
-            sys::outjs(array('e' => 'Неудалось загрузить архив'));
+            sys::outjs(['e' => 'Неудалось загрузить архив']);
         }
 
         $zip = new ZipArchive;
@@ -96,7 +96,7 @@ if ($go) {
 
             unlink(FILES . 'plugins/install/' . $id . '.zip');
 
-            sys::outjs(array('e' => 'Неудалось открыть архив'));
+            sys::outjs(['e' => 'Неудалось открыть архив']);
         }
 
         $count = $zip->numFiles;
@@ -106,14 +106,14 @@ if ($go) {
         for ($i = 0; $i < $count; $i += 1) {
             $stat = $zip->statIndex($i);
 
-            $check = count(explode('.', $stat['name']));
+            $check = count(explode('.', (string) $stat['name']));
 
             if ($check < 2)
                 continue;
 
             $rm .= 'rm ' . $stat['name'] . ';' . PHP_EOL;
 
-            $type = explode('.', $stat['name']);
+            $type = explode('.', (string) $stat['name']);
 
             if ($aData['aecfg'] and in_array(end($type), $types))
                 $edit[] = $stat['name'];
@@ -126,7 +126,7 @@ if ($go) {
         if (!move_uploaded_file($_FILES['new_file']['tmp_name'], FILES . 'plugins/install/u' . $aData['update'] . '.zip')) {
             $sql->query('DELETE FROM `plugins_update` WHERE `id`="' . $aData['update'] . '" LIMIT 1');
 
-            sys::outjs(array('e' => 'Неудалось загрузить архив'));
+            sys::outjs(['e' => 'Неудалось загрузить архив']);
         }
 
         if (!move_uploaded_file($_FILES['upd_file']['tmp_name'], FILES . 'plugins/update/' . $aData['update'] . '.zip')) {
@@ -134,7 +134,7 @@ if ($go) {
 
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
 
-            sys::outjs(array('e' => 'Неудалось загрузить архив обновления'));
+            sys::outjs(['e' => 'Неудалось загрузить архив обновления']);
         }
 
         $zip = new ZipArchive;
@@ -145,7 +145,7 @@ if ($go) {
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
             unlink(FILES . 'plugins/update/' . $aData['update'] . '.zip');
 
-            sys::outjs(array('e' => 'Неудалось открыть архив'));
+            sys::outjs(['e' => 'Неудалось открыть архив']);
         }
 
         $count = $zip->numFiles;
@@ -155,14 +155,14 @@ if ($go) {
         for ($i = 0; $i < $count; $i += 1) {
             $stat = $zip->statIndex($i);
 
-            $check = count(explode('.', $stat['name']));
+            $check = count(explode('.', (string) $stat['name']));
 
             if ($check < 2)
                 continue;
 
             $rm .= 'rm ' . $stat['name'] . ';' . PHP_EOL;
 
-            $type = explode('.', $stat['name']);
+            $type = explode('.', (string) $stat['name']);
 
             if ($aData['aecfg'] and in_array(end($type), $types))
                 $edit[] = $stat['name'];
@@ -180,7 +180,7 @@ if ($go) {
     foreach ($aPacks as $packs)
         $spacks .= trim($packs) . ':';
 
-    $spacks = isset($spacks{0}) ? substr($spacks, 0, -1) : '';
+    $spacks = isset($spacks[0]) ? substr($spacks, 0, -1) : '';
 
     $aData['packs'] = $spacks == '' ? 'all' : $spacks;
 
@@ -197,7 +197,7 @@ if ($go) {
         $incoms .= intval($incom) . ':';
     }
 
-    $incoms = isset($incoms{0}) ? substr($incoms, 0, -1) : '';
+    $incoms = isset($incoms[0]) ? substr($incoms, 0, -1) : '';
 
     $aData['incompatible'] = $incoms;
 
@@ -220,7 +220,7 @@ if ($go) {
         $choice .= ' ';
     }
 
-    $choice = isset($choice{0}) ? substr(trim($choice), 0, -1) : '';
+    $choice = isset($choice[0]) ? substr(trim($choice), 0, -1) : '';
 
     $aData['choice'] = $choice;
 
@@ -237,7 +237,7 @@ if ($go) {
         $requis .= intval($requi) . ':';
     }
 
-    $requis = isset($requis{0}) ? substr($requis, 0, -1) : '';
+    $requis = isset($requis[0]) ? substr($requis, 0, -1) : '';
 
     $aData['required'] = $requis;
 
@@ -276,7 +276,7 @@ if ($go) {
 
         $regex = (string)$aData['config_clear_regex'] == 'on' ? 1 : 0;
 
-        $text = htmlspecialchars(trim($aData['config_clear_text'][$i]));
+        $text = htmlspecialchars(trim((string) $aData['config_clear_text'][$i]));
 
         $sql->query('INSERT INTO `plugins_clear` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `text`="' . $text . '", `file`="' . $file . '", `regex`="' . $regex . '"');
     }
@@ -287,7 +287,7 @@ if ($go) {
 
         $top = (string)$aData['config_write_top'][$i] == 'on' ? 1 : 0;
 
-        $text = htmlspecialchars(trim($aData['config_write_text'][$i]));
+        $text = htmlspecialchars(trim((string) $aData['config_write_text'][$i]));
 
         $sql->query('INSERT INTO `plugins_write` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `text`="' . $text . '", `file`="' . $file . '", `top`="' . $top . '"');
     }
@@ -298,7 +298,7 @@ if ($go) {
 
         $top = (string)$aData['config_write_del_top'][$i] == 'on' ? 1 : 0;
 
-        $text = htmlspecialchars(trim($aData['config_write_del_text'][$i]));
+        $text = htmlspecialchars(trim((string) $aData['config_write_del_text'][$i]));
 
         $sql->query('INSERT INTO `plugins_write_del` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `text`="' . $text . '", `file`="' . $file . '", `top`="' . $top . '"');
     }
@@ -341,7 +341,7 @@ if ($go) {
             . '`price`="' . $aData['price'] . '",'
             . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('addpl', 'sections/addons');

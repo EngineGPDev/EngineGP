@@ -14,17 +14,17 @@ if ($go) {
     require(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
-    $aData = array();
+    $aData = [];
 
-    $aData['active'] = isset($_POST['active']) ? $_POST['active'] : '';
-    $aData['value'] = isset($_POST['value']) ? $_POST['value'] : '';
-    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
-    $aData['flags'] = isset($_POST['flags']) ? $_POST['flags'] : '';
-    $aData['type'] = isset($_POST['type']) ? $_POST['type'] : '';
-    $aData['time'] = isset($_POST['time']) ? $_POST['time'] : '';
-    $aData['info'] = isset($_POST['info']) ? $_POST['info'] : '';
+    $aData['active'] = $_POST['active'] ?? '';
+    $aData['value'] = $_POST['value'] ?? '';
+    $aData['passwd'] = $_POST['passwd'] ?? '';
+    $aData['flags'] = $_POST['flags'] ?? '';
+    $aData['type'] = $_POST['type'] ?? '';
+    $aData['time'] = $_POST['time'] ?? '';
+    $aData['info'] = $_POST['info'] ?? '';
 
     // Удаление текущих записей
     $sql->query('DELETE FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '"');
@@ -33,11 +33,11 @@ if ($go) {
 
     foreach ($aData['value'] as $index => $val) {
         if ($val != '') {
-            $type = isset($aData['type'][$index]) ? $aData['type'][$index] : 'a';
-            if (!in_array($type, array('c', 'ce', 'de', 'a')))
+            $type = $aData['type'][$index] ?? 'a';
+            if (!in_array($type, ['c', 'ce', 'de', 'a']))
                 $type = 'a';
 
-            $aDate = isset($aData['time'][$index]) ? explode('.', $aData['time'][$index]) : explode('.', date('d.m.Y', $start_point));
+            $aDate = isset($aData['time'][$index]) ? explode('.', (string) $aData['time'][$index]) : explode('.', date('d.m.Y', $start_point));
 
             if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2]))
                 $aDate = explode('.', date('d.m.Y', $start_point));
@@ -45,22 +45,22 @@ if ($go) {
             $time = mktime(0, 0, 0, $aDate[1], $aDate[0], $aDate[2]);
 
             $aData['active'][$index] = isset($aData['active'][$index]) ? 1 : 0;
-            $aData['passwd'][$index] = isset($aData['passwd'][$index]) ? $aData['passwd'][$index] : '';
-            $aData['flags'][$index] = isset($aData['flags'][$index]) ? $aData['flags'][$index] : '';
-            $aData['info'][$index] = isset($aData['info'][$index]) ? $aData['info'][$index] : '';
+            $aData['passwd'][$index] ??= '';
+            $aData['flags'][$index] ??= '';
+            $aData['info'][$index] ??= '';
 
             $text = '"' . $val . '" "' . $aData['passwd'][$index] . '" "' . $aData['flags'][$index] . '" "' . $type . '"';
 
             $sql->query('INSERT INTO `admins_' . $server['game'] . '` set'
                 . '`server`="' . $id . '",'
-                . '`value`="' . htmlspecialchars($val) . '",'
+                . '`value`="' . htmlspecialchars((string) $val) . '",'
                 . '`active`="' . $aData['active'][$index] . '",'
-                . '`passwd`="' . htmlspecialchars($aData['passwd'][$index]) . '",'
-                . '`flags`="' . htmlspecialchars($aData['flags'][$index]) . '",'
+                . '`passwd`="' . htmlspecialchars((string) $aData['passwd'][$index]) . '",'
+                . '`flags`="' . htmlspecialchars((string) $aData['flags'][$index]) . '",'
                 . '`type`="' . $type . '",'
                 . '`time`="' . $time . '",'
                 . '`text`="' . htmlspecialchars($text) . '",'
-                . '`info`="' . htmlspecialchars($aData['info'][$index]) . '"');
+                . '`info`="' . htmlspecialchars((string) $aData['info'][$index]) . '"');
 
             if ($aData['active'][$index])
                 $usini .= $text . PHP_EOL;
@@ -77,28 +77,18 @@ if ($go) {
 
     $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"amx_reloadadmins\"\015'");
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Построение списка добавленных админов
 $sql->query('SELECT `id`, `value`, `active`, `passwd`, `flags`, `type`, `time`, `info` FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '" ORDER BY `id` ASC');
 while ($admin = $sql->get()) {
-    switch ($admin['type']) {
-        case 'c':
-            $type = '<option value="c">SteamID/Пароль</option><option value="a">Ник/Пароль</option><option value="ce">SteamID</option><option value="de">IP Адрес</option>';
-            break;
-
-        case 'ce':
-            $type = '<option value="ce">SteamID</option><option value="a">Ник/Пароль</option><option value="c">SteamID/Пароль</option><option value="de">IP Адрес</option>';
-            break;
-
-        case 'de':
-            $type = '<option value="de">IP Адрес</option><option value="a">Ник/Пароль</option><option value="c">SteamID/Пароль</option><option value="ce">SteamID</option>';
-            break;
-
-        default:
-            $type = '<option value="a">Ник/Пароль</option><option value="c">SteamID/Пароль</option><option value="ce">SteamID</option><option value="de">IP Адрес</option>';
-    }
+    $type = match ($admin['type']) {
+        'c' => '<option value="c">SteamID/Пароль</option><option value="a">Ник/Пароль</option><option value="ce">SteamID</option><option value="de">IP Адрес</option>',
+        'ce' => '<option value="ce">SteamID</option><option value="a">Ник/Пароль</option><option value="c">SteamID/Пароль</option><option value="de">IP Адрес</option>',
+        'de' => '<option value="de">IP Адрес</option><option value="a">Ник/Пароль</option><option value="c">SteamID/Пароль</option><option value="ce">SteamID</option>',
+        default => '<option value="a">Ник/Пароль</option><option value="c">SteamID/Пароль</option><option value="ce">SteamID</option><option value="de">IP Адрес</option>',
+    };
 
     $html->get('list', 'sections/servers/' . $server['game'] . '/settings/admins');
 
@@ -121,12 +111,12 @@ while ($admin = $sql->get()) {
 $sql->query('SELECT `id` FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '" ORDER BY `id` DESC LIMIT 1');
 $max = $sql->get();
 
-list($ip, $port) = explode(':', $server['address']);
+[$ip, $port] = explode(':', (string) $server['address']);
 
 $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
-$html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
+$html->set('admins', $html->arr['admins'] ?? '');
 $html->set('index', $max['id'] < 1 ? 0 : $max['id']);
 $html->set('address', 'ip/' . $ip . '/port/' . $port);
 

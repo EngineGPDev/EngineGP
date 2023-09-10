@@ -2,7 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$text = isset($_POST['text']) ? trim($_POST['text']) : '';
+$text = isset($_POST['text']) ? trim((string) $_POST['text']) : '';
 
 $mkey = md5($text . $id);
 
@@ -17,12 +17,12 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go)
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
-if ($text{0} == 'i' and $text[1] == 'd')
+if ($text[0] == 'i' and $text[1] == 'd')
     $sql->query('SELECT `id`, `login`, `mail`, `balance`, `group` FROM `users` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -39,9 +39,9 @@ else {
 
 if (!$sql->num()) {
     if ($go)
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
@@ -57,6 +57,6 @@ while ($us = $sql->get()) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

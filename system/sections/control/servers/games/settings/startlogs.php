@@ -29,7 +29,7 @@ if (isset($url['log'])) {
     $html->set('id', $id);
     $html->set('server', $sid);
     $html->set('name', $url['log']);
-    $html->set('log', htmlspecialchars($ssh->get(), NULL, ''));
+    $html->set('log', htmlspecialchars((string) $ssh->get(), NULL, ''));
     $html->set('uri', 'startlogs');
     $html->pack('main');
 } else {
@@ -42,7 +42,7 @@ if (isset($url['log'])) {
     $ssh->set('cd ' . $folder . ' && du -ab --time | grep -e .log$ | awk \'{print $2" "$3"@"$1"@"$4}\' | sort -Mr');
 
     // Массив данных
-    $aData = explode("\n", $ssh->get());
+    $aData = explode("\n", (string) $ssh->get());
 
     if (isset($aData[count($aData) - 1]))
         unset($aData[count($aData) - 1]);
@@ -73,7 +73,7 @@ if (isset($url['log'])) {
         if ($server['ftp']) {
             $html->unit('download', true, true);
 
-            $html->set('url', 'ftp://' . $server['uid'] . ':' . $server['ftp_passwd'] . '@' . sys::first(explode(':', $unit['address'])) . '/' . $aSLdir[$server['game']] . '/' . end($name));
+            $html->set('url', 'ftp://' . $server['uid'] . ':' . $server['ftp_passwd'] . '@' . sys::first(explode(':', (string) $unit['address'])) . '/' . $aSLdir[$server['game']] . '/' . end($name));
         } else
             $html->unit('download', false, true);
         $html->pack('logs');
@@ -83,6 +83,6 @@ if (isset($url['log'])) {
     $html->set('id', $id);
     $html->set('server', $sid);
     $html->set('uri', 'start');
-    $html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
+    $html->set('logs', $html->arr['logs'] ?? '');
     $html->pack('main');
 }

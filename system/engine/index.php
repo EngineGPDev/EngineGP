@@ -10,8 +10,8 @@ while ($news = $sql->get()) {
     $html->get('list', 'sections/news');
 
     $html->set('id', $news['id']);
-    $html->set('name', htmlspecialchars_decode($news['name']));
-    $html->set('text', htmlspecialchars_decode($news['text']));
+    $html->set('name', htmlspecialchars_decode((string) $news['name']));
+    $html->set('text', htmlspecialchars_decode((string) $news['text']));
     $html->set('views', $news['views']);
     $html->set('tags', sys::tags($news['tags']));
     $html->set('date', sys::today($news['date']));
@@ -21,5 +21,5 @@ while ($news = $sql->get()) {
 
 $html->get('index');
 
-$html->set('news', isset($html->arr['news']) ? $html->arr['news'] : '');
+$html->set('news', $html->arr['news'] ?? '');
 $html->pack('main');

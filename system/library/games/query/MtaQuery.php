@@ -24,7 +24,7 @@ class MtaQuery
 
         $buffer = substr($buffer, 4);
 
-        $server_info = array();
+        $server_info = [];
 
         $server_info['gamename'] = $this->cut_pascal($buffer, 1, -1);
         $server_info['hostport'] = $this->cut_pascal($buffer, 1, -1);
@@ -37,7 +37,7 @@ class MtaQuery
         $server_info['playersmax'] = $this->cut_pascal($buffer, 1, -1);
 
         while ($buffer && $buffer[0] != "\x01") {
-            $item_key = strtolower($this->cut_pascal($buffer, 1, -1));
+            $item_key = strtolower((string) $this->cut_pascal($buffer, 1, -1));
             $item_value = $this->cut_pascal($buffer, 1, -1);
 
             $server_info[$item_key] = $item_value;
@@ -46,14 +46,14 @@ class MtaQuery
         if (!$pl)
             return $server_info;
 
-        $buffer = substr($buffer, 1);
+        $buffer = substr((string) $buffer, 1);
 
         $i = 1;
 
         while ($buffer) {
             $bit_flags = $this->cut_byte($buffer, 1);
 
-            $field_list = array('name', '', '', '', 'ping', '');
+            $field_list = ['name', '', '', '', 'ping', ''];
 
             foreach ($field_list as $item_key) {
                 $item_value = $this->cut_pascal($buffer, 1, -1);
@@ -72,17 +72,17 @@ class MtaQuery
 
     private function cut_pascal(&$buffer, $start_byte = 1, $length_adjust = 0, $end_byte = 0)
     {
-        $length = ord(substr($buffer, 0, $start_byte)) + $length_adjust;
-        $string = substr($buffer, $start_byte, $length);
-        $buffer = substr($buffer, $start_byte + $length + $end_byte);
+        $length = ord(substr((string) $buffer, 0, $start_byte)) + $length_adjust;
+        $string = substr((string) $buffer, $start_byte, $length);
+        $buffer = substr((string) $buffer, $start_byte + $length + $end_byte);
 
         return $string;
     }
 
     private function cut_byte(&$buffer, $length)
     {
-        $string = substr($buffer, 0, $length);
-        $buffer = substr($buffer, $length);
+        $string = substr((string) $buffer, 0, $length);
+        $buffer = substr((string) $buffer, $length);
 
         return $string;
     }

@@ -6,13 +6,13 @@ class Buffer
 {
 
     private $Buffer;
-    private $Length;
-    private $Position;
+    private ?int $Length = null;
+    private ?int $Position = null;
 
     public function Set($Buffer)
     {
         $this->Buffer = $Buffer;
-        $this->Length = StrLen($Buffer);
+        $this->Length = StrLen((string) $Buffer);
         $this->Position = 0;
     }
 
@@ -34,7 +34,7 @@ class Buffer
         else if ($Length > $Remaining)
             return '';
 
-        $Data = SubStr($this->Buffer, $this->Position, $Length);
+        $Data = SubStr((string) $this->Buffer, $this->Position, $Length);
 
         $this->Position += $Length;
 
@@ -51,7 +51,7 @@ class Buffer
         if ($this->Remaining() < 2)
             return false;
 
-        $Data = UnPack('v', $this->Get(2));
+        $Data = UnPack('v', (string) $this->Get(2));
 
         return $Data[1];
     }
@@ -61,7 +61,7 @@ class Buffer
         if ($this->Remaining() < 4)
             return false;
 
-        $Data = UnPack('l', $this->Get(4));
+        $Data = UnPack('l', (string) $this->Get(4));
 
         return $Data[1];
     }
@@ -71,7 +71,7 @@ class Buffer
         if ($this->Remaining() < 4)
             return false;
 
-        $Data = UnPack('f', $this->Get(4));
+        $Data = UnPack('f', (string) $this->Get(4));
 
         return $Data[1];
     }
@@ -81,14 +81,14 @@ class Buffer
         if ($this->Remaining() < 4)
             return false;
 
-        $Data = UnPack('V', $this->Get(4));
+        $Data = UnPack('V', (string) $this->Get(4));
 
         return $Data[1];
     }
 
     public function GetString()
     {
-        $ZeroBytePosition = StrPos($this->Buffer, "\0", $this->Position);
+        $ZeroBytePosition = StrPos((string) $this->Buffer, "\0", $this->Position);
 
         if ($ZeroBytePosition === false)
             return '';

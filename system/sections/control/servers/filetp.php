@@ -7,7 +7,7 @@ $server = $sql->get();
 
 ctrl::nav($server, $id, $sid, 'filetp');
 
-$frouter = explode('/', ctrl::route($server, 'filetp', $go));
+$frouter = explode('/', (string) ctrl::route($server, 'filetp', $go));
 
 if (end($frouter) == 'noaccess.php')
     require(SEC . 'control/servers/noaccess.php');
@@ -17,7 +17,7 @@ else {
 
     $sql->query('SELECT `address` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
     $unit = $sql->get();
-    $ip = sys::first(explode(':', $unit['address']));
+    $ip = sys::first(explode(':', (string) $unit['address']));
 
     $html->nav('Список подключенных серверов', $cfg['http'] . 'control');
     $html->nav('Список игровых серверов #' . $id, $cfg['http'] . 'control/id/' . $id);
@@ -30,15 +30,10 @@ else {
     // Путь для файлового менеджера
     $dir = '/';
 
-    $aData = array(
-        'root' => $dir,
-        'host' => $ip,
-        'login' => $server['uid'],
-        'passwd' => $server['ftp_passwd']
-    );
+    $aData = ['root' => $dir, 'host' => $ip, 'login' => $server['uid'], 'passwd' => $server['ftp_passwd']];
 
     if ($go) {
-        if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'change', 'logs'))) {
+        if (isset($url['action']) and in_array($url['action'], ['on', 'off', 'change', 'logs'])) {
             $sql->query('SELECT `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
             $unit = array_merge($unit, $sql->get());
 
@@ -58,7 +53,7 @@ else {
                     if ($url['action'] == 'search')
                         sys::out('Не удалось соединиться с ftp-сервером.');
 
-                    sys::outjs(array('e' => 'Не удалось соединиться с ftp-сервером.'));
+                    sys::outjs(['e' => 'Не удалось соединиться с ftp-сервером.']);
                 }
 
                 sys::out();
@@ -77,7 +72,7 @@ else {
                     if ($used < 1)
                         sys::back($cfg['http'] . 'help/action/create');
 
-                    $bytes = $server['hdd'] * 1048576;
+                    $bytes = $server['hdd'] * 1_048_576;
 
                     $server['ftp_passwd'] = isset($server['ftp_passwd'][1]) ? $server['ftp_passwd'] : sys::passwd(8);
 
@@ -123,28 +118,28 @@ else {
                     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/filetp');
 
                 case 'rename':
-                    $ftp->rename(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['newname']));
+                    $ftp->rename(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['newname'], null, 512, JSON_THROW_ON_ERROR));
 
                 case 'edit':
-                    $ftp->edit_file(json_decode($_POST['path']), json_decode($_POST['name']));
+                    $ftp->edit_file(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR));
 
                 case 'create':
                     if (isset($url['folder']))
-                        $ftp->mkdir(json_decode($_POST['path']), json_decode($_POST['name']));
+                        $ftp->mkdir(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR));
 
-                    $ftp->touch(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['text']));
+                    $ftp->touch(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['text'], null, 512, JSON_THROW_ON_ERROR));
 
                 case 'delete':
                     if (isset($url['folder']))
-                        $ftp->rmdir(json_decode($_POST['path']), json_decode($_POST['name']));
+                        $ftp->rmdir(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR));
 
-                    $ftp->rmfile(json_decode($_POST['path']) . '/' . json_decode($_POST['name']));
+                    $ftp->rmfile(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR) . '/' . json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR));
 
                 case 'chmod':
-                    $ftp->chmod(json_decode($_POST['path']), json_decode($_POST['name']), sys::int($_POST['chmod']));
+                    $ftp->chmod(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR), json_decode((string) $_POST['name'], null, 512, JSON_THROW_ON_ERROR), sys::int($_POST['chmod']));
 
                 case 'search':
-                    $text = isset($_POST['find']) ? sys::first(explode('.', json_decode($_POST['find']))) : sys::out();
+                    $text = isset($_POST['find']) ? sys::first(explode('.', (string) json_decode((string) $_POST['find'], null, 512, JSON_THROW_ON_ERROR))) : sys::out();
 
                     if (!isset($text[2]))
                         sys::out('Для выполнения поиска, необходимо больше данных');
@@ -169,7 +164,7 @@ else {
 
         if (!isset($_POST['path'])) $_POST['path'] = json_encode($aData['root']);
 
-        sys::out($ftp->view($ftp->read(json_decode($_POST['path'])), $sid));
+        sys::out($ftp->view($ftp->read(json_decode((string) $_POST['path'], null, 512, JSON_THROW_ON_ERROR)), $sid));
     }
 
     if ($mcache->get('ctrl_server_filetp_' . $sid) != '')

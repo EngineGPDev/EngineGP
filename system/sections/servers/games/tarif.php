@@ -30,7 +30,7 @@ $html->pack('main');
 if ($cfg['settlement_period'])
     tarif::extend_sp($server, $tarif, $id);
 else {
-    $options = games::parse_time(explode(':', $tarif['timext']), $tarif['discount'], $server['tarif'], 'extend');
+    $options = games::parse_time(explode(':', (string) $tarif['timext']), $tarif['discount'], $server['tarif'], 'extend');
 
     tarif::extend($options, $server, $tarif['name'], $id);
 }
@@ -42,11 +42,11 @@ if (!$server['test']) {
 
     // Шаблон смены тарифа (если аренда не менее 1 дня и цены планов различны)
     if ($server['time'] > $start_point + 86400 and tarif::price($tarif['price']))
-        tarif::plan($server, $tarif['name'], $id);
+        tarif::plan();
 
     // Шаблон изменения кол-ва слот
     if ($tarif['slots_min'] != $tarif['slots_max'])
-        tarif::slots($server, array('min' => $tarif['slots_min'], 'max' => $tarif['slots_max']), $id);
+        tarif::slots($server, ['min' => $tarif['slots_min'], 'max' => $tarif['slots_max']], $id);
 
     // Шаблон изменения локации (если аренда не менее 1 дня)
     if ($server['time'] > $start_point + 86400)

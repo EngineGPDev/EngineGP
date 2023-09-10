@@ -4,16 +4,7 @@ if (!defined('EGP'))
 
 class scans
 {
-    private static $process = array(
-        'cs' => 'hlds_',
-        'cssold' => 'srcds_i686',
-        'css' => 'srcds_',
-        'csgo' => 'srcds_',
-        'samp' => 'samp',
-        'crmp' => 'samp',
-        'mta' => 'mta',
-        'mc' => 'java'
-    );
+    private static array $process = ['cs' => 'hlds_', 'cssold' => 'srcds_i686', 'css' => 'srcds_', 'csgo' => 'srcds_', 'samp' => 'samp', 'crmp' => 'samp', 'mta' => 'mta', 'mc' => 'java'];
 
     public static function resources($id)
     {
@@ -31,12 +22,7 @@ class scans
 
         $server = $sql->get();
 
-        $resources = array(
-            'usr' => 0,
-            'cpu' => 0,
-            'ram' => 0,
-            'hdd' => $server['hdd_use']
-        );
+        $resources = ['usr' => 0, 'cpu' => 0, 'ram' => 0, 'hdd' => $server['hdd_use']];
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
@@ -49,13 +35,13 @@ class scans
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return $resources;
 
-        if (!in_array($server['status'], array('working', 'start', 'restart', 'change')))
+        if (!in_array($server['status'], ['working', 'start', 'restart', 'change']))
             return $resources;
 
         $resources['usr'] = ceil(100 / $server['slots_start'] * $server['online']);
         $resources['usr'] = $resources['usr'] > 100 ? 100 : $resources['usr'];
 
-        $cr = explode('|', $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\''));
+        $cr = explode('|', (string) $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\''));
 
         if (isset($cr[0]))
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
@@ -66,7 +52,7 @@ class scans
             $resources['ram'] = str_replace(',', '.', $cr[1]);
 
         // ram на сервер
-        $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$server['game']];
+        $ram = $server['ram'] ?: $server['slots'] * $cfg['ram'][$server['game']];
 
         $resources['ram'] = $unit['ram'] / 100 * $resources['ram'] / ($ram / 100);
 
@@ -100,8 +86,8 @@ class scans
         if ($server['time'] > $start_point && $server['status'] == 'overdue') {
             $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
-            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-            sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+            sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
             return 'server -> extend -> off';
         }
@@ -122,7 +108,7 @@ class scans
             return 'unit error connect';
 
         // Если аренда закончилась, а сервер не просрочен
-        if ($server['time'] < $start_point && !in_array($server['status'], array('overdue', 'blocked'))) {
+        if ($server['time'] < $start_point && !in_array($server['status'], ['overdue', 'blocked'])) {
             // Убить процессы
             $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
                 . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -132,8 +118,8 @@ class scans
 
             $sql->query('UPDATE `servers` set `status`="overdue", `online`="0", `players`="", `ftp`="0", `overdue`="' . $start_point . '", `mail`="1" WHERE `id`="' . $id . '" LIMIT 1');
 
-            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'overdue', 'online' => 0, 'players' => ''));
-            sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'overdue', 'online' => 0));
+            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'overdue', 'online' => 0, 'players' => '']);
+            sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'overdue', 'online' => 0]);
 
             return 'server -> overdue -> stoping';
         }
@@ -146,8 +132,8 @@ class scans
                 if (!sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `servers` set `status`="off", `online`="0", `players`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
-                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-                    sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+                    sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
                     return 'server -> working -> off';
                 }
@@ -158,8 +144,8 @@ class scans
                 if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `servers` set `status`="working" WHERE `id`="' . $id . '" LIMIT 1');
 
-                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'working', 'online' => $server['online'], 'players' => $server['players']));
-                    sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'working', 'online' => $server['online']));
+                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'working', 'online' => $server['online'], 'players' => $server['players']]);
+                    sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'working', 'online' => $server['online']]);
 
                     return 'server -> off -> working';
                 }
@@ -170,8 +156,8 @@ class scans
                 if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
-                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-                    sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+                    sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
                     return 'server -> reinstall -> end';
                 }
@@ -182,8 +168,8 @@ class scans
                 if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
-                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-                    sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+                    sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
                     return 'server -> update -> end';
                 }
@@ -194,8 +180,8 @@ class scans
                 if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
-                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-                    sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+                    sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
                     return 'server -> install -> end';
                 }
@@ -206,8 +192,8 @@ class scans
                 if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
-                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-                    sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+                    sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+                    sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
                     return 'server -> recovery -> end';
                 }
@@ -220,8 +206,8 @@ class scans
 
                 $sql->query('UPDATE `servers` set `status`="off", `block`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
-                sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-                sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+                sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+                sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
         }
 
         return 'server -> no change -> end scan';

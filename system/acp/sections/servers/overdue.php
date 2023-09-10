@@ -20,7 +20,7 @@ else {
         $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/id/' . $server['id'] . '">' . $server['name'] . '</a></td>';
         $list .= '<td>#' . $server['unit'] . ' ' . $unit['name'] . '</td>';
         $list .= '<td class="text-center">' . $server['slots'] . ' шт.</td>';
-        $list .= '<td class="text-center">' . strtoupper($server['game']) . '</td>';
+        $list .= '<td class="text-center">' . strtoupper((string) $server['game']) . '</td>';
         $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'servers/id/' . $server['id'] . '" target="_blank">Перейти</a></td>';
         $list .= '</tr>';
 

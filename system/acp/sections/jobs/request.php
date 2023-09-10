@@ -11,7 +11,7 @@ if ($id) {
 
         $data = ['user', 'text', 'contact', 'job'];
         foreach ($data as $idata)
-            $aData[$idata] = isset($_POST[$idata]) ? $_POST[$idata] : '';
+            $aData[$idata] = $_POST[$idata] ?? '';
 
         $sql->query('UPDATE `jobs_app` set'
             . '`user`="' . $aData['user'] . '",'
@@ -19,7 +19,7 @@ if ($id) {
             . '`contact`="' . $aData['contact'] . '",'
             . '`job`="' . $aData['job'] . '"');
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $html->get('request_edit', 'sections/jobs');
@@ -62,7 +62,7 @@ if ($id) {
             // Обновить значение счетчика в таблице `jobs`
             $sql->query('UPDATE `jobs` SET `counter`="' . $counter . '" WHERE `id`="' . $jobID . '"');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
         }
     }
 

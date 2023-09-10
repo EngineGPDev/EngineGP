@@ -52,7 +52,7 @@ $html->get('stats', 'sections/units');
 
 $html->set('list', $list);
 
-$html->set('month', mb_strtolower(params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
+$html->set('month', mb_strtolower((string) params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
 
 $html->set('all_money', $all_money);
 $html->set('all_money_month', $all_money_month);

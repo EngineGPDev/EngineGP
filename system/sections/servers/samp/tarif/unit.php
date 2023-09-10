@@ -5,14 +5,14 @@ if (!defined('EGP'))
 if (!isset($nmch))
     $nmch = false;
 
-$uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
+$uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86400 || $server['test'])
     exit;
 
 $sql->query('SELECT `id`, `unit`, `packs`, `tickrate`, `price` FROM `tarifs` WHERE `unit`="' . $uid . '" AND `game`="' . $server['game'] . '" AND `name`="' . $tarif['name'] . '" AND `id`!="' . $server['tarif'] . '" AND `show`="1" ORDER BY `unit`');
 if (!$sql->num())
-    sys::outjs(array('e' => 'Не найден подходящий тариф.'), $nmch);
+    sys::outjs(['e' => 'Не найден подходящий тариф.'], $nmch);
 
 $oldTarif = $tarif;
 
@@ -21,18 +21,18 @@ $tarif = $sql->get();
 $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $oldUnit = $sql->get();
 
-$aPriceold = explode(':', $oldTarif['price']);
-$aTICKold = explode(':', $oldTarif['tickrate']);
+$aPriceold = explode(':', (string) $oldTarif['price']);
+$aTICKold = explode(':', (string) $oldTarif['tickrate']);
 
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
 if (!$sql->num())
-    sys::outjs(array('e' => 'Выбранная локация не доступна.'), $nmch);
+    sys::outjs(['e' => 'Выбранная локация не доступна.'], $nmch);
 
-$aPrice = explode(':', $tarif['price']);
-$aTICK = explode(':', $tarif['tickrate']);
+$aPrice = explode(':', (string) $tarif['price']);
+$aTICK = explode(':', (string) $tarif['tickrate']);
 
 if (!in_array($server['tickrate'], $aTICK))
-    sys::outjs(array('e' => 'Не найден подходящий тарифный план.'), $nmch);
+    sys::outjs(['e' => 'Не найден подходящий тарифный план.'], $nmch);
 
 // Цена за 1 день (при новом тарифном плане)
 $price = $aPrice[array_search($server['tickrate'], $aTICK)] / 30 * $server['slots'];

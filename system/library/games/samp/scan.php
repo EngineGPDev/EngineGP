@@ -13,7 +13,7 @@ class scan extends scans
         $sql->query('SELECT `address`, `game`, `name`, `map`, `online`, `players`, `status`, `time`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        list($ip, $port) = explode(':', $server['address']);
+        [$ip, $port] = explode(':', (string) $server['address']);
 
         require(LIB . 'games/query/SampQuery.php');
 
@@ -27,7 +27,7 @@ class scan extends scans
         if (is_array($mcache->get($nmch)))
             return $mcache->get($nmch);
 
-        $out = array();
+        $out = [];
 
         $out['time'] = 'Арендован до: ' . date('d.m.Y - H:i', $server['time']);
 
@@ -44,7 +44,7 @@ class scan extends scans
             $out['buttons'] = sys::buttons($id, $server['status'], $server['game']);
 
             if ($players_get)
-                $out['players'] = base64_decode($server['players']);
+                $out['players'] = base64_decode((string) $server['players']);
 
             $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
@@ -56,8 +56,8 @@ class scan extends scans
         if ($players_get)
             $players = scan::players($sq->getDetailedPlayers());
 
-        $info['map'] = htmlspecialchars(mb_convert_encoding($info['map'], 'UTF-8', 'WINDOWS-1251'));
-        $out['name'] = htmlspecialchars(mb_convert_encoding($info['hostname'], 'UTF-8', 'WINDOWS-1251'));
+        $info['map'] = htmlspecialchars(mb_convert_encoding((string) $info['map'], 'UTF-8', 'WINDOWS-1251'));
+        $out['name'] = htmlspecialchars(mb_convert_encoding((string) $info['hostname'], 'UTF-8', 'WINDOWS-1251'));
         $out['status'] = sys::status('working', $server['game'], $info['map']);
         $out['online'] = sys::int($info['players']);
         $out['image'] = '<img src="' . sys::status('working', $server['game'], 'samp', 'img') . '">';
@@ -69,12 +69,12 @@ class scan extends scans
                 $html->get($server['game'], 'sections/servers/players');
 
                 $html->set('i', $player['i']);
-                $html->set('name', htmlspecialchars($player['name']));
+                $html->set('name', htmlspecialchars((string) $player['name']));
 
                 $html->pack('list');
             }
 
-            $out['players'] = isset($html->arr['list']) ? $html->arr['list'] : '';
+            $out['players'] = $html->arr['list'] ?? '';
         }
 
         $sql->query('UPDATE `servers` set '
@@ -84,7 +84,7 @@ class scan extends scans
             . '`status`="working" WHERE `id`="' . $id . '" LIMIT 1');
 
         if ($players_get)
-            $sql->query('UPDATE `servers` set `players`="' . base64_encode($out['players']) . '" WHERE `id`="' . $id . '" LIMIT 1');
+            $sql->query('UPDATE `servers` set `players`="' . base64_encode((string) $out['players']) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
@@ -94,11 +94,11 @@ class scan extends scans
     public static function players($aPlayrs)
     {
         $i = 1;
-        $aData = array();
+        $aData = [];
 
         foreach ($aPlayrs as $n => $player) {
             $aData[$i]['i'] = $i;
-            $aData[$i]['name'] = $player['nickname'] == '' ? 'Подключается' : htmlspecialchars($player['nickname']);
+            $aData[$i]['name'] = $player['nickname'] == '' ? 'Подключается' : htmlspecialchars((string) $player['nickname']);
             $aData[$i]['ping'] = sys::int($player['ping']);
 
             $i += 1;

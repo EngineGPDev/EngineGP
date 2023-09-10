@@ -37,8 +37,8 @@ class tarif extends tarifs
 
         tarifs::extend_address($server['game'], $sid);
 
-        $aPrice = explode(':', $tarif['price']);
-        $aTICK = explode(':', $tarif['tickrate']);
+        $aPrice = explode(':', (string) $tarif['price']);
+        $aTICK = explode(':', (string) $tarif['tickrate']);
 
         $sum = $tarif['slots'] ? $aPrice[array_search($server['tickrate'], $aTICK)] : $aPrice[array_search($server['tickrate'], $aTICK)] * $server['slots'];
 
@@ -78,8 +78,8 @@ class tarif extends tarifs
 
         $options = '<option value="0">Выберете тарифный план</option>';
 
-        $aPrice = explode(':', $tarif['price']);
-        $aTick = explode(':', $tarif['tickrate']);
+        $aPrice = explode(':', (string) $tarif['price']);
+        $aTick = explode(':', (string) $tarif['tickrate']);
 
         // Если есть выбор
         if (count($aTick) > 1) {
@@ -124,7 +124,7 @@ class tarif extends tarifs
         $options = '<option value="0">Выберете новую локацию</option>';
 
         while ($tarif = $sql->get($tarifs)) {
-            if (!in_array($server['tickrate'], explode(':', $tarif['tickrate'])))
+            if (!in_array($server['tickrate'], explode(':', (string) $tarif['tickrate'])))
                 continue;
 
             $sql->query('SELECT `id`, `name` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
@@ -161,7 +161,7 @@ class tarif extends tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
 
         // Директория сборки
         $path = $tarif['path'] . $tarif['pack'];
@@ -177,7 +177,7 @@ class tarif extends tarifs
             . 'chown ' . $uS . ':1000 ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' screen -dmS i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
 
-        $address = explode(':', $server['address']);
+        $address = explode(':', (string) $server['address']);
 
         $fix_one = $tarif['core_fix'] ? 1 : 0;
 
@@ -205,7 +205,7 @@ class tarif extends tarifs
             $aPlugins = sys::b64js($tarif['plugins_install']);
 
             if (isset($aPlugins[$tarif['pack']])) {
-                $plugins = explode(',', $aPlugins[$tarif['pack']]);
+                $plugins = explode(',', (string) $aPlugins[$tarif['pack']]);
 
                 foreach ($plugins as $plugin)
                     if ($plugin)

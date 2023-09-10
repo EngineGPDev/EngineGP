@@ -39,7 +39,7 @@ $sql->query("SELECT name, packs FROM tarifs WHERE id = '{$server['tarif']}' LIMI
 $tarif = $sql->get();
 
 // Получаем массив сборок
-$aPacks = json_decode(base64_decode($tarif['packs']), true);
+$aPacks = json_decode(base64_decode((string) $tarif['packs']), true, 512, JSON_THROW_ON_ERROR);
 
 // Получаем ключ для графиков
 $sql->query("SELECT `key` FROM graph WHERE server = '{$id}' LIMIT 1");
@@ -68,7 +68,7 @@ $html->set('name', $server['name']);
 $html->set('map', $server['map']);
 $html->set('slots', $server['slots_start']);
 $html->set('online', $server['online']);
-$html->set('players', base64_decode($server['players']));
+$html->set('players', base64_decode((string) $server['players']));
 $html->set('unit', $unit['name']);
 $html->set('tarif', $tarif['name']);
 $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img'));

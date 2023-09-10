@@ -41,27 +41,27 @@ class scan_servers_load extends cron
             if ($server['core_fix'] and $server['core_fix_one'])
                 continue;
 
-            if (!in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
+            if (!in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
                 echo 'server#' . $id . ' (' . $game . ') -> load average: cpu = 0% / ram = 0% (no working)' . PHP_EOL;
 
                 continue;
             }
 
-            $resources = array();
+            $resources = [];
 
             for ($n = 0; $n <= 2; $n += 1) {
-                $cr = explode('|', $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (cron::$process[$game]) . ' | awk \'{print $9"|"$10}\''));
+                $cr = explode('|', (string) $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (cron::$process[$game]) . ' | awk \'{print $9"|"$10}\''));
 
                 $resources[$n]['cpu'] = isset($cr[0]) ? round(str_replace(',', '.', $cr[0])) : 0;
 
                 $resources[$n]['ram'] = isset($cr[1]) ? str_replace(',', '.', $cr[1]) : 0;
-                $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$game];
+                $ram = $server['ram'] ?: $server['slots'] * $cfg['ram'][$game];
                 $resources[$n]['ram'] = round($unit['ram'] / 100 * $resources[$n]['ram'] / ($ram / 100));
 
                 sleep(1);
             }
 
-            $loads = array();
+            $loads = [];
 
             foreach ($resources as $n => $load) {
                 foreach ($load as $type => $val)
@@ -71,8 +71,8 @@ class scan_servers_load extends cron
             $average_cpu = isset($loads['cpu']) ? $loads['cpu'] / 2 : 0;
             $average_ram = isset($loads['ram']) ? $loads['ram'] / 2 : 0;
 
-            $max_cpu = $server['cpu_use_max'] ? $server['cpu_use_max'] : $cfg['cpu_use_max'][$game];
-            $max_ram = $server['ram_use_max'] ? $server['ram_use_max'] : $cfg['ram_use_max'][$game];
+            $max_cpu = $server['cpu_use_max'] ?: $cfg['cpu_use_max'][$game];
+            $max_ram = $server['ram_use_max'] ?: $cfg['ram_use_max'][$game];
 
             if ($average_cpu > $max_cpu) {
                 exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $game . ' ' . $id . '"');

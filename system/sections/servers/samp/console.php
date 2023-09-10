@@ -31,7 +31,7 @@ if ($go) {
     if ($weight > 524288)
         $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "mkdir -p ' . $dir . 'oldstart; cat ' . $filecmd . ' >> ' . $filecmd_copy . '; echo \"Выполнена очистка консоли, слишком большой объем данных\n\" > ' . $filecmd . '"');
 
-    sys::out(htmlspecialchars($ssh->get('cat ' . $filecmd), NULL, ''));
+    sys::out(htmlspecialchars((string) $ssh->get('cat ' . $filecmd), NULL, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

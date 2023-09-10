@@ -17,17 +17,7 @@ if ($go) {
     require(LIB . 'games/' . $section . '/service.php');
 
     // Входные данные
-    $aData = array(
-        'unit' => isset($_POST['unit']) ? sys::int($_POST['unit']) : 0,
-        'tarif' => isset($_POST['tarif']) ? sys::int($_POST['tarif']) : 0,
-        'pack' => isset($_POST['pack']) ? $_POST['pack'] : '',
-        'tickrate' => isset($_POST['tickrate']) ? sys::int($_POST['tickrate']) : 0,
-        'fps' => isset($_POST['fps']) ? sys::int($_POST['fps']) : 0,
-        'slots' => isset($_POST['slots']) ? sys::int($_POST['slots']) : 0,
-        'time' => isset($_POST['time']) ? sys::int($_POST['time']) : 30,
-        'test' => (isset($_POST['time']) and $_POST['time'] == 'test') ? true : false,
-        'promo' => isset($_POST['promo']) ? $_POST['promo'] : false,
-    );
+    $aData = ['unit' => isset($_POST['unit']) ? sys::int($_POST['unit']) : 0, 'tarif' => isset($_POST['tarif']) ? sys::int($_POST['tarif']) : 0, 'pack' => $_POST['pack'] ?? '', 'tickrate' => isset($_POST['tickrate']) ? sys::int($_POST['tickrate']) : 0, 'fps' => isset($_POST['fps']) ? sys::int($_POST['fps']) : 0, 'slots' => isset($_POST['slots']) ? sys::int($_POST['slots']) : 0, 'time' => isset($_POST['time']) ? sys::int($_POST['time']) : 30, 'test' => (isset($_POST['time']) and $_POST['time'] == 'test') ? true : false, 'promo' => $_POST['promo'] ?? false];
 
     // Массвив данных
     $aSDATA = service::buy($aData);
@@ -35,7 +25,7 @@ if ($go) {
     // Процесс выдачи игрового сервера
     $id = service::install($aSDATA);
 
-    sys::outjs(array('s' => 'ok', 'id' => $id));
+    sys::outjs(['s' => 'ok', 'id' => $id]);
 }
 
 require(LIB . 'games/services.php');
@@ -46,7 +36,7 @@ $check = false;
 $sql->query(services::unit($section));
 if ($sql->num()) {
     // Выбранная локация
-    if (isset($url['get']) and in_array($url['get'], array('tarifs', 'data')))
+    if (isset($url['get']) and in_array($url['get'], ['tarifs', 'data']))
         $sql->query('SELECT `id`, `test` FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 
     $select_unit = $sql->get();
@@ -57,20 +47,13 @@ if ($sql->num()) {
     // Генерация списка тарифов
     $tarifs = services::tarifs($section, $select_unit['id']);
 
-    if (isset($url['get']) and in_array($url['get'], array('price', 'promo'))) {
-        $aGet = array(
-            'tarif' => sys::int($url['tarif']),
-            'tickrate' => sys::int($url['tickrate']),
-            'fps' => sys::int($url['fps']),
-            'slots' => sys::int($url['slots']),
-            'time' => sys::int($url['time']),
-            'user' => $user['id']
-        );
+    if (isset($url['get']) and in_array($url['get'], ['price', 'promo'])) {
+        $aGet = ['tarif' => sys::int($url['tarif']), 'tickrate' => sys::int($url['tickrate']), 'fps' => sys::int($url['fps']), 'slots' => sys::int($url['slots']), 'time' => sys::int($url['time']), 'user' => $user['id']];
 
         $sql->query('SELECT `price`, `fps`, `tickrate`, `discount` FROM `tarifs` WHERE `id`="' . $aGet['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        $aPrice = sys::b64djs($tarif['price'], true);
+        $aPrice = sys::b64djs($tarif['price']);
 
         // Определение цены
         $price = $aPrice[$aGet['tickrate'] . '_' . $aGet['fps']];
@@ -79,11 +62,9 @@ if ($sql->num()) {
         if ($url['get'] == 'price') {
             // Если выбран тестовый период
             if ($url['time'] == 'test')
-                sys::outjs(array('sum' => 0));
+                sys::outjs(['sum' => 0]);
 
-            sys::outjs(array(
-                'sum' => games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time'])
-            ));
+            sys::outjs(['sum' => games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time'])]);
         }
 
         // Выхлоп цены с учетом промо-кода
@@ -110,7 +91,7 @@ if ($sql->num()) {
         if (isset($url['get'])) {
             // Выхлоп при выборе локации
             if ($url['get'] == 'tarifs')
-                sys::outjs(array_merge(array('tarifs' => $tarifs), $aTarif));
+                sys::outjs(array_merge(['tarifs' => $tarifs], $aTarif));
 
             // Выхлоп при выборе тарифа
             if ($url['get'] == 'data')

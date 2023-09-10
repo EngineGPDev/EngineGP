@@ -8,7 +8,7 @@ class control_threads extends cron
     {
         global $sql, $cfg, $argv;
 
-        $aUnit = array();
+        $aUnit = [];
         $sql->query('SELECT `id` FROM `control` ORDER BY `id` ASC');
 
         if (!$sql->num())
@@ -34,7 +34,7 @@ class control_threads extends cron
 
         foreach ($aUnit as $unit => $aGame) {
             foreach ($aGame as $game => $servers) {
-                $aData = explode(' ', $servers);
+                $aData = explode(' ', (string) $servers);
 
                 $num = count($aData) - 1;
                 $sep = $num > 0 ? ceil($num / cron::$seping) : 1;
@@ -49,7 +49,7 @@ class control_threads extends cron
 
         foreach ($threads as $thread) {
             foreach ($thread as $screen => $servers)
-                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', (string) $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
         }
 
         exec('screen -dmS control_threads_' . date('His', $start_point) . ' sh -c "' . $cmd . '"');

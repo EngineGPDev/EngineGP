@@ -20,51 +20,51 @@ if (isset($url['core']))
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+            $map = isset($url['value']) ? trim((string) $url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
             if ($map != $server['map_start'])
                 games::maplist($sid, $unit, '/servers/' . $server['uid'] . '/cstrike/maps', $map, true, $nmch, true);
 
-            sys::outjs(array('e' => $map . ' != ' . $server['map_start']), $nmch);
+            sys::outjs(['e' => $map . ' != ' . $server['map_start']], $nmch);
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'address':
             if ($server['status'] != 'off')
-                sys::outjs(array('e' => 'Необходимо выключить игровой сервер'), $nmch);
+                sys::outjs(['e' => 'Необходимо выключить игровой сервер'], $nmch);
 
-            $address = isset($_POST['address']) ? trim($_POST['address']) : $server['address'];
+            $address = isset($_POST['address']) ? trim((string) $_POST['address']) : $server['address'];
 
             if (sys::valid($address, 'other', $aValid['address']))
-                sys::outjs(array('e' => 'Адрес игрового сервера имеет неверный формат'), $nmch);
+                sys::outjs(['e' => 'Адрес игрового сервера имеет неверный формат'], $nmch);
 
             $sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="' . $id . '" AND `address`="' . $address . '" LIMIT 1');
             if ($sql->num())
-                sys::outjs(array('e' => 'Данный адрес занят другим сервером'), $nmch);
+                sys::outjs(['e' => 'Данный адрес занят другим сервером'], $nmch);
 
             if ($address != $server['address'])
                 $sql->query('UPDATE `control_servers` set `address`="' . $address . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'vac':
             if ($value != $server['vac'])
                 $sql->query('UPDATE `control_servers` set `vac`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'core_fix':
             $n = ctrl::cpulist($unit, $server['core_fix'], true);
 
             if ($value > $n)
-                sys::outjs(array('e' => 'На физическом сервере нет такого ядра/потока'), $nmch);
+                sys::outjs(['e' => 'На физическом сервере нет такого ядра/потока'], $nmch);
 
             if ($value < 0)
                 $value = 0;
@@ -73,7 +73,7 @@ if ($go and $url['save']) {
                 $sql->query('UPDATE `control_servers` set `core_fix`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'slots':
             $slots = $value > 32 ? 32 : $value;
@@ -83,34 +83,34 @@ if ($go and $url['save']) {
                 $sql->query('UPDATE `control_servers` set `slots`="' . $slots . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'autorestart':
             if ($value != $server['autorestart'])
                 $sql->query('UPDATE `control_servers` set `autorestart`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'fps':
-            if (in_array($value, array('300', '500', '1100')))
+            if (in_array($value, ['300', '500', '1100']))
                 $sql->query('UPDATE `control_servers` set `fps`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'pingboost':
-            if (in_array($value, array(0, 1, 2, 3)))
+            if (in_array($value, [0, 1, 2, 3]))
                 $sql->query('UPDATE `control_servers` set `pingboost`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
         case 'fastdl':
             require(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address']))
-                sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+                sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
             if ($value) {
                 $fastdl = 'sv_downloadurl "http://' . $unit['address'] . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
@@ -136,7 +136,7 @@ if ($go and $url['save']) {
             $sql->query('UPDATE `control_servers` set `fastdl`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 
@@ -157,7 +157,7 @@ $autorestart = $server['autorestart'] ? '<option value="1">Включен</optio
 
 $fps = '';
 
-foreach (array('300', '500', '1100') as $value)
+foreach (['300', '500', '1100'] as $value)
     $fps .= '<option value="' . $value . '">' . $value . ' FPS</option>';
 
 $pingboost = str_replace($server['pingboost'] . '"', $server['pingboost'] . '" selected="select"', '<option value="0">БЕЗ PINGBOOST</option><option value="1">PINGBOOST 1</option><option value="2">PINGBOOST 2</option><option value="3">PINGBOOST 3</option>');

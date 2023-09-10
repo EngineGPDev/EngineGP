@@ -25,7 +25,7 @@ $html->nav('Ответ на вопрос');
 $sql->query('SELECT `text` FROM `wiki_answer` WHERE `wiki`="' . $quest . '" LIMIT 1');
 $answer = $sql->get();
 
-$aTags = explode(',', $wiki['tags']);
+$aTags = explode(',', (string) $wiki['tags']);
 
 $tags = '';
 
@@ -37,6 +37,6 @@ foreach ($aTags as $tag) {
 $html->get('answer', 'sections/wiki');
 $html->set('id', $quest);
 $html->set('question', $wiki['name']);
-$html->set('text', htmlspecialchars_decode($answer['text']));
+$html->set('text', htmlspecialchars_decode((string) $answer['text']));
 $html->set('tags', $tags != '' ? $tags : 'Теги отсутствуют');
 $html->pack('main');

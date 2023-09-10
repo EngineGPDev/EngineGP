@@ -6,11 +6,11 @@ if (isset($section)) {
     switch ($section) {
         case 'send':
             if (empty($_POST['text']))
-                sys::outjs(array('e' => 'Необходимо написать сообщение'));
+                sys::outjs(['e' => 'Необходимо написать сообщение']);
 
             $msg = $_POST['text'];
-            $sql->query('INSERT INTO `chat` (`userid`, `date`, `msg`) VALUES ("' . $user['id'] . '", NOW(), "' . mysqli_real_escape_string($sql->sql_id, $msg) . '");');
-            sys::outjs(array('s' => ''));
+            $sql->query('INSERT INTO `chat` (`userid`, `date`, `msg`) VALUES ("' . $user['id'] . '", NOW(), "' . mysqli_real_escape_string($sql->sql_id, (string) $msg) . '");');
+            sys::outjs(['s' => '']);
         case 'dialog':
             $q_Msgs = $sql->query('SELECT `chat`.`id`, `userid`, `msg`, `chat`.`date`, `login`, `group` FROM `chat` INNER JOIN `users` ON `chat`.`userid` = `users`.`id` ORDER BY `chat`.`date` ASC LIMIT 30');
             while ($msg = $sql->get($q_Msgs)) {
@@ -50,20 +50,20 @@ if (isset($section)) {
                     $html->set('ava', $cfg['http'] . 'template/images/avatar.png');
                 $html->pack('dialog');
             }
-            sys::out(isset($html->arr['dialog']) ? $html->arr['dialog'] : '');
+            sys::out($html->arr['dialog'] ?? '');
         case 'delete':
             if ($user['group'] != 'admin')
-                sys::outjs(array('e' => 'Недостаточно прав'));
+                sys::outjs(['e' => 'Недостаточно прав']);
 
             if (!isset($url['id']))
-                sys::outjs(array('e' => 'Отсутствует идентификатор'));
+                sys::outjs(['e' => 'Отсутствует идентификатор']);
 
             if ($go)
                 $sql->query('DELETE FROM `chat` WHERE `userid`="' . $url['id'] . '";');
             else
                 $sql->query('DELETE FROM `chat` WHERE `id`="' . $url['id'] . '";');
 
-            sys::outjs(array('s' => ''));
+            sys::outjs(['s' => '']);
     }
 }
 
@@ -109,5 +109,5 @@ while ($msg = $sql->get($q_Msgs)) {
 }
 
 $html->get('dialog', 'sections/chat');
-$html->set('chats', isset($html->arr['msg_all']) ? $html->arr['msg_all'] : '');
+$html->set('chats', $html->arr['msg_all'] ?? '');
 $html->pack('main');

@@ -17,14 +17,14 @@ if ($id) {
 
     if (!$sql->num()) {
         if ($go)
-            sys::outjs(array('e' => 'Сервер #' . $id . ' не найден'));
+            sys::outjs(['e' => 'Сервер #' . $id . ' не найден']);
 
         sys::back($cfg['http'] . 'control');
     }
 
     $ctrl = $sql->get();
 
-    if (in_array($ctrl['status'], array('install', 'overdue', 'blocked', 'reboot')) && !in_array($section, array('extend', 'scan')))
+    if (in_array($ctrl['status'], ['install', 'overdue', 'blocked', 'reboot']) && !in_array($section, ['extend', 'scan']))
         require(SEC . 'control/noaccess.php');
     else {
         if (!$section)
@@ -62,7 +62,7 @@ if ($id) {
     }
 
     $html->get('controls', 'sections/control');
-    $html->set('list', isset($html->arr['list']) ? $html->arr['list'] : 'У вас нет подключенных серверов', true);
+    $html->set('list', $html->arr['list'] ?? 'У вас нет подключенных серверов', true);
     $html->set('updates_control', $js);
     $html->pack('main');
 }

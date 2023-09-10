@@ -6,7 +6,7 @@ if (!$go)
     exit;
 
 if ($user['group'] != 'admin')
-    sys::outjs(array('i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'), $nmch);
+    sys::outjs(['i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'], $nmch);
 
 switch ($aWebInstall[$server['game']][$url['subsection']]) {
     case 'server':
@@ -26,7 +26,7 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num())
-    sys::outjs(array('e' => 'Дополнительная услуга не установлена.'), $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 
 $web = $sql->get();
 
@@ -34,19 +34,16 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
     $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $web['unit'] . '" LIMIT 1');
     $unit = $sql->get();
 } else {
-    $unit = array(
-        'address' => $aWebUnit['address'],
-        'passwd' => $aWebUnit['passwd'],
-    );
+    $unit = ['address' => $aWebUnit['address'], 'passwd' => $aWebUnit['passwd']];
 }
 
 require(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address']))
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 
 $ssh->set("mysql --login-path=local -e \"DROP DATABASE IF EXISTS " . $web['login'] . "; DROP USER " . $web['login'] . "\"");
 
 $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

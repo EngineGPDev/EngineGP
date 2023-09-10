@@ -18,12 +18,12 @@ else {
 }
 
 if ($user['rental'])
-    $rental = strpos($user['rental'], '%') ? $user['rental'] : $user['rental'] . ' ' . $cfg['currency'];
+    $rental = strpos((string) $user['rental'], '%') ? $user['rental'] : $user['rental'] . ' ' . $cfg['currency'];
 else
     $rental = 'отсутствует';
 
 if ($user['extend'])
-    $extend = strpos($user['extend'], '%') ? $user['extend'] : $user['extend'] . ' ' . $cfg['currency'];
+    $extend = strpos((string) $user['extend'], '%') ? $user['extend'] : $user['extend'] . ' ' . $cfg['currency'];
 else
     $extend = 'отсутствует';
 
@@ -71,7 +71,7 @@ if ($user['patronymic']) $html->unit('patronymic', true); else $html->unit('patr
 
 if ($user['name'] || $user['lastname'] || $user['patronymic']) $html->unit('nlp', true); else $html->unit('nlp');
 
-if (isset($user['wmr'][0]) and in_array($user['wmr'][0], array('R', 'Z', 'U')))
+if (isset($user['wmr'][0]) and in_array($user['wmr'][0], ['R', 'Z', 'U']))
     $html->unit('wmr', true, true);
 else
     $html->unit('wmr', false, true);

@@ -8,7 +8,7 @@ $server = array_merge($server, $sql->get());
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 
 // Подразделы
-$aSub = array('install', 'delete', 'update', 'plugin', 'config', 'search');
+$aSub = ['install', 'delete', 'update', 'plugin', 'config', 'search'];
 
 // Если выбран подраздел
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
@@ -51,7 +51,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
                 }
 
                 // Проверка на доступность плагина к установленной на сервере сборке
-                $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
+                $packs = strpos((string) $plugin['packs'], ':') ? explode(':', (string) $plugin['packs']) : [$plugin['packs']];
                 if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
                     continue;
 
@@ -70,8 +70,8 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
                 plugins::status($plugin['status']);
 
-                $html->set('name', htmlspecialchars_decode($plugin['name']));
-                $html->set('desc', htmlspecialchars_decode($plugin['desc']));
+                $html->set('name', htmlspecialchars_decode((string) $plugin['name']));
+                $html->set('desc', htmlspecialchars_decode((string) $plugin['desc']));
 
                 if (!empty($images)) {
                     $html->unit('images', 1);
@@ -92,7 +92,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
             $html->get('category', 'sections/servers/games/plugins');
 
             $html->set('name', $cat['name']);
-            $html->set('plugins', isset($html->arr['plugins']) ? $html->arr['plugins'] : 'Доступных для установки плагинов нет.', 1);
+            $html->set('plugins', $html->arr['plugins'] ?? 'Доступных для установки плагинов нет.', 1);
 
             $html->pack('addons');
         }
@@ -128,9 +128,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
             if ($plugin['upd']) $html->unit('update', 1); else $html->unit('update');
 
-            $html->set('name', htmlspecialchars_decode($plugin['name']));
+            $html->set('name', htmlspecialchars_decode((string) $plugin['name']));
             $html->set('time', sys::today($plugin['time']));
-            $html->set('desc', htmlspecialchars_decode($plugin['desc']));
+            $html->set('desc', htmlspecialchars_decode((string) $plugin['desc']));
 
             $html->pack('install');
         }
@@ -138,8 +138,8 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $html->get('plugins', 'sections/servers/games');
 
         $html->set('id', $id);
-        $html->set('addons', isset($html->arr['addons']) ? $html->arr['addons'] : '');
-        $html->set('install', isset($html->arr['install']) ? $html->arr['install'] : 'Установленные плагины отсутствуют.');
+        $html->set('addons', $html->arr['addons'] ?? '');
+        $html->set('install', $html->arr['install'] ?? 'Установленные плагины отсутствуют.');
 
         $html->pack('main');
 

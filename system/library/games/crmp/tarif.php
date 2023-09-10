@@ -117,7 +117,7 @@ class tarif extends tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
 
         // Директория сборки
         $path = $tarif['path'] . $tarif['pack'];
@@ -133,7 +133,7 @@ class tarif extends tarifs
             . 'chown ' . $uS . ':1000 ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' screen -dmS i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
 
-        $address = explode(':', $server['address']);
+        $address = explode(':', (string) $server['address']);
 
         $fix_one = $tarif['core_fix'] ? 1 : 0;
 
@@ -160,7 +160,7 @@ class tarif extends tarifs
             $aPlugins = sys::b64js($tarif['plugins_install']);
 
             if (isset($aPlugins[$tarif['pack']])) {
-                $plugins = explode(',', $aPlugins[$tarif['pack']]);
+                $plugins = explode(',', (string) $aPlugins[$tarif['pack']]);
 
                 foreach ($plugins as $plugin)
                     if ($plugin)

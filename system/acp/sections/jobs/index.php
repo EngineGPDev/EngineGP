@@ -27,7 +27,7 @@ if (isset($url['edit']) && $url['edit']) {
 
     if (isset($url['del'])) {
         $sql->query('DELETE FROM `jobs` WHERE `id`="' . $url['del'] . '" LIMIT 1');
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $html->get('index', 'sections/jobs');

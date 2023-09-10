@@ -2,7 +2,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$text = isset($_POST['text']) ? trim($_POST['text']) : '';
+$text = isset($_POST['text']) ? trim((string) $_POST['text']) : '';
 
 $mkey = md5($text . $id);
 
@@ -15,26 +15,26 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 $select = '`id`, `unit`, `tarif`, `user`, `address`, `game`, `status`, `slots`, `name`, `time` FROM `servers` WHERE `user`!="-1" AND';
 
-if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif')))
+if (isset($url['search']) and in_array($url['search'], ['unit', 'tarif']))
     $select .= ' `' . $url['search'] . '`=' . sys::int($url[$url['search']]) . ' AND';
 
 $check = explode('=', $text);
 
-if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status', 'slots'))) {
+if (in_array($check[0], ['game', 'unit', 'core', 'tarif', 'user', 'status', 'slots'])) {
     $val = trim($check[1]);
 
     switch ($check[0]) {
         case 'game':
-            if (in_array($val, array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+            if (in_array($val, ['cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc']))
                 $servers = $sql->query('SELECT ' . $select . ' FROM `servers` WHERE `user`!="-1" AND `game`="' . $val . '" ORDER BY `id` ASC');
             break;
 
@@ -55,7 +55,7 @@ if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status',
             break;
 
         case 'status':
-            if (in_array($val, array('working', 'start', 'change', 'restart', 'off', 'overdue', 'blocked', 'recovery', 'reinstall', 'update', 'install')))
+            if (in_array($val, ['working', 'start', 'change', 'restart', 'off', 'overdue', 'blocked', 'recovery', 'reinstall', 'update', 'install']))
                 $servers = $sql->query('SELECT ' . $select . ' `status`="' . $val . '" ORDER BY `id` ASC');
             break;
 
@@ -63,7 +63,7 @@ if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status',
             $servers = $sql->query('SELECT ' . $select . ' `slots`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
     }
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $servers = $sql->query('SELECT ' . $select . ' `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -79,24 +79,12 @@ else {
 
 if (!$sql->num($servers)) {
     if ($go)
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
-$status = array(
-    'working' => '<span class="text-green">Работает</span>',
-    'off' => '<span class="text-red">Выключен</span>',
-    'start' => 'Запускается',
-    'restart' => 'Перезапускается',
-    'change' => 'Смена карты',
-    'install' => 'Устанавливается',
-    'reinstall' => 'Переустанавливается',
-    'update' => 'Обновляется',
-    'recovery' => 'Восстанавливается',
-    'overdue' => 'Просрочен',
-    'blocked' => 'Заблокирован'
-);
+$status = ['working' => '<span class="text-green">Работает</span>', 'off' => '<span class="text-red">Выключен</span>', 'start' => 'Запускается', 'restart' => 'Перезапускается', 'change' => 'Смена карты', 'install' => 'Устанавливается', 'reinstall' => 'Переустанавливается', 'update' => 'Обновляется', 'recovery' => 'Восстанавливается', 'overdue' => 'Просрочен', 'blocked' => 'Заблокирован'];
 
 $list = '';
 
@@ -112,7 +100,7 @@ while ($server = $sql->get($servers)) {
     $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/id/' . $server['id'] . '">' . $server['name'] . '</a></td>';
     $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/search/unit/unit/' . $server['unit'] . '">#' . $server['unit'] . ' ' . $unit['name'] . '</a></td>';
     $list .= '<td class="text-center">' . $server['slots'] . ' шт.</td>';
-    $list .= '<td class="text-center">' . strtoupper($server['game']) . '</td>';
+    $list .= '<td class="text-center">' . strtoupper((string) $server['game']) . '</td>';
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'servers/id/' . $server['id'] . '" target="_blank">Перейти</a></td>';
     $list .= '</tr>';
 
@@ -126,6 +114,6 @@ while ($server = $sql->get($servers)) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

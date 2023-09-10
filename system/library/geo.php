@@ -24,24 +24,7 @@ class SxGeo
     protected $regions_db;
     protected $cities_db;
 
-    public $id2iso = array(
-        '', 'AP', 'EU', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'CW', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU',
-        'AW', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BM', 'BN', 'BO', 'BR', 'BS',
-        'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN',
-        'CO', 'CR', 'CU', 'CV', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG',
-        'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'SX', 'GA', 'GB', 'GD', 'GE', 'GF',
-        'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN',
-        'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JM', 'JO', 'JP', 'KE',
-        'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR',
-        'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP',
-        'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI',
-        'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN',
-        'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG',
-        'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'ST', 'SV', 'SY', 'SZ', 'TC', 'TD', 'TF',
-        'TG', 'TH', 'TJ', 'TK', 'TM', 'TN', 'TO', 'TL', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM',
-        'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'RS', 'ZA',
-        'ZM', 'ME', 'ZW', 'A1', 'XK', 'O1', 'AX', 'GG', 'IM', 'JE', 'BL', 'MF', 'BQ', 'SS'
-    );
+    public $id2iso = ['', 'AP', 'EU', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'CW', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BM', 'BN', 'BO', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'SX', 'GA', 'GB', 'GD', 'GE', 'GF', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'ST', 'SV', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TM', 'TN', 'TO', 'TL', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'RS', 'ZA', 'ZM', 'ME', 'ZW', 'A1', 'XK', 'O1', 'AX', 'GG', 'IM', 'JE', 'BL', 'MF', 'BQ', 'SS'];
 
     public $batch_mode = false;
     public $memory_mode = false;
@@ -51,7 +34,7 @@ class SxGeo
         $this->fh = fopen($db_file, 'rb');
 
         $header = fread($this->fh, 40);
-        if (substr($header, 0, 3) != 'SxG')
+        if (!str_starts_with($header, 'SxG'))
             die("Can't open {$db_file}\n");
 
         $info = unpack('Cver/Ntime/Ctype/Ccharset/Cb_idx_len/nm_idx_len/nrange/Ndb_items/Cid_len/nmax_region/nmax_city/Nregion_size/Ncity_size/nmax_country/Ncountry_size/npack_size', substr($header, 3));
@@ -116,13 +99,13 @@ class SxGeo
             while ($max - $min > 8) {
                 $offset = ($min + $max) >> 1;
 
-                if ($ipn > substr($this->m_idx_str, $offset * 4, 4))
+                if ($ipn > substr((string) $this->m_idx_str, $offset * 4, 4))
                     $min = $offset;
                 else
                     $max = $offset;
             }
 
-            while ($ipn > substr($this->m_idx_str, $min * 4, 4) && $min++ < $max) {
+            while ($ipn > substr((string) $this->m_idx_str, $min * 4, 4) && $min++ < $max) {
             };
         }
 
@@ -132,22 +115,22 @@ class SxGeo
     protected function search_db($str, $ipn, $min, $max)
     {
         if ($max - $min > 1) {
-            $ipn = substr($ipn, 1);
+            $ipn = substr((string) $ipn, 1);
 
             while ($max - $min > 8) {
                 $offset = ($min + $max) >> 1;
-                if ($ipn > substr($str, $offset * $this->block_len, 3))
+                if ($ipn > substr((string) $str, $offset * $this->block_len, 3))
                     $min = $offset;
                 else
                     $max = $offset;
             }
 
-            while ($ipn >= substr($str, $min * $this->block_len, 3) && ++$min < $max) {
+            while ($ipn >= substr((string) $str, $min * $this->block_len, 3) && ++$min < $max) {
             };
         } else
             $min++;
 
-        return hexdec(bin2hex(substr($str, $min * $this->block_len - $this->id_len, $this->id_len)));
+        return hexdec(bin2hex(substr((string) $str, $min * $this->block_len - $this->id_len, $this->id_len)));
     }
 
     public function get_num($ip)
@@ -161,9 +144,9 @@ class SxGeo
         $this->ip1c = chr($ip1n);
 
         if ($this->batch_mode)
-            $blocks = array('min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]);
+            $blocks = ['min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]];
         else
-            $blocks = unpack("Nmin/Nmax", substr($this->b_idx_str, ($ip1n - 1) * 4, 8));
+            $blocks = unpack("Nmin/Nmax", substr((string) $this->b_idx_str, ($ip1n - 1) * 4, 8));
 
         if ($blocks['max'] - $blocks['min'] > $this->range) {
             $part = $this->search_idx($ipn, floor($blocks['min'] / $this->range), floor($blocks['max'] / $this->range) - 1);
@@ -224,7 +207,7 @@ class SxGeo
             $only_country = true;
         } else {
             $city = $this->readData($seek, $this->max_city, 2);
-            $country = array('id' => $city['country_id'], 'iso' => $this->id2iso[$city['country_id']]);
+            $country = ['id' => $city['country_id'], 'iso' => $this->id2iso[$city['country_id']]];
             unset($city['country_id']);
         }
 
@@ -237,23 +220,23 @@ class SxGeo
             unset($city['region_seek']);
             unset($region['country_seek']);
 
-            return array('city' => $city, 'region' => $region, 'country' => $country);
+            return ['city' => $city, 'region' => $region, 'country' => $country];
         } else {
             unset($city['region_seek']);
 
-            return array('city' => $city, 'country' => array('id' => $country['id'], 'iso' => $country['iso']));
+            return ['city' => $city, 'country' => ['id' => $country['id'], 'iso' => $country['iso']]];
         }
     }
 
     protected function unpack($pack, $item = '')
     {
-        $unpacked = array();
+        $unpacked = [];
         $empty = empty($item);
-        $pack = explode('/', $pack);
+        $pack = explode('/', (string) $pack);
         $pos = 0;
 
         foreach ($pack as $p) {
-            list($type, $name) = explode(':', $p);
+            [$type, $name] = explode(':', $p);
 
             $type0 = $type[0];
 
@@ -263,34 +246,17 @@ class SxGeo
                 continue;
             }
 
-            switch ($type0) {
-                case 't':
-                case 'T':
-                    $l = 1;
-                    break;
-                case 's':
-                case 'n':
-                case 'S':
-                    $l = 2;
-                    break;
-                case 'm':
-                case 'M':
-                    $l = 3;
-                    break;
-                case 'd':
-                    $l = 8;
-                    break;
-                case 'c':
-                    $l = (int)substr($type, 1);
-                    break;
-                case 'b':
-                    $l = strpos($item, "\0", $pos) - $pos;
-                    break;
-                default:
-                    $l = 4;
-            }
+            $l = match ($type0) {
+                't', 'T' => 1,
+                's', 'n', 'S' => 2,
+                'm', 'M' => 3,
+                'd' => 8,
+                'c' => (int)substr($type, 1),
+                'b' => strpos((string) $item, "\0", $pos) - $pos,
+                default => 4,
+            };
 
-            $val = substr($item, $pos, $l);
+            $val = substr((string) $item, $pos, $l);
 
             switch ($type0) {
                 case 't':
@@ -325,10 +291,10 @@ class SxGeo
                     break;
 
                 case 'n':
-                    $v = current(unpack('s', $val)) / pow(10, $type[1]);
+                    $v = current(unpack('s', $val)) / 10 ** $type[1];
                     break;
                 case 'N':
-                    $v = current(unpack('l', $val)) / pow(10, $type[1]);
+                    $v = current(unpack('l', $val)) / 10 ** $type[1];
                     break;
 
                 case 'c':
@@ -388,35 +354,10 @@ class SxGeo
 
     public function about()
     {
-        $charset = array('utf-8', 'latin1', 'cp1251');
-        $types = array('n/a', 'SxGeo Country', 'SxGeo City RU', 'SxGeo City EN', 'SxGeo City', 'SxGeo City Max RU', 'SxGeo City Max EN', 'SxGeo City Max');
+        $charset = ['utf-8', 'latin1', 'cp1251'];
+        $types = ['n/a', 'SxGeo Country', 'SxGeo City RU', 'SxGeo City EN', 'SxGeo City', 'SxGeo City Max RU', 'SxGeo City Max EN', 'SxGeo City Max'];
 
-        return array(
-            'Created' => date('Y.m.d', $this->info['time']),
-            'Timestamp' => $this->info['time'],
-            'Charset' => $charset[$this->info['charset']],
-            'Type' => $types[$this->info['type']],
-            'Byte Index' => $this->b_idx_len,
-            'Main Index' => $this->m_idx_len,
-            'Blocks In Index Item' => $this->range,
-            'IP Blocks' => $this->db_items,
-            'Block Size' => $this->block_len,
-
-            'City' => array(
-                'Max Length' => $this->max_city,
-                'Total Size' => $this->info['city_size'],
-            ),
-
-            'Region' => array(
-                'Max Length' => $this->max_region,
-                'Total Size' => $this->info['region_size'],
-            ),
-
-            'Country' => array(
-                'Max Length' => $this->max_country,
-                'Total Size' => $this->info['country_size'],
-            ),
-        );
+        return ['Created' => date('Y.m.d', $this->info['time']), 'Timestamp' => $this->info['time'], 'Charset' => $charset[$this->info['charset']], 'Type' => $types[$this->info['type']], 'Byte Index' => $this->b_idx_len, 'Main Index' => $this->m_idx_len, 'Blocks In Index Item' => $this->range, 'IP Blocks' => $this->db_items, 'Block Size' => $this->block_len, 'City' => ['Max Length' => $this->max_city, 'Total Size' => $this->info['city_size']], 'Region' => ['Max Length' => $this->max_region, 'Total Size' => $this->info['region_size']], 'Country' => ['Max Length' => $this->max_country, 'Total Size' => $this->info['country_size']]];
     }
 }
 

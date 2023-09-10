@@ -7,16 +7,16 @@ sys::noauth();
 
 $updir = DIR . 'upload/';
 
-$file = isset($_POST['value']) ? $_POST['value'] : exit;
-$name = isset($_POST['name']) ? $_POST['name'] : exit;
+$file = $_POST['value'] ?? exit;
+$name = $_POST['name'] ?? exit;
 
-$pname = explode('.', $name);
+$pname = explode('.', (string) $name);
 $type = strtolower(end($pname));
 
-if (!in_array($type, array('png', 'gif', 'jpg', 'jpeg', 'bmp')))
+if (!in_array($type, ['png', 'gif', 'jpg', 'jpeg', 'bmp']))
     exit('Допустимый формат изображений: png, gif, jpg, jpeg, bmp.');
 
-$aData = explode(',', $file);
+$aData = explode(',', (string) $file);
 
 $rdmName = md5($start_point . sys::passwd(10) . $user['id']) . '.' . $type;
 

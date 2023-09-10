@@ -5,53 +5,44 @@ if (!defined('EGP'))
 $sql->query('SELECT * FROM `plugins_update` WHERE `id`="' . $id . '" LIMIT 1');
 $plugin = $sql->get();
 
-$aGames = array(
-    'cs' => 'Counter-Strike: 1.6',
-    'cssold' => 'Counter-Strike: Source v34',
-    'css' => 'Counter-Strike: Source',
-    'csgo' => 'Counter-Strike: Global Offensive',
-    'samp' => 'San Andreas Multiplayer',
-    'crmp' => 'GTA: Criminal Russia',
-    'mta' => 'Multi Theft Auto',
-    'mc' => 'Minecraft'
-);
+$aGames = ['cs' => 'Counter-Strike: 1.6', 'cssold' => 'Counter-Strike: Source v34', 'css' => 'Counter-Strike: Source', 'csgo' => 'Counter-Strike: Global Offensive', 'samp' => 'San Andreas Multiplayer', 'crmp' => 'GTA: Criminal Russia', 'mta' => 'Multi Theft Auto', 'mc' => 'Minecraft'];
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : $plugin['name'];
+    $aData['name'] = isset($_POST['name']) ? trim((string) $_POST['name']) : $plugin['name'];
     $aData['cat'] = isset($_POST['category']) ? sys::int($_POST['category']) : $plugin['cat'];
     $aData['status'] = isset($_POST['status']) ? sys::int($_POST['status']) : $plugin['status'];
-    $aData['packs'] = isset($_POST['packs']) ? trim($_POST['packs']) : $plugin['packs'];
-    $aData['desc'] = isset($_POST['desc']) ? trim($_POST['desc']) : $plugin['desc'];
-    $aData['info'] = isset($_POST['info']) ? trim($_POST['info']) : $plugin['info'];
-    $aData['images'] = isset($_POST['images']) ? trim($_POST['images']) : $plugin['images'];
-    $aData['incompatible'] = isset($_POST['incompatible']) ? trim($_POST['incompatible']) : $plugin['incompatible'];
-    $aData['choice'] = isset($_POST['choice']) ? trim($_POST['choice']) : $plugin['choice'];
-    $aData['required'] = isset($_POST['required']) ? trim($_POST['required']) : $plugin['required'];
+    $aData['packs'] = isset($_POST['packs']) ? trim((string) $_POST['packs']) : $plugin['packs'];
+    $aData['desc'] = isset($_POST['desc']) ? trim((string) $_POST['desc']) : $plugin['desc'];
+    $aData['info'] = isset($_POST['info']) ? trim((string) $_POST['info']) : $plugin['info'];
+    $aData['images'] = isset($_POST['images']) ? trim((string) $_POST['images']) : $plugin['images'];
+    $aData['incompatible'] = isset($_POST['incompatible']) ? trim((string) $_POST['incompatible']) : $plugin['incompatible'];
+    $aData['choice'] = isset($_POST['choice']) ? trim((string) $_POST['choice']) : $plugin['choice'];
+    $aData['required'] = isset($_POST['required']) ? trim((string) $_POST['required']) : $plugin['required'];
     $aData['update'] = isset($_POST['update']) ? sys::int($_POST['update']) : $plugin['update'];
     $aData['delete'] = isset($_POST['delete']) ? sys::int($_POST['delete']) : $plugin['delete'];
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $plugin['sort'];
     $aData['price'] = isset($_POST['price']) ? ceil($_POST['price']) : $plugin['price'];
 
-    $aData['config_files_file'] = isset($_POST['config_files_file']) ? $_POST['config_files_file'] : array();
-    $aData['config_files_sort'] = isset($_POST['config_files_sort']) ? $_POST['config_files_sort'] : array();
-    $aData['config_clear_file'] = isset($_POST['config_clear_file']) ? $_POST['config_clear_file'] : array();
-    $aData['config_clear_text'] = isset($_POST['config_clear_text']) ? $_POST['config_clear_text'] : array();
-    $aData['config_write_file'] = isset($_POST['config_write_file']) ? $_POST['config_write_file'] : array();
-    $aData['config_write_text'] = isset($_POST['config_write_text']) ? $_POST['config_write_text'] : array();
-    $aData['config_write_top'] = isset($_POST['config_write_top']) ? $_POST['config_write_top'] : array();
-    $aData['config_write_del_file'] = isset($_POST['config_write_del_file']) ? $_POST['config_write_del_file'] : array();
-    $aData['config_write_del_text'] = isset($_POST['config_write_del_text']) ? $_POST['config_write_del_text'] : array();
-    $aData['config_write_del_top'] = isset($_POST['config_write_del_top']) ? $_POST['config_write_del_top'] : array();
-    $aData['files_delete_file'] = isset($_POST['files_delete_file']) ? $_POST['files_delete_file'] : array();
+    $aData['config_files_file'] = $_POST['config_files_file'] ?? [];
+    $aData['config_files_sort'] = $_POST['config_files_sort'] ?? [];
+    $aData['config_clear_file'] = $_POST['config_clear_file'] ?? [];
+    $aData['config_clear_text'] = $_POST['config_clear_text'] ?? [];
+    $aData['config_write_file'] = $_POST['config_write_file'] ?? [];
+    $aData['config_write_text'] = $_POST['config_write_text'] ?? [];
+    $aData['config_write_top'] = $_POST['config_write_top'] ?? [];
+    $aData['config_write_del_file'] = $_POST['config_write_del_file'] ?? [];
+    $aData['config_write_del_text'] = $_POST['config_write_del_text'] ?? [];
+    $aData['config_write_del_top'] = $_POST['config_write_del_top'] ?? [];
+    $aData['files_delete_file'] = $_POST['files_delete_file'] ?? [];
 
     $aData['cfg'] = 0;
 
     if ($aData['name'] == '')
-        sys::outjs(array('e' => 'Необходимо указать название'));
+        sys::outjs(['e' => 'Необходимо указать название']);
 
-    $aPacks = explode(':', $aData['packs']);
+    $aPacks = explode(':', (string) $aData['packs']);
 
     $spacks = '';
 
@@ -61,11 +52,11 @@ if ($go) {
         $spacks .= intval($packs) . ':';
     }
 
-    $spacks = isset($spacks{0}) ? substr($spacks, 0, -1) : '';
+    $spacks = isset($spacks[0]) ? substr($spacks, 0, -1) : '';
 
     $aData['packs'] = $spacks == '' ? $spacks : 'all';
 
-    $aIncom = explode(':', $aData['incompatible']);
+    $aIncom = explode(':', (string) $aData['incompatible']);
 
     $incoms = '';
 
@@ -78,11 +69,11 @@ if ($go) {
         $incoms .= intval($incom) . ':';
     }
 
-    $incoms = isset($incoms{0}) ? substr($incoms, 0, -1) : '';
+    $incoms = isset($incoms[0]) ? substr($incoms, 0, -1) : '';
 
     $aData['incompatible'] = $incoms;
 
-    $aChoice = explode(' ', $aData['choice']);
+    $aChoice = explode(' ', (string) $aData['choice']);
 
     $choice = '';
 
@@ -101,11 +92,11 @@ if ($go) {
         $choice .= ' ';
     }
 
-    $choice = isset($choice{0}) ? substr(trim($choice), 0, -1) : '';
+    $choice = isset($choice[0]) ? substr(trim($choice), 0, -1) : '';
 
     $aData['choice'] = $choice;
 
-    $aRequi = explode(':', $aData['required']);
+    $aRequi = explode(':', (string) $aData['required']);
 
     $requis = '';
 
@@ -118,7 +109,7 @@ if ($go) {
         $requis .= intval($requi) . ':';
     }
 
-    $requis = isset($requis{0}) ? substr($requis, 0, -1) : '';
+    $requis = isset($requis[0]) ? substr($requis, 0, -1) : '';
 
     $aData['required'] = $requis;
 
@@ -148,7 +139,7 @@ if ($go) {
 
         $regex = (string)$aData['config_clear_regex'] == 'on' ? 1 : 0;
 
-        $text = htmlspecialchars(trim($aData['config_clear_text'][$i]));
+        $text = htmlspecialchars(trim((string) $aData['config_clear_text'][$i]));
 
         $sql->query('INSERT INTO `plugins_clear` set `plugin`="' . $plugin['plugin'] . '", `update`="' . $id . '", `text`="' . $text . '", `file`="' . $file . '", `regex`="' . $regex . '"');
     }
@@ -161,7 +152,7 @@ if ($go) {
 
         $top = (string)$aData['config_write_top'][$i] == 'on' ? 1 : 0;
 
-        $text = htmlspecialchars(trim($aData['config_write_text'][$i]));
+        $text = htmlspecialchars(trim((string) $aData['config_write_text'][$i]));
 
         $sql->query('INSERT INTO `plugins_write` set `plugin`="' . $plugin['plugin'] . '", `update`="' . $id . '", `text`="' . $text . '", `file`="' . $file . '", `top`="' . $top . '"');
     }
@@ -174,7 +165,7 @@ if ($go) {
 
         $top = (string)$aData['config_write_del_top'][$i] == 'on' ? 1 : 0;
 
-        $text = htmlspecialchars(trim($aData['config_write_del_text'][$i]));
+        $text = htmlspecialchars(trim((string) $aData['config_write_del_text'][$i]));
 
         $sql->query('INSERT INTO `plugins_write_del` set `plugin`="' . $plugin['plugin'] . '", `update`="' . $id . '", `text`="' . $text . '", `file`="' . $file . '", `top`="' . $top . '"');
     }
@@ -195,10 +186,10 @@ if ($go) {
     }
 
     $sql->query('UPDATE `plugins_update` set '
-        . '`name`="' . htmlspecialchars($aData['name']) . '",'
-        . '`desc`="' . htmlspecialchars($aData['desc']) . '",'
-        . '`info`="' . htmlspecialchars($aData['info']) . '",'
-        . '`images`="' . htmlspecialchars($aData['images']) . '",'
+        . '`name`="' . htmlspecialchars((string) $aData['name']) . '",'
+        . '`desc`="' . htmlspecialchars((string) $aData['desc']) . '",'
+        . '`info`="' . htmlspecialchars((string) $aData['info']) . '",'
+        . '`images`="' . htmlspecialchars((string) $aData['images']) . '",'
         . '`incompatible`="' . $aData['incompatible'] . '",'
         . '`choice`="' . $aData['choice'] . '",'
         . '`required`="' . $aData['required'] . '",'
@@ -207,7 +198,7 @@ if ($go) {
         . '`price`="' . $aData['price'] . '",'
         . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('update', 'sections/addons');
@@ -216,9 +207,9 @@ $html->set('id', $plugin['id']);
 $html->set('plugin', $plugin['plugin']);
 $html->set('name', $plugin['name']);
 $html->set('game', $aGames[$plugin['game']]);
-$html->set('desc', htmlspecialchars_decode($plugin['desc']));
-$html->set('info', htmlspecialchars_decode($plugin['info']));
-$html->set('images', htmlspecialchars_decode($plugin['images']));
+$html->set('desc', htmlspecialchars_decode((string) $plugin['desc']));
+$html->set('info', htmlspecialchars_decode((string) $plugin['info']));
+$html->set('images', htmlspecialchars_decode((string) $plugin['images']));
 
 $html->set('incompatible', $plugin['incompatible']);
 $html->set('choice', $plugin['choice']);

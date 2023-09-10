@@ -6,7 +6,7 @@ $sql->query('SELECT `key` FROM `api` WHERE `server`="' . $id . '" LIMIT 1');
 if ($sql->num())
     $sql->query('DELETE FROM `api` WHERE `server`="' . $id . '" LIMIT 1');
 else
-    $sql->query('INSERT INTO `api` set `server`="' . $id . '", `key`="' . md5(sys::passwd(10)) . '"');
+    $sql->query('INSERT INTO `api` set `server`="' . $id . '", `key`="' . md5((string) sys::passwd(10)) . '"');
 
 $mcache->delete('server_settings_' . $id);
 

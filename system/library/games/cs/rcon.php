@@ -14,7 +14,7 @@ class rcon
 
         $sq = new SourceQuery();
 
-        list($ip, $port) = explode(':', $server['address']);
+        [$ip, $port] = explode(':', (string) $server['address']);
 
         $sq->Connect($ip, $port, 3, SourceQuery::GOLDSOURCE);
 
@@ -29,13 +29,13 @@ class rcon
 
     public static function players($data)
     {
-        $aPlayers = array();
+        $aPlayers = [];
         $n = 1;
 
-        $lines = explode("\n", $data);
+        $lines = explode("\n", (string) $data);
 
         foreach ($lines as $line) {
-            if (strpos($line, '#') === FALSE)
+            if (!str_contains($line, '#'))
                 continue;
 
             $start = strpos($line, '"') + 1;
@@ -45,10 +45,10 @@ class rcon
 
             $line = trim(substr($line, $end + 1));
 
-            $aData = array_values(array_diff(explode(' ', $line), array('', ' ')));
+            $aData = array_values(array_diff(explode(' ', $line), ['', ' ']));
 
             $steamid = trim($aData[1]);
-            $ip = trim(sys::first(explode(':', $aData[6])));
+            $ip = trim((string) sys::first(explode(':', $aData[6])));
 
             if (sys::valid($steamid, 'steamid') || sys::valid($ip, 'ip'))
                 continue;
@@ -81,17 +81,17 @@ class rcon
         $unit = $sql->get();
 
         if (!$ssh->auth($unit['passwd'], $unit['address']))
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
         $ssh->set('cat ' . $tarif['install'] . $server['uid'] . '/cstrike/server.cfg | grep rcon_password');
-        $get = explode(' ', str_replace('"', '', trim($ssh->get())));
+        $get = explode(' ', str_replace('"', '', trim((string) $ssh->get())));
         $rcon = trim(end($get));
 
-        if (!isset($rcon{0}))
-            sys::outjs(array('r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'), $nmch);
+        if (!isset($rcon[0]))
+            sys::outjs(['r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'], $nmch);
 
         return $rcon;
     }
@@ -103,7 +103,7 @@ class rcon
         $cData = $SxGeo->getCityFull($ip);
         $ico = sys::country($cData['country']['iso']);
 
-        return array('ico' => $ico, 'name' => empty($cData['country']['name_ru']) ? 'Не определена' : $cData['country']['name_ru']);
+        return ['ico' => $ico, 'name' => empty($cData['country']['name_ru']) ? 'Не определена' : $cData['country']['name_ru']];
     }
 }
 

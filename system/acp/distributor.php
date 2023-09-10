@@ -19,9 +19,9 @@ $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handle
 $whoops->pushHandler($loggingInFile);
 
 // Парсинг адреса
-$url = is_array(sys::url()) ? sys::url() : array();
+$url = is_array(sys::url()) ? sys::url() : [];
 $route = sys::url(false);
-$section = isset($url['section']) ? $url['section'] : false;
+$section = $url['section'] ?? false;
 
 $id = array_key_exists('id', $url) ? sys::int($url['id']) : false;
 $go = array_key_exists('go', $url);
@@ -31,11 +31,11 @@ $route = $route == '' ? 'index' : $route;
 $auth = false;
 
 // Проверка cookie на авторизацию
-$aAuth = array();
+$aAuth = [];
 
-$aAuth['login'] = isset($_COOKIE['egp_login']) ? $_COOKIE['egp_login'] : '';
-$aAuth['passwd'] = isset($_COOKIE['egp_passwd']) ? $_COOKIE['egp_passwd'] : '';
-$aAuth['authkeycheck'] = isset($_COOKIE['egp_authkeycheck']) ? $_COOKIE['egp_authkeycheck'] : '';
+$aAuth['login'] = $_COOKIE['egp_login'] ?? '';
+$aAuth['passwd'] = $_COOKIE['egp_passwd'] ?? '';
+$aAuth['authkeycheck'] = $_COOKIE['egp_authkeycheck'] ?? '';
 
 $authkey = md5($aAuth['login'] . $uip . $aAuth['passwd']);
 
@@ -71,23 +71,9 @@ if (isset($html->arr['main'])) {
     $html->upd(
         'main',
 
-        array(
-            '[cur]',
-            '[acp]',
-            '[home]',
-            '[js]',
-            '[css]',
-            '[img]'
-        ),
+        ['[cur]', '[acp]', '[home]', '[js]', '[css]', '[img]'],
 
-        array(
-            $cfg['currency'],
-            $cfg['http'] . 'acp/',
-            $cfg['http'],
-            $cfg['http'] . 'acp/template/js/',
-            $cfg['http'] . 'acp/template/css/',
-            $cfg['http'] . 'acp/template/images/'
-        ),
+        [$cfg['currency'], $cfg['http'] . 'acp/', $cfg['http'], $cfg['http'] . 'acp/template/js/', $cfg['http'] . 'acp/template/css/', $cfg['http'] . 'acp/template/images/'],
     );
 }
 
@@ -95,21 +81,9 @@ if (isset($html->arr['menu'])) {
     $html->upd(
         'menu',
 
-        array(
-            '[acp]',
-            '[home]',
-            '[js]',
-            '[css]',
-            '[img]'
-        ),
+        ['[acp]', '[home]', '[js]', '[css]', '[img]'],
 
-        array(
-            $cfg['http'] . 'acp/',
-            $cfg['http'],
-            $cfg['http'] . 'acp/template/js/',
-            $cfg['http'] . 'acp/template/css/',
-            $cfg['http'] . 'acp/template/images/'
-        ),
+        [$cfg['http'] . 'acp/', $cfg['http'], $cfg['http'] . 'acp/template/js/', $cfg['http'] . 'acp/template/css/', $cfg['http'] . 'acp/template/images/'],
     );
 }
 
@@ -137,6 +111,6 @@ unset($aRoute[array_search($route, $aRoute)]);
 foreach ($aRoute as $route)
     $html->unit('p_' . $route);
 
-$html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
+$html->set('main', $html->arr['main'] ?? '', true);
 
 $html->pack('all');

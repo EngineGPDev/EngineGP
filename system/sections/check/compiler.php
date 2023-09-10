@@ -6,7 +6,7 @@ if ($go) {
     function createPostString($aPostFields)
     {
         foreach ($aPostFields as $key => $value)
-            $aPostFields[$key] = urlencode($key) . '=' . urlencode($value);
+            $aPostFields[$key] = urlencode((string) $key) . '=' . urlencode((string) $value);
 
         return implode('&', $aPostFields);
     }
@@ -14,12 +14,12 @@ if ($go) {
     $sql->query('SELECT `browser` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
     $u_sql = $sql->get();
 
-    $browser = base64_decode($u_sql['browser']);
+    $browser = base64_decode((string) $u_sql['browser']);
 
     $file = $_FILES['file_code'];
 
-    if (substr($file['name'], -4) != '.sma')
-        sys::outjs(array('e' => 'Только .sma разрешается загружать'));
+    if (!str_ends_with((string) $file['name'], '.sma'))
+        sys::outjs(['e' => 'Только .sma разрешается загружать']);
 
     $text = file_get_contents($file['tmp_name']);
     $textArray = explode("\n", $text);
@@ -72,7 +72,7 @@ if ($go) {
         $count_good++;
 
         $handle = fopen(FILES . $good, "w");
-        fwrite($handle, $count_good);
+        fwrite($handle, (string) $count_good);
         fclose($handle);
     } else {
         $ktory = strpos($tresc, "Your plugin failed to compile");
@@ -105,7 +105,7 @@ if ($go) {
         $count_failed++;
 
         $handle = fopen(FILES . $failed, "w");
-        fwrite($handle, $count_failed);
+        fwrite($handle, (string) $count_failed);
         fclose($handle);
     }
 } else {
