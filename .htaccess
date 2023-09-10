@@ -19,21 +19,24 @@ RewriteRule ^(?!acp).* index.php [L]
 ErrorDocument 403 /403.html
 ErrorDocument 404 /404.html
 
+# Используется многострочный комментарий. Не снимать, кэширование работает некорректно.
+<Files ~ "hijack">
 <ifModule mod_expires.c>
  ExpiresActive On
- #кэшировать флэш и изображения на одну неделю
+ # Кэшировать флэш и изображения на одну неделю
  ExpiresByType image/x-icon "access plus 7 days"
  ExpiresByType image/jpeg "access plus 7 days"
  ExpiresByType image/png "access plus 7 days"
  ExpiresByType image/gif "access plus 7 days"
  ExpiresByType application/x-shockwave-flash "access plus 7 days"
- #кэшировать css, javascript и текстовые файлы на одну неделю
+ # Кэшировать css, javascript и текстовые файлы на одну неделю
  ExpiresByType text/css "access plus 7 days"
  ExpiresByType text/javascript "access plus 7 days"
  ExpiresByType application/javascript "access plus 7 days"
  ExpiresByType application/x-javascript "access plus 7 days"
- #кэшировать html и htm файлы на один день
+ # Кэшировать html и htm файлы на один день
  ExpiresByType text/html "access plus 1 day"
- #кэшировать xml файлы на десять минут
+ # Кэшировать xml файлы на десять минут
  ExpiresByType application/xhtml+xml "access plus 10 minutes"
 </ifModule>
+</Files>
