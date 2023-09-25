@@ -1,4 +1,6 @@
 <?php
+use EngineGP\System\Library\Acp\sys;
+
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 

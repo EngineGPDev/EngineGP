@@ -1,4 +1,6 @@
 <?php
+namespace EngineGP\System\Library\Acp;
+
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
@@ -573,12 +575,17 @@ class sys
     {
         global $SxGeo;
 
-        if (sys::valid($address, 'ip'))
+        if (sys::valid($address, 'ip')) {
             return 'не определена';
+        }
 
         $data = $SxGeo->getCityFull($address);
 
-        return $data['country']['name_ru'] != '' ? $data['country']['name_ru'] : 'не определена';
+        if (is_array($data) && isset($data['country']['name_ru']) && $data['country']['name_ru'] != '') {
+            return $data['country']['name_ru'];
+        } else {
+            return 'не определена';
+        }
     }
 
     public static function ipproxy()

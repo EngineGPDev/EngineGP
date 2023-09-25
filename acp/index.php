@@ -1,4 +1,6 @@
 <?php
+use EngineGP\System\Library\Acp\sys;
+
 header('Content-Type: text/html; charset=utf-8');
 
 date_default_timezone_set('Europe/Moscow');
@@ -42,6 +44,7 @@ require(DATA . 'acpengine.php');
 // Библиотеки
 require(LIB . 'sql.php');
 require(LIB . 'html.php');
+$html = new html;
 require(LIB . 'acpsystem.php');
 
 $uip = sys::ip();
