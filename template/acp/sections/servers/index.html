@@ -1,0 +1,36 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="servers_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="double-color">
+	<thead>
+		<tr>
+			<th class="w15p text-center">Номер / Владелец</th>
+			<th class="w20p">Название / Адрес</th>
+			<th class="w20p">Локация / Тариф</th>
+			<th class="w15p text-center">Слоты / Статус</th>
+			<th class="w20p text-center">Игра / Аренда</th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	var url_search = '[url_search]';
+
+	$('#search').keyup(function(){
+		servers_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]servers.js"></script>

@@ -1,0 +1,39 @@
+<form name="letter" id="letter" action="[acp]letter/section/send" method="POST">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p">Заголовок:</td>
+				<td><input name="title" placeholder="Введите заголовок сообщения" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2"><textarea name="text" rows="5" placeholder="Введите текст сообщения"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="text-center"><button class="btn btn-green" onclick="loading(1)">Отправить</button></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="space"></div>
+
+	<table class="trh">
+		<thead>
+			<tr>
+				<th class="w5p text-center"><span onclick="checked_all()"><i class="fa fa-check-square-o"></i></span></th>
+				<th>Пользователь</th>
+				<th class="w5p">Почта</th>
+				<th class="w10p text-center">Баланс</th>
+				<th class="w15p text-right">Активность</th>
+			</tr>
+		</thead>
+		<tbody id="letter_list">
+			[list]
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript">
+	var letter_all = false;
+</script>
+
+<script type="text/javascript" src="[js]letter.js"></script>

@@ -1,0 +1,58 @@
+<div class="informer">ID: [id] / Арендован: [date] / <a href="[home]control/id/[id]" target="_blank">Перейти к серверам</a></div>
+
+<form action="[acp]control/id/[id]/go" method="POST" id="control">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Владелец:</td>
+				<td class="w15p"><input name="user" value="[user]" type="text"></td>
+				<td class="w5p text-right">Адрес:</td>
+				<td class="w15p"><input name="address" placeholder="Введите ip" type="text" value="[address]"></td>
+				<td class="w5p text-right">Пароль:</td>
+				<td class="w15p"><input name="passwd" placeholder="Введите пароль" type="text" value="[passwd]"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">SQL_Логин:</td>
+				<td class="w15p"><input name="sql_login" value="root" type="text" disabled></td>
+				<td class="w5p text-right">SQL_Пароль:</td>
+				<td class="w15p"><input name="sql_passwd" placeholder="Введите пароль (root)" type="text" value="[sql_passwd]"></td>
+				<td class="w5p text-right">SQL_FileTP:</td>
+				<td class="w15p"><input name="sql_ftp" placeholder="Введите логин базы ftp" type="text" value="[sql_ftp]"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Лимит:</td>
+				<td class="w15p"><input name="limit" value="[limit]" type="text"></td>
+				<td class="w5p text-right">Цена:</td>
+				<td class="w15p"><input name="price" value="[price]" type="text"></td>
+				<td colspan="2"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Аренда:</td>
+				<td class="w15p">
+					<input type="text" id="datetimepicker" name="time">
+				</td>
+				<td class="w5p text-right">Удаление:</td>
+				<td class="w15p"><a href="#" onclick="return control_overdue('[id]', '[overdue]')" id="overdue">[overdue]</a></td>
+				<td class="w5p text-right">Блокировка:</td>
+				<td class="w15p"><a href="#" onclick="return control_block('[id]', '[block]')" id="block">[block]</a></td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<link rel="stylesheet" type="text/css" href="[css]jquery.datetimepicker.css" media="screen">
+
+<script type="text/javascript" src="[js]date/jquery.datetimepicker.full.js"></script>
+
+<script type="text/javascript">  
+    jQuery(document).ready(function($){
+		$.datetimepicker.setLocale('ru');
+
+		$('#datetimepicker').datetimepicker({value:'[time]', format: 'd/m/Y H:i'});
+	});  
+</script>
+
+<script type="text/javascript" src="[js]control.js"></script>

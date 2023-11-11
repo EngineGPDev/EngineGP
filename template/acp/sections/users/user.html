@@ -1,0 +1,177 @@
+<div class="informer">Пользователь id_[id] / Регистрация: [date] / Рефералов: [part] шт. <span class="right">Последняя активность: [time]</span></div>
+
+<div class="space"></div>
+
+<form action="[acp]users/id/[id]/go" method="POST" id="user">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Логин:</td>
+				<td class="w15p"><input name="login" value="[login]" type="text"></td>
+				<td class="w5p text-right">Имя:</td>
+				<td class="w15p"><input name="name" value="[name]" type="text"></td>
+				<td class="w5p text-right">Баланс:</td>
+				<td class="w15p">[balance] [cur]</td>
+			</tr>
+			<tr>
+				<td class="text-right">Пароль:</td>
+				<td><input name="passwd" placeholder="Введите новый пароль" type="text"></td>
+				<td class="text-right">Фамилия:</td>
+				<td><input name="lastname" value="[lastname]" type="text"></td>
+				<td class="text-right">Пополнить:</td>
+				<td><input name="replenish" placeholder="Введите сумму" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Почта:</td>
+				<td><input name="mail" value="[mail]" type="text"></td>
+				<td class="text-right">Отчество:</td>
+				<td><input name="patronymic" value="[patronymic]" type="text"></td>
+				<td class="text-right">Изменить:</td>
+				<td><input name="balance" value="[balance]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="text-right">Контакты:</td>
+				<td><input name="contacts" value="[contacts]" type="text"></td>
+				<td class="text-right">Номер:</td>
+				<td><input name="phone" value="[phone]" type="text"></td>
+				<td class="text-right">Тел:</td>
+				<td><select name="confirm_phone">[confirm_phone]</select></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="text-right">Персональные скидки на</td>
+				<td class="text-right">аренду:</td>
+				<td><input name="rental" value="[rental]" type="text"></td>
+				<td class="text-right">продление:</td>
+				<td><input name="extend" value="[extend]" type="text"></td>
+			</tr>
+
+			|!support|
+			<tr>
+				<td class="w5p text-right">Группа:</td>
+				<td><select name="group">[group]</select></td>
+				<td colspan="4"></td>
+			</tr>
+			|_!support|
+
+			|support|
+			<tr>
+				<td class="text-right">Группа:</td>
+				<td><select name="group"><option value="support">Тех. поддержка</option><option value="user">Пользователь</option><option value="admin">Администратор</option></select></td>
+				<td class="text-right">Уровень:</td>
+				<td><select name="level">[level]</select></td>
+				<td class="text-right">Подпись:</td>
+				<td><input name="support_info" placeholder="Техническая поддержка" value="[support_info]" type="text"></td>
+			</tr>
+			|_support|
+
+			<tr>
+				<td></td>
+				<td colspan="3"><select name="help">[help]</select></td>
+				<td class="text-right">Заработано:</td>
+				<td><input name="part_money" value="[part_money]" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+|support|
+<div class="space"></div>
+
+<div class="informer">Информация по уровням технической поддержки</div>
+
+<table class="inputs inputs-max p_info">
+	<tbody>
+		<tr>
+			<td>
+				<p><i class="fa fa-info-circle"></i> Уровень 0 - тех. поддержка <u>не имеет</u> доступа к игровым серверам.</p>
+				<p><i class="fa fa-info-circle"></i> Уровень 1 - тех. поддержка имеет доступа к игровому серверу <u>только</u> во время открытыго тикета по серверу.</p>
+				<p><i class="fa fa-info-circle"></i> Уровень 2 - тех. поддержка имеет постоянный доступ к игровым серверам.</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+|_support|
+
+<div class="space"></div>
+
+<div class="informer">Сервера пользователя </div>
+
+<table class="trh">
+ <thead>
+		<tr>
+   <th class="w5p">#</th>
+   <th class="w20p">Адрес</th>
+   <th class="w20p">Тариф</th>
+   <th class="w15p">Статус</th>
+			<th class="w15p">Игра</th>
+   <th class="w20p">Аренда</th>
+  </tr>
+ </thead>
+<tbody>
+ [serv_user]
+</tbody>
+</table>
+
+<div class="space"></div>
+
+<div class="informer">Финансовая статистика</div>
+
+<table>
+	<tbody>
+		<tr>
+			<td>Затрачено за [month]</td>
+			<td class="text-right">[money_month] [cur]</td>
+		</tr>
+		<tr>
+			<td>Всего затрачено средств</td>
+			<td class="text-right">[money_all] [cur]</td>
+		</tr>
+		<tr>
+			<td>Затрачено средств на продление</td>
+			<td class="text-right">[money_extend] [cur]</td>
+		</tr>
+		<tr>
+			<td>Затрачено средств на аренду</td>
+			<td class="text-right">[money_buy] [cur]</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="space"></div>
+
+<div class="informer">Последние операции</div>
+
+<table class="trh">
+	<thead>
+		<tr>
+			<th>Операция</th>
+			<th class="w15p">Дата</th>
+		</tr>
+	</thead>
+	<tbody>
+		[logs]
+	</tbody>
+</table>
+
+<div class="space"></div>
+
+<div class="informer">Последние авторизации</div>
+
+<table class="trh">
+	<thead>
+		<tr>
+			<th class="w50p">Браузер</th>
+			<th class="w15p">Адрес</th>
+			<th class="w15p">Страна</th>
+			<th class="w15p">Дата</th>
+		</tr>
+	</thead>
+	<tbody>
+		[auth]
+	</tbody>
+</table>
+
+<script type="text/javascript" src="[js]users.js"></script>

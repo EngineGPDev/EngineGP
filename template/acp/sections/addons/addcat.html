@@ -1,0 +1,54 @@
+<form action="[acp]addons/section/addcat/go" method="POST" id="addons">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Название:</td>
+				<td class="w25p"><input name="name" placeholder="Введите название" type="text"></td>
+				<td class="w5p text-right">Положение:</td>
+				<td class="w25p"><input name="sort" placeholder="Введите место в списке" type="text"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Игры:</td>
+				<td colspan="4">
+					<label>
+						CS 1.6
+						<input type="checkbox" name="cs" checked="">
+					</label>
+					<label>
+						CS:S v34
+						<input type="checkbox" name="cssold" checked="">
+					</label>
+					<label>
+						CS:S
+						<input type="checkbox" name="css" checked="">
+					</label>
+					<label>
+						CS:GO
+						<input type="checkbox" name="csgo" checked="">
+					</label>
+					<label>
+						SA-MP
+						<input type="checkbox" name="samp" checked="">
+					</label>
+					<label>
+						CR-MP
+						<input type="checkbox" name="crmp" checked="">
+					</label>
+					<label>
+						MTA
+						<input type="checkbox" name="mta" checked="">
+					</label>
+					<label>
+						MC
+						<input type="checkbox" name="mc" checked="">
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Добавить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript" src="[js]addons.js"></script>

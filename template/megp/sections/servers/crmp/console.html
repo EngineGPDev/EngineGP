@@ -1,0 +1,27 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Консоль</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>
+
+<div class="server_console">
+	<pre id="console">Игровой сервер выключен.</pre>
+	<table class="border-none">
+		<tbody>
+			<tr>
+				<td width="5"><div class="btn btn-info" onclick="update_switch()">Обновление</div></td>
+				<td id="console_update"><i class="fa fa-toggle-on"></i></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script src="[js]servers/console.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = [id];
+	$(document).ready(function(){
+		setTimeout(function() {update_console('1', true)}, 1000);
+	});
+</script>
+
+<div class="decoration"></div>

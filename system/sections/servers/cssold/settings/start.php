@@ -1,165 +1,170 @@
 <?php
-if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    if(!DEFINED('EGP'))
+		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-$sql->query('SELECT `uid`, `slots`, `slots_start`, `map_start`, `vac`, `fastdl`, `autorestart`, `fps`, `tickrate` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-$server = array_merge($server, $sql->get());
+	$sql->query('SELECT `uid`, `slots`, `slots_start`, `map_start`, `vac`, `fastdl`, `autorestart`, `fps`, `tickrate` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
+	$server = array_merge($server, $sql->get());
+	
+	$sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="'.$server['unit'].'" LIMIT 1');
+	$unit = $sql->get();
 
-$sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
-$unit = $sql->get();
+	$sql->query('SELECT `install`, `fps`, `tickrate`, `price` FROM `tarifs` WHERE `id`="'.$server['tarif'].'" LIMIT 1');
+	$tarif = $sql->get();
 
-$sql->query('SELECT `install`, `fps`, `tickrate`, `price` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
-$tarif = $sql->get();
+	include(LIB.'games/games.php');
+	include(LIB.'games/tarifs.php');
+	include(LIB.'games/'.$server['game'].'/tarif.php');
 
-include(LIB . 'games/games.php');
-include(LIB . 'games/tarifs.php');
-include(LIB . 'games/' . $server['game'] . '/tarif.php');
+	// Вывод списка карт
+	if(isset($url['maps']))
+		games::maplist($id, $unit, $tarif['install'].$server['uid'].'/cstrike/maps', $server['map_start'], false);
 
-// Вывод списка карт
-if (isset($url['maps']))
-    games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $server['map_start'], false);
+	// Сохранение
+	if($go AND $url['save'])
+	{
+		$value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+		
+		switch($url['save'])
+		{
+			case 'map':
+				$map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
 
-// Сохранение
-if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+				if($map != $server['map_start'])
+					games::maplist($id, $unit, $tarif['install'].$server['uid'].'/cstrike/maps', $map, true, $nmch);
 
-    switch ($url['save']) {
-        case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
 
-            if ($map != $server['map_start'])
-                games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $map, true, $nmch);
+			case 'vac':
+				if($value != $server['vac'])
+					$sql->query('UPDATE `servers` set `vac`="'.$value.'" WHERE `id`="'.$id.'" LIMIT 1');
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
 
-        case 'vac':
-            if ($value != $server['vac'])
-                $sql->query('UPDATE `servers` set `vac`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+			case 'slots':
+				$slots = $value > $server['slots'] ? $server['slots'] : $value;
+				$slots = $value < 2 ? 2 : $slots;
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+				if($slots != $server['slots_start'])
+					$sql->query('UPDATE `servers` set `slots_start`="'.$slots.'" WHERE `id`="'.$id.'" LIMIT 1');
 
-        case 'slots':
-            $slots = $value > $server['slots'] ? $server['slots'] : $value;
-            $slots = $value < 2 ? 2 : $slots;
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
 
-            if ($slots != $server['slots_start'])
-                $sql->query('UPDATE `servers` set `slots_start`="' . $slots . '" WHERE `id`="' . $id . '" LIMIT 1');
+			case 'autorestart':
+				if($value != $server['autorestart'])
+					$sql->query('UPDATE `servers` set `autorestart`="'.$value.'" WHERE `id`="'.$id.'" LIMIT 1');
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
 
-        case 'autorestart':
-            if ($value != $server['autorestart'])
-                $sql->query('UPDATE `servers` set `autorestart`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+			case 'fps':
+				if(!tarif::price($tarif['price']) AND in_array($value, explode(':', $tarif['fps'])))
+					$sql->query('UPDATE `servers` set `fps`="'.$value.'" WHERE `id`="'.$id.'" LIMIT 1');
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
 
-        case 'fps':
-            if (!tarif::price($tarif['price']) and in_array($value, explode(':', $tarif['fps'])))
-                $sql->query('UPDATE `servers` set `fps`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+			case 'tickrate':
+				if(!tarif::price($tarif['price']) AND in_array($value, explode(':', $tarif['tickrate'])))
+					$sql->query('UPDATE `servers` set `tickrate`="'.$value.'" WHERE `id`="'.$id.'" LIMIT 1');
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
 
-        case 'tickrate':
-            if (!tarif::price($tarif['price']) and in_array($value, explode(':', $tarif['tickrate'])))
-                $sql->query('UPDATE `servers` set `tickrate`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+			case 'fastdl':
+				include(LIB.'ssh.php');
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+				if(!$ssh->auth($unit['passwd'], $unit['address']))
+					sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
 
-        case 'fastdl':
-            include(LIB . 'ssh.php');
+				if($value)
+				{
+					$fastdl = 'sv_downloadurl "http://'.sys::first(explode(':', $unit['address'])).':8080/fast_'.$server['uid'].'"'.PHP_EOL
+							.'sv_consistency 1'.PHP_EOL
+							.'sv_allowupload 1'.PHP_EOL
+							.'sv_allowdownload 1';
 
-            if (!$ssh->auth($unit['passwd'], $unit['address']))
-                sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+					// Временый файл
+					$temp = sys::temp($fastdl);
 
-            if ($value) {
-                $fastdl = 'sv_downloadurl "http://' . sys::first(explode(':', $unit['address'])) . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
-                    . 'sv_consistency 1' . PHP_EOL
-                    . 'sv_allowupload 1' . PHP_EOL
-                    . 'sv_allowdownload 1';
+					$ssh->setfile($temp, $tarif['install'].$server['uid'].'/cstrike/cfg/fastdl.cfg', 0644);
+						
+					$ssh->set('chown server'.$server['uid'].':servers '.$tarif['install'].$server['uid'].'/cstrike/cfg/fastdl.cfg;'
+							.'ln -s '.$tarif['install'].$server['uid'].'/cstrike /var/nginx/fast_'.$server['uid'].';'
+							.'sed -i '."'s/exec fastdl.cfg//g'".' '.$tarif['install'].$server['uid'].'/cstrike/cfg/server.cfg;'
+							.'echo "exec fastdl.cfg" >> '.$tarif['install'].$server['uid'].'/cstrike/cfg/server.cfg');
 
-                // Временый файл
-                $temp = sys::temp($fastdl);
+					unlink($temp);
+				}else
+					$ssh->set('sed -i '."'s/exec fastdl.cfg//g'".' '.$tarif['install'].$server['uid'].'/cstrike/cfg/server.cfg;'
+							.'rm '.$tarif['install'].$server['uid'].'/cstrike/cfg/fastdl.cfg; rm /var/nginx/fast_'.$server['uid']);
 
-                $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg', 0644);
+				$sql->query('UPDATE `servers` set `fastdl`="'.$value.'" WHERE `id`="'.$id.'" LIMIT 1');
 
-                $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg;'
-                    . 'ln -s ' . $tarif['install'] . $server['uid'] . '/cstrike /var/nginx/fast_' . $server['uid'] . ';'
-                    . 'sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/server.cfg;'
-                    . 'echo "exec fastdl.cfg" >> ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/server.cfg');
+				$mcache->delete('server_settings_'.$id);
+				sys::outjs(array('s' => 'ok'), $nmch);
+		}
+	}
+	
+	// Генерация списка слот
+	$slots = '';
 
-                unlink($temp);
-            } else
-                $ssh->set('sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/server.cfg;'
-                    . 'rm ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg; rm /var/nginx/fast_' . $server['uid']);
+	for($slot = 2; $slot <= $server['slots']; $slot+=1)
+		$slots .= '<option value="'.$slot.'">'.$slot.' шт.</option>';
 
-            $sql->query('UPDATE `servers` set `fastdl`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+	// Античит VAC
+	$vac = $server['vac'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
 
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
-    }
-}
+	// Быстрая скачака
+	$fastdl = $server['fastdl'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
 
-// Генерация списка слот
-$slots = '';
+	// Авторестарт при зависании
+	$autorestart = $server['autorestart'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
 
-for ($slot = 2; $slot <= $server['slots']; $slot += 1)
-    $slots .= '<option value="' . $slot . '">' . $slot . ' шт.</option>';
+	$fps = '<option value="'.$server['fps'].'">'.$server['fps'].' FPS</option>';
+	$tickrate = '<option value="'.$server['tickrate'].'">'.$server['tickrate'].' TickRate</option>';
 
-// Античит VAC
-$vac = $server['vac'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
+	if(!tarif::price($tarif['price']))
+	{
+		$aFps = explode(':', $tarif['fps']);
 
-// Быстрая скачака
-$fastdl = $server['fastdl'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
+		unset($aFps[array_search($server['fps'], $aFps)]);
 
-// Авторестарт при зависании
-$autorestart = $server['autorestart'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
+		if(count($aFps))
+			foreach($aFps as $value)
+				$fps .= '<option value="'.$value.'">'.$value.' FPS</option>';
 
-$fps = '<option value="' . $server['fps'] . '">' . $server['fps'] . ' FPS</option>';
-$tickrate = '<option value="' . $server['tickrate'] . '">' . $server['tickrate'] . ' TickRate</option>';
+		$aTick = explode(':', $tarif['tickrate']);
 
-if (!tarif::price($tarif['price'])) {
-    $aFps = explode(':', $tarif['fps']);
+		unset($aTick[array_search($server['tickrate'], $aTick)]);
 
-    unset($aFps[array_search($server['fps'], $aFps)]);
+		if(count($aTick))
+			foreach($aTick as $value)
+				$tickrate .= '<option value="'.$value.'">'.$value.' TickRate</option>';
+	}
 
-    if (count($aFps))
-        foreach ($aFps as $value)
-            $fps .= '<option value="' . $value . '">' . $value . ' FPS</option>';
+	$html->get('start', 'sections/servers/'.$server['game'].'/settings');
 
-    $aTick = explode(':', $tarif['tickrate']);
+		$html->set('id', $id);
+		$html->set('map', $server['map_start']);
+		$html->set('vac', $vac);
+		$html->set('fastdl', $fastdl);
+		$html->set('autorestart', $autorestart);
+		$html->set('slots', str_replace('"'.$server['slots_start'].'"', '"'.$server['slots_start'].'" selected="select"', $slots));
 
-    unset($aTick[array_search($server['tickrate'], $aTick)]);
+		if(!tarif::price($tarif['price']))
+		{
+			$html->unit('fps', true);
+			$html->set('fps', $fps);
 
-    if (count($aTick))
-        foreach ($aTick as $value)
-            $tickrate .= '<option value="' . $value . '">' . $value . ' TickRate</option>';
-}
+			$html->unit('tickrate', true);
+			$html->set('tickrate', $tickrate);
+		}else{
+			$html->unit('fps');
+			$html->unit('tickrate');
+		}
 
-$html->get('start', 'sections/servers/' . $server['game'] . '/settings');
-
-$html->set('id', $id);
-$html->set('map', $server['map_start']);
-$html->set('vac', $vac);
-$html->set('fastdl', $fastdl);
-$html->set('autorestart', $autorestart);
-$html->set('slots', str_replace('"' . $server['slots_start'] . '"', '"' . $server['slots_start'] . '" selected="select"', $slots));
-
-if (!tarif::price($tarif['price'])) {
-    $html->unit('fps', true);
-    $html->set('fps', $fps);
-
-    $html->unit('tickrate', true);
-    $html->set('tickrate', $tickrate);
-} else {
-    $html->unit('fps');
-    $html->unit('tickrate');
-}
-
-$html->pack('start');
+	$html->pack('start');
 ?>

@@ -1,0 +1,32 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="notice_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="double-color">
+	<thead>
+		<tr>
+			<th class="w5p"></th>
+			<th colspan="2">Уведомления</th>
+			<th class="w5p"></th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	$('#search').keyup(function(){
+		notice_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]notice.js"></script>

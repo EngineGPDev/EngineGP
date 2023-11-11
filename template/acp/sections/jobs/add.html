@@ -1,0 +1,58 @@
+<form action="[acp]jobs/section/add/go" method="POST" id="add" class="inputs inputs-max">
+	<table>
+		<tbody>
+			<tr>
+				<td>Название вакансии</td>
+				<td><input type="text" name="name"></td>
+				<td>Должность</td>
+				<td><input type="text" name="job"></td>
+			</tr>
+			<tr>
+				<td>Описание:<br> (Используйте HTML теги)</td>
+				<td colspan="3"><textarea name="desc" id="" cols="30" rows="10"></textarea></td>
+			</tr>
+			<!-- <tr>
+				<td>Статус</td>
+				<td><select name="status">
+					<option value="1" selected="selected">Доступна</option>
+					<option value="0" disabled>Недоступна</option>
+				</select></td>
+				<td colspan="2">
+					<button class="btn btn-green" onclick="loading(1)">Добавить</button>
+				</td>
+			</tr> -->
+				<td colspan="4">
+					<button class="btn btn-green pull-right" onclick="loading(1)">Добавить</button>
+				</td>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript">
+	$('#add').ajaxForm({
+		dataType: 'json',
+		success: function(data)
+		{
+			$.each(data, function(i, val){
+				if(i == 'e')
+					bootbox.dialog('<h3>Внимание!</h3>'+val,
+						[{
+							"label" : "Продолжить"
+						}]
+					);
+
+				if(i == 's')
+					bootbox.dialog('<h3>Внимание!</h3> Вакансия успешно добавлена!',
+						[{
+							"label" : "Продолжить",
+							callback : function(){
+								location.href = home+'jobs';
+							}
+						}]
+					);
+
+				loading(0);
+			});
+		}
+	});
+</script>

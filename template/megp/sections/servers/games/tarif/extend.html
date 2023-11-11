@@ -1,0 +1,20 @@
+<div class="heading-style-1 container">
+	<h5>Продление аренды сервера</h5>
+	<div class="heading-decoration bg-blue-dark"></div>
+</div>
+
+<li>Слот: [slots]шт.</li>
+<li>Тариф: [tarif]</li>
+<li>Осталось: [time]</li>
+<li>[info]</li>
+
+<form action="[home]servers/id/[id]/section/tarif/subsection/extend/go" method="POST" id="extend">
+	<h5 class="smaller-text">Период <span class="right">К оплате: <span id="info_extend">0</span> [cur]</span></h5>
+	<select id="time" name="time" onchange="upd_extend()" class="text-field">[options]</select>
+	<h5 class="smaller-text">Промо-код <a href="#" class="right" onclick="return promo()">Проверить</a></h5>
+	<input class="text-field" id="promo" name="promo" placeholder="Введите имеющийся промо-код">
+	<h5 class="smaller-text" id="info_promo"></h5>
+	<center><button class="btn btn-success">Продлить</button></center>
+</form>
+
+<div class="decoration"></div>

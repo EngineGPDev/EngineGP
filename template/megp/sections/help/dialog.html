@@ -1,0 +1,35 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Диалог</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>
+
+<li>Услуга: [service]</li>
+<li>Создан: [date]</li>
+<li>Статус: <span id="help_status">[status]</span>
+|open|<u class="right pointer" onclick="help_close('[id]')">закрыть</u>|_open|
+|close|<u class="right pointer" onclick="help_open('[id]')">открыть</u>|_close|
+</li>
+
+|open|
+<form action="[home]help/section/dialog/id/[id]/action/reply" method="POST" id="reply">
+	<h5 class="smaller-text">Сообщение</h5>
+	<textarea rows="5" id="text" name="text" class="text-field"></textarea>
+	<center><button class="btn btn-success">Отправить</button></center>
+</form>
+<div class="decoration"></div>
+|_open|
+
+<div id="dialog">[dialog]</div>
+
+<div class="decoration"></div>
+<!-- scripts !-->
+<script type="text/javascript">
+	var help = '[id]';
+
+	$(document).ready(function(){
+		setTimeout(function() {dialog_update(true); help_readers(); help_writers(false)}, 3000);
+	});
+</script>
+
+<script type="text/javascript" src="[js]help.js"></script>

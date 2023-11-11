@@ -1,94 +1,98 @@
 <?php
-if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    if(!DEFINED('EGP'))
+		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-abstract class BaseSocket
-{
-    public $Socket;
-    public $Engine;
-    public $Address;
-    public $Port;
-    public $Timeout;
+	abstract class BaseSocket
+	{
+		public $Socket;
+		public $Engine;
+		public $Address;
+		public $Port;
+		public $Timeout;
 
-    public function __destruct()
-    {
-        $this->Close();
-    }
+		public function __destruct()
+		{
+			$this->Close();
+		}
 
-    abstract public function Close();
+		abstract public function Close();
+		abstract public function Open($Address, $Port, $Timeout, $Engine);
+		abstract public function Write($Header, $String = '');
+		abstract public function Read($Length = 1400);
 
-    abstract public function Open($Address, $Port, $Timeout, $Engine);
+		protected function ReadInternal($Buffer, $Length, $SherlockFunction)
+		{
+			if($Buffer->Remaining() === 0)
+				return false;
 
-    abstract public function Write($Header, $String = '');
+			if($Buffer->Remaining() === 0)
+				return false;
 
-    abstract public function Read($Length = 1400);
+			$Header = $Buffer->GetLong();
 
-    protected function ReadInternal($Buffer, $Length, $SherlockFunction)
-    {
-        if ($Buffer->Remaining() === 0)
-            return false;
+			if($Header === -2)
+			{
+				$Packets = [];
+				$IsCompressed = false;
+				$ReadMore = false;
 
-        if ($Buffer->Remaining() === 0)
-            return false;
+				do
+				{
+					$RequestID = $Buffer->GetLong();
 
-        $Header = $Buffer->GetLong();
+					switch($this->Engine)
+					{
+						case SourceQuery::GOLDSOURCE:
+						{
+							$PacketCountAndNumber = $Buffer->GetByte();
+							$PacketCount = $PacketCountAndNumber & 0xF;
+							$PacketNumber = $PacketCountAndNumber >> 4;
 
-        if ($Header === -2) {
-            $Packets = [];
-            $IsCompressed = false;
-            $ReadMore = false;
+							break;
+						}
 
-            do {
-                $RequestID = $Buffer->GetLong();
+						case SourceQuery::SOURCE:
+						{
+							$IsCompressed = ($RequestID & 0x80000000) !== 0;
+							$PacketCount = $Buffer->GetByte();
+							$PacketNumber = $Buffer->GetByte() + 1;
 
-                switch ($this->Engine) {
-                    case SourceQuery::GOLDSOURCE:
-                    {
-                        $PacketCountAndNumber = $Buffer->GetByte();
-                        $PacketCount = $PacketCountAndNumber & 0xF;
-                        $PacketNumber = $PacketCountAndNumber >> 4;
+							if($IsCompressed)
+							{
+								$Buffer->GetLong();
+								
+								$PacketChecksum = $Buffer->GetUnsignedLong();
+							}else
+								$Buffer->GetShort();
 
-                        break;
-                    }
+							break;
+						}
+					}
 
-                    case SourceQuery::SOURCE:
-                    {
-                        $IsCompressed = ($RequestID & 0x80000000) !== 0;
-                        $PacketCount = $Buffer->GetByte();
-                        $PacketNumber = $Buffer->GetByte() + 1;
+					$Packets[$PacketNumber] = $Buffer->Get();
 
-                        if ($IsCompressed) {
-                            $Buffer->GetLong();
+					$ReadMore = $PacketCount > sizeof($Packets);
+				}
 
-                            $PacketChecksum = $Buffer->GetUnsignedLong();
-                        } else
-                            $Buffer->GetShort();
+				while($ReadMore && $SherlockFunction($Buffer, $Length));
 
-                        break;
-                    }
-                }
+				$Data = Implode($Packets);
 
-                $Packets[$PacketNumber] = $Buffer->Get();
+				if($IsCompressed)
+				{
+					if(!Function_Exists('bzdecompress'))
+						return false;
 
-                $ReadMore = $PacketCount > sizeof($Packets);
-            } while ($ReadMore && $SherlockFunction($Buffer, $Length));
+					$Data = bzdecompress($Data);
 
-            $Data = Implode($Packets);
+					if(CRC32($Data) !== $PacketChecksum)
+						return false;
+				}
 
-            if ($IsCompressed) {
-                if (!Function_Exists('bzdecompress'))
-                    return false;
+				$Buffer->Set(SubStr($Data, 4));
+			}else
+				return false;
 
-                $Data = bzdecompress($Data);
-
-                if (CRC32($Data) !== $PacketChecksum)
-                    return false;
-            }
-
-            $Buffer->Set(SubStr($Data, 4));
-        } else
-            return false;
-
-        return $Buffer;
-    }
-}
+			return $Buffer;
+		}
+	}

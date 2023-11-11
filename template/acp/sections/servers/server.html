@@ -1,0 +1,114 @@
+<div class="informer">ID: [id] / Название: <a href="[home]servers/id/[id]" target="_blank">[name]</a> / Игра: [game] / FTP: [ftp_on] / Арендован: [date]</div>
+
+<form action="[acp]servers/id/[id]/go" method="POST" id="server">
+	<table class="inputs inputs-max">
+		<tbody>
+			<tr>
+				<td class="w5p text-right">Владелец:</td>
+				<td class="w15p"><input name="user" value="[user]" type="text"></td>
+				<td class="w5p text-right">Адрес:</td>
+				<td class="w15p"><input name="address" placeholder="Введите ip:port" type="text" value="[address]"></td>
+				<td class="w5p text-right">Порт:</td>
+				<td class="w15p"><input name="port" placeholder="Введите порт" type="text" value="[port]"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Диск:</td>
+				<td class="w15p"><input name="hdd" value="[hdd]" type="text"></td>
+				<td class="w5p text-right">Слоты:</td>
+				<td class="w15p"><input name="slots" placeholder="Введите слоты" type="text" value="[slots]:[slots_start]"></td>
+				<td class="w5p text-right">Сборка:</td>
+				<td class="w15p"><select name="pack">[packs]</select></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">FPS:</td>
+				<td class="w15p"><input name="fps" value="[fps]" type="text"></td>
+				<td class="w5p text-right">TickRate:</td>
+				<td class="w15p"><input name="tickrate" value="[tickrate]" type="text"></td>
+				<td class="w5p text-right">RAM:</td>
+				<td class="w15p"><input name="ram" value="[ram]" type="text"></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Ядро:</td>
+				<td class="w15p"><select name="core_fix_one">[core_fix_one]</select></td>
+				<td class="w5p text-right">Ядро:</td>
+				<td class="w15p"><input name="core_fix" value="[core_fix]" type="text"></td>
+				<td class="w5p text-right">PingBoost:</td>
+				<td class="w15p"><select name="pingboost">[pingboost]</select></td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">FileTP:</td>
+				<td class="w15p"><select name="ftp_root">[ftp_root]</select></td>
+				<td class="w5p text-right">Нагрузка:</td>
+				<td class="w15p"><input name="cpu_use_max" value="[cpu_use_max]" type="text"></td>
+				<td colspan="2">0 - лимит по умолчанию ([cpu_limi]%)</td>
+			</tr>
+			<tr>
+				<td class="w5p text-right">Аренда:</td>
+				<td class="w15p">
+					<input type="text" id="datetimepicker" name="time">
+				</td>
+				<td class="w5p text-right">Удаление:</td>
+				<td class="w15p"><a href="#" onclick="return servers_overdue('[id]', '[overdue]')" id="overdue">[overdue]</a></td>
+				<td class="w5p text-right">Блокировка:</td>
+				<td class="w15p"><a href="#" onclick="return servers_block('[id]', '[block]')" id="block">[block]</a></td>
+			</tr>
+			<tr>
+				<td class="text-right">Разделы:</td>
+				<td colspan="5">
+					<label>
+						Плагины
+						<input type="checkbox" name="plugins_use" |plugins_use|checked|_plugins_use|>
+					</label>
+					<label>
+						Консоль
+						<input type="checkbox" name="console_use" |console_use|checked|_console_use|>
+					</label>
+					<label>
+						FileTP
+						<input type="checkbox" name="ftp_use" |ftp_use|checked|_ftp_use|>
+					</label>
+					<label>
+						Копии
+						<input type="checkbox" name="copy_use" |copy_use|checked|_copy_use|>
+					</label>
+					<label>
+						Графики
+						<input type="checkbox" name="stats_use" |stats_use|checked|_stats_use|>
+					</label>
+					<label>
+						Бесплатные услуги
+						<input type="checkbox" name="web_use" |web_use|checked|_web_use|>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="text-center"><button class="btn btn-green" onclick="loading(1)">Сохранить</button></td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<div class="space"></div>
+
+<div class="informer">Текущий тарифный план: <b>[tarif]</b></div>
+
+<table class="inputs inputs-max">
+	<tr>
+		<td><select id="tarif"><option>Выберете новый тарифный план</option>[tarifs]</select></td>
+		<td width="5%"><div class="btn btn-green" onclick="change_tarif('[id]')">Изменить</div></td>
+	</tr>
+</tbody>
+
+<link rel="stylesheet" type="text/css" href="[css]jquery.datetimepicker.css" media="screen">
+
+<script type="text/javascript" src="[js]date/jquery.datetimepicker.full.js"></script>
+
+<script type="text/javascript">  
+    jQuery(document).ready(function($){
+		$.datetimepicker.setLocale('ru');
+
+		$('#datetimepicker').datetimepicker({value:'[time]', format: 'd/m/Y H:i'});
+	});  
+</script>
+
+<script type="text/javascript" src="[js]servers.js"></script>

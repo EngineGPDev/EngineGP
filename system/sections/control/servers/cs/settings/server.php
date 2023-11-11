@@ -1,112 +1,116 @@
 <?php
-if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    if(!DEFINED('EGP'))
+		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-$html->nav('Параметры server.cfg');
+    $html->nav('Параметры server.cfg');
 
-$sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
-$unit = $sql->get();
+	$sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="'.$id.'" LIMIT 1');
+	$unit = $sql->get();
 
-include(LIB . 'ssh.php');
+	include(LIB.'ssh.php');
+	
+	if(!$ssh->auth($unit['passwd'], $unit['address']))
+	{
+		if($go)
+			sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+		
+		sys::back($cfg['http'].'control/id/'.$id.'/server/'.$sid.'/section/settings');
+	}
+	
+	include(DATA.'scfg/'.$server['game'].'.php');
 
-if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    if ($go)
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+	$file = '/servers/'.$server['uid'].'/cstrike/server.cfg';
 
-    sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
-}
+	// Сохранение изменений
+	if($go)
+	{
+		$servercfg = isset($_POST['config']) ? $_POST['config'] : '';
 
-include(DATA . 'scfg/' . $server['game'] . '.php');
+		$config = '';
 
-$file = '/servers/' . $server['uid'] . '/cstrike/server.cfg';
+		$config_end = $servercfg['\'other\''];
 
-// Сохранение изменений
-if ($go) {
-    $servercfg = isset($_POST['config']) ? $_POST['config'] : '';
+		unset($servercfg['\'other\'']);
 
-    $config = '';
+		foreach($servercfg as $cvar => $val)
+			if($val != '')
+				$config .= str_replace("'", '', $cvar).' "'.$val.'"'."\n";
 
-    $config_end = $servercfg['\'other\''];
+		// Временый файл
+		$temp = sys::temp($config.$config_end);
 
-    unset($servercfg['\'other\'']);
+		$ssh->setfile($temp, $file, 0644);
 
-    foreach ($servercfg as $cvar => $val)
-        if ($val != '')
-            $config .= str_replace("'", '', $cvar) . ' "' . $val . '"' . "\n";
+		$ssh->set('chown server'.$server['uid'].':servers '.$file);
 
-    // Временый файл
-    $temp = sys::temp($config . $config_end);
+		unlink($temp);
 
-    $ssh->setfile($temp, $file, 0644);
+		$ssh->set('sudo -u server'.$server['uid'].' screen -p 0 -S s_'.$server['uid'].' -X eval \'stuff "exec server.cfg"\015\';');
 
-    $ssh->set('chown server' . $server['uid'] . ':servers ' . $file);
+		sys::outjs(array('s' => 'ok'), $nmch);
+	}
 
-    unlink($temp);
+	$ssh->set('echo "" >> '.$file.' && cat '.$file.' | grep -ve "^#\|^[[:space:]]*$"');
 
-    $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "exec server.cfg"\015\';');
+	$fScfg = explode("\n", strip_tags($ssh->get()));
 
-    sys::outjs(array('s' => 'ok'), $nmch);
-}
+	$servercfg = array();
+	$other = '';
 
-$ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep -ve "^#\|^[[:space:]]*$"');
+	// Убираем пробелы и генерируем массив
+	foreach($fScfg as $line)
+	{
+		// имя квара
+		$cvar = sys::first(explode(' ', $line));
 
-$fScfg = explode("\n", strip_tags($ssh->get()));
+		if($cvar == '')
+			continue;
 
-$servercfg = array();
-$other = '';
+		// убираем имя квара и оставляем только значение
+		$value = str_replace($cvar.' ', "", $line);
 
-// Убираем пробелы и генерируем массив
-foreach ($fScfg as $line) {
-    // имя квара
-    $cvar = sys::first(explode(' ', $line));
+		// выбираем только то, что нам нужно
+		preg_match_all('~([^"]+)~', $value, $cvar_value, PREG_SET_ORDER);
 
-    if ($cvar == '')
-        continue;
+		// Исключаем комментарии
+		if($cvar == '//')
+			continue;
 
-    // убираем имя квара и оставляем только значение
-    $value = str_replace($cvar . ' ', "", $line);
+		$val = sys::first(explode(' //', $cvar_value[0][1]));
 
-    // выбираем только то, что нам нужно
-    preg_match_all('~([^"]+)~', $value, $cvar_value, PREG_SET_ORDER);
+		// Добавляем данные в массив
+		if(array_key_exists($cvar, $aScfg))
+			$servercfg[$cvar] = trim($val);
+		else
+			$other .= $line."\n";
+	}
 
-    // Исключаем комментарии
-    if ($cvar == '//')
-        continue;
+	foreach($aScfg as $name => $desc)
+	{
+		if(!isset($servercfg[$name]))
+			$servercfg[$name] = '';
 
-    $val = sys::first(explode(' //', $cvar_value[0][1]));
+		// Формирование формы
+		if(strpos($aScfg_form[$name], 'select'))
+			$form = str_replace('value="'.$servercfg[$name].'"', 'value="'.$servercfg[$name].'" selected="select"', $aScfg_form[$name]);
+		else
+			$form = str_replace('['.$name.']', $servercfg[$name], $aScfg_form[$name]);
 
-    // Добавляем данные в массив
-    if (array_key_exists($cvar, $aScfg))
-        $servercfg[$cvar] = trim($val);
-    else
-        $other .= $line . "\n";
-}
+		$html->get('servercfg_list', 'sections/control/servers/games/settings');
 
-foreach ($aScfg as $name => $desc) {
-    if (!isset($servercfg[$name]))
-        $servercfg[$name] = '';
+			$html->set('name', $name);
+			$html->set('desc', $desc);
+			$html->set('form', $form);
 
-    // Формирование формы
-    if (strpos($aScfg_form[$name], 'select'))
-        $form = str_replace('value="' . $servercfg[$name] . '"', 'value="' . $servercfg[$name] . '" selected="select"', $aScfg_form[$name]);
-    else
-        $form = str_replace('[' . $name . ']', $servercfg[$name], $aScfg_form[$name]);
+		$html->pack('list');
+	}
 
-    $html->get('servercfg_list', 'sections/control/servers/games/settings');
+	$html->get('servercfg', 'sections/control/servers/'.$server['game'].'/settings');
 
-    $html->set('name', $name);
-    $html->set('desc', $desc);
-    $html->set('form', $form);
+		$html->set('id', $id);
+		$html->set('server', $sid);
+		$html->set('cfg', $html->arr['list']);
+		$html->set('other', $other);
 
-    $html->pack('list');
-}
-
-$html->get('servercfg', 'sections/control/servers/' . $server['game'] . '/settings');
-
-$html->set('id', $id);
-$html->set('server', $sid);
-$html->set('cfg', $html->arr['list']);
-$html->set('other', $other);
-
-$html->pack('main');
+	$html->pack('main');
 ?>

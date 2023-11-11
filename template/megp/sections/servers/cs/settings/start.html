@@ -1,0 +1,71 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Параметры запуска сервера</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>
+
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('map')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Стартовая карта</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="map" class="text-field"><option value="[map]">[map]</option></select>
+
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('slots')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Количество слот</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="slots" class="text-field">[slots]</select>
+
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('vac')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Античит VAC</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="vac" class="text-field">[vac]</select>
+
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('fastdl')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Быстрая скачка (FastDL)</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="fastdl" class="text-field">[fastdl]</select>
+
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('autorestart')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Авторестарт при зависании</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="autorestart" class="text-field">[autorestart]</select>
+|fps|
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('fps')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Значение FPS</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="fps" class="text-field">[fps]</select>
+|_fps|
+|pingboost|
+<div class="heading-style-1">
+	<a href="#" onclick="return settings_save('pingboost')"><i class="fa fa-floppy-o"></i></a>
+	<h4>Значение PINGBOOST</h4>
+	<div class="heading-block bg-night-light"></div>
+	<div class="heading-decoration bg-night-light"></div>
+</div>
+<select id="pingboost" class="text-field">[pingboost]</select>
+|_pingboost|
+
+<script src="[js]servers/start.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = '[id]';
+	$(document).ready(function(){
+		maplist();
+	});
+</script>

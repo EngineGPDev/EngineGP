@@ -1,8 +1,0 @@
-{
-  "require": {
-    "symfony/polyfill": "*",
-    "delight-im/cookie": "^3.4",
-    "filp/whoops": "^2.15.2",
-    "monolog/monolog": "1.*"
-  }
-}

@@ -1,1444 +1,1463 @@
 <?php
-if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+	if(!DEFINED('EGP'))
+		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
-class sys
-{
-    public static function isSecure()
-    {
-        $is_secure = false;
+	class sys
+	{
+		public static function url($all = true)
+		{
+			if($_SERVER['REQUEST_URI'] == '/')
+				return $all ? NULL : 'index';
 
-        if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
-            $is_secure = true;
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
-            $is_secure = true;
-        }
+			$url = array();
 
-        return $is_secure;
-    }
+			$string = str_replace('//', '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+			$aUrl = explode('/', trim($string, ' /'));
 
-    public static function url($all = true)
-    {
-        if ($_SERVER['REQUEST_URI'] == '/')
-            return $all ? NULL : 'index';
+			if(!$all)
+				return $aUrl[0];
 
-        $url = array();
+			unset($aUrl[0]);
 
-        $string = str_replace('//', '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-        $aUrl = explode('/', trim($string, ' /'));
+			$i = 1;
+			$m = count($aUrl)+1;
 
-        if (!$all)
-            return $aUrl[0];
+			for($i; $i < $m; $i+=1)
+				$url[$aUrl[$i]] = isset($aUrl[++$i]) ? $aUrl[$i] : true;
 
-        unset($aUrl[0]);
+			return $url;
+		}
 
-        $i = 1;
-        $m = count($aUrl) + 1;
+		public static function user($user)
+		{
+			global $sql, $start_point;
 
-        for ($i; $i < $m; $i += 1)
-            $url[$aUrl[$i]] = isset($aUrl[++$i]) ? $aUrl[$i] : true;
+			if($user['time']+10 < $start_point)
+				$sql->query('UPDATE `users` set `time`="'.$start_point.'" WHERE `id`="'.$user['id'].'" LIMIT 1');
 
-        return $url;
-    }
+			return NULL;
+		}
 
-    public static function user($user)
-    {
-        global $sql, $start_point;
+		public static function users($users, $user, $authkey, $del = false)
+		{
+			global $mcache;
 
-        if ($user['time'] + 10 < $start_point)
-            $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
+			if($del)
+				unset($users[md5($user['login'].$user['authkey'].$user['passwd'])]);
+			else
+				$users[md5($user['login'].$user['authkey'].$user['passwd'])] = $user;
 
-        return NULL;
-    }
+			$mcache->set('users_auth', $users, false, 1000);
 
-    public static function users($users, $user, $authkey, $del = false)
-    {
-        global $mcache;
+			return NULL;
+		}
 
-        if (!is_array($users) || empty($users)) {
-            $users = [];
-        }
+		public static function nav($server, $sid, $active)
+		{
+			global $cfg, $html, $sql, $mcache, $start_point;
 
-        if ($del)
-            unset($users[md5($user['login'] . $user['authkey'] . $user['passwd'])]);
-        else
-            $users[md5($user['login'] . $user['authkey'] . $user['passwd'])] = $user;
+			$notice_sid = $mcache->get('notice_'.$sid);
 
-        $mcache->set('users_auth', $users, false, 1000);
+			$notice = is_array($notice_sid) ? $notice_sid : $mcache->get('notice_'.$server['unit']);
 
-        return NULL;
-    }
+			if(!is_array($notice))
+			{
+				$sql->query('SELECT `server`, `text`, `color` FROM `notice` WHERE `server`="'.$sid.'" AND `time`>"'.$start_point.'" ORDER BY `id` DESC LIMIT 1');
 
-    public static function nav($server, $sid, $active)
-    {
-        global $cfg, $html, $sql, $mcache, $start_point;
+				if(!$sql->num())
+					$sql->query('SELECT `unit`, `text`, `color` FROM `notice` WHERE `unit`="'.$server['unit'].'" AND `time`>"'.$start_point.'" ORDER BY `id` DESC LIMIT 1');
 
-        $notice_sid = $mcache->get('notice_' . $sid);
+				if($sql->num())
+				{
+					$notice = $sql->get();
 
-        $notice = is_array($notice_sid) ? $notice_sid : $mcache->get('notice_' . $server['unit']);
+					$nmc = $notice['server'] ? 'notice_'.$sid : 'notice_'.$server['unit'];
 
-        if (!is_array($notice)) {
-            $sql->query('SELECT `server`, `text`, `color` FROM `notice` WHERE `server`="' . $sid . '" AND `time`>"' . $start_point . '" ORDER BY `id` DESC LIMIT 1');
+					$mcache->set('notice_'.$nmc, $notice, false, 10);
+				}else
+					$mcache->set('notice_'.$server['unit'], NULL, false, 10);
+			}
 
-            if (!$sql->num())
-                $sql->query('SELECT `unit`, `text`, `color` FROM `notice` WHERE `unit`="' . $server['unit'] . '" AND `time`>"' . $start_point . '" ORDER BY `id` DESC LIMIT 1');
+			$aUnit = array('index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost');
 
-            if ($sql->num()) {
-                $notice = $sql->get();
+			$html->get('gmenu', 'sections/servers/'.$server['game']);
 
-                $nmc = $notice['server'] ? 'notice_' . $sid : 'notice_' . $server['unit'];
+				$html->set('id', $sid);
+				$html->set('home', $cfg['http']);
 
-                $mcache->set('notice_' . $nmc, $notice, false, 10);
-            } else
-                $mcache->set('notice_' . $server['unit'], NULL, false, 10);
-        }
+				if(is_array($notice))
+				{
+					global $device;
 
-        $aUnit = array('index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost');
+					if($device == '!mobile')
+						$html->set('notice', '<div class="informer '.$notice['color'].' topifon">'.$notice['text'].'</div><div class="space"></div>');
+					else
+						$html->set('notice', '<div class="heading-style-1 container"><div class="smaller-text color-'.$notice['color'].'-light">'.$notice['text'].'</div><div class="heading-decoration bg-'.$notice['color'].'-light" style="margin-top: 0px"></div></div>');
+				}else
+					$html->set('notice', '');
 
-        $html->get('gmenu', 'sections/servers/' . $server['game']);
+				if($server['console_use']) $html->unit('console_use', 1); else $html->unit('console_use');
+				if($server['plugins_use']) $html->unit('plugins_use', 1); else $html->unit('plugins_use');
+				if($server['ftp_use']) $html->unit('ftp_use', 1); else $html->unit('ftp_use');
+				if($server['stats_use']) $html->unit('graph_use', 1); else $html->unit('graph_use');
+				if($server['web_use']) $html->unit('web_use', 1); else $html->unit('web_use');
+				if($server['copy_use']) $html->unit('copy_use', 1); else $html->unit('copy_use');
 
-        $html->set('id', $sid);
-        $html->set('home', $cfg['http']);
+				foreach($aUnit as $unit)
+					if($unit == $active) $html->unit($unit, 1); else $html->unit($unit);
 
-        if (is_array($notice)) {
-            $html->set('notice', '<div class="informer ' . $notice['color'] . ' topifon">' . $notice['text'] . '</div><div class="space"></div>');
-        } else
-            $html->set('notice', '');
+			$html->pack('main');
 
-        if ($server['console_use']) $html->unit('console_use', 1); else $html->unit('console_use');
-        if ($server['plugins_use']) $html->unit('plugins_use', 1); else $html->unit('plugins_use');
-        if ($server['ftp_use']) $html->unit('ftp_use', 1); else $html->unit('ftp_use');
-        if ($server['stats_use']) $html->unit('graph_use', 1); else $html->unit('graph_use');
-        if ($server['web_use']) $html->unit('web_use', 1); else $html->unit('web_use');
-        if ($server['copy_use']) $html->unit('copy_use', 1); else $html->unit('copy_use');
+			$html->get('vmenu', 'sections/servers/'.$server['game']);
 
-        foreach ($aUnit as $unit)
-            if ($unit == $active) $html->unit($unit, 1); else $html->unit($unit);
+				$html->set('id', $sid);
+				$html->set('home', $cfg['http']);
 
-        $html->pack('main');
+				if($server['console_use']) $html->unit('console_use', 1); else $html->unit('console_use');
+				if($server['plugins_use']) $html->unit('plugins_use', 1); else $html->unit('plugins_use');
+				if($server['ftp_use']) $html->unit('ftp_use', 1); else $html->unit('ftp_use');
+				if($server['stats_use']) $html->unit('graph_use', 1); else $html->unit('graph_use');
+				if($server['web_use']) $html->unit('web_use', 1); else $html->unit('web_use');
+				if($server['copy_use']) $html->unit('copy_use', 1); else $html->unit('copy_use');
 
-        $html->get('vmenu', 'sections/servers/' . $server['game']);
+				foreach($aUnit as $unit)
+					if($unit == $active) $html->unit($unit, 1); else $html->unit($unit);
 
-        $html->set('id', $sid);
-        $html->set('home', $cfg['http']);
+			$html->pack('vmenu');
 
-        if ($server['console_use']) $html->unit('console_use', 1); else $html->unit('console_use');
-        if ($server['plugins_use']) $html->unit('plugins_use', 1); else $html->unit('plugins_use');
-        if ($server['ftp_use']) $html->unit('ftp_use', 1); else $html->unit('ftp_use');
-        if ($server['stats_use']) $html->unit('graph_use', 1); else $html->unit('graph_use');
-        if ($server['web_use']) $html->unit('web_use', 1); else $html->unit('web_use');
-        if ($server['copy_use']) $html->unit('copy_use', 1); else $html->unit('copy_use');
+			return NULL;
+		}
 
-        foreach ($aUnit as $unit)
-            if ($unit == $active) $html->unit($unit, 1); else $html->unit($unit);
+		public static function route($server, $inc, $go, $all = false)
+		{
+			global $device, $start_point;
 
-        $html->pack('vmenu');
+			$dir = $device == '!mobile' ? '' : 'megp/';
+			$use = true;
 
-        return NULL;
-    }
+			if(in_array($inc, array('plugins', 'ftp', 'console', 'graph', 'copy', 'web')))
+			{
+				$server['graph_use'] = $server['stats_use'];
 
-    public static function route($server, $inc, $go, $all = false)
-    {
-        global $start_point;
+				if(!$server[$inc.'_use'])
+					$use = false;
+			}
 
-        $dir = '';
-        $use = true;
+			if(!$use || $server['time'] < $start_point || in_array($server['status'], array('install', 'reinstall', 'update', 'recovery', 'blocked')))
+			{
+				if($go)
+					sys::out('Раздел недоступен');
 
-        if (in_array($inc, array('plugins', 'ftp', 'console', 'graph', 'copy', 'web'))) {
-            $server['graph_use'] = $server['stats_use'];
+				if(!$use)
+					return SEC.$dir.'servers/'.$server['game'].'/index.php';
 
-            if (!$server[$inc . '_use'])
-                $use = false;
-        }
+				return SEC.$dir.'servers/noaccess.php';
+			}
 
-        if (!$use || $server['time'] < $start_point || in_array($server['status'], array('install', 'reinstall', 'update', 'recovery', 'blocked'))) {
-            if ($go)
-                sys::out('Раздел недоступен');
+			if($all)
+				return SEC.'servers/games/'.$inc.'.php';
 
-            if (!$use)
-                return SEC . $dir . 'servers/' . $server['game'] . '/index.php';
+			if(!file_exists(SEC.$dir.'servers/'.$server['game'].'/'.$inc.'.php'))
+				return SEC.$dir.'servers/'.$server['game'].'/index.php';
 
-            return SEC . $dir . 'servers/noaccess.php';
-        }
+			return SEC.$dir.'servers/'.$server['game'].'/'.$inc.'.php';
+		}
 
-        if ($all)
-            return SEC . 'servers/games/' . $inc . '.php';
+		public static function int($data, $width = false)
+		{
+			if($width)
+				return preg_replace("([^0-9]{0, ".$width."})", '', $data);
 
-        if (!file_exists(SEC . $dir . 'servers/' . $server['game'] . '/' . $inc . '.php'))
-            return SEC . $dir . 'servers/' . $server['game'] . '/index.php';
+			return preg_replace("([^0-9])", '', $data);
+		}
 
-        return SEC . $dir . 'servers/' . $server['game'] . '/' . $inc . '.php';
-    }
+		public static function b64js($data)
+		{
+			return base64_encode(json_encode($data));
+		}
 
-    public static function int($data, $width = false)
-    {
-        if ($width)
-            return preg_replace("([^0-9]{0, " . $width . "})", '', $data);
+		public static function b64djs($data)
+		{
+			return json_decode(base64_decode($data), true);
+		}
 
-        return preg_replace("([^0-9])", '', $data);
-    }
+		public static function hb64($data)
+		{
+			return base64_encode(htmlspecialchars($data));
+		}
 
-    public static function b64js($data)
-    {
-        return base64_encode(json_encode($data));
-    }
+		public static function hb64d($data)
+		{
+			return htmlspecialchars_decode(base64_decode($data));
+		}
 
-    public static function b64djs($data)
-    {
-        return json_decode(base64_decode($data), true);
-    }
+		public static function outjs($val, $cache = false)
+		{
+			global $mcache;
 
-    public static function hb64($data)
-    {
-        return base64_encode(htmlspecialchars($data));
-    }
+			if($cache)
+				$mcache->delete($cache);
 
-    public static function hb64d($data)
-    {
-        return htmlspecialchars_decode(base64_decode($data));
-    }
+			die(json_encode($val));
+		}
 
-    public static function outjs($val, $cache = false)
-    {
-        global $mcache;
+		public static function out($val = '', $cache = false)
+		{
+			global $mcache;
 
-        if ($cache)
-            $mcache->delete($cache);
+			if($cache)
+				$mcache->delete($cache);
 
-        die(json_encode($val));
-    }
+			die(''.$val.'');
+		}
 
-    public static function out($val = '', $cache = false)
-    {
-        global $mcache;
+		public static function outhtml($text, $time = 3, $url = false, $cache = false)
+		{
+			global $device, $mcache, $html, $cfg;
 
-        if ($cache)
-            $mcache->delete($cache);
+			if($cache)
+				$mcache->delete($cache);
 
-        die('' . $val . '');
-    }
+			$tpl = $device == '!mobile' ? '' : '/megp';
 
-    public static function outhtml($text, $time = 3, $url = false, $cache = false)
-    {
-        global $mcache, $html, $cfg;
+			$html->get('out');
 
-        if ($cache)
-            $mcache->delete($cache);
+				$html->set('title', $cfg['name']);
+				$html->set('home', $cfg['http']);
+				$html->set('css', $cfg['http'].'template'.$tpl.'/css/');
+				$html->set('js', $cfg['http'].'template'.$tpl.'/js/');
+				$html->set('img', $cfg['http'].'template'.$tpl.'/images/');
+				$html->set('text', $text);
 
-        $tpl = '';
+			$html->pack('out');
 
-        $html->get('out');
+			if(!$url)
+				$url = $cfg['http'];
 
-        $html->set('title', $cfg['name']);
-        $html->set('home', $cfg['http']);
-        $html->set('css', $cfg['http'] . 'template' . $tpl . '/css/');
-        $html->set('js', $cfg['http'] . 'template' . $tpl . '/js/');
-        $html->set('img', $cfg['http'] . 'template' . $tpl . '/images/');
-        $html->set('text', $text);
+			header('Refresh: '.$time.'; URL='.$url);
 
-        $html->pack('out');
+			die($html->arr['out']);
+		}
 
-        if (!$url)
-            $url = $cfg['http'];
+		public static function valid($val, $type, $preg = '')
+		{
+			switch($type)
+			{
+				case 'promo':
+					if(!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
+						return true;
 
-        header('Refresh: ' . $time . '; URL=' . $url);
+					return false;
 
-        die($html->arr['out']);
-    }
+				case 'en':
+					if(!preg_match("/^[A-Za-z0-9]$/", $val))
+						return true;
 
-    public static function valid($val, $type, $preg = '')
-    {
-        $val = (isset($val) ? $val : '');
+					return false;
 
-        switch ($type) {
-            case 'promo':
-                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
-                    return true;
+				case 'ru':
+					if(!preg_match("/^[А-Яа-я]$/u", $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'en':
-                if (!preg_match("/^[A-Za-z0-9]$/", $val))
-                    return true;
+				case 'wm':
+					if(!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'ru':
-                if (!preg_match("/^[А-Яа-я]$/u", $val))
-                    return true;
+				case 'ip':
+					if(!preg_match("/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/", $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'wm':
-                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', $val))
-                    return true;
+				case 'steamid':
+					if(!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'ip':
-                if (!preg_match('/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/', $val))
-                    return true;
+				case 'steamid3':
+					if(!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'steamid':
-                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", $val))
-                    return true;
+				case 'num':
+					if(!preg_match('/[^0-9]/', $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'steamid3':
-                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", $val))
-                    return true;
+				case 'md5':
+					if(!preg_match("/^[a-z0-9]{32,32}$/", $val))
+						return true;
 
-                return false;
+					return false;
 
-            case 'num':
-                if (!preg_match('/[^0-9]/', $val))
-                    return true;
+				case 'other':
+					if(!preg_match($preg, $val))
+						return true;
 
-                return false;
+					return false;
+			}
 
-            case 'md5':
-                if (!preg_match("/^[a-z0-9]{32,32}$/", $val))
-                    return true;
+			return true;
+		}
 
-                return false;
+		public static function mail($name, $text, $mail)
+		{
+			global $cfg;
 
-            case 'other':
-                if (!preg_match($preg, $val))
-                    return true;
+			require_once(LIB.'smtp.php');
 
-                return false;
-        }
+			$tpl = file_get_contents(DATA.'mail.ini', "r");
 
-        return true;
-    }
+			$text = str_replace(
+				array('[name]', '[text]', '[http]', '[img]', '[css]'),
+				array($cfg['name'], $text, $cfg['http'], $cfg['http'].'template/images/', $cfg['http'].'template/css/'),
+				$tpl
+			);
 
-    public static function mail($name, $text, $mail)
-    {
-        global $cfg;
+			$smtp = new smtp($cfg['smtp_login'], $cfg['smtp_passwd'], $cfg['smtp_url'], $cfg['smtp_mail'], 465);
 
-        require_once(LIB . 'smtp.php');
+			$headers = "MIME-Version: 1.0\r\n";
+			$headers .= "Content-type: text/html; charset=utf-8\r\n";
+			$headers .= "From: ".$cfg['smtp_name']." <".$cfg['smtp_mail'].">\r\n";
 
-        $tpl = file_get_contents(DATA . 'mail.ini', "r");
+			if($smtp->send($mail, $name, $text, $headers))
+				return true;
 
-        $text = str_replace(
-            array('[name]', '[text]', '[http]', '[img]', '[css]'),
-            array($cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'),
-            $tpl
-        );
+			return false;
+		}
 
-        $smtp = new smtp($cfg['smtp_login'], $cfg['smtp_passwd'], $cfg['smtp_url'], $cfg['smtp_mail'], 465);
+		public static function mail_domain($mail)
+		{
+			$domain = explode('@', $mail);
 
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "From: " . $cfg['smtp_name'] . " <" . $cfg['smtp_mail'] . ">\r\n";
+			$domain = end($domain);
 
-        if ($smtp->send($mail, $name, $text, $headers))
-            return true;
+			if(in_array($domain, array('list.ru', 'bk.ru', 'inbox.ru')))
+				$domain = 'mail.ru';
 
-        return false;
-    }
+			switch($domain)
+			{
+				case 'mail.ru':
+					return $domain;
 
-    public static function mail_domain($mail)
-    {
-        $domain = explode('@', $mail);
+				case 'yandex.ru':
+					return 'mail.yandex.ru';
 
-        $domain = end($domain);
+				case 'google.com':
+					return 'mail.google.com';
 
-        if (in_array($domain, array('list.ru', 'bk.ru', 'inbox.ru')))
-            $domain = 'mail.ru';
+				default:
+					return '';
+			}
+		}
 
-        switch ($domain) {
-            case 'mail.ru':
-                return $domain;
+		public static function domain($domain)
+		{
+			$domain = explode('.', $domain);
 
-            case 'yandex.ru':
-                return 'mail.yandex.ru';
+			unset($domain[0]);
 
-            case 'google.com':
-                return 'mail.google.com';
+			return implode('.', $domain);
+		}
 
-            default:
-                return '';
-        }
-    }
+		public static function updtext($text, $data)
+		{
+			foreach($data as $name => $val)
+				$text = str_replace('['.$name.']', $val, $text);
 
-    public static function domain($domain)
-    {
-        $domain = explode('.', $domain);
+			return $text;
+		}
 
-        unset($domain[0]);
+		public static function login($mail, $lchar)
+		{
+			if(!$lchar)
+				return str_replace(array('.', '_', '+', '-'), '', sys::first(explode('@', $mail)));
 
-        return implode('.', $domain);
-    }
+			$list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
+			$a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
+			$selections = strlen($list)-1;
+			$start = strlen($a)-1;
+			$b = rand(0, $start);
+			$start = $a[$b];
+			$login = array();
 
-    public static function updtext($text, $data)
-    {
-        foreach ($data as $name => $val)
-            $text = str_replace('[' . $name . ']', $val, $text);
+			$i = 0;
 
-        return $text;
-    }
+			for($i; $i <= 10; $i+=1)
+			{
+				$n = rand(0, $selections);
+				$login[] = $list[$n];
+			}
 
-    public static function login($mail, $lchar)
-    {
-        if (!$lchar)
-            return str_replace(array('.', '_', '+', '-'), '', sys::first(explode('@', $mail)));
+			return $start.implode('', $login);
+		}
 
-        $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
-        $a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
-        $selections = strlen($list) - 1;
-        $start = strlen($a) - 1;
-        $b = rand(0, $start);
-        $start = $a[$b];
-        $login = array();
+		public static function passwd($length = 8)
+		{
+			$list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
+			$a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
+			$selections = strlen($list)-1;
+			$start = strlen($a)-1;
+			$b = rand(0, $start);
+			$start = $a[$b];
+			$passwd = array();
 
-        $i = 0;
+			$i = 0;
 
-        for ($i; $i <= 10; $i += 1) {
-            $n = rand(0, $selections);
-            $login[] = $list[$n];
-        }
+			for($i; $i <= $length-2; $i+=1)
+			{
+				$n = rand(0, $selections);
+				$passwd[] = $list[$n];
+			}
 
-        return $start . implode('', $login);
-    }
+			return $start.implode('', $passwd);
+		}
 
-    public static function passwd($length = 8)
-    {
-        $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
-        $a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
-        $selections = strlen($list) - 1;
-        $start = strlen($a) - 1;
-        $b = rand(0, $start);
-        $start = $a[$b];
-        $passwd = array();
+		public static function passwdkey($passwd)
+		{
+			return md5($passwd);
+		}
 
-        $i = 0;
+		public static function cookie($name, $value, $expires)
+		{
+			$expires = time() + ($expires * 86400);
+			setcookie($name, $value, $expires, "/", $_SERVER['SERVER_NAME'], null, true);
+		}
 
-        for ($i; $i <= $length - 2; $i += 1) {
-            $n = rand(0, $selections);
-            $passwd[] = $list[$n];
-        }
+		public static function auth()
+		{
+			global $auth, $go, $text, $cfg;
 
-        return $start . implode('', $passwd);
-    }
+			if($auth)
+			{
+				if($go)
+					sys::outjs(array('e' => sys::text('output', 'auth')));
 
-    public static function passwdkey($passwd)
-    {
-        return md5($passwd);
-    }
+				global $device;
 
-    public static function cookie($name, $value, $expires)
-    {
-        global $cfg;
+				$link = $device == '!mobile' ? 'user/section/lk' : '';
 
-        $expires = time() + ($expires * 86400);
-        \Delight\Cookie\Cookie::setcookie($name, $value, $expires, '/', $cfg['url'], self::isSecure(), true, $cfg['cookie_same_site']);
-    }
+				exit(header('Refresh: 0; URL='.$cfg['http'].$link));
+			}
 
-    public static function auth()
-    {
-        global $auth, $go, $text, $cfg;
+			return NULL;
+		}
 
-        if ($auth) {
-            if ($go)
-                sys::outjs(array('e' => sys::text('output', 'auth')));
+		public static function noauth()
+		{
+		   global $auth, $go, $text, $cfg;
 
-            $link = 'user/section/lk';
+			if(!$auth)
+			{
+				if($go)
+					sys::outjs(array('e' => sys::text('output', 'noauth')));
 
-            exit(header('Refresh: 0; URL=' . $cfg['http'] . $link));
-        }
+				global $device;
 
-        return NULL;
-    }
+				$link = $device == '!mobile' ? 'user/section/auth' : 'auth';
 
-    public static function noauth()
-    {
-        global $auth, $go, $text, $cfg;
+				exit(header('Refresh: 0; URL='.$cfg['http'].$link));
+			}
 
-        if (!$auth) {
-            if ($go)
-                sys::outjs(array('e' => sys::text('output', 'noauth')));
+			return NULL;
+		}
 
-            $link = 'user/section/auth';
+		public static function browser($agent)
+		{
+			if(strpos($agent, 'Firefox') !== false)
+				return 'Mozilla Firefox';
 
-            exit(header('Refresh: 0; URL=' . $cfg['http'] . $link));
-        }
+			if(strpos($agent, 'Opera') !== false)
+				return 'Opera';
 
-        return NULL;
-    }
+			if(strpos($agent, 'Chrome') !== false)
+				return 'Google Chrome';
 
-    public static function browser($agent)
-    {
-        if (strpos($agent, 'Firefox') !== false)
-            return 'Mozilla Firefox';
+			if(strpos($agent, 'MSIE') !== false)
+				return 'Internet Explorer';
 
-        if (strpos($agent, 'Opera') !== false)
-            return 'Opera';
+			if(strpos($agent, 'Safari') !== false)
+				return 'Safari';
 
-        if (strpos($agent, 'Chrome') !== false)
-            return 'Google Chrome';
+			return 'Неизвестный';
+		}
 
-        if (strpos($agent, 'MSIE') !== false)
-            return 'Internet Explorer';
+		public static function date($lenght, $date)
+		{
+			global $start_point;
 
-        if (strpos($agent, 'Safari') !== false)
-            return 'Safari';
+			$check_time = $date-$start_point;
 
-        return 'Неизвестный';
-    }
+			if($check_time < 1)
+				return 'время истекло.';
 
-    public static function date($lenght, $date)
-    {
-        global $start_point;
+			$days = floor($check_time/86400);
+			$hours = floor(($check_time%86400)/3600);
+			$minutes = floor(($check_time%3600)/60);
+			$seconds = $check_time%60; 
 
-        $check_time = $date - $start_point;
+			$adata = array(
+				'min' => array(
+					'days' => array('день', 'дня', 'дней'),
+					'hours' => array('ч.', 'ч.', 'ч.'),
+					'minutes' => array('мин.', 'мин.', 'мин.'),
+					'seconds' => array('сек.', 'сек.', 'сек.')
+				),
+				'max' => array(
+					'days' => array('день', 'дня', 'дней'),
+					'hours' => array('час', 'часа', 'часов'),
+					'minutes' => array('минуту','минуты','минут'),
+					'seconds' => array('секунду','секунды','секунд')
+				)
+			);
 
-        if ($check_time < 1)
-            return 'время истекло.';
+			$text = '';
 
-        $days = floor($check_time / 86400);
-        $hours = floor(($check_time % 86400) / 3600);
-        $minutes = floor(($check_time % 3600) / 60);
-        $seconds = $check_time % 60;
+			if($days > 0)
+				$text .= sys::date_decl($days, $adata[$lenght]['days']);
 
-        $adata = array(
-            'min' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('ч.', 'ч.', 'ч.'),
-                'minutes' => array('мин.', 'мин.', 'мин.'),
-                'seconds' => array('сек.', 'сек.', 'сек.')
-            ),
-            'max' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('час', 'часа', 'часов'),
-                'minutes' => array('минуту', 'минуты', 'минут'),
-                'seconds' => array('секунду', 'секунды', 'секунд')
-            )
-        );
+			if($days < 1 AND $hours > 0)
+				$text .= ' '.sys::date_decl($hours, $adata[$lenght]['hours']);
 
-        $text = '';
+			if($days < 1 AND $minutes > 0)
+				$text .= ' '.sys::date_decl($minutes, $adata[$lenght]['minutes']);
 
-        if ($days > 0)
-            $text .= sys::date_decl($days, $adata[$lenght]['days']);
+			if($days < 1 AND $seconds > 0)
+				$text .= ' '.sys::date_decl($seconds, $adata[$lenght]['seconds']);
 
-        if ($days < 1 and $hours > 0)
-            $text .= ' ' . sys::date_decl($hours, $adata[$lenght]['hours']);
+			return $text;
+		}
 
-        if ($days < 1 and $minutes > 0)
-            $text .= ' ' . sys::date_decl($minutes, $adata[$lenght]['minutes']);
+		public static function date_decl($digit, $expr, $onlyword = false)
+		{
+			if(!is_array($expr))
+				$expr = array_filter(explode(' ', $expr));
 
-        if ($days < 1 and $seconds > 0)
-            $text .= ' ' . sys::date_decl($seconds, $adata[$lenght]['seconds']);
+			if(empty($expr[2]))
+				$expr[2] = $expr[1];
 
-        return $text;
-    }
+			$i = sys::int($digit)%100;
 
-    public static function date_decl($digit, $expr, $onlyword = false)
-    {
-        if (!is_array($expr))
-            $expr = array_filter(explode(' ', $expr));
+			if($onlyword)
+				$digit = '';
 
-        if (empty($expr[2]))
-            $expr[2] = $expr[1];
+			if($i > 4 AND $i < 21)
+				$res = $digit.' '.$expr[2];
+			else
+				$i%=10;
 
-        $i = sys::int($digit) % 100;
+			if($i == 1)
+				$res = $digit.' '.$expr[0];
+			elseif($i > 1 AND $i < 5)
+				$res = $digit.' '.$expr[1];
+			else
+				$res = $digit.' '.$expr[2];
 
-        if ($onlyword)
-            $digit = '';
+			return trim($res);
+		}
 
-        if ($i > 4 and $i < 21)
-            $res = $digit . ' ' . $expr[2];
-        else
-            $i %= 10;
+		public static function today($time, $cp = false)
+		{
+			global $start_point;
 
-        if ($i == 1)
-            $res = $digit . ' ' . $expr[0];
-        elseif ($i > 1 and $i < 5)
-            $res = $digit . ' ' . $expr[1];
-        else
-            $res = $digit . ' ' . $expr[2];
+			$today = date('d.m.Y', $start_point);
+			$day = date('d.m.Y', $time);
 
-        return trim($res);
-    }
+			if($day == $today)
+			{
+				if($cp)
+					return 'Сегодня '.date('H:i', $time);
 
-    public static function today($time, $cp = false)
-    {
-        global $start_point;
+				return 'Сегодня '.date('- H:i', $time);
+			}
 
-        $today = date('d.m.Y', $start_point);
-        $day = date('d.m.Y', $time);
+			$yesterday_first = sys::int(sys::first(explode('.', $today)))-1;
+			$yesterday_full = date('m.Y', $time);
 
-        if ($day == $today) {
-            if ($cp)
-                return 'Сегодня ' . date('H:i', $time);
+			if($day == $yesterday_first.'.'.$yesterday_full AND !$yesterday_first)
+			{
+				if($cp)
+					return 'Вчера '.date('H:i', $time);
 
-            return 'Сегодня ' . date('- H:i', $time);
-        }
+				return 'Вчера '.date('- H:i', $time);
+			}
 
-        $yesterday_first = sys::int(sys::first(explode('.', $today))) - 1;
-        $yesterday_full = date('m.Y', $time);
+			if($cp)
+				return date('d.m.Y H:i', $time);
 
-        if ($day == $yesterday_first . '.' . $yesterday_full and !$yesterday_first) {
-            if ($cp)
-                return 'Вчера ' . date('H:i', $time);
+			return date('d.m.Y - H:i', $time);
+		}
 
-            return 'Вчера ' . date('- H:i', $time);
-        }
+		public static function day($time)
+		{
+			$days = array('день', 'дня', 'дней');
 
-        if ($cp)
-            return date('d.m.Y H:i', $time);
+			$time = $time % 100; 
 
-        return date('d.m.Y - H:i', $time);
-    }
+			if($n > 10 AND $n < 20) 
+				return $days[2];
 
-    public static function day($time)
-    {
-        $days = array('день', 'дня', 'дней');
+			$time = $time % 10;
 
-        $time = $time % 100;
+			if($time > 1 AND $time < 5)
+				return $days[1];
 
-        if ($n > 10 and $n < 20)
-            return $days[2];
+			if($time == 1) 
+				return $days[0];
 
-        $time = $time % 10;
+			return $days[2];
+		}
 
-        if ($time > 1 and $time < 5)
-            return $days[1];
+		public static function bbc($text)
+		{
+			global $cfg;
 
-        if ($time == 1)
-            return $days[0];
+			$lines = explode("\n", $text);
 
-        return $days[2];
-    }
+			$str_search = array(
+			  "#\\\n#is",
+			  "#\[spoiler\](.+?)\[\/spoiler\]#is",
+			  "#\[sp\](.+?)\[\/sp\]#is",
+			  "#\[b\](.+?)\[\/b\]#is",
+			  "#\[u\](.+?)\[\/u\]#is",
+			  "#\[code\](.+?)\[\/code\]#is",
+			  "#\[quote\](.+?)\[\/quote\]#is",
+			  "#\[url=(.+?)\](.+?)\[\/url\]#is",
+			  "#\[img=(.+?)\] \[\/img\]#is",
+			  "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
+			);
 
-    public static function bbc($text)
-    {
-        global $cfg;
+			$str_replace = array(
+			  "<br />",
+			  "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
+			  "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
+			  "<b>\\1</b>",
+			  "<u>\\1</u>",
+			  "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
+			  "<blockquote><p>\\1</p></blockquote>",
+			  "<a href='\\1' target='_blank'>\\2</a>",
+			  "<a href='\\1' target='_blank' style='display: block;'><img src='".$cfg['url']."template/images/help_screenshot.png' alt='Изображение'></a>",
+			  "<a href='\\2' target='_blank'> \\2</a>"
+			);
 
-        $lines = explode("\n", $text);
+			$uptext = '';
 
-        $str_search = array(
-            "#\\\n#is",
-            "#\[spoiler\](.+?)\[\/spoiler\]#is",
-            "#\[sp\](.+?)\[\/sp\]#is",
-            "#\[b\](.+?)\[\/b\]#is",
-            "#\[u\](.+?)\[\/u\]#is",
-            "#\[code\](.+?)\[\/code\]#is",
-            "#\[quote\](.+?)\[\/quote\]#is",
-            "#\[url=(.+?)\](.+?)\[\/url\]#is",
-            "#\[img=(.+?)\] \[\/img\]#is",
-            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
-        );
+			foreach($lines as $line)
+				$uptext .= preg_replace($str_search, $str_replace, $line)."<br>";
 
-        $str_replace = array(
-            "<br />",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
-            "<b>\\1</b>",
-            "<u>\\1</u>",
-            "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
-            "<blockquote><p>\\1</p></blockquote>",
-            "<a href='\\1' target='_blank'>\\2</a>",
-            "<a href='\\1' target='_blank' style='display: block;'><img src='" . $cfg['url'] . "template/images/help_screenshot.png' alt='Изображение'></a>",
-            "<a href='\\2' target='_blank'> \\2</a>"
-        );
+			return $uptext;
+		}
 
-        $uptext = '';
+		public static function first($array = array())
+		{
+			return $array[0];
+		}
 
-        foreach ($lines as $line)
-            $uptext .= preg_replace($str_search, $str_replace, $line) . "<br>";
+		public static function back($url)
+		{
+			exit(header('Refresh: 0; URL='.$url));
+		}
 
-        return $uptext;
-    }
+		public static function strlen($str)
+		{
+			return iconv_strlen($str, 'UTF-8');
+		}
 
-    public static function first($array = array())
-    {
-        return $array[0];
-    }
+		public static function text($section, $name)
+		{
+			global $cfg, $user;
 
-    public static function back($url)
-    {
-        exit(header('Refresh: 0; URL=' . $url));
-    }
+			$group = isset($user['group']) ? $user['group'] : 'user';
 
-    public static function strlen($str)
-    {
-        if ($str === null) {
-            return 0;
-        }
+			if($section != 'error' || !$cfg['text_group'])
+				$group = 'all';
 
-        return iconv_strlen($str, 'UTF-8');
-    }
+			include(DATA.'text/'.$section.'.php');
 
-    public static function text($section, $name)
-    {
-        global $cfg, $user;
+			return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
+		}
 
-        $group = isset($user['group']) ? $user['group'] : 'user';
+		public static function key($param = 'defegp')
+		{
+			return md5(sha1(rand(1, 15).$param.rand(16, 30).rand(200, 1000).rand(1, 100)));
+		}
 
-        if ($section != 'error' || !$cfg['text_group'])
-            $group = 'all';
+		public static function captcha($type, $ip)
+		{
+			global $mcache;
 
-        include(DATA . 'text/' . $section . '.php');
+			$cod = '';
+			$width = 100;
+			$height = 45;
+			$font_size = 16;
+			$symbols = 3;
+			$symbols_fon = 20;
+			$font = LIB.'captcha/text.ttf';
 
-        return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
-    }
+			$chars = array('a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','t','u','v','w','x','y','z','2','3','4','5','6','7','9');
+			$colors = array('20','50','80','100');
 
-    public static function key($param = 'defegp')
-    {
-        return md5(sha1(rand(1, 15) . $param . rand(16, 30) . rand(200, 1000) . rand(1, 100)));
-    }
+			$src = imagecreatetruecolor($width, $height);
+			$fon = imagecolorallocate($src, 255, 255, 255);
 
-    public static function captcha($type, $ip)
-    {
-        global $mcache;
+			imagefill($src, 0, 0, $fon);
 
-        $cod = '';
-        $width = 100;
-        $height = 45;
-        $font_size = 16;
-        $symbols = 3;
-        $symbols_fon = 20;
-        $font = LIB . 'captcha/text.ttf';
+			$i = 0;
+			for($i; $i < $symbols_fon; $i+=1)
+			{
+			   $color = imagecolorallocatealpha($src, rand(0,255), rand(0,255), rand(0,255), 100); 
+			   $char = $chars[rand(0, sizeof($chars)-1)];
+			   $size = rand($font_size-2, $font_size+2);
 
-        $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '9');
-        $colors = array('20', '50', '80', '100');
+			   imagettftext($src, $size, rand(0,45), rand($width*0.1,$width-$width*0.1), rand($height*0.2,$height), $color, $font, $char);
+			}
 
-        $src = imagecreatetruecolor($width, $height);
-        $fon = imagecolorallocate($src, 255, 255, 255);
+			$i = 0;
+			for($i; $i < $symbols; $i+=1)
+			{
+			   $color = imagecolorallocatealpha($src, $colors[rand(0,sizeof($colors)-1)], $colors[rand(0,sizeof($colors)-1)], $colors[rand(0,sizeof($colors)-1)], rand(20,40)); 
+			   $char = $chars[rand(0, sizeof($chars)-1)];
+			   $size = rand($font_size*2.1-2, $font_size*2.1+2);
 
-        imagefill($src, 0, 0, $fon);
+			   $x = ($i+1)*$font_size + rand(6,8);
+			   $y = (($height*2)/3) + rand(3,7);
 
-        $i = 0;
-        for ($i; $i < $symbols_fon; $i += 1) {
-            $color = imagecolorallocatealpha($src, rand(0, 255), rand(0, 255), rand(0, 255), 100);
-            $char = $chars[rand(0, sizeof($chars) - 1)];
-            $size = rand($font_size - 2, $font_size + 2);
+			   $cod .= $char;
 
-            imagettftext($src, $size, rand(0, 45), rand($width * 0.1, $width - $width * 0.1), rand($height * 0.2, $height), $color, $font, $char);
-        }
+			   imagettftext($src, $size, rand(0,15), $x, $y, $color, $font, $char);
+			}
 
-        $i = 0;
-        for ($i; $i < $symbols; $i += 1) {
-            $color = imagecolorallocatealpha($src, $colors[rand(0, sizeof($colors) - 1)], $colors[rand(0, sizeof($colors) - 1)], $colors[rand(0, sizeof($colors) - 1)], rand(20, 40));
-            $char = $chars[rand(0, sizeof($chars) - 1)];
-            $size = rand($font_size * ((int)2.1) - 2, $font_size * ((int)2.1) + 2);
+			$mcache->set($type.'_captcha_'.$ip, $cod, false, 120);
 
-            $x = ($i + 1) * $font_size + rand(6, 8);
-            $y = (($height * 2) / 3) + rand(3, 7);
+			header("Content-type: image/gif"); 
+			imagegif($src);
+			imagedestroy($src);
+			exit;
+		}
 
-            $cod .= $char;
+		public static function captcha_check($type, $ip, $cod = '')
+		{
+			global $cfg, $mcache;
 
-            imagettftext($src, $size, rand(0, 15), $x, $y, $color, $font, $char);
-        }
+			// Если повтор ввода капчи выключен и в кеше есть подтвержденный сеанс
+			if(!$cfg['recaptcha'] AND $mcache->get($type.'_captcha_valid_'.$ip))
+				return false;
 
-        $mcache->set($type . '_captcha_' . $ip, $cod, false, 120);
+			if($mcache->get($type.'_captcha_'.$ip) != strtolower($cod))
+			{
+				$mcache->set($type.'_captcha_valid_'.$ip, true, false, 60);
 
-        header("Content-type: image/gif");
-        imagegif($src);
-        imagedestroy($src);
-        exit;
-    }
+				return true;
+			}
 
-    public static function captcha_check($type, $ip, $cod = '')
-    {
-        global $cfg, $mcache;
+			return false;
+		}
 
-        // Если повтор ввода капчи выключен и в кеше есть подтвержденный сеанс
-        if (!$cfg['recaptcha'] and $mcache->get($type . '_captcha_valid_' . $ip))
-            return false;
+		public static function ismail($data)
+		{
+			$aData = explode('@', $data);
 
-        if ($mcache->get($type . '_captcha_' . $ip) != strtolower($cod)) {
-            $mcache->set($type . '_captcha_valid_' . $ip, true, false, 60);
+			if(count($aData) > 1)
+				return true;
 
-            return true;
-        }
+			return false;
+		}
 
-        return false;
-    }
+		public static function smscode()
+		{
+			return rand(1,9).rand(100,500).rand(10,99);
+		}
 
-    public static function ismail($data)
-    {
-        $aData = explode('@', $data);
+		public static function code($length = 8)
+		{
+			$list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
+			$a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
+			$selections = strlen($list)-1;
+			$start = strlen($a)-1;
+			$b = rand(0, $start);
+			$start = $a[$b];
+			$code = array();
 
-        if (count($aData) > 1)
-            return true;
+			$i = 0;
 
-        return false;
-    }
+			for($i; $i <= $length-2; $i+=1)
+			{
+				$n = rand(0, $selections);
+				$code[] = $list[$n];
+			}
 
-    public static function smscode()
-    {
-        return rand(1, 9) . rand(100, 500) . rand(10, 99);
-    }
+			return $start.implode('', $code);
+		}
 
-    public static function code($length = 8)
-    {
-        $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
-        $a = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz';
-        $selections = strlen($list) - 1;
-        $start = strlen($a) - 1;
-        $b = rand(0, $start);
-        $start = $a[$b];
-        $code = array();
+		public static function sms($text, $phone)
+		{
+			global $cfg;
 
-        $i = 0;
+			$out = file_get_contents($cfg['sms_gateway'].'&'.$cfg['sms_to'].'='.$phone.'&'.$cfg['sms_text'].'='.urlencode($text));
 
-        for ($i; $i <= $length - 2; $i += 1) {
-            $n = rand(0, $selections);
-            $code[] = $list[$n];
-        }
+			$aOut = explode("\n", $out);
 
-        return $start . implode('', $code);
-    }
+			if(trim($aOut[0]) == $cfg['sms_ok'])
+				return true;
 
-    public static function sms($text, $phone)
-    {
-        global $cfg;
+			return false;
+		}
 
-        $out = file_get_contents($cfg['sms_gateway'] . '&' . $cfg['sms_to'] . '=' . $phone . '&' . $cfg['sms_text'] . '=' . urlencode($text));
+		public static function find($text, $find)
+		{
+			$words = explode(' ', $find);
 
-        $aOut = explode("\n", $out);
+			foreach($words as $word)
+				if(strlen($word) >= 2)
+					$text = preg_replace('#'.quotemeta($word).'#iu', '<span style="color: #F66A6A;">$0</span>', $text);
 
-        if (trim($aOut[0]) == $cfg['sms_ok'])
-            return true;
+			return $text;
+		}
 
-        return false;
-    }
+		public static function str_first_replace($search, $replace, $text)
+		{
+		   $pos = strpos($text, $search);
+		   
+		   return $pos!==false ? substr_replace($text, $replace, $pos, strlen($search)) : $text; 
+		}
 
-    public static function find($text, $find)
-    {
-        $words = explode(' ', $find);
+		public static function cmd($command)
+		{
+			$text = preg_replace('/\\$/', '$ы', trim($command));
 
-        foreach ($words as $word)
-            if (strlen($word) >= 2)
-                $text = preg_replace('#' . quotemeta($word) . '#iu', '<span style="color: #F66A6A;">$0</span>', $text);
+			mb_internal_encoding('UTF-8');
 
-        return $text;
-    }
+			if(mb_substr($text, -1) == 'ы')
+				$text = quotemeta(substr($text, 0, -2));
 
-    public static function str_first_replace($search, $replace, $text)
-    {
-        $pos = strpos($text, $search);
+			return $text;
+		}
 
-        return $pos !== false ? substr_replace($text, $replace, $pos, strlen($search)) : $text;
-    }
+		public static function map($map)
+		{
+			$name = quotemeta(trim($map));
 
-    public static function cmd($command)
-    {
-        $text = preg_replace('/\\$/', '$ы', trim($command));
+			if(substr($name, -1) == '$')
+				$name = substr($name, 0, -2).'$';
 
-        mb_internal_encoding('UTF-8');
+			return str_replace(array('\.', '\*'), array('.', '*'), $name);
+		}
 
-        if (mb_substr($text, -1) == 'ы')
-            $text = quotemeta(substr($text, 0, -2));
+		public static function temp($text)
+		{
+			$temp = TEMP.md5(time().rand(5, 100).rand(10, 20).rand(1, 20).rand(40, 80));
 
-        return $text;
-    }
+			$file = fopen($temp, "w");
 
-    public static function map($map)
-    {
-        $name = quotemeta(trim($map));
+			fputs($file, $text);
 
-        if (substr($name, -1) == '$')
-            $name = substr($name, 0, -2) . '$';
+			fclose($file);
 
-        return str_replace(array('\.', '\*'), array('.', '*'), $name);
-    }
+			return $temp;
+		}
 
-    public static function temp($text)
-    {
-        $temp = TEMP . md5(time() . rand(5, 100) . rand(10, 20) . rand(1, 20) . rand(40, 80));
+		public static function size($val)
+		{
+			$aSize = array(' Байт', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб');
 
-        $file = fopen($temp, "w");
+			return $val ? round($val/pow(1024, ($i = floor(log($val, 1024)))), 2) . $aSize[$i] : '0 Байт';
+		}
 
-        fputs($file, $text);
+		public static function unidate($date)
+		{
+			$aDate = explode('-', $date);
 
-        fclose($file);
+			$aFirst = explode(' ', $aDate[2]);
 
-        return $temp;
-    }
+			return $aFirst[1].' - '.$aFirst[0].'.'.$aDate[1].'.'.$aDate[0];
+		}
 
-    public static function size($val)
-    {
-        $aSize = array(' Байт', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб');
+		public static function page($page, $nums, $num)
+		{
+			$ceil = ceil($nums/$num);
 
-        return $val ? round($val / pow(1024, ($i = floor(log($val, 1024)))), 2) . $aSize[$i] : '0 Байт';
-    }
+			if($page > $ceil)
+				$page = $ceil;
 
-    public static function unidate($date)
-    {
-        $aDate = explode('-', $date);
+			$next = $page*$num;
 
-        $aFirst = explode(' ', $aDate[2]);
+			if($next <= $nums)
+				$next = $next-$num;
 
-        return $aFirst[1] . ' - ' . $aFirst[0] . '.' . $aDate[1] . '.' . $aDate[0];
-    }
+			if($next > $nums)
+				$next = $next-$num;
 
-    public static function page($page, $nums, $num)
-    {
-        $ceil = ceil($nums / $num);
+			if($next < 1)
+				$next = 0;
 
-        if ($page > $ceil)
-            $page = $ceil;
+			$num_go = $next;
+			if($page == '')
+				$page = 1;
 
-        $next = $page * $num;
+			$aPage = array(
+				'page' => $page,
+				'num' => $num_go,
+				'ceil' => $ceil
+			);
 
-        if ($next <= $nums)
-            $next = $next - $num;
+			return $aPage;
+		}
 
-        if ($next > $nums)
-            $next = $next - $num;
+		public static function page_list($countnum, $actnum)
+		{
+			if($countnum == 0 || $countnum == 1)
+				return array();
 
-        if ($next < 1)
-            $next = 0;
+			if($countnum > 10)
+			{
+				if($actnum <= 4 || $actnum + 3 >= $countnum)
+				{
+					for($i = 0; $i <= 4; $i++)
+						$numlist[$i] = $i + 1;
 
-        $num_go = $next;
-        if ($page == '')
-            $page = 1;
+					$numlist[5] = '...';
+					for($j = 6, $k = 4; $j <= 10; $j+=1, $k-=1)
+						$numlist[$j] = $countnum - $k;
+				}else{
+					$numlist[0] = 1;
+					$numlist[1] = 2;
+					$numlist[2] = '...';
+					$numlist[3] = $actnum - 2;
+					$numlist[4] = $actnum - 1;
+					$numlist[5] = $actnum;
+					$numlist[6] = $actnum + 1;
+					$numlist[7] = $actnum + 2;
+					$numlist[8] = '...';
+					$numlist[9] = $countnum - 1;
+					$numlist[10] = $countnum;
+				}
+			}else
+				for($n = 0; $n < $countnum; $n+=1)
+					$numlist[$n] = $n + 1;
 
-        $aPage = array(
-            'page' => $page,
-            'num' => $num_go,
-            'ceil' => $ceil
-        );
+			return $numlist;
+		}
 
-        return $aPage;
-    }
+		public static function page_gen($ceil, $page, $actnum, $section)
+		{
+			global $cfg, $html;
 
-    public static function page_list($countnum, $actnum)
-    {
-        if ($countnum == 0 || $countnum == 1)
-            return array();
+			$aNum = sys::page_list($ceil, $actnum);
 
-        if ($countnum > 10) {
-            if ($actnum <= 4 || $actnum + 3 >= $countnum) {
-                for ($i = 0; $i <= 4; $i++)
-                    $numlist[$i] = $i + 1;
+			$pages = '';
 
-                $numlist[5] = '...';
-                for ($j = 6, $k = 4; $j <= 10; $j += 1, $k -= 1)
-                    $numlist[$j] = $countnum - $k;
-            } else {
-                $numlist[0] = 1;
-                $numlist[1] = 2;
-                $numlist[2] = '...';
-                $numlist[3] = $actnum - 2;
-                $numlist[4] = $actnum - 1;
-                $numlist[5] = $actnum;
-                $numlist[6] = $actnum + 1;
-                $numlist[7] = $actnum + 2;
-                $numlist[8] = '...';
-                $numlist[9] = $countnum - 1;
-                $numlist[10] = $countnum;
-            }
-        } else
-            for ($n = 0; $n < $countnum; $n += 1)
-                $numlist[$n] = $n + 1;
+			$html->get('pages');
 
-        return $numlist;
-    }
+				if($ceil)
+				{
+					if($page != 1)
+					{
+						$next = $page-1;
+						$pages .= '<a href="'.$cfg['http'].$section.'/page/'.$next.'"><span>Предыдущая</span></a>';
+					}
 
-    public static function page_gen($ceil, $page, $actnum, $section)
-    {
-        global $cfg, $html;
+					foreach($aNum as $v)
+					{
+						if($v != $page && $v != '...')
+							$pages .= '<a href="'.$cfg['http'].$section.'/page/'.$v.'">'.$v.'</a>';
+						
+						if($v == $page)
+							$pages .= '<a href="#" onclick="return false" class="active">'.$v.'</a>';
+						
+						if($v == '...')
+							$pages .= '<a href="#" onclick="return false">...</a>';
+					}
 
-        $aNum = sys::page_list($ceil, $actnum);
+					if($ceil > $page)
+					{
+						if($page < $ceil)
+						{
+							$next = $page+1;
+							$pages .= '<a href="'.$cfg['http'].$section.'/page/'.$next.'"><span class="num_right">Следующая</span></a>';
+						}else
+							$pages .= '<a href="#" onclick="return false;"><span class="num_right">Следующая</span></a>';
+					}
+				}
 
-        $pages = '';
+				$html->set('pages', $pages);
 
-        $html->get('pages');
+			$html->pack('pages');
 
-        if ($ceil) {
-            if ($page != 1) {
-                $next = $page - 1;
-                $pages .= '<a href="' . $cfg['http'] . $section . '/page/' . $next . '"><span>Предыдущая</span></a>';
-            }
+			return NULL;
+		}
 
-            foreach ($aNum as $v) {
-                if ($v != $page && $v != '...')
-                    $pages .= '<a href="' . $cfg['http'] . $section . '/page/' . $v . '">' . $v . '</a>';
+		public static function country($name)
+		{
+			global $cfg;
 
-                if ($v == $page)
-                    $pages .= '<a href="#" onclick="return false" class="active">' . $v . '</a>';
+			$fileimg = file_exists(TPL.'/images/country/'.$name.'.png');
 
-                if ($v == '...')
-                    $pages .= '<a href="#" onclick="return false">...</a>';
-            }
+			if($fileimg)
+				return $cfg['http'].'template/images/country/'.$name.'.png';
 
-            if ($ceil > $page) {
-                if ($page < $ceil) {
-                    $next = $page + 1;
-                    $pages .= '<a href="' . $cfg['http'] . $section . '/page/' . $next . '"><span class="num_right">Следующая</span></a>';
-                } else
-                    $pages .= '<a href="#" onclick="return false;"><span class="num_right">Следующая</span></a>';
-            }
-        }
+			return $cfg['http'].'template/images/country/none.png';
+		}
 
-        $html->set('pages', $pages);
+		public static function ipproxy()
+		{
+			global $_SERVER;
 
-        $html->pack('pages');
+			if(isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
+				return $_SERVER['HTTP_CF_CONNECTING_IP'];
 
-        return NULL;
-    }
+			return NULL;
+		}
 
-    public static function country($name)
-    {
-        global $cfg;
+		public static function ip()
+		{
+			$ip = sys::ipproxy();
 
-        $fileimg = file_exists(TPL . '/images/country/' . $name . '.png');
+			if(sys::valid($ip, 'ip'))
+				return $_SERVER['REMOTE_ADDR'];
 
-        if ($fileimg)
-            return $cfg['http'] . 'template/images/country/' . $name . '.png';
+			return $ip;
+		}
 
-        return $cfg['http'] . 'template/images/country/none.png';
-    }
+		public static function whois($ip)
+		{
+			$stack = fsockopen('whois.ripe.net', 43, $errno, $errstr);
 
-    public static function ipproxy()
-    {
-        global $_SERVER;
+			if(!$stack)
+				return 'не определена';
 
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
-            return $_SERVER['HTTP_CF_CONNECTING_IP'];
+			fputs($stack, $ip."\r\n");
 
-        return NULL;
-    }
+			$subnetwork = '';
 
-    public static function ip()
-    {
-        $ip = sys::ipproxy();
+			while(!feof($stack))
+			{
+				$str = fgets($stack, 128);
 
-        if (sys::valid($ip, 'ip'))
-            return $_SERVER['REMOTE_ADDR'];
+				if(strpos($str, 'route:') !== FALSE)
+				{
+					$subnetwork = trim(str_replace('route:', '', $str));
 
-        return $ip;
-    }
+					break;
+				}
+			}
 
-    public static function whois($ip)
-    {
-        $stack = fsockopen('whois.ripe.net', 43, $errno, $errstr);
+			fclose($stack);
 
-        if (!$stack)
-            return 'не определена';
+			return isset($subnetwork{0}) ? $subnetwork : 'не определена';
+		}
 
-        fputs($stack, $ip . "\r\n");
+		public static function rep_act($name, $time = 20)
+		{
+			global $go, $mcache;
 
-        $subnetwork = '';
+			if(!$go)
+				return NULL;
 
-        while (!feof($stack)) {
-            $str = fgets($stack, 128);
+			if($mcache->get($name))
+				sys::outjs(array('e' => sys::text('other', 'mcache')));
 
-            if (strpos($str, 'route:') !== FALSE) {
-                $subnetwork = trim(str_replace('route:', '', $str));
+			$mcache->set($name, true, false, $time);
 
-                break;
-            }
-        }
+			return $name;
+		}
 
-        fclose($stack);
+		public static function check_php_config($file, &$error)
+		{
+			exec('php -l '.$file, $error, $code);
 
-        return isset($subnetwork[0]) ? $subnetwork : 'не определена';
-    }
+			if(!$code)
+				return true;
 
-    public static function rep_act($name, $time = 20)
-    {
-        global $go, $mcache;
+			return false;
+		}
 
-        if (!$go)
-            return NULL;
+		public static function cpu_idle($pros_stat = array(), $unit, $fcpu = false, $ctrl = false)
+		{
+			return sys::cpu_get_idle(sys::parse_cpu($pros_stat[0]), sys::parse_cpu($pros_stat[1]), $unit, $fcpu, $ctrl);
+		}
 
-        if ($mcache->get($name))
-            sys::outjs(array('e' => sys::text('other', 'mcache')));
+		public static function cpu_get_idle($first, $second, $unit, $fcpu, $ctrl)
+		{
+			global $sql;
 
-        $mcache->set($name, true, false, $time);
+			if(count($first) !== count($second))
+				return;
 
-        return $name;
-    }
+			$cpus = array();
 
-    public static function check_php_config($file, &$error)
-    {
-        exec('php -l ' . $file, $error, $code);
+			for($i = 0, $l = count($first); $i < $l; $i+=1)
+			{
+				$dif = array();
+				$dif['use'] = $second[$i]['use']-$first[$i]['use'];
+				$dif['nice'] = $second[$i]['nice']-$first[$i]['nice'];
+				$dif['sys'] = $second[$i]['sys']-$first[$i]['sys'];
+				$dif['idle'] = $second[$i]['idle']-$first[$i]['idle'];
+				$total = array_sum($dif);
+				$cpu = array();
 
-        if (!$code)
-            return true;
+				foreach($dif as $x => $y)
+					$cpu[$x] = $y ? round($y/$total*100, 1) : 0;
 
-        return false;
-    }
+				$cpus['cpu'.$i] = $cpu;
+			}
 
-    public static function cpu_idle($pros_stat = array(), $unit = false, $fcpu = false, $ctrl = false)
-    {
-        return sys::cpu_get_idle(sys::parse_cpu($pros_stat[0]), sys::parse_cpu($pros_stat[1]), $unit, $fcpu, $ctrl);
-    }
+			if($fcpu)
+				return $cpus;
 
-    public static function cpu_get_idle($first, $second, $unit, $fcpu, $ctrl)
-    {
-        global $sql;
+			$threads = array();
 
-        if (count($first) !== count($second))
-            return;
+			$l = count($first);
 
-        $cpus = array();
+			for($i = 0; $i < $l; $i+=1)
+				$threads[$i] = $cpus['cpu'.$i]['idle'];
 
-        for ($i = 0, $l = count($first); $i < $l; $i += 1) {
-            $dif = array();
-            $dif['use'] = $second[$i]['use'] - $first[$i]['use'];
-            $dif['nice'] = $second[$i]['nice'] - $first[$i]['nice'];
-            $dif['sys'] = $second[$i]['sys'] - $first[$i]['sys'];
-            $dif['idle'] = $second[$i]['idle'] - $first[$i]['idle'];
-            $total = array_sum($dif);
-            $cpu = array();
+			if(count($first) > 1)
+				unset($threads[0]);
 
-            foreach ($dif as $x => $y)
-                $cpu[$x] = $y ? round($y / $total * 100, 1) : 0;
+			$max = max($threads);
 
-            $cpus['cpu' . $i] = $cpu;
-        }
+			foreach($threads as $idle)
+			{
+				$core = array_search($max, $threads);
 
-        if ($fcpu)
-            return $cpus;
+				if($ctrl)
+					$sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="'.$unit.'" AND `core_fix`="'.($core+1).'" LIMIT 1');
+				else
+					$sql->query('SELECT `id` FROM `servers` WHERE `unit`="'.$unit.'" AND `core_fix`="'.($core+1).'" AND `core_fix_one`="1" LIMIT 1');
+				if($sql->num())
+				{
+					unset($threads[$core]);
 
-        $threads = array();
+					if(!count($threads))
+						return NULL;
 
-        $l = count($first);
+					$max = max($threads);
+				}
+			}
 
-        for ($i = 0; $i < $l; $i += 1)
-            $threads[$i] = $cpus['cpu' . $i]['idle'];
+			return array_search($max, $threads);
+		}
 
-        if (count($first) > 1)
-            unset($threads[0]);
+		public static function parse_cpu($data)
+		{
+			$data = explode("\n", $data);
 
-        $max = max($threads);
+			$cpu = array();
 
-        foreach ($threads as $idle) {
-            $core = array_search($max, $threads);
+			foreach($data as $line)
+			{
+				if(preg_match('/^cpu[0-9]/', $line))
+				{
+					$info = explode(' ', $line);
 
-            if ($ctrl)
-                $sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="' . $unit . '" AND `core_fix`="' . ($core + 1) . '" LIMIT 1');
-            else
-                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $unit . '" AND `core_fix`="' . ($core + 1) . '" AND `core_fix_one`="1" LIMIT 1');
-            if ($sql->num()) {
-                unset($threads[$core]);
+					$cpu[] = array(
+						'use' => $info[1],
+						'nice' => $info[2],
+						'sys' => $info[3],
+						'idle' => $info[4]
+					);
+				}
+			}
 
-                if (!count($threads))
-                    return NULL;
+			return $cpu;
+		}
 
-                $max = max($threads);
-            }
-        }
+		public static function reset_mcache($nmch, $id, $data = array(), $ctrl = false)
+		{
+			global $mcache;
 
-        return array_search($max, $threads);
-    }
+			$cache = array(
+				'name' => $data['name'],
+				'status' => sys::status($data['status'], $data['game']),
+				'online' => $data['online'],
+				'image' => '<img src="'.sys::status($data['status'], $data['game'], '', 'img').'">',
+			);
 
-    public static function parse_cpu($data)
-    {
-        $data = explode("\n", $data);
+			$cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) :  sys::buttons($id, $data['status'], $data['game']);
 
-        $cpu = array();
+			if(isset($data['players']))
+				$cache['players'] = $data['players'];
 
-        foreach ($data as $line) {
-            if (preg_match('/^cpu[0-9]/', $line)) {
-                $info = explode(' ', $line);
+			$mcache->set($nmch, $cache, false, 5);
 
-                $cpu[] = array(
-                    'use' => $info[1],
-                    'nice' => $info[2],
-                    'sys' => $info[3],
-                    'idle' => $info[4]
-                );
-            }
-        }
+			return NULL;
+		}
 
-        return $cpu;
-    }
+		public static function status($status, $game, $map = '', $get = 'text')
+		{
+			global $cfg;
 
-    public static function reset_mcache($nmch, $id, $data = array(), $ctrl = false)
-    {
-        global $mcache;
+			switch($status)
+			{
+				case 'working':
+					if($get == 'img')
+					{
+						if(in_array($game, array('samp', 'crmp', 'mta', 'mc')))
+							$map = $game;
 
-        $cache = array(
-            'name' => $data['name'],
-            'status' => sys::status($data['status'], $data['game']),
-            'online' => $data['online'],
-            'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">',
-        );
+						return sys::img($map, $game);
+					}
 
-        $cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) : sys::buttons($id, $data['status'], $data['game']);
+					return 'Карта: '.($map == '' ? '-' : $map);
 
-        if (isset($data['players']))
-            $cache['players'] = $data['players'];
+				case 'off':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/off.jpg';
 
-        $mcache->set($nmch, $cache, false, 5);
+					return 'Статус: <span style="color: #C46666;">выключен</span>';
 
-        return NULL;
-    }
+				case 'start':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/start.gif';
 
-    public static function status($status, $game, $map = '', $get = 'text')
-    {
-        global $cfg;
+					return 'Статус: <span style="color: #22B93C;">запускается</span>';
 
-        switch ($status) {
-            case 'working':
-                if ($get == 'img') {
-                    if (in_array($game, array('samp', 'crmp', 'mta', 'mc')))
-                        $map = $game;
+				case 'restart':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/restart.gif';
 
-                    return sys::img($map, $game);
-                }
+					return 'Статус: <span style="color: #22B93C;">перезапускается</span>';
 
-                return 'Карта: ' . ($map == '' ? '-' : $map);
+				case 'change':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/change.gif';
 
-            case 'off':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/off.jpg';
+					return 'Статус: <span style="color: #52BEFC;">меняется карта</span>';
 
-                return 'Статус: <span style="color: #C46666;">выключен</span>';
+				case 'install':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/install.gif';
 
-            case 'start':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/start.gif';
+					return 'Статус: <span style="color: #22B93C;">устанавливается</span>';
 
-                return 'Статус: <span style="color: #22B93C;">запускается</span>';
+				case 'reinstall':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/reinstall.gif';
 
-            case 'restart':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/restart.gif';
+					return 'Статус: <span style="color: #22B93C;">переустанавливается</span>';
 
-                return 'Статус: <span style="color: #22B93C;">перезапускается</span>';
+				case 'update':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/update.gif';
 
-            case 'change':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/change.gif';
+					return 'Статус: <span style="color: #F2CF41;">обновляется</span>';
 
-                return 'Статус: <span style="color: #52BEFC;">меняется карта</span>';
+				case 'recovery':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/recovery.gif';
 
-            case 'install':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/install.gif';
+					return 'Статус: <span style="color: #22B93C;">восстанавливается</span>';
 
-                return 'Статус: <span style="color: #22B93C;">устанавливается</span>';
+				case 'overdue':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/overdue.jpg';
 
-            case 'reinstall':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/reinstall.gif';
+					return 'Статус: просрочен';
 
-                return 'Статус: <span style="color: #22B93C;">переустанавливается</span>';
+				case 'blocked':
+					if($get == 'img')
+						return $cfg['http'].'template/images/status/blocked.jpg';
 
-            case 'update':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/update.gif';
+					return 'Статус: заблокирован';
+			}
+		}
 
-                return 'Статус: <span style="color: #F2CF41;">обновляется</span>';
+		public static function img($name, $game)
+			{
+			global $cfg;
+			
+				$filename = 'http://cdn.enginegp.ru/maps/'.$game.'/'.$name.'.jpg';
+				$file_headers = @get_headers($filename) ;
+				$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
+				if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' ||trim($file_headers[0]) == 'HTTP/1.1 403 Forbidden') {
+				        return $cfg['http'].'template/images/status/none.jpg';
+				}
+				else {
+					return '' . $protocol .'cdn.enginegp.ru/maps/'.$game.'/'.$name.'.jpg';
+				}
+		}
 
-            case 'recovery':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/recovery.gif';
+		public static function buttons($id, $status, $game = false, $ctrl = false)
+		{
+			global $html;
 
-                return 'Статус: <span style="color: #22B93C;">восстанавливается</span>';
+			if(isset($html->arr['buttons']))
+				unset($html->arr['buttons']);
 
-            case 'overdue':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/overdue.jpg';
+			$other = in_array($game, array('samp', 'crmp', 'mta', 'mc'));
 
-                return 'Статус: просрочен';
+			$dir = $ctrl ? 'control/servers' : 'servers';
 
-            case 'blocked':
-                if ($get == 'img')
-                    return $cfg['http'] . 'template/images/status/blocked.jpg';
+			if(in_array($status, array('working', 'change', 'start', 'restart')))
+			{
+				$html->get('stop', 'sections/'.$dir.'/buttons');
 
-                return 'Статус: заблокирован';
-        }
-    }
+					$html->set('id', $id);
+					if($ctrl)
+						$html->set('ctrl', $ctrl);
 
-    public static function img($name, $game)
-    {
-        global $cfg;
+				$html->pack('buttons');
 
-        $filename = 'http://cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
-        $file_headers = @get_headers($filename);
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-        if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' || trim($file_headers[0]) == 'HTTP/1.1 403 Forbidden') {
-            return $cfg['http'] . 'template/images/status/none.jpg';
-        } else {
-            return '' . $protocol . 'cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
-        }
-    }
+				$html->get('restart', 'sections/'.$dir.'/buttons');
 
-    public static function buttons($id, $status, $game = false, $ctrl = false)
-    {
-        global $html;
+					$html->set('id', $id);
+					if($ctrl)
+						$html->set('ctrl', $ctrl);
 
-        if (isset($html->arr['buttons']))
-            unset($html->arr['buttons']);
+				$html->pack('buttons');
 
-        $other = in_array($game, array('samp', 'crmp', 'mta', 'mc'));
+				if(!$other)
+				{
+					$html->get('change', 'sections/'.$dir.'/buttons');
 
-        $dir = $ctrl ? 'control/servers' : 'servers';
+						$html->set('id', $id);
+						if($ctrl)
+							$html->set('ctrl', $ctrl);
 
-        if (in_array($status, array('working', 'change', 'start', 'restart'))) {
-            $html->get('stop', 'sections/' . $dir . '/buttons');
+					$html->pack('buttons');
+				}
 
-            $html->set('id', $id);
-            if ($ctrl)
-                $html->set('ctrl', $ctrl);
+				return $html->arr['buttons'];
+			}
 
-            $html->pack('buttons');
+			if($status == 'off')
+			{
+				$html->get('start', 'sections/'.$dir.'/buttons');
 
-            $html->get('restart', 'sections/' . $dir . '/buttons');
+					$html->set('id', $id);
+					if($ctrl)
+						$html->set('ctrl', $ctrl);
 
-            $html->set('id', $id);
-            if ($ctrl)
-                $html->set('ctrl', $ctrl);
+				$html->pack('buttons');
 
-            $html->pack('buttons');
+				$html->get('reinstall', 'sections/'.$dir.'/buttons');
 
-            if (!$other) {
-                $html->get('change', 'sections/' . $dir . '/buttons');
+					$html->set('id', $id);
+					if($ctrl)
+						$html->set('ctrl', $ctrl);
 
-                $html->set('id', $id);
-                if ($ctrl)
-                    $html->set('ctrl', $ctrl);
+				$html->pack('buttons');
 
-                $html->pack('buttons');
-            }
+				if(!$other)
+				{
+					$html->get('update', 'sections/'.$dir.'/buttons');
 
-            return $html->arr['buttons'];
-        }
+						$html->set('id', $id);
+						if($ctrl)
+							$html->set('ctrl', $ctrl);
 
-        if ($status == 'off') {
-            $html->get('start', 'sections/' . $dir . '/buttons');
+					$html->pack('buttons');
+				}
 
-            $html->set('id', $id);
-            if ($ctrl)
-                $html->set('ctrl', $ctrl);
+				return $html->arr['buttons'];
+			}
 
-            $html->pack('buttons');
+			$html->get('other', 'sections/'.$dir.'/buttons');
+			$html->pack('buttons');
 
-            $html->get('reinstall', 'sections/' . $dir . '/buttons');
+			return $html->arr['buttons'];
+		}
 
-            $html->set('id', $id);
-            if ($ctrl)
-                $html->set('ctrl', $ctrl);
+		public static function entoru($month)
+		{
+			$ru = array(
+				1 => 'Янв', 2 => 'Фев', 3 => 'Мар', 4 => 'Апр',
+				5 => 'Май', 6 => 'Июн', 7 => 'Июл', 8 => 'Авг',
+				9 => 'Сен', 10 => 'Окт', 11 => 'Ноя', 12 => 'Дек'
+			);
 
-            $html->pack('buttons');
+			return $ru[$month];
+		}
 
-            if (!$other) {
-                $html->get('update', 'sections/' . $dir . '/buttons');
+		public static function head($head)
+		{
+			global $route, $header;
 
-                $html->set('id', $id);
-                if ($ctrl)
-                    $html->set('ctrl', $ctrl);
+			if($head == 'description')
+			{
+				global $description;
 
-                $html->pack('buttons');
-            }
+				if(isset($description))
+				{
+					$text = str_replace(array('"', '-'), array('', '—'), strip_tags($description));
 
-            return $html->arr['buttons'];
-        }
+					if(strlen($text) > 160)
+					{
+						mb_internal_encoding('UTF-8');
 
-        $html->get('other', 'sections/' . $dir . '/buttons');
-        $html->pack('buttons');
+						$text = mb_substr($text, 0, 157).'...';
+					}
 
-        return $html->arr['buttons'];
-    }
+					return $text;
+				}
+			}else{
+				global $keywords;
 
-    public static function entoru($month)
-    {
-        $ru = array(
-            1 => 'Янв', 2 => 'Фев', 3 => 'Мар', 4 => 'Апр',
-            5 => 'Май', 6 => 'Июн', 7 => 'Июл', 8 => 'Авг',
-            9 => 'Сен', 10 => 'Окт', 11 => 'Ноя', 12 => 'Дек'
-        );
+				if(isset($keywords))
+					return str_replace(array('"', '-'), array('', '—'), strip_tags($keywords));
+			}
 
-        return $ru[$month];
-    }
+			return array_key_exists($route, $header) ? $header[$route][$head] : $header['index'][$head];
+		}
 
-    public static function head($head)
-    {
-        global $route, $header;
+		public static function tags($tags)
+		{
+			$aTags = explode(',', $tags);
 
-        if ($head == 'description') {
-            global $description;
+			$text = '';
 
-            if (isset($description)) {
-                $text = str_replace(array('"', '-'), array('', '—'), strip_tags($description));
+			foreach($aTags as $tag)
+				$text .= '<strong>'.trim($tag).'</strong>, ';
 
-                if (strlen($text) > 160) {
-                    mb_internal_encoding('UTF-8');
+			return isset($text{0}) ? substr($text, 0, -2) : 'отсутствуют';
+		}
 
-                    $text = mb_substr($text, 0, 157) . '...';
-                }
+		public static function benefitblock($id, $nmch = false)
+		{
+			global $cfg, $sql, $start_point;
 
-                return $text;
-            }
-        } else {
-            global $keywords;
+			if($cfg['benefitblock'])
+			{
+				$sql->query('SELECT `benefit` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
+				$info = $sql->get();
 
-            if (isset($keywords))
-                return str_replace(array('"', '-'), array('', '—'), strip_tags($keywords));
-        }
+				if($info['benefit'] > $start_point)
+					sys::outjs(array('e' => 'Операция недоступна до '.date('d.m.Y - H:i:s', $info['benefit'])), $nmch);
+			}
 
-        return array_key_exists($route, $header) ? $header[$route][$head] : $header['index'][$head];
-    }
+			return NULL;
+		}
 
-    public static function tags($tags)
-    {
-        $aTags = explode(',', $tags);
+		function outfile($file, $name, $del = false)
+		{
+			if(file_exists($file)) 
+			{
+				if(ob_get_level())
+					ob_end_clean();
 
-        $text = '';
+				header('Content-Description: File Transfer');
+				header('Content-Type: application/octet-stream');
+				header('Content-Disposition: attachment; filename='.$name);
+				header('Content-Transfer-Encoding: binary');
+				header('Expires: 0');
+				header('Cache-Control: must-revalidate');
+				header('Pragma: public');
+				header('Content-Length: '.filesize($file));
 
-        foreach ($aTags as $tag)
-            $text .= '<strong>' . trim($tag) . '</strong>, ';
+				readfile($file);
 
-        return isset($text[0]) ? substr($text, 0, -2) : 'отсутствуют';
-    }
+				if($del)
+					unlink($file);
 
-    public static function benefitblock($id, $nmch = false)
-    {
-        global $cfg, $sql, $start_point;
-
-        if ($cfg['benefitblock']) {
-            $sql->query('SELECT `benefit` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-            $info = $sql->get();
-
-            if ($info['benefit'] > $start_point)
-                sys::outjs(array('e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])), $nmch);
-        }
-
-        return NULL;
-    }
-
-    function outfile($file, $name, $del = false)
-    {
-        if (file_exists($file)) {
-            if (ob_get_level())
-                ob_end_clean();
-
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename=' . $name);
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
-
-            readfile($file);
-
-            if ($del)
-                unlink($file);
-
-            exit;
-        }
-    }
-
-    public static function logMessage($message, $logFile = 'enginegp_info', $context = [])
-    {
-        $logger = new \Monolog\Logger('EngineGP');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler(DIR . 'logs/' . $logFile . '.log'));
-        $logger->info($message, $context);
-    }
-}
-
+				exit;
+			}
+		}
+	}
 ?>

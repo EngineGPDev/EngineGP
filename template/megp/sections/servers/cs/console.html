@@ -1,0 +1,48 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Интерактивная консоль</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>
+
+<div class="server_console">
+	<pre id="console">Игровой сервер выключен.</pre>
+						
+	<form action="[home]servers/id/[id]/section/console/go" method="POST" id="form_console">
+		<table class="border-none">
+			<tbody>
+				<tr>
+					<td colspan="3">
+						<div class="btn" onclick="set_command('status')">status</div>
+						<div class="btn" onclick="set_command('stats')">stats</div>
+						<div class="btn" onclick="set_command('amxx list')">amxx list</div>
+						<div class="btn" onclick="set_command('meta list')">meta list</div>
+						<div class="btn" onclick="set_command('amx_modules')">amx modules</div>
+						<div class="btn" onclick="set_command('amx_reloadadmins')">amx_reloadadmins</div>
+						<div class="btn" onclick="set_command('amxx version')">amxx version</div>
+						<div class="btn" onclick="set_command('sv_downloadurl')">fast DL</div>
+						<div class="btn" onclick="set_command('version')">version</div>
+						<div class="btn" onclick="set_command('clear')">Очистка консоли</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3"><input class="text-field blue-field" placeholder="Введите команду для отправки" name="command"></td>
+				</tr>
+				<tr>
+					<td width="5"><div class="btn btn-info" onclick="update_switch()">Обновление</div></td>
+					<td id="console_update"><i class="fa fa-toggle-on"></i></td>
+					<td width="5"><button class="btn btn-success">Отправить</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<script src="[js]servers/console.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var server = [id];
+	$(document).ready(function(){
+		setTimeout(function() {update_console('1', true)}, 1000);
+	});
+</script>
+
+<div class="decoration"></div>

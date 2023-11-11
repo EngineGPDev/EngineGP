@@ -1,0 +1,34 @@
+<div class="container heading-style-5">
+	<h4 class="heading-title">Авторизация</h4>
+	<i class="fa fa-angle-down heading-icon"></i>
+	<div class="line bg-black"></div>
+</div>    
+
+<form action="auth/go" method="POST" id="auth">
+	<h5 class="smaller-text">Логин</h5>
+	<div class="heading-style-1 container">
+		<input name="login" placeholder="Введите логин" class="text-field blue-field">
+	</div>
+	<h5 class="smaller-text">Пароль <a href="[home]recovery" class="right">Восстановить пароль</a></h5>
+	<div class="heading-style-1 container">
+		<input name="passwd" type="password" placeholder="Введите пароль" class="text-field blue-field">
+	</div>
+	<div class="heading-style-1 container">
+		<center><img id="captcha_img" src="[home]auth/captcha" title="Обновить код" onclick="this.src = '[home]auth/captcha?'+Math.random();"></center>
+	</div>
+	<div class="heading-style-1 container">
+		<input name="captcha" placeholder="Введите код с картинки" class="text-field blue-field">
+	</div>
+	<div class="hide" id="security_code">
+		<h5 class="smaller-text">Код подтверждения</a></h5>
+		<div class="heading-style-1 container">
+			<input name="code" placeholder="Введите код" class="text-field blue-field">
+		</div>
+	</div>
+	<center><button class="btn btn-success" onclick="loading(1)">Авторизоваться</button></center>
+</form>
+
+<div class="decoration"></div>
+
+<!-- scripts !-->
+<script src="[js]auth.js" type="text/javascript"></script>

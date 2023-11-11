@@ -1,0 +1,44 @@
+<table class="inputs inputs-max">
+	<tbody>
+		<tr>
+			<td class="w5p text-right">Локация:</td>
+			<td>
+				<select id="unit" onchange="maps_reset_game()">
+					<option value="0">Выберете локацию</option>
+					[units]
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="w5p text-right">Игра:</td>
+			<td>
+				<select id="game" onchange="maps_list()">
+					<option value="0">Выберете игру</option>
+					<option value="cs">Counter-Strike: 1.6</option>
+					<option value="cssold">Counter-Strike: Source v34</option>
+					<option value="css">Counter-Strike: Source</option>
+					<option value="csgo">Counter-Strike: Global Offensive</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="text-center"><button class="btn btn-green" onclick="maps_update()">Обновить список</button></td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="space"></div>
+
+<div class="informer">Список карт выбранной локации и игры</div>
+
+<table class="inputs inputs-max">
+	<tbody>
+		<tr>
+			<td>
+				<textarea id="maps" rows="20" disabled></textarea>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<script type="text/javascript" src="[js]addons.js"></script>

@@ -1,0 +1,38 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="users_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="trh">
+	<thead>
+		<tr>
+			<th class="w5p"># <span onclick="users_sort('id')"><i class="fa fa-sort-numeric-[sort_id]"></i></span></th>
+			<th class="w25p">Логин</th>
+			<th class="w25p">Почта</th>
+			<th class="w15p">Баланс <span onclick="users_sort('balance')"><i class="fa fa-sort-amount-[sort_balance]"></i></span></th>
+			<th class="w15p">Группа <span onclick="users_sort('group')"><i class="fa fa-sort-alpha-[sort_group]"></i></span></th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	var sort_id = '[sort_id]';
+	var sort_balance = '[sort_balance]';
+	var sort_group = '[sort_group]';
+
+	$('#search').keyup(function(){
+		users_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]users.js"></script>

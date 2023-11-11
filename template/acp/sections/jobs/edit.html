@@ -1,0 +1,54 @@
+<form action="[acp]jobs/edit/section/id/[id]/go" method="POST" id="edit" class="inputs inputs-max">
+	<table>
+		<tbody>
+			<tr>
+				<td>Название</td>
+				<td><input type="text" name="name" value="[name]"></td>
+				<td>Должность</td>
+				<td><input type="text" name="job" value="[job]"></td>
+			</tr>
+			<tr>
+				<td>Описание:<br> (Используйте HTML теги)</td>
+				<td colspan="3"><textarea name="desc" id="" cols="30" rows="10">[desc]</textarea></td>
+			</tr>
+			<tr>
+				<!--<td>Статус</td>
+				<td><select name="status" disabled>
+					[status]
+				</select></td> -->
+				<td colspan="4">
+					<button class="btn btn-green pull-right" onclick="loading(1)">Сохранить</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<script type="text/javascript">
+	$('#edit').ajaxForm({
+		dataType: 'json',
+		success: function(data)
+		{
+			$.each(data, function(i, val){
+				if(i == 'e')
+					bootbox.dialog('<h3>Внимание!</h3>'+val,
+						[{
+							"label" : "Продолжить"
+						}]
+					);
+
+				if(i == 's')
+					bootbox.dialog('<h3>Внимание!</h3> Изменение успешно сохранены!',
+						[{
+							"label" : "Продолжить",
+							callback : function(){
+								location.reload();
+							}
+						}]
+					);
+				
+				loading(0);
+			});
+		}
+	});
+</script>

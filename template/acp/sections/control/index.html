@@ -1,0 +1,35 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="control_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="double-color">
+	<thead>
+		<tr>
+			<th class="w15p text-center">Номер / Владелец</th>
+			<th class="w20p text-center">Адрес / Статус</th>
+			<th class="w20p text-center">Добавлен / Аренда</th>
+			<th class="w15p text-center">Лимит / Цена</th>
+			<th class="w5p"></th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	var url_search = '[url_search]';
+
+	$('#search').keyup(function(){
+		control_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]control.js"></script>

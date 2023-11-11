@@ -1,0 +1,33 @@
+<div class="search">
+	<input id="search" placeholder="Введите критерии поиска">
+	<button onclick="logs_sys_search(true)"><i class="fa fa-search"></i> Поиск</button>
+</div>
+
+<div id="search_error"></div>
+
+<div class="space"></div>
+
+<table class="trh">
+	<thead>
+		<tr>
+			<th class="w5p"></th>
+			<th>Операция</th>
+			<th class="w5p">Пользователь</th>
+			<th class="w5p">Сервер</th>
+			<th class="w20p text-center">Дата</th>
+		</tr>
+	</thead>
+	<tbody id="search_result">
+		[list]
+	</tbody>
+</table>
+
+[pages]
+
+<script type="text/javascript">
+	$('#search').keyup(function(){
+		logs_sys_search(false);
+	});
+</script>
+
+<script type="text/javascript" src="[js]logs.js"></script>
