@@ -2,6 +2,21 @@
     if(!DEFINED('EGP'))
 		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
 
+// Подключение filp/whoops
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+// Логи в консоль браузера
+$loggingInConsole = new \Whoops\Handler\PlainTextHandler();
+$loggingInConsole->loggerOnly(true);
+$loggingInConsole->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\BrowserConsoleHandler())->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$whoops->pushHandler($loggingInConsole);
+// Логи в файл
+$loggingInFile = new \Whoops\Handler\PlainTextHandler();
+$loggingInFile->loggerOnly(true);
+$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(DIR . 'logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$whoops->pushHandler($loggingInFile);
+
 	$device = '!mobile';
 
     // Парсинг адреса

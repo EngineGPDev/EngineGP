@@ -1,0 +1,7 @@
+{
+  "require": {
+    "symfony/polyfill": "1.28.0",
+    "filp/whoops": "2.15.4",
+    "monolog/monolog": "2.9.2"
+  }
+}
