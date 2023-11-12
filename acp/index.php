@@ -22,7 +22,13 @@
 	$start_point = $_SERVER['REQUEST_TIME'];
 
 	$mcache = new Memcache;
-	$mcache->connect('127.0.0.1', 11211) or exit('Ошибка: #mc0, обновите страницу позже, если ошибка повторяется, обратитесь в тех.поддержку: <a href="https://enginegp.ru">EGPv3</a>');
+	$mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
+
+// Composer
+if (!file_exists(ROOT.'vendor/autoload.php')) {
+    die('Please <a href="https://getcomposer.org/download/" target="_blank" rel="noreferrer" style="color:#0a25bb;">install composer</a> and run <code style="background:#222;color:#00e01f;padding:2px 6px;border-radius:3px;">composer install</code>');
+}
+require(ROOT.'vendor/autoload.php');
 
 	// Настройки
 	include(DATA.'config.php');
