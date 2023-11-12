@@ -1,89 +1,86 @@
 <?php
-    if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-    $html->nav('Логи AMX');
+$html->nav('Логи AMX');
 
-	$sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="'.$id.'" LIMIT 1');
-	$unit = $sql->get();
+$sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
+$unit = $sql->get();
 
-	include(LIB.'ssh.php');
+include(LIB . 'ssh.php');
 
-	if(!$ssh->auth($unit['passwd'], $unit['address']))
-		sys::back($cfg['http'].'control/id/'.$id.'/server/'.$sid.'/section/settings');
+if (!$ssh->auth($unit['passwd'], $unit['address']))
+    sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 
-	// Путь к логам
-	$folder = '/servers/'.$server['uid'].'/cstrike/addons/amxmodx/logs';
+// Путь к логам
+$folder = '/servers/' . $server['uid'] . '/cstrike/addons/amxmodx/logs';
 
-	// Если выбран лог
-	if(isset($url['log']))
-	{
-		if(sys::valid($url['log'], 'other', $aValid['csamxlogs']))
-			sys::back($cfg['http'].'control/id/'.$id.'/server/'.$sid.'/section/settings/subsection/amxlogs');
+// Если выбран лог
+if (isset($url['log'])) {
+    if (sys::valid($url['log'], 'other', $aValid['csamxlogs']))
+        sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings/subsection/amxlogs');
 
-		$ssh->set('sudo -u server'.$server['uid'].' cat '.$folder.'/'.$url['log']);
+    $ssh->set('sudo -u server' . $server['uid'] . ' cat ' . $folder . '/' . $url['log']);
 
-		$html->get('view', 'sections/control/servers/games/settings/logs');
+    $html->get('view', 'sections/control/servers/games/settings/logs');
 
-				$html->set('id', $id);
-				$html->set('server', $sid);
-				$html->set('name', $url['log']);
-				$html->set('log', htmlspecialchars($ssh->get()));
-				$html->set('uri', 'amxlogs');
+    $html->set('id', $id);
+    $html->set('server', $sid);
+    $html->set('name', $url['log']);
+    $html->set('log', htmlspecialchars($ssh->get()));
+    $html->set('uri', 'amxlogs');
 
-		$html->pack('main');
-	}else{
-		if(isset($url['delall']))
-		{
-			$ssh->set('cd '.$folder.' && rm *.log');
+    $html->pack('main');
+} else {
+    if (isset($url['delall'])) {
+        $ssh->set('cd ' . $folder . ' && rm *.log');
 
-			sys::back($cfg['http'].'control/id/'.$id.'/server/'.$sid.'/section/settings/subsection/amxlogs');
-		}
+        sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings/subsection/amxlogs');
+    }
 
-		$ssh->set('cd '.$folder.' && du -ab --time | grep -e .log$ | awk \'{print $2" "$3"@"$1"@"$4}\' | sort -Mr');
+    $ssh->set('cd ' . $folder . ' && du -ab --time | grep -e .log$ | awk \'{print $2" "$3"@"$1"@"$4}\' | sort -Mr');
 
-		// Массив данных
-		$aData = explode("\n", $ssh->get());
+    // Массив данных
+    $aData = explode("\n", $ssh->get());
 
-		if(isset($aData[count($aData)-1]))
-			unset($aData[count($aData)-1]);
+    if (isset($aData[count($aData) - 1]))
+        unset($aData[count($aData) - 1]);
 
-		// Построение списка
-		foreach($aData as $line => $log)
-		{
-			$aLog = explode('@', $log);
+    // Построение списка
+    foreach ($aData as $line => $log) {
+        $aLog = explode('@', $log);
 
-			// Название
-			$name = explode('/', $aLog[2]);
+        // Название
+        $name = explode('/', $aLog[2]);
 
-			if(count($name) > 2)
-				continue;
+        if (count($name) > 2)
+            continue;
 
-			// Дата
-			$date = sys::unidate($aLog[0]);
+        // Дата
+        $date = sys::unidate($aLog[0]);
 
-			// Вес
-			$size = sys::size($aLog[1]);
+        // Вес
+        $size = sys::size($aLog[1]);
 
-			$html->get('list', 'sections/control/servers/games/settings/logs');
+        $html->get('list', 'sections/control/servers/games/settings/logs');
 
-				$html->set('id', $id);
-				$html->set('server', $sid);
-				$html->set('name', end($name));
-				$html->set('uri', 'amxlogs/log/'.end($name));
-				$html->set('date', $date);
-				$html->set('size', $size);
+        $html->set('id', $id);
+        $html->set('server', $sid);
+        $html->set('name', end($name));
+        $html->set('uri', 'amxlogs/log/' . end($name));
+        $html->set('date', $date);
+        $html->set('size', $size);
 
-			$html->pack('logs');
-		}
+        $html->pack('logs');
+    }
 
-		$html->get('logs', 'sections/control/servers/games/settings');
+    $html->get('logs', 'sections/control/servers/games/settings');
 
-			$html->set('id', $id);
-			$html->set('server', $sid);
-			$html->set('uri', 'amx');
-			$html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
+    $html->set('id', $id);
+    $html->set('server', $sid);
+    $html->set('uri', 'amx');
+    $html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
 
-		$html->pack('main');
-	}
+    $html->pack('main');
+}
 ?>

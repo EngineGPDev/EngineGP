@@ -22,14 +22,14 @@ see the file license.txt that was included with the plugin bundle.
     gradient.src = imgdata;
 
     /** Percentage loader
-     * @param	params	Specify options in {}. May be on of width, height, progress or value.
+     * @param    params    Specify options in {}. May be on of width, height, progress or value.
      *
      * @example $("#myloader-container).percentageLoader({
-		    width : 256,  // width in pixels
-		    height : 256, // height in pixels
-		    progress: 0,  // initialise progress bar position, within the range [0..1]
-		    value: '0kb'  // initialise text label to this value
-		});
+     width : 256,  // width in pixels
+     height : 256, // height in pixels
+     progress: 0,  // initialise progress bar position, within the range [0..1]
+     value: '0kb'  // initialise text label to this value
+     });
      */
     $.fn.percentageLoader = function (params) {
         var settings, canvas, percentageText, valueText, items, i, item, selectors, s, ctx, progress,
@@ -87,7 +87,7 @@ see the file license.txt that was included with the plugin bundle.
 
         /* Force text items to not allow selection */
         items = [valueText, percentageText];
-        for (i  = 0; i < items.length; i += 1) {
+        for (i = 0; i < items.length; i += 1) {
             item = items[i];
             selectors = [
                 '-webkit-user-select',
@@ -158,8 +158,8 @@ see the file license.txt that was included with the plugin bundle.
          */
         applyAngle = function (point, angle, distance) {
             return {
-                x : point.x + (Math.cos(angle) * distance),
-                y : point.y + (Math.sin(angle) * distance)
+                x: point.x + (Math.cos(angle) * distance),
+                y: point.y + (Math.sin(angle) * distance)
             };
         };
 
@@ -199,8 +199,8 @@ see the file license.txt that was included with the plugin bundle.
             function makeInnerTubePath(startAngle, endAngle) {
                 var centrePoint, startPoint, controlAngle, capLength, c1, c2, point1, point2;
                 centrePoint = {
-                    x : cX,
-                    y : cY
+                    x: cX,
+                    y: cY
                 };
 
                 startPoint = applyAngle(centrePoint, startAngle, innerBarRadius);
@@ -294,8 +294,8 @@ see the file license.txt that was included with the plugin bundle.
         };
 
         /**
-        * Check the progress value and ensure it is within the correct bounds [0..1]
-        */
+         * Check the progress value and ensure it is within the correct bounds [0..1]
+         */
         clipValue = function () {
             if (progress < 0) {
                 progress = 0;

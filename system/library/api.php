@@ -1,95 +1,96 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-	class api
-	{
-		public function data($id)
-		{
-			global $sql, $cfg;
+class api
+{
+    public function data($id)
+    {
+        global $sql, $cfg;
 
-			$sql->query('SELECT `unit`, `tarif`, `address`, `game`, `slots_start`, `online`, `players`, `status`, `name`, `map`, `pack`, `fps`, `tickrate`, `ram`, `time`, `date`, `overdue` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
-			if(!$sql->num())
-				return array('e' => 'сервер не найден');
+        $sql->query('SELECT `unit`, `tarif`, `address`, `game`, `slots_start`, `online`, `players`, `status`, `name`, `map`, `pack`, `fps`, `tickrate`, `ram`, `time`, `date`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        if (!$sql->num())
+            return array('e' => 'сервер не найден');
 
-			$server = $sql->get();
+        $server = $sql->get();
 
-			$sql->query('SELECT `name` FROM `units` WHERE `id`="'.$server['unit'].'" LIMIT 1');
-			if(!$sql->num())
-				return array('e' => 'локация не найдена');
+        $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
+        if (!$sql->num())
+            return array('e' => 'локация не найдена');
 
-			$unit = $sql->get();
-			
-			$sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="'.$server['tarif'].'" LIMIT 1');
-			if(!$sql->num())
-				return array('e' => 'тариф не найден');
+        $unit = $sql->get();
 
-			$tarif = $sql->get();
-			$packs = sys::b64djs($tarif['packs']);
+        $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
+        if (!$sql->num())
+            return array('e' => 'тариф не найден');
 
-			$time_end = $server['status'] == 'overdue' ? 'Удаление через: '.sys::date('min', $server['overdue']+$cfg['server_delete']*86400) : 'Осталось: '.sys::date('min', $server['time']);
+        $tarif = $sql->get();
+        $packs = sys::b64djs($tarif['packs']);
 
-			return array(
-				'id' => $id,
-				'address' => $server['address'],
-				'unit' => $unit['name'],
-				'tarif' => games::info_tarif($server['game'], $tarif['name'], array('fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram'])),
-				'game' => $server['game'],
-				'name' => $server['name'],
-				'slots' => $server['slots_start'],
-				'online' => $server['online'],
-				'players' => $server['players'],
-				'status' => sys::status($server['status'], $server['game'], $server['map']),
-				'img' => sys::status($server['status'], $server['game'], $server['map'], 'img'),
-				'time_end' => $time_end,
-				'time' => sys::today($server['time']),
-				'date' => sys::today($server['date']),
-				'pack' => $packs[$server['pack']]
-			);
-		}
+        $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server['time']);
 
-		public function load($id)
-		{
-			global $sql, $cfg;
+        return array(
+            'id' => $id,
+            'address' => $server['address'],
+            'unit' => $unit['name'],
+            'tarif' => games::info_tarif($server['game'], $tarif['name'], array('fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram'])),
+            'game' => $server['game'],
+            'name' => $server['name'],
+            'slots' => $server['slots_start'],
+            'online' => $server['online'],
+            'players' => $server['players'],
+            'status' => sys::status($server['status'], $server['game'], $server['map']),
+            'img' => sys::status($server['status'], $server['game'], $server['map'], 'img'),
+            'time_end' => $time_end,
+            'time' => sys::today($server['time']),
+            'date' => sys::today($server['date']),
+            'pack' => $packs[$server['pack']]
+        );
+    }
 
-			$sql->query('SELECT `online`, `slots_start`, `ram_use`, `cpu_use`, `hdd_use` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
-			if(!$sql->num())
-				return array('e' => 'сервер не найден');
+    public function load($id)
+    {
+        global $sql, $cfg;
 
-			$server = $sql->get();
+        $sql->query('SELECT `online`, `slots_start`, `ram_use`, `cpu_use`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        if (!$sql->num())
+            return array('e' => 'сервер не найден');
 
-			$online = 100/$server['slots_start']*$server['online'];
-			$online = $online > 100 ? 100: $online;
+        $server = $sql->get();
 
-			return array(
-				'id' => $id,
-				'cpu' => $server['cpu_use'],
-				'ram' => $server['ram_use'],
-				'hdd' => $server['hdd_use'],
-				'onl' => $online
-			);
-		}
+        $online = 100 / $server['slots_start'] * $server['online'];
+        $online = $online > 100 ? 100 : $online;
 
-		public function console($id, $cmd)
-		{
-			global $sql, $cfg;
+        return array(
+            'id' => $id,
+            'cpu' => $server['cpu_use'],
+            'ram' => $server['ram_use'],
+            'hdd' => $server['hdd_use'],
+            'onl' => $online
+        );
+    }
 
-			$aGames = array('cs', 'css', 'cssold', 'csgo', 'mc', 'mta');
+    public function console($id, $cmd)
+    {
+        global $sql, $cfg;
 
-			$sql->query('SELECT `game` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
-			if(!$sql->num())
-				return 'сервер не найден';
+        $aGames = array('cs', 'css', 'cssold', 'csgo', 'mc', 'mta');
 
-			$server = $sql->get();
+        $sql->query('SELECT `game` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        if (!$sql->num())
+            return 'сервер не найден';
 
-			if(!in_array($server['game'], $aGames))
-				return 'Игра не поддерживает команды';
+        $server = $sql->get();
 
-			$go = true;
+        if (!in_array($server['game'], $aGames))
+            return 'Игра не поддерживает команды';
 
-			$_POST['command'] = isset($cmd{0}) ? urldecode($cmd) : '';
+        $go = true;
 
-			include(SEC.'servers/'.$server['game'].'/console.php');
-		}
-	}
+        $_POST['command'] = isset($cmd{0}) ? urldecode($cmd) : '';
+
+        include(SEC . 'servers/' . $server['game'] . '/console.php');
+    }
+}
+
 ?>
