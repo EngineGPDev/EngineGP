@@ -36,7 +36,7 @@ if ($id) {
             $read_now .= '<a href="#' . $reader . '" target="_blank">#' . $reader . ' (' . $aGroup[$group] . ')</a>, ';
     }
 
-    if (isset($read_now{1}))
+    if (isset($read_now[1]))
         $read_now = substr($read_now, 0, -2);
 
     sys::out($read_now);

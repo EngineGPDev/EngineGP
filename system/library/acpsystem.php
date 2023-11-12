@@ -438,7 +438,7 @@ class sys
 
         fclose($stack);
 
-        return isset($subnetwork{0}) ? $subnetwork : 'не определена';
+        return isset($subnetwork[0]) ? $subnetwork : 'не определена';
     }
 
     public static function uptime_load($time)
