@@ -44,7 +44,7 @@ if ($id) {
                 $write_now .= '<a href="#' . $writer . '" target="_blank">#' . $writer . ' (' . $aGroup[$group] . ')</a>, ';
         }
 
-    if (isset($write_now{1}))
+    if (isset($write_now[1]))
         $write_now = substr($write_now, 0, -2);
 
     sys::out($write_now);

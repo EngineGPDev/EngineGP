@@ -135,7 +135,7 @@ if ($go) {
         $ips .= $ip . ':';
     }
 
-    $ips = isset($ips{0}) ? substr($ips, 0, -1) : '';
+    $ips = isset($ips[0]) ? substr($ips, 0, -1) : '';
 
     $aData['ip'] = $ips;
 
@@ -167,7 +167,7 @@ if ($go) {
             $list .= intval($pid) . ',';
         }
 
-        $list = isset($list{0}) ? substr($list, 0, -1) : '';
+        $list = isset($list[0]) ? substr($list, 0, -1) : '';
 
         if ($list == '')
             continue;
@@ -193,7 +193,7 @@ if ($go) {
         $cores .= intval($core) . ',';
     }
 
-    $cores = isset($cores{0}) ? substr($cores, 0, -1) : '';
+    $cores = isset($cores[0]) ? substr($cores, 0, -1) : '';
 
     $aData['core_fix'] = $cores;
 
@@ -210,7 +210,7 @@ if ($go) {
         $times .= intval($time) . ':';
     }
 
-    $times = isset($times{0}) ? substr($times, 0, -1) : '';
+    $times = isset($times[0]) ? substr($times, 0, -1) : '';
 
     $aData['time'] = $times;
 
@@ -227,7 +227,7 @@ if ($go) {
         $timexts .= intval($timext) . ':';
     }
 
-    $timexts = isset($timexts{0}) ? substr($timexts, 0, -1) : '';
+    $timexts = isset($timexts[0]) ? substr($timexts, 0, -1) : '';
 
     $aData['timext'] = $timexts;
 
@@ -244,7 +244,7 @@ if ($go) {
         $sfps .= intval($fps) . ':';
     }
 
-    $sfps = isset($sfps{0}) ? substr($sfps, 0, -1) : '';
+    $sfps = isset($sfps[0]) ? substr($sfps, 0, -1) : '';
 
     $aData['fps'] = $sfps;
 
@@ -261,7 +261,7 @@ if ($go) {
         $stick .= intval($tick) . ':';
     }
 
-    $stick = isset($stick{0}) ? substr($stick, 0, -1) : '';
+    $stick = isset($stick[0]) ? substr($stick, 0, -1) : '';
 
     $aData['tickrate'] = $stick;
 
@@ -278,7 +278,7 @@ if ($go) {
         $sram .= intval($ram) . ':';
     }
 
-    $sram = isset($sram{0}) ? substr($sram, 0, -1) : '';
+    $sram = isset($sram[0]) ? substr($sram, 0, -1) : '';
 
     $aData['ram'] = $sram;
 
@@ -295,7 +295,7 @@ if ($go) {
         $sprice .= $price . ':';
     }
 
-    $sprice = isset($sprice{0}) ? substr($sprice, 0, -1) : '';
+    $sprice = isset($sprice[0]) ? substr($sprice, 0, -1) : '';
 
     $aData['price'] = $sprice;
 
@@ -418,7 +418,7 @@ if ($tarif['game'] == 'cssold') {
     foreach ($aPrice as $price)
         $sprice .= $price . ':';
 
-    $sprice = isset($sprice{0}) ? substr($sprice, 0, -1) : '';
+    $sprice = isset($sprice[0]) ? substr($sprice, 0, -1) : '';
 
     $tarif['price'] = $sprice;
 }
@@ -448,7 +448,7 @@ $aPacks = sys::b64djs($tarif['packs']);
 foreach ($aPacks as $name => $fullname)
     $packs .= '"' . $name . '":"' . $fullname . '",';
 
-$packs = isset($packs{0}) ? substr($packs, 0, -1) : '';
+$packs = isset($packs[0]) ? substr($packs, 0, -1) : '';
 
 $html->set('packs', $packs);
 
@@ -459,7 +459,7 @@ $aPlugins = sys::b64djs($tarif['plugins_install']);
 foreach ($aPlugins as $pack => $list)
     $plugins .= '"' . $pack . '":"' . $list . '",';
 
-$plugins = isset($plugins{0}) ? substr($plugins, 0, -1) : '';
+$plugins = isset($plugins[0]) ? substr($plugins, 0, -1) : '';
 
 $html->set('plugins_install', $plugins);
 

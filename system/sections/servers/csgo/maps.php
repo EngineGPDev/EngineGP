@@ -51,7 +51,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $i = 0;
 
     foreach ($aMaps as $index => $map) {
-        if (!isset($map{3}))
+        if (!isset($map[3]))
             continue;
 
         $map = str_replace('./', '', $map);
