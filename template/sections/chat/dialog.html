@@ -5,15 +5,18 @@
         <table class="table_pad form">
             <tr>
                 <td colspan="2">
-                        <textarea rows="4" id="text" name="text"></textarea>
+                    <textarea rows="4" id="text" name="text"></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    Настройки: 
-                    <a class="pointer btn btn-short" id="chat_scroll" onclick="chat_scroll_change()" style="margin-top: 1px;">отключить скроллинг </a>
-                    <a class="pointer btn btn-short" id="chat_notice" onclick="chat_notice_change()" style="margin-top: 1px;">отключить уведомления </a>
-                    <a class="pointer btn btn-short" id="chat_sound" onclick="chat_sound_change()" style="margin-top: 1px;">отключить звуки</a>
+                    Настройки:
+                    <a class="pointer btn btn-short" id="chat_scroll" onclick="chat_scroll_change()"
+                       style="margin-top: 1px;">отключить скроллинг </a>
+                    <a class="pointer btn btn-short" id="chat_notice" onclick="chat_notice_change()"
+                       style="margin-top: 1px;">отключить уведомления </a>
+                    <a class="pointer btn btn-short" id="chat_sound" onclick="chat_sound_change()"
+                       style="margin-top: 1px;">отключить звуки</a>
                 </td>
             </tr>
             <tr>
@@ -69,7 +72,7 @@
     var chat_scroll_ativate = true;
     var chat_dialog_id = '[id]';
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         chat_dialog(true)
     });
 </script>

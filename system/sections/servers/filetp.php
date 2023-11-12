@@ -1,223 +1,215 @@
 <?php
-	if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
-
-	$sql->query('SELECT `uid`, `unit`, `address`, `game`, `status`, `plugins_use`, `ftp_use`, `console_use`, `stats_use`, `copy_use`, `web_use`, `time` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
-	$server = $sql->get();
-
-	if(!$server['ftp_use'])
-		sys::back($cfg['http'].'servers/id/'.$id);
-
-	sys::nav($server, $id, 'filetp');
-
-	$frouter = explode('/', sys::route($server, 'filetp', $go));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-	if(end($frouter) == 'noaccess.php')
-		include(SEC.'servers/noaccess.php');
-	else{
-		$sql->query('SELECT `uid`, `unit`, `tarif`, `ftp`, `ftp_root`, `ftp_passwd`, `ftp_on`, `hdd` FROM `servers` WHERE `id`="'.$id.'" LIMIT 1');
-		$server = array_merge($server, $sql->get());
+$sql->query('SELECT `uid`, `unit`, `address`, `game`, `status`, `plugins_use`, `ftp_use`, `console_use`, `stats_use`, `copy_use`, `web_use`, `time` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+$server = $sql->get();
 
-		$sql->query('SELECT `address` FROM `units` WHERE `id`="'.$server['unit'].'" LIMIT 1');
-		$unit = $sql->get();
-		$ip = sys::first(explode(':', $unit['address']));
+if (!$server['ftp_use'])
+    sys::back($cfg['http'] . 'servers/id/' . $id);
 
-		$sql->query('SELECT `install` FROM `tarifs` WHERE `id`="'.$server['tarif'].'" LIMIT 1');
-		$tarif = $sql->get();
+sys::nav($server, $id, 'filetp');
 
-		$html->nav($server['address'], $cfg['http'].'servers/id/'.$id);
-		$html->nav('FileTP');
+$frouter = explode('/', sys::route($server, 'filetp', $go));
 
-		// Корневой каталог сервера
-		if($cfg['ftp']['root'][$server['game']] || $server['ftp_root'])
-		{
-			// Путь для Proftpd
-			$homedir = $tarif['install'].$server['uid'];
+if (end($frouter) == 'noaccess.php')
+    include(SEC . 'servers/noaccess.php');
+else {
+    $sql->query('SELECT `uid`, `unit`, `tarif`, `ftp`, `ftp_root`, `ftp_passwd`, `ftp_on`, `hdd` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+    $server = array_merge($server, $sql->get());
 
-			// Путь для файлового менеджера
-			$dir = $cfg['ftp']['dir'][$server['game']];
-		}else{
-			// Путь для Proftpd
-			$homedir = $tarif['install'].$server['uid'].$cfg['ftp']['home'][$server['game']];
+    $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
+    $unit = $sql->get();
+    $ip = sys::first(explode(':', $unit['address']));
 
-			// Путь для файлового менеджера
-			$dir = '/';
-		}
+    $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
+    $tarif = $sql->get();
 
-		$aData = array(
-			'root' => $dir,
-			'host' => $ip,
-			'login' => $server['uid'],
-			'passwd' => $server['ftp_passwd']
-		);
+    $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
+    $html->nav('FileTP');
 
-		if($go)
-		{
-			if(isset($url['action']) AND in_array($url['action'], array('on', 'off', 'change', 'logs')))
-			{
-				$sql->query('SELECT `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="'.$server['unit'].'" LIMIT 1');
-				$unit = array_merge($unit, $sql->get());
+    // Корневой каталог сервера
+    if ($cfg['ftp']['root'][$server['game']] || $server['ftp_root']) {
+        // Путь для Proftpd
+        $homedir = $tarif['install'] . $server['uid'];
 
-				include(LIB.'ssh.php');
+        // Путь для файлового менеджера
+        $dir = $cfg['ftp']['dir'][$server['game']];
+    } else {
+        // Путь для Proftpd
+        $homedir = $tarif['install'] . $server['uid'] . $cfg['ftp']['home'][$server['game']];
 
-				// Проверка соединения с ssh сервером
-				if(!$ssh->auth($unit['passwd'], $unit['address']))
-					sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
-			}else{
-				include(LIB.'ftp.php');
+        // Путь для файлового менеджера
+        $dir = '/';
+    }
 
-				$ftp = new ftp;
+    $aData = array(
+        'root' => $dir,
+        'host' => $ip,
+        'login' => $server['uid'],
+        'passwd' => $server['ftp_passwd']
+    );
 
-				// Проверка соединения с ftp сервером
-				if(!$ftp->auth($aData['host'], $aData['login'], $aData['passwd']))
-				{
-					if(isset($url['action']))
-					{
-						if($url['action'] == 'search')
-								sys::out('Не удалось соединиться с ftp-сервером.');
+    if ($go) {
+        if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'change', 'logs'))) {
+            $sql->query('SELECT `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
+            $unit = array_merge($unit, $sql->get());
 
-						sys::outjs(array('e' => 'Не удалось соединиться с ftp-сервером.'));
-					}
+            include(LIB . 'ssh.php');
 
-					sys::out();
-				}
-			}
+            // Проверка соединения с ssh сервером
+            if (!$ssh->auth($unit['passwd'], $unit['address']))
+                sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+        } else {
+            include(LIB . 'ftp.php');
 
-			// Выполнение операций
-			if(isset($url['action']))
-				switch($url['action'])
-				{
-					case 'on':
-						if($server['ftp'])
-							sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
+            $ftp = new ftp;
 
-						$used = sys::int($ssh->get('cd '.$tarif['install'].$server['uid'].' && du -b | tail -1'));
+            // Проверка соединения с ftp сервером
+            if (!$ftp->auth($aData['host'], $aData['login'], $aData['passwd'])) {
+                if (isset($url['action'])) {
+                    if ($url['action'] == 'search')
+                        sys::out('Не удалось соединиться с ftp-сервером.');
 
-						if($used < 1)
-							sys::back($cfg['http'].'help/action/create');
+                    sys::outjs(array('e' => 'Не удалось соединиться с ftp-сервером.'));
+                }
 
-						$bytes = $server['hdd']*1048576;
+                sys::out();
+            }
+        }
 
-						$server['ftp_passwd'] = isset($server['ftp_passwd']{1}) ? $server['ftp_passwd'] : sys::passwd(8);
+        // Выполнение операций
+        if (isset($url['action']))
+            switch ($url['action']) {
+                case 'on':
+                    if ($server['ftp'])
+                        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
-						$qSql = 'DELETE FROM users WHERE username=\''.$server['uid'].'\';'
-								.'DELETE FROM quotalimits WHERE name=\''.$server['uid'].'\';'
-								.'DELETE FROM quotatallies WHERE name=\''.$server['uid'].'\';'
-								.'INSERT INTO users set username=\''.$server['uid'].'\', password=\''.$server['ftp_passwd'].'\', uid=\''.$server['uid'].'\', gid=\'1000\', homedir=\''.$homedir.'\', shell=\'/bin/false\';'
-								.'INSERT INTO quotalimits set name=\''.$server['uid'].'\', quota_type=\'user\', per_session=\'false\', limit_type=\'hard\', bytes_in_avail=\''.$bytes.'\';'
-								.'INSERT INTO quotatallies set name=\''.$server['uid'].'\', quota_type=\'user\', bytes_in_used=\''.$used.'\'';
+                    $used = sys::int($ssh->get('cd ' . $tarif['install'] . $server['uid'] . ' && du -b | tail -1'));
 
-						$ssh->set('screen -dmS ftp'.$server['uid'].' mysql -P '.$unit['sql_port'].' -u'.$unit['sql_login'].' -p'.$unit['sql_passwd'].' --database '.$unit['sql_ftp'].' -e "'.$qSql.'"');
+                    if ($used < 1)
+                        sys::back($cfg['http'] . 'help/action/create');
 
-						$sql->query('UPDATE `servers` SET `ftp`="1", `ftp_on`="1", `ftp_passwd`="'.$server['ftp_passwd'].'" WHERE `id`="'.$id.'" LIMIT 1');
+                    $bytes = $server['hdd'] * 1048576;
 
-						$mcache->delete('server_filetp_'.$id);
+                    $server['ftp_passwd'] = isset($server['ftp_passwd']{1}) ? $server['ftp_passwd'] : sys::passwd(8);
 
-						sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
+                    $qSql = 'DELETE FROM users WHERE username=\'' . $server['uid'] . '\';'
+                        . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
+                        . 'DELETE FROM quotatallies WHERE name=\'' . $server['uid'] . '\';'
+                        . 'INSERT INTO users set username=\'' . $server['uid'] . '\', password=\'' . $server['ftp_passwd'] . '\', uid=\'' . $server['uid'] . '\', gid=\'1000\', homedir=\'' . $homedir . '\', shell=\'/bin/false\';'
+                        . 'INSERT INTO quotalimits set name=\'' . $server['uid'] . '\', quota_type=\'user\', per_session=\'false\', limit_type=\'hard\', bytes_in_avail=\'' . $bytes . '\';'
+                        . 'INSERT INTO quotatallies set name=\'' . $server['uid'] . '\', quota_type=\'user\', bytes_in_used=\'' . $used . '\'';
 
-					case 'change':
-						if(!$server['ftp'])
-							sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
+                    $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
-						$passwd = sys::passwd(8);
+                    $sql->query('UPDATE `servers` SET `ftp`="1", `ftp_on`="1", `ftp_passwd`="' . $server['ftp_passwd'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-						$qSql = "UPDATE users set password='".$passwd."' WHERE username='".$server['uid']."' LIMIT 1";
+                    $mcache->delete('server_filetp_' . $id);
 
-						$ssh->set('screen -dmS ftp'.$server['uid'].' mysql -P '.$unit['sql_port'].' -u'.$unit['sql_login'].' -p'.$unit['sql_passwd'].' --database '.$unit['sql_ftp'].' -e '.'"'.$qSql.'"');
+                    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
-						$sql->query('UPDATE `servers` SET `ftp_passwd`="'.$passwd.'" WHERE `id`="'.$id.'" LIMIT 1');
+                case 'change':
+                    if (!$server['ftp'])
+                        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
-						$mcache->delete('server_filetp_'.$id);
+                    $passwd = sys::passwd(8);
 
-						sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
+                    $qSql = "UPDATE users set password='" . $passwd . "' WHERE username='" . $server['uid'] . "' LIMIT 1";
 
-					case 'off':
-						if(!$server['ftp'])
-							sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
+                    $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e ' . '"' . $qSql . '"');
 
-						$qSql = 'DELETE FROM users WHERE username=\''.$server['uid'].'\';'
-								.'DELETE FROM quotalimits WHERE name=\''.$server['uid'].'\';'
-								.'DELETE FROM quotatallies WHERE name=\''.$server['uid'].'\'';
+                    $sql->query('UPDATE `servers` SET `ftp_passwd`="' . $passwd . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-						$ssh->set('screen -dmS ftp'.$server['uid'].' mysql -P '.$unit['sql_port'].' -u'.$unit['sql_login'].' -p'.$unit['sql_passwd'].' --database '.$unit['sql_ftp'].' -e "'.$qSql.'"');
+                    $mcache->delete('server_filetp_' . $id);
 
-						$sql->query('UPDATE `servers` SET `ftp`="0" WHERE `id`="'.$id.'" LIMIT 1');
+                    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
-						$mcache->delete('server_filetp_'.$id);
+                case 'off':
+                    if (!$server['ftp'])
+                        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
-						sys::back($cfg['http'].'servers/id/'.$id.'/section/filetp');
+                    $qSql = 'DELETE FROM users WHERE username=\'' . $server['uid'] . '\';'
+                        . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
+                        . 'DELETE FROM quotatallies WHERE name=\'' . $server['uid'] . '\'';
 
-					case 'rename':
-						$ftp->rename(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['newname']));
+                    $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
-					case 'edit':
-						$ftp->edit_file(json_decode($_POST['path']), json_decode($_POST['name']));
+                    $sql->query('UPDATE `servers` SET `ftp`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
-					case 'create':
-						if(isset($url['folder']))
-							$ftp->mkdir(json_decode($_POST['path']), json_decode($_POST['name']));
+                    $mcache->delete('server_filetp_' . $id);
 
-						$ftp->touch(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['text']));
+                    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
-					case 'delete':
-						if(isset($url['folder']))
-							$ftp->rmdir(json_decode($_POST['path']), json_decode($_POST['name']));
+                case 'rename':
+                    $ftp->rename(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['newname']));
 
-						$ftp->rmfile(json_decode($_POST['path']).'/'.json_decode($_POST['name']));
+                case 'edit':
+                    $ftp->edit_file(json_decode($_POST['path']), json_decode($_POST['name']));
 
-					case 'chmod':
-						$ftp->chmod(json_decode($_POST['path']), json_decode($_POST['name']), sys::int($_POST['chmod']));
+                case 'create':
+                    if (isset($url['folder']))
+                        $ftp->mkdir(json_decode($_POST['path']), json_decode($_POST['name']));
 
-					case 'search':
-						$text = isset($_POST['find']) ? sys::first(explode('.', json_decode($_POST['find']))) : sys::out();
+                    $ftp->touch(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['text']));
 
-						if(!isset($text{2}))
-							sys::out('Для выполнения поиска, необходимо больше данных');
+                case 'delete':
+                    if (isset($url['folder']))
+                        $ftp->rmdir(json_decode($_POST['path']), json_decode($_POST['name']));
 
-						$ftp->search($text, $id);
+                    $ftp->rmfile(json_decode($_POST['path']) . '/' . json_decode($_POST['name']));
 
-					case 'logs':
-						$logs = $mcache->get('filetp_logs_'.$id);
+                case 'chmod':
+                    $ftp->chmod(json_decode($_POST['path']), json_decode($_POST['name']), sys::int($_POST['chmod']));
 
-						if(!$logs)
-						{
-							include(LIB.'ftp.php');
+                case 'search':
+                    $text = isset($_POST['find']) ? sys::first(explode('.', json_decode($_POST['find']))) : sys::out();
 
-							$ftp = new ftp;
+                    if (!isset($text{2}))
+                        sys::out('Для выполнения поиска, необходимо больше данных');
 
-							$logs = $ftp->logs($ssh->get('cat /var/log/proftpd/xferlog | grep "/'.$server['uid'].'/" | awk \'{print $2"\\\"$3"\\\"$4"\\\"$5"\\\"$7"\\\"$8"\\\"$9"\\\"$12}\' | tail -50'), $server['uid']);
+                    $ftp->search($text, $id);
 
-							$mcache->set('filetp_logs_'.$id, $logs, false, 300);
-						}
+                case 'logs':
+                    $logs = $mcache->get('filetp_logs_' . $id);
 
-						sys::out($logs);
-				}
+                    if (!$logs) {
+                        include(LIB . 'ftp.php');
 
-			if(!isset($_POST['path'])) $_POST['path'] = json_encode($aData['root']);
+                        $ftp = new ftp;
 
-			sys::out($ftp->view($ftp->read(json_decode($_POST['path'])), $id));
-		}
+                        $logs = $ftp->logs($ssh->get('cat /var/log/proftpd/xferlog | grep "/' . $server['uid'] . '/" | awk \'{print $2"\\\"$3"\\\"$4"\\\"$5"\\\"$7"\\\"$8"\\\"$9"\\\"$12}\' | tail -50'), $server['uid']);
 
-		if($mcache->get('server_filetp_'.$id) != '')
-			$html->arr['main'] = $mcache->get('server_filetp_'.$id);
-		else{
-			if($server['ftp'])
-			{
-				$html->get('filetp_on', 'sections/servers/games/filetp');
+                        $mcache->set('filetp_logs_' . $id, $logs, false, 300);
+                    }
 
-					$html->set('address', 'ftp://'.$aData['login'].':'.$aData['passwd'].'@'.$aData['host']);
-					$html->set('server', $aData['host']);
-					$html->set('login', $aData['login']);
-					$html->set('passwd', $aData['passwd']);
-					$html->set('path', $aData['root']);
-			}else
-				$html->get('filetp_off', 'sections/servers/games/filetp');
+                    sys::out($logs);
+            }
 
-					$html->set('id', $id);
+        if (!isset($_POST['path'])) $_POST['path'] = json_encode($aData['root']);
 
-			$html->pack('main');
+        sys::out($ftp->view($ftp->read(json_decode($_POST['path'])), $id));
+    }
 
-			$mcache->set('server_filetp_'.$id, $html->arr['main'], false, 10);
-		}
-	}
+    if ($mcache->get('server_filetp_' . $id) != '')
+        $html->arr['main'] = $mcache->get('server_filetp_' . $id);
+    else {
+        if ($server['ftp']) {
+            $html->get('filetp_on', 'sections/servers/games/filetp');
+
+            $html->set('address', 'ftp://' . $aData['login'] . ':' . $aData['passwd'] . '@' . $aData['host']);
+            $html->set('server', $aData['host']);
+            $html->set('login', $aData['login']);
+            $html->set('passwd', $aData['passwd']);
+            $html->set('path', $aData['root']);
+        } else
+            $html->get('filetp_off', 'sections/servers/games/filetp');
+
+        $html->set('id', $id);
+
+        $html->pack('main');
+
+        $mcache->set('server_filetp_' . $id, $html->arr['main'], false, 10);
+    }
+}
 ?>

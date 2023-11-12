@@ -1,94 +1,90 @@
 <?php
-    if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-	$html->nav('Списки карт');
-	
-	$sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="'.$server['unit'].'" LIMIT 1');
-	$unit = $sql->get();
+$html->nav('Списки карт');
 
-	if(!isset($ssh))
-		include(LIB.'ssh.php');
+$sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
+$unit = $sql->get();
 
-	if(!$ssh->auth($unit['passwd'], $unit['address']))
-	{
-		if($go)
-			sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+if (!isset($ssh))
+    include(LIB . 'ssh.php');
 
-		sys::back($cfg['http'].'servers/id/'.$id.'/section/maps');
-	}
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+    if ($go)
+        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
 
-	$sql->query('SELECT `install` FROM `tarifs` WHERE `id`="'.$server['tarif'].'" LIMIT 1');
-	$tarif = $sql->get();
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/maps');
+}
 
-	// Директория сервера
-	$dir = $tarif['install'].$server['uid'].'/cstrike/';
+$sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
+$tarif = $sql->get();
 
-	// Генерация списка
-	if($go AND isset($url['gen']))
-	{
-		$ssh->set('cd '.$dir.'maps/ && ls | grep -e "\.bsp$"');
+// Директория сервера
+$dir = $tarif['install'] . $server['uid'] . '/cstrike/';
 
-		$maps = $ssh->get();
+// Генерация списка
+if ($go and isset($url['gen'])) {
+    $ssh->set('cd ' . $dir . 'maps/ && ls | grep -e "\.bsp$"');
 
-		$aMaps = explode("\n", str_ireplace(array('./', '.bsp'), '', $maps));
+    $maps = $ssh->get();
 
-		sort($aMaps);
-		reset($aMaps);
+    $aMaps = explode("\n", str_ireplace(array('./', '.bsp'), '', $maps));
 
-		$list = '';
-		
-		foreach($aMaps as $index => $map)
-		{
-			$aMap = explode('/', $map);
-			$name = end($aMap);
-			if(strlen($name) < 4)
-				continue;
-			
-			$list .= $map."\n";
-		}
+    sort($aMaps);
+    reset($aMaps);
 
-		sys::outjs(array('s' => $list), $nmch);
-	}
+    $list = '';
 
-	$aFiles = array(
-		'mapcycle' => 'mapcycle.txt',
-		'maps' => 'addons/amxmodx/configs/maps.ini'
-	);
+    foreach ($aMaps as $index => $map) {
+        $aMap = explode('/', $map);
+        $name = end($aMap);
+        if (strlen($name) < 4)
+            continue;
 
-	// Сохранение
-	if($go AND isset($url['file']))
-	{
-		if(!array_key_exists($url['file'], $aFiles))
-			exit;
+        $list .= $map . "\n";
+    }
 
-		$data = isset($_POST['data']) ? $_POST['data'] : '';
+    sys::outjs(array('s' => $list), $nmch);
+}
 
-		$temp = sys::temp($data);
+$aFiles = array(
+    'mapcycle' => 'mapcycle.txt',
+    'maps' => 'addons/amxmodx/configs/maps.ini'
+);
 
-		// Отправление файла на сервер
-		$ssh->setfile($temp, $dir.$aFiles[$url['file']], 0644);
+// Сохранение
+if ($go and isset($url['file'])) {
+    if (!array_key_exists($url['file'], $aFiles))
+        exit;
 
-		// Смена владельца/группы файла
-		$ssh->set('chown server'.$server['uid'].':servers '.$dir.$aFiles[$url['file']]);
+    $data = isset($_POST['data']) ? $_POST['data'] : '';
 
-		unlink($temp);
+    $temp = sys::temp($data);
 
-		sys::outjs(array('s' => 'ok'), $nmch);
-	}
+    // Отправление файла на сервер
+    $ssh->setfile($temp, $dir . $aFiles[$url['file']], 0644);
 
-	$ssh->set('sudo -u server'.$server['uid'].' sh -c "touch '.$dir.$aFiles['mapcycle'].'; cat '.$dir.$aFiles['mapcycle'].'"');
-	$mapcycle = $ssh->get();
+    // Смена владельца/группы файла
+    $ssh->set('chown server' . $server['uid'] . ':servers ' . $dir . $aFiles[$url['file']]);
 
-	$ssh->set('sudo -u server'.$server['uid'].' sh -c "touch '.$dir.$aFiles['maps'].'; cat '.$dir.$aFiles['maps'].'"');
-	$maps = $ssh->get();
+    unlink($temp);
 
-	$html->get('listing', 'sections/servers/'.$server['game'].'/maps');
+    sys::outjs(array('s' => 'ok'), $nmch);
+}
 
-		$html->set('id', $id);
+$ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $dir . $aFiles['mapcycle'] . '; cat ' . $dir . $aFiles['mapcycle'] . '"');
+$mapcycle = $ssh->get();
 
-		$html->set('mapcycle', $mapcycle);
-		$html->set('maps', $maps);
+$ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $dir . $aFiles['maps'] . '; cat ' . $dir . $aFiles['maps'] . '"');
+$maps = $ssh->get();
 
-	$html->pack('main');
+$html->get('listing', 'sections/servers/' . $server['game'] . '/maps');
+
+$html->set('id', $id);
+
+$html->set('mapcycle', $mapcycle);
+$html->set('maps', $maps);
+
+$html->pack('main');
 ?>

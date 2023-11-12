@@ -1,16 +1,16 @@
 <?php
-    if(!DEFINED('EGP'))
-		exit(header('Refresh: 0; URL=http://'.$_SERVER['SERVER_NAME'].'/404'));
+if (!DEFINED('EGP'))
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-	if(!$go)
-		exit;
+if (!$go)
+    exit;
 
-	include(LIB.'web/free.php');
+include(LIB . 'web/free.php');
 
-	$aData = array(
-		'type' => $url['subsection'],
-		'server' => array_merge($server, array('id' => $id))
-	);
+$aData = array(
+    'type' => $url['subsection'],
+    'server' => array_merge($server, array('id' => $id))
+);
 
-	web::passwd($aData, $nmch);
+web::passwd($aData, $nmch);
 ?>
