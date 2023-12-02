@@ -19,6 +19,7 @@ class cron
         'cssold' => 'srcds_i686',
         'css' => 'srcds_',
         'csgo' => 'srcds_',
+        'cs2' => 'srcds_',
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
@@ -30,6 +31,7 @@ class cron
         'cssold' => 'a2s',
         'css' => 'a2s',
         'csgo' => 'a2s',
+        'cs2' => 'a2s',
         'mta' => 'eye'
     );
 
@@ -37,7 +39,8 @@ class cron
         'cs' => 'cstrike/addons/amxmodx/configs/users.ini',
         'cssold' => 'cstrike/addons/sourcemod/configs/admins_simple.ini',
         'css' => 'cstrike/addons/sourcemod/configs/admins_simple.ini',
-        'csgo' => 'csgo/addons/sourcemod/configs/admins_simple.ini'
+        'csgo' => 'csgo/addons/sourcemod/configs/admins_simple.ini',
+        'cs2' => 'csgo/addons/sourcemod/configs/admins_simple.ini'
     );
 
     public static function thread($num, $type, $aData)

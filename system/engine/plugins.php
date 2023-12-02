@@ -6,7 +6,8 @@ $aGame = array(
     'cs' => 'Counter-Strike: 1.6',
     'cssold' => 'Counter-Strike: Source v34',
     'css' => 'Counter-Strike: Source',
-    'csgo' => 'Counter-Strike: Global Offensive'
+    'csgo' => 'Counter-Strike: Global Offensive',
+    'cs2' => 'Counter-Strike: 2'
 );
 
 if (!isset($url['game']) || !array_key_exists($url['game'], $aGame))

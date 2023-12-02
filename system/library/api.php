@@ -74,7 +74,7 @@ class api
     {
         global $sql, $cfg;
 
-        $aGames = array('cs', 'css', 'cssold', 'csgo', 'mc', 'mta');
+        $aGames = array('cs', 'css', 'cssold', 'csgo', 'cs2', 'mc', 'mta');
 
         $sql->query('SELECT `game` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         if (!$sql->num())

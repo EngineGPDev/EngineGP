@@ -47,7 +47,7 @@ if ($go) {
     if (!$sql->num())
         sys::outjs(array('e' => 'Необходимо указать локацию'));
 
-    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc')))
         sys::outjs(array('e' => 'Необходимо указать игру'));
 
     $aSlots = explode('-', $aData['slots']);
@@ -328,6 +328,7 @@ if ($go) {
             break;
 
         case 'css':
+        case 'cs2':
         case 'csgo':
             if (count(explode(':', $aData['tickrate'])) != count(explode(':', $aData['price'])))
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));
