@@ -627,6 +627,17 @@ class games
         return true;
     }
 
+    public static function map2($map, $aMaps)
+    {
+        if (!is_array($aMaps))
+            $aMaps = explode("\n", str_ireplace(array('./', '.vpk'), '', $aMaps));
+
+        if (in_array($map, $aMaps))
+            return false;
+
+        return true;
+    }
+
     public static function mapsql($arr = array())
     {
         $sql = 'AND (';

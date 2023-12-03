@@ -40,13 +40,25 @@ class action extends actions
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
 
+        // Проверка наличия steamclient.so
+        $checkLinkCommand = 'ls ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/steamclient.so';
+        $checkLinkOutput = $ssh->get($checkLinkCommand);
+
+        if (strpos($checkLinkOutput, 'steamclient.so') === false) {
+            // Символическая ссылка отсутствует, создаем ее
+            $createLinkCommand ='mkdir -p ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
+            . 'ln -s /path/cmd/linux64/steamclient.so ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
+            . 'chmod +x ' . $tarif['install'] . $server['uid'] . '/game/bin/linuxsteamrt64/cs2';
+            $ssh->get($createLinkCommand);
+        }
+
         // Проверка наличия стартовой карты
-        $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/csgo/maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\'');
+        $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/game/csgo/maps/ && du -ah | grep -e "\.vpk$" | awk \'{print $2}\'');
 
         include_once(LIB . 'games/games.php');
 
-        if (games::map($server['map_start'], $ssh->get()))
-            return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.bsp')));
+        if (games::map2($server['map_start'], $ssh->get()))
+            return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.vpk')));
 
         // Если система автораспределения продолжить парсинг загрузки процессора
         if (isset($proc_stat)) {
@@ -92,7 +104,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './srcds_run -debug -game csgo -norestart -condebug console.log -usercon -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' -maxplayers_override ' . $server['slots_start'] . ' +ip ' . $ip . ' +net_public_adr ' . $ip . ' +port ' . $port . ' -sv_lan 0 ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $map . ' ' . $vac . ' ' . $bots;
 
         // Временный файл
         $temp = sys::temp($bash);
@@ -103,10 +115,10 @@ class action extends actions
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
             . 'rm *.pid;' // Удаление *.pid файлов
-            . 'sudo -u server' . $server['uid'] . ' mkdir -p csgo/oldstart;' // Создание папки логов
-            . 'cat csgo/console.log >> csgo/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm csgo/console.log; rm csgo/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
+            . 'sudo -u server' . $server['uid'] . ' mkdir -p game/csgo/oldstart;' // Создание папки логов
+            . 'cat game/csgo/console.log >> game/csgo/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm game/csgo/console.log; rm game/csgo/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' ' . $taskset . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         $core = !isset($core) ? 0 : $core + 1;
 
@@ -150,13 +162,13 @@ class action extends actions
             return array('e' => sys::text('error', 'ssh'));
 
         // Массив карт игрового сервера (папка "maps")
-        $aMaps = explode("\n", $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/csgo/maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\''));
+        $aMaps = explode("\n", $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/game/csgo/maps/ && du -ah | grep -e "\.vpk$" | awk \'{print $2}\''));
 
         // Удаление пустого элемента
         unset($aMaps[count($aMaps) - 1]);
 
-        // Удаление ".bsp"
-        $aMaps = str_ireplace(array('./', '.bsp'), '', $aMaps);
+        // Удаление ".vpk"
+        $aMaps = str_ireplace(array('./', '.vpk'), '', $aMaps);
 
         // Если выбрана карта
         if ($map) {
@@ -164,7 +176,7 @@ class action extends actions
 
             // Проверка наличия выбранной карты
             if (games::map($map, $aMaps))
-                return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.bsp')));
+                return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.vpk')));
 
             // Отправка команды changelevel
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
@@ -267,7 +279,7 @@ class action extends actions
         }
 
         $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . $taskset . ' screen -dmS u_' . $server['uid'] . ' sh -c "'
-            . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 740 +quit;'
+            . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 730 +quit;'
             . 'cd ' . $install . ';'
             . 'chown -R server' . $server['uid'] . ':servers .;'
             . 'find . -type d -exec chmod 700 {} \;;'

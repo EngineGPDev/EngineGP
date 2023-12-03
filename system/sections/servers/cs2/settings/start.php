@@ -17,7 +17,7 @@ include(LIB . 'games/' . $server['game'] . '/tarif.php');
 
 // Вывод списка карт
 if (isset($url['maps']))
-    games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/csgo/maps', $server['map_start'], false);
+    games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/game/csgo/maps', $server['map_start'], false);
 
 // Сохранение
 if ($go and $url['save']) {
@@ -28,7 +28,7 @@ if ($go and $url['save']) {
             $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
 
             if ($map != $server['map_start'])
-                games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/csgo/maps', $map, true, $nmch);
+                games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/game/csgo/maps', $map, true, $nmch);
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
@@ -86,17 +86,17 @@ if ($go and $url['save']) {
                 // Временый файл
                 $temp = sys::temp($fastdl);
 
-                $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/csgo/cfg/fastdl.cfg', 0644);
+                $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/game/csgo/cfg/fastdl.cfg', 0644);
 
-                $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/csgo/cfg/fastdl.cfg;'
-                    . 'ln -s ' . $tarif['install'] . $server['uid'] . '/csgo /var/nginx/fast_' . $server['uid'] . ';'
-                    . 'sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/csgo/cfg/server.cfg;'
-                    . 'echo "exec fastdl.cfg" >> ' . $tarif['install'] . $server['uid'] . '/csgo/cfg/server.cfg');
+                $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/fastdl.cfg;'
+                    . 'ln -s ' . $tarif['install'] . $server['uid'] . '/game/csgo /var/nginx/fast_' . $server['uid'] . ';'
+                    . 'sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/server.cfg;'
+                    . 'echo "exec fastdl.cfg" >> ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/server.cfg');
 
                 unlink($temp);
             } else
-                $ssh->set('sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/csgo/cfg/server.cfg;'
-                    . 'rm ' . $tarif['install'] . $server['uid'] . '/csgo/cfg/fastdl.cfg; rm /var/nginx/fast_' . $server['uid']);
+                $ssh->set('sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/server.cfg;'
+                    . 'rm ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/fastdl.cfg; rm /var/nginx/fast_' . $server['uid']);
 
             $sql->query('UPDATE `servers` set `fastdl`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 

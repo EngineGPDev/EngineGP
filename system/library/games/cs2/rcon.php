@@ -88,7 +88,7 @@ class rcon
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        $ssh->set('cat ' . $tarif['install'] . '/' . $server['uid'] . '/csgo/cfg/server.cfg | grep rcon_password');
+        $ssh->set('cat ' . $tarif['install'] . '/' . $server['uid'] . '/game/csgo/cfg/server.cfg | grep rcon_password');
         $get = explode(' ', str_replace('"', '', trim($ssh->get())));
         $rcon = trim(end($get));
 

@@ -30,7 +30,7 @@ if ($go) {
         sys::out(sys::text('error', 'ssh'));
     }
 
-    $dir = $tarif['install'] . $server['uid'] . '/csgo/';
+    $dir = $tarif['install'] . $server['uid'] . '/game/csgo/';
 
     $filecmd = $dir . 'console.log';
 

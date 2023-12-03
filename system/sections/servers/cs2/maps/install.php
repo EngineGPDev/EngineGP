@@ -20,7 +20,7 @@ if (!$ssh->auth($unit['passwd'], $unit['address']))
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-$dir = $tarif['install'] . $server['uid'] . '/csgo/';
+$dir = $tarif['install'] . $server['uid'] . '/game/csgo/';
 
 // Проверить наличие свободного места
 $ssh->set('cd ' . $dir . ' && du -ms');

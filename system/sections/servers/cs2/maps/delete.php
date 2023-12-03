@@ -19,14 +19,14 @@ if (!$ssh->auth($unit['passwd'], $unit['address']))
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-$dir = $tarif['install'] . $server['uid'] . '/csgo/';
+$dir = $tarif['install'] . $server['uid'] . '/game/csgo/';
 
 // Генерация списка карт
-$ssh->set('cd ' . $dir . 'maps/ && ls | grep -iE "\.bsp$"');
+$ssh->set('cd ' . $dir . 'maps/ && ls | grep -iE "\.vpk$"');
 
 $maps = $ssh->get();
 
-$aMaps = explode("\n", str_ireplace('.bsp', '', $maps));
+$aMaps = explode("\n", str_ireplace('.vpk', '', $maps));
 
 // Массив переданных карт
 $in_aMaps = isset($_POST['maps']) ? $_POST['maps'] : array();

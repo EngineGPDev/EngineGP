@@ -21,15 +21,15 @@ $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '
 $tarif = $sql->get();
 
 // Директория сервера
-$dir = $tarif['install'] . $server['uid'] . '/csgo/';
+$dir = $tarif['install'] . $server['uid'] . '/game/csgo/';
 
 // Генерация списка
 if ($go and isset($url['gen'])) {
-    $ssh->set('cd ' . $dir . 'maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\'');
+    $ssh->set('cd ' . $dir . 'maps/ && du -ah | grep -e "\.vpk$" | awk \'{print $2}\'');
 
     $maps = $ssh->get();
 
-    $aMaps = explode("\n", str_ireplace(array('./', '.bsp'), '', $maps));
+    $aMaps = explode("\n", str_ireplace(array('./', '.vpk'), '', $maps));
 
     sort($aMaps);
     reset($aMaps);

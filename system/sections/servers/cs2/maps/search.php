@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
-$text = isset($_POST['text']) ? str_ireplace('.bsp', '', $_POST['text']) : '';
+$text = isset($_POST['text']) ? str_ireplace('.vpk', '', $_POST['text']) : '';
 
 $mkey = md5($text . $id);
 

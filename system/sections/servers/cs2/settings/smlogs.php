@@ -16,7 +16,7 @@ if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 
 // Путь к логам
-$folder = $tarif['install'] . $server['uid'] . '/csgo/addons/sourcemod/logs';
+$folder = $tarif['install'] . $server['uid'] . '/game/csgo/addons/sourcemod/logs';
 
 // Если выбран лог
 if (isset($url['log'])) {

@@ -16,7 +16,7 @@ if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 
 // Путь к файлам (banned_user.cfg / banned_ip.cfg)
-$folder = $tarif['install'] . $server['uid'] . '/csgo';
+$folder = $tarif['install'] . $server['uid'] . '/game/csgo';
 
 // Если бан/разбан/проверка
 if ($go) {

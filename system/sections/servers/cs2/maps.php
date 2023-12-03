@@ -37,11 +37,11 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = $sql->get();
 
-    $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/csgo/maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\'');
+    $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/game/csgo/maps/ && du -ah | grep -e "\.vpk$" | awk \'{print $2}\'');
 
     $maps = $ssh->get();
 
-    $aMaps = explode("\n", str_ireplace('.bsp', '', $maps));
+    $aMaps = explode("\n", str_ireplace('.vpk', '', $maps));
 
     // Сортировка карт
     sort($aMaps);
