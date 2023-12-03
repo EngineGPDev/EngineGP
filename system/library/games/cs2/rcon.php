@@ -92,7 +92,7 @@ class rcon
         $get = explode(' ', str_replace('"', '', trim($ssh->get())));
         $rcon = trim(end($get));
 
-        if (!isset($rcon{0}))
+        if (!isset($rcon[0]))
             sys::outjs(array('r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'), $nmch);
 
         return $rcon;
