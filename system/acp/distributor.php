@@ -14,7 +14,7 @@ $whoops->pushHandler($loggingInConsole);
 // Логи в файл
 $loggingInFile = new \Whoops\Handler\PlainTextHandler();
 $loggingInFile->loggerOnly(true);
-$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(DIR . 'logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 
 $device = '!mobile';

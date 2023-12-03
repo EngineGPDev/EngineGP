@@ -14,7 +14,7 @@ $whoops->pushHandler($loggingInConsole);
 // логи в файл
 $loggingInFile = new \Whoops\Handler\PlainTextHandler();
 $loggingInFile->loggerOnly(true);
-$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(DIR . 'logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 
 // Парсинг адреса
@@ -111,6 +111,7 @@ if (isset($html->arr['main'])) {
 }
 
 // Онлайн игроков (общее количество всех игроков)
+$aop='';
 //$aop = $mcache->get('all_online_players'); //Если ваш хостинг чувствует себя плохо из за чрезмерной нагрузки от данного модуля, то включите кеширование, раскомментировав этот кусочек кода
 if ($aop == '') {
     $sql->query('SELECT SUM(`online`) FROM `servers` WHERE `status`="working" OR `status`="change"');
