@@ -27,7 +27,7 @@ class threads extends cron
         $all = $sql->num();
 
         while ($server = $sql->get())
-            $aUnit[$server['unit']][$server['game']] .= $server['id'] . ' ';
+            $aUnit[$server['unit']][$server['game']] = $server['id'] . ' ';
 
         if ($argv[3] == 'scan_servers_route')
             cron::$seping = 50;
