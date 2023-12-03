@@ -19,7 +19,7 @@ class cron
         'cssold' => 'srcds_i686',
         'css' => 'srcds_',
         'csgo' => 'srcds_',
-        'cs2' => 'srcds_',
+        'cs2' => 'cs2',
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
