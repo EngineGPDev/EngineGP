@@ -85,7 +85,7 @@ class action extends actions
         $bots = $cfg['bots'][$server['game']] ? '' : '-nobots';
 
         // TV
-        $tv = $server['tv'] ? '+tv_enable 1 +tv_maxclients 30 +tv_port ' . ($port + 10000) : '-nohltv';
+        $tv = isset($server['tv']) ? '+tv_enable 1 +tv_maxclients 30 +tv_port ' . ($port + 10000) : '-nohltv';
 
         $check = explode('/', $server['map_start']);
 
@@ -104,7 +104,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $map . ' ' . $vac . ' ' . $bots;
+        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);

@@ -124,7 +124,7 @@ class scan extends scans
 
         $data = $sq->GetInfo();
 
-        $map = explode('/', $data['Map']);
+        $map = explode('/', $data['Map'] ?? '');
 
         $server['name'] = $data['HostName'];
         $server['map'] = end($map);
