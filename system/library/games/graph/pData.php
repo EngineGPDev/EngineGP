@@ -43,7 +43,7 @@ class pData
 
     function pData()
     {
-        $this->Data = '';
+        $this->Data = array();
         $this->Data['XAxisDisplay'] = AXIS_FORMAT_DEFAULT;
         $this->Data['XAxisFormat'] = NULL;
         $this->Data['XAxisName'] = NULL;
@@ -937,7 +937,7 @@ class pData
 
     function convertToArray($Value)
     {
-        $Values = '';
+        $Values = array();
         $Values[] = $Value;
         return ($Values);
     }
