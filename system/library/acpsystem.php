@@ -464,14 +464,14 @@ class sys
     {
         $aData = explode(' ', $data);
 
-        return ceil(($aData[0] - ($aData[1] + $aData[2] + $aData[3])) * 100 / $aData[0]);
+        return ceil((floatval($aData[0]) - (floatval($aData[1]) + floatval($aData[2]) + floatval($aData[3]))) * 100 / floatval($aData[0]));
     }
 
     public static function cpu_load($data)
     {
         $aData = explode(' ', $data);
 
-        $load = ceil($aData[0] / $aData[1]);
+        $load = ceil(floatval($aData[0]) / floatval($aData[1]));
 
         return $load > 100 ? 100 : $load;
     }
