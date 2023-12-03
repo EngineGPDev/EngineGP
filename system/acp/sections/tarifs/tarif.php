@@ -457,8 +457,11 @@ $plugins = '';
 
 $aPlugins = sys::b64djs($tarif['plugins_install']);
 
-foreach ($aPlugins as $pack => $list)
-    $plugins .= '"' . $pack . '":"' . $list . '",';
+if (is_array($aPlugins)) {
+    foreach ($aPlugins as $pack => $list) {
+        $plugins .= '"' . $pack . '":"' . $list . '",';
+    }
+}
 
 $plugins = isset($plugins[0]) ? substr($plugins, 0, -1) : '';
 
