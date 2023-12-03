@@ -69,7 +69,7 @@ class scans
         // ram на сервер
         $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$server['game']];
 
-        $resources['ram'] = $unit['ram'] / 100 * $resources['ram'] / ($ram / 100);
+        $resources['ram'] = floatval($unit['ram']) / 100 * floatval($resources['ram']) / (floatval($ram) / 100);
 
         $resources['ram'] = $resources['ram'] > 100 ? 100 : round($resources['ram']);
 
