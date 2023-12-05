@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'xPaw\\SourceQuery\\' => array($vendorDir . '/xpaw/php-source-query-class/SourceQuery'),
     'Whoops\\' => array($vendorDir . '/filp/whoops/src/Whoops'),
     'Symfony\\Polyfill\\' => array($vendorDir . '/symfony/polyfill/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),

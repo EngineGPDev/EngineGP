@@ -21,6 +21,10 @@ class ComposerStaticInit76468c2eb232fdf4a8e3502b319270a4
     );
 
     public static $prefixLengthsPsr4 = array (
+        'x' => 
+        array (
+            'xPaw\\SourceQuery\\' => 17,
+        ),
         'W' => 
         array (
             'Whoops\\' => 7,
@@ -40,6 +44,10 @@ class ComposerStaticInit76468c2eb232fdf4a8e3502b319270a4
     );
 
     public static $prefixDirsPsr4 = array (
+        'xPaw\\SourceQuery\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/xpaw/php-source-query-class/SourceQuery',
+        ),
         'Whoops\\' => 
         array (
             0 => __DIR__ . '/..' . '/filp/whoops/src/Whoops',
