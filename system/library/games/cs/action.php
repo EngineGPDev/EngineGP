@@ -40,6 +40,17 @@ class action extends actions
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
 
+        // Проверка наличия steamclient.so
+        $checkLinkCommand = 'ls ' . $tarif['install'] . $server['uid'] . '/.steam/sdk32/steamclient.so';
+        $checkLinkOutput = $ssh->get($checkLinkCommand);
+
+        if (strpos($checkLinkOutput, 'steamclient.so') === false) {
+            // Символическая ссылка отсутствует, создаем ее
+            $createLinkCommand ='mkdir -p ' . $tarif['install'] . $server['uid'] . '/.steam/sdk32/' . ';'
+                . 'ln -s /path/cmd/linux32/steamclient.so ' . $tarif['install'] . $server['uid'] . '/.steam/sdk32/';
+            $ssh->get($createLinkCommand);
+        }
+
         // Проверка наличия стартовой карты
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.');
 

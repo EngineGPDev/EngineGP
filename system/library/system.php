@@ -1151,8 +1151,9 @@ class sys
 
         $cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) : sys::buttons($id, $data['status'], $data['game']);
 
-        if (isset($data['players']))
+        if (isset($data['players']) && is_array($data['players'])) {
             $cache['players'] = $data['players'];
+        }
 
         $mcache->set($nmch, $cache, false, 5);
 

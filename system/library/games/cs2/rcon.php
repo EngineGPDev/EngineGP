@@ -2,15 +2,12 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
+use xPaw\SourceQuery\SourceQuery;
+
 class rcon
 {
     public static function cmd($server, $cmd = 'status')
     {
-        include(LIB . 'games/query/Buffer.php');
-        include(LIB . 'games/query/BaseSocket.php');
-        include(LIB . 'games/query/Socket.php');
-        include(LIB . 'games/query/SourceRcon.php');
-        include(LIB . 'games/query/SourceQuery.php');
 
         $sq = new SourceQuery();
 

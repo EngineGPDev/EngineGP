@@ -215,14 +215,14 @@ class service
             }
         }
 
-        $ram = $tarif['param_fix'] ? $aData['ram'] : $cfg['ram']['cssold'] * $aSDATA['slots'];
+        $ram = isset($tarif['param_fix']) ? $aData['ram'] : $cfg['ram']['cssold'] * $aData['slots'];
 
         // Массив данных
         $aSDATA = array(
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
             'ram' => $ram, // значение ram
-            'param_fix' => $tarif['param_fix'], // фиксированные параметры
+            'param_fix' => isset($tarif['param_fix']), // фиксированные параметры
             'tickrate' => $aData['tickrate'], // значение tickrate
             'fps' => $aData['fps'], // значение fps
             'pack' => $aData['pack'], // Выбранная сборка для установки
