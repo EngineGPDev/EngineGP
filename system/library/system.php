@@ -69,7 +69,7 @@ class sys
             if ($sql->num()) {
                 $notice = $sql->get();
 
-                $nmc = $notice['server'] ? 'notice_' . $sid : 'notice_' . $server['unit'];
+                $nmc = isset($notice['server']) ? 'notice_' . $sid : 'notice_' . $server['unit'];
 
                 $mcache->set('notice_' . $nmc, $notice, false, 10);
             } else
