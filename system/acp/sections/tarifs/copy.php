@@ -33,7 +33,7 @@ if ($tarif['game'] == 'cssold') {
     foreach ($aPrice as $price)
         $sprice .= $price . ':';
 
-    $sprice = isset($sprice{0}) ? substr($sprice, 0, -1) : '';
+    $sprice = isset($sprice[0]) ? substr($sprice, 0, -1) : '';
 
     $tarif['price'] = $sprice;
 }
@@ -63,7 +63,7 @@ $aPacks = sys::b64djs($tarif['packs']);
 foreach ($aPacks as $name => $fullname)
     $packs .= '"' . $name . '":"' . $fullname . '",';
 
-$packs = isset($packs{0}) ? substr($packs, 0, -1) : '';
+$packs = isset($packs[0]) ? substr($packs, 0, -1) : '';
 
 $html->set('packs', $packs);
 
@@ -74,7 +74,7 @@ $aPlugins = sys::b64djs($tarif['plugins_install']);
 foreach ($aPlugins as $pack => $list)
     $plugins .= '"' . $pack . '":"' . $list . '",';
 
-$plugins = isset($plugins{0}) ? substr($plugins, 0, -1) : '';
+$plugins = isset($plugins[0]) ? substr($plugins, 0, -1) : '';
 
 $html->set('plugins_install', $plugins);
 
