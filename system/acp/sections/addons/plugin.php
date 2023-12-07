@@ -58,7 +58,7 @@ if ($go) {
     foreach ($aPacks as $packs)
         $spacks .= trim($packs) . ':';
 
-    $spacks = isset($spacks{0}) ? substr($spacks, 0, -1) : '';
+    $spacks = isset($spacks[0]) ? substr($spacks, 0, -1) : '';
 
     $aData['packs'] = $spacks == '' ? 'all' : $spacks;
 
@@ -75,7 +75,7 @@ if ($go) {
         $incoms .= intval($incom) . ':';
     }
 
-    $incoms = isset($incoms{0}) ? substr($incoms, 0, -1) : '';
+    $incoms = isset($incoms[0]) ? substr($incoms, 0, -1) : '';
 
     $aData['incompatible'] = $incoms;
 
@@ -98,7 +98,7 @@ if ($go) {
         $choice .= ' ';
     }
 
-    $choice = isset($choice{0}) ? substr(trim($choice), 0, -1) : '';
+    $choice = isset($choice[0]) ? substr(trim($choice), 0, -1) : '';
 
     $aData['choice'] = $choice;
 
@@ -115,7 +115,7 @@ if ($go) {
         $requis .= intval($requi) . ':';
     }
 
-    $requis = isset($requis{0}) ? substr($requis, 0, -1) : '';
+    $requis = isset($requis[0]) ? substr($requis, 0, -1) : '';
 
     $aData['required'] = $requis;
 

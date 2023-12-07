@@ -15,14 +15,14 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
     sys::outjs(array('e' => ''));
 }
 
-if ($text{0} == 'i' and $text{1} == 'd')
+if ($text[0] == 'i' and $text[1] == 'd')
     $promos = $sql->query('SELECT `id`, `cod`, `value`, `discount`, `use`, `extend`, `tarif`, `time` FROM `promo` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'

@@ -15,7 +15,7 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
@@ -27,7 +27,7 @@ if (substr($text, 0, 5) == 'game=') {
 
     if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
         $plugins = $sql->query('SELECT `id`, `cat`, `game`, `name`, `status` FROM `plugins` WHERE `game`="' . $game . '" ORDER BY `id` ASC');
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $plugins = $sql->query('SELECT `id`, `cat`, `game`, `name`, `status` FROM `plugins` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'

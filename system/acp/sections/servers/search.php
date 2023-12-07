@@ -15,7 +15,7 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
@@ -63,7 +63,7 @@ if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status',
             $servers = $sql->query('SELECT ' . $select . ' `slots`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
     }
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $servers = $sql->query('SELECT ' . $select . ' `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
