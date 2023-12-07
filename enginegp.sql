@@ -343,7 +343,7 @@ CREATE TABLE `control_admins_csgo` (
 -- Структура таблицы `control_admins_cs2`
 --
 
-CREATE TABLE `control_admins_c2` (
+CREATE TABLE `control_admins_cs2` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
