@@ -34,7 +34,7 @@ if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status',
 
     switch ($check[0]) {
         case 'game':
-            if (in_array($val, array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+            if (in_array($val, array('cs', 'cssold', 'css', 'csgo',' cs2', 'samp', 'crmp', 'mta', 'mc')))
                 $servers = $sql->query('SELECT ' . $select . ' FROM `servers` WHERE `user`!="-1" AND `game`="' . $val . '" ORDER BY `id` ASC');
             break;
 

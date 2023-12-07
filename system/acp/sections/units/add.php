@@ -50,7 +50,7 @@ if ($go) {
         . '`cssold`="' . $aData['cssold'] . '",'
         . '`css`="' . $aData['css'] . '",'
         . '`csgo`="' . $aData['csgo'] . '",'
-        . '`cs2`="' . $aData['csgo'] . '",'
+        . '`cs2`="' . $aData['cs2'] . '",'
         . '`samp`="' . $aData['samp'] . '",'
         . '`crmp`="' . $aData['crmp'] . '",'
         . '`mta`="' . $aData['mta'] . '",'

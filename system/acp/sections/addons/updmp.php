@@ -6,7 +6,7 @@ if (isset($url['get']) and $url['get'] == 'list') {
     $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::out();
     $game = isset($url['game']) ? $url['game'] : sys::out();
 
-    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo')))
+    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2')))
         sys::out();
 
     $maps = '';
@@ -30,7 +30,7 @@ if ($go) {
     if (!$unit)
         sys::outjs(array('e' => 'Необходимо выбрать локацию'));
 
-    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo')))
+    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2')))
         sys::outjs(array('e' => 'Необходимо выбрать игру'));
 
     include(LIB . 'ssh.php');

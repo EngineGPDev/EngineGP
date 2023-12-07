@@ -25,7 +25,7 @@ if (!isset($text[2])) {
 if (substr($text, 0, 5) == 'game=') {
     $game = trim(substr($text, 5));
 
-    if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+    if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc')))
         $tarifs = $sql->query('SELECT `id`, `unit`, `game`, `name`, `slots_min`, `slots_max`, `port_min`, `port_max` FROM `tarifs` WHERE `game`="' . $game . '" ORDER BY `id` ASC');
 } elseif ($text[0] == 'i' and $text[1] == 'd')
     $tarifs = $sql->query('SELECT `id`, `unit`, `game`, `name`, `slots_min`, `slots_max`, `port_min`, `port_max` FROM `tarifs` WHERE `id`="' . sys::int($text) . '" LIMIT 1');

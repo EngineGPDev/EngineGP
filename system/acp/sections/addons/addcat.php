@@ -3,7 +3,7 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 if ($go) {
-    $aGames = array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc');
+    $aGames = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc');
 
     $aData = array();
 
@@ -12,6 +12,7 @@ if ($go) {
     $aData['cssold'] = isset($_POST['cssold']) ? $_POST['cssold'] : 0;
     $aData['css'] = isset($_POST['css']) ? $_POST['css'] : 0;
     $aData['csgo'] = isset($_POST['csgo']) ? $_POST['csgo'] : 0;
+    $aData['cs2'] = isset($_POST['cs2']) ? $_POST['cs2'] : 0;
     $aData['samp'] = isset($_POST['samp']) ? $_POST['samp'] : 0;
     $aData['crmp'] = isset($_POST['crmp']) ? $_POST['crmp'] : 0;
     $aData['mta'] = isset($_POST['mta']) ? $_POST['mta'] : 0;

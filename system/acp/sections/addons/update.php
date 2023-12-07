@@ -10,6 +10,7 @@ $aGames = array(
     'cssold' => 'Counter-Strike: Source v34',
     'css' => 'Counter-Strike: Source',
     'csgo' => 'Counter-Strike: Global Offensive',
+    'cs2' => 'Counter-Strike: 2',
     'samp' => 'San Andreas Multiplayer',
     'crmp' => 'GTA: Criminal Russia',
     'mta' => 'Multi Theft Auto',
