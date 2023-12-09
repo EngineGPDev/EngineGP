@@ -47,10 +47,11 @@ class action extends actions
         if (strpos($checkLinkOutput, 'steamclient.so') === false) {
             // Символическая ссылка отсутствует, создаем ее
             $createLinkCommand ='mkdir -p ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
-            . 'ln -s /path/cmd/linux64/steamclient.so ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
-            . 'chmod +x ' . $tarif['install'] . $server['uid'] . '/game/bin/linuxsteamrt64/cs2';
+            . 'ln -s /path/cmd/linux64/steamclient.so ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';';
             $ssh->get($createLinkCommand);
         }
+
+        $ssh->get('chmod +x ' . $tarif['install'] . $server['uid'] . '/game/bin/linuxsteamrt64/cs2');
 
         // Проверка наличия стартовой карты
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/game/csgo/maps/ && du -ah | grep -e "\.vpk$" | awk \'{print $2}\'');
@@ -104,7 +105,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $mod . ' ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);
@@ -118,7 +119,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p game/csgo/oldstart;' // Создание папки логов
             . 'cat game/csgo/console.log >> game/csgo/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm game/csgo/console.log; rm game/csgo/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' ' . $taskset . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         $core = !isset($core) ? 0 : $core + 1;
 
