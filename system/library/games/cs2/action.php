@@ -105,7 +105,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $mod . ' ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './game/bin/linuxsteamrt64/cs2 -dedicated -debug -norestart -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);
