@@ -71,7 +71,7 @@ class rcon
 
     public static function rcon_passwd($server)
     {
-        global $cfg, $sql, $user;
+        global $cfg, $sql, $user, $nmch;
 
         include(LIB . 'ssh.php');
 
