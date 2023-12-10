@@ -41,6 +41,7 @@ class params
         'css' => 27015,
         'csgo' => 27015,
         'cs2' => 27015,
+        'rust' => 28015,
         'samp' => 7777,
         'crmp' => 7777,
         'mta' => 22003,
@@ -168,6 +169,29 @@ class params
             )
         ),
 
+        'rust' => array(
+            'CopyFull' => '*',
+
+            'aCopy' => array(
+                'addons' => 'Директория с дополнениями (модули/плагины)',
+                'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
+                'maps' => 'Директория с картами (название.bsp)',
+                'models' => 'Директория с моделями (название.mdl)',
+                'sound' => 'Директория со звуками (название.mp3/название.wav)'
+            ),
+
+            'aCopyDir' => array(
+                'addons' => 'csgo/addons',
+                'maps' => 'csgo/maps',
+                'models' => 'csgo/models',
+                'sound' => 'csgo/sound'
+            ),
+
+            'aCopyFile' => array(
+                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt'
+            )
+        ),
+
         'samp' => array(
             'CopyFull' => '*',
 
@@ -253,6 +277,7 @@ class params
         'css' => 'cstrike',
         'csgo' => 'csgo',
         'cs2' => 'cs2',
+        'rust' => '',
         'samp' => '',
         'crmp' => '',
         'mta' => '',
@@ -266,6 +291,7 @@ class params
         'css' => 'srcds_linux srcds_run',
         'csgo' => 'srcds_linux srcds_run',
         'cs2' => 'srcds_linux srcds_run',
+        'rust' => 'RustDedicated',
         'samp' => 'samp03svr',
         'crmp' => 'samp03svr-cr',
         'mta' => 'mta-server',

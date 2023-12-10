@@ -11,6 +11,7 @@ $aSection = array(
     'css',
     'csgo',
     'cs2',
+    'rust',
     'samp',
     'crmp',
     'mta',
@@ -51,6 +52,9 @@ $html->set('csgo', $sql->num());
 
 $sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="cs2"');
 $html->set('cs2', $sql->num());
+
+$sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="rust"');
+$html->set('rust', $sql->num());
 
 $sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="samp"');
 $html->set('samp', $sql->num());

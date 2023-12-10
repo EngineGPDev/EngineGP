@@ -46,6 +46,7 @@ $aGname = array(
     'cssold' => 'CS: Source v34',
     'csgo' => 'CS: Global Offensive',
     'cs2' => 'CS: 2',
+    'rust' => 'RUST',
     'mc' => 'MineCraft',
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP'

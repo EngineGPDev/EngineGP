@@ -3,7 +3,7 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
 // Подключение раздела
-if (!in_array($section, array('cs', 'css', 'cssold', 'csgo', 'cs2', 'mc', 'mta', 'samp', 'crmp', 'hosting', 'privileges', 'control'))) {
+if (!in_array($section, array('cs', 'css', 'cssold', 'csgo', 'cs2', 'rust',  'mc', 'mta', 'samp', 'crmp', 'hosting', 'privileges', 'control'))) {
     $title = 'Список услуг';
     $html->nav($title);
 
@@ -16,6 +16,7 @@ if (!in_array($section, array('cs', 'css', 'cssold', 'csgo', 'cs2', 'mc', 'mta',
         'cssold' => 'Counter-Srike: Source v34',
         'csgo' => 'Counter-Srike: Global Offensive',
         'cs2' => 'Counter-Srike: 2',
+        'rust' => 'RUST',
         'mc' => 'MineCraft',
         'mta' => 'GTA: MTA',
         'samp' => 'GTA: SA-MP',

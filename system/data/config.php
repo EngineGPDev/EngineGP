@@ -128,6 +128,7 @@ $cfg = array(
         'css' => '60',
         'csgo' => '60',
         'cs2' => '60',
+        'rust' => '60',
         'samp' => '60',
         'crmp' => '60',
         'mta' => '60',
@@ -140,7 +141,8 @@ $cfg = array(
         'cssold' => '60',
         'css' => '60',
         'csgo' => '60',
-        'cs2' => '60'
+        'cs2' => '60',
+        'rust' => '60'
     ),
 
     // RAM на 1 слот
@@ -150,6 +152,7 @@ $cfg = array(
         'css' => '32',
         'csgo' => '32',
         'cs2' => '32',
+        'rust' => '32',
         'samp' => '32',
         'crmp' => '32',
         'mta' => '32'
@@ -162,6 +165,7 @@ $cfg = array(
         'css' => '99',
         'csgo' => '99',
         'cs2' => '99',
+        'rust' => '99',
         'samp' => '99',
         'crmp' => '99',
         'mta' => '99',
@@ -174,6 +178,7 @@ $cfg = array(
         'css' => '99',
         'csgo' => '99',
         'cs2' => '99',
+        'rust' => '99',
         'samp' => '99',
         'crmp' => '99',
         'mta' => '99',
@@ -189,6 +194,7 @@ $cfg = array(
             'css' => false,
             'csgo' => false,
             'cs2' => false,
+            'rust' => false,
             'samp' => false,
             'crmp' => false,
             'mta' => false,
@@ -202,6 +208,7 @@ $cfg = array(
             'css' => '/cstrike',
             'csgo' => '/csgo',
             'cs2' => '/csgo',
+            'rust' => '/',
             'samp' => '/',
             'crmp' => '/',
             'mta' => '/mods/deathmatch',
@@ -215,6 +222,7 @@ $cfg = array(
             'css' => '/cstrike',
             'csgo' => '/csgo',
             'cs2' => '/game',
+            'rust' => '/',
             'samp' => '/',
             'crmp' => '/',
             'mta' => '/mods/deathmatch',
@@ -254,6 +262,12 @@ $cfg = array(
             'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
         ),
 
+        'rust' => array(
+            'days' => false, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
+            'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
+            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ),
+
         'samp' => array(
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
@@ -286,6 +300,7 @@ $cfg = array(
         'css' => false,
         'csgo' => false,
         'cs2' => false,
+        'rust' => false,
         'samp' => false,
         'crmp' => false,
         'mta' => false,
@@ -299,6 +314,7 @@ $cfg = array(
         'css' => true,
         'csgo' => true,
         'cs2' => true,
+        'rust' => true,
         'samp' => true,
         'crmp' => true,
         'mta' => true,

@@ -111,6 +111,26 @@ $aEdits = array(
         )
     ),
 
+    'rust' => array(
+        'all' => array(
+            'files' => array(
+                'autoexec.cfg',
+                'fastdl.cfg',
+                'webapi_authkey.txt',
+            ),
+            'path' => array(
+                'autoexec.cfg' => 'csgo/cfg/',
+                'fastdl.cfg' => 'csgo/cfg/',
+                'webapi_authkey.txt' => 'csgo/',
+            ),
+            'desc' => array(
+                'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
+                'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
+                'webapi_authkey.txt' => 'API ключ для установки карт из мастерской <u>WorkShop</u>.',
+            )
+        )
+    ),
+
     'mta' => array(
         'all' => array(
             'files' => array(
