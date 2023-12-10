@@ -87,7 +87,7 @@ class api
 
         $go = true;
 
-        $_POST['command'] = isset($cmd{0}) ? urldecode($cmd) : '';
+        $_POST['command'] = isset($cmd[0]) ? urldecode($cmd) : '';
 
         include(SEC . 'servers/' . $server['game'] . '/console.php');
     }
