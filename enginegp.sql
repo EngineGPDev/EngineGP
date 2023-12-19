@@ -1312,7 +1312,7 @@ CREATE TABLE `units` (
   `samp` tinyint(1) NOT NULL DEFAULT '0',
   `crmp` tinyint(1) NOT NULL DEFAULT '0',
   `mta` tinyint(1) NOT NULL DEFAULT '0',
-  `mc` tinyint(1) NOT NULL DEFAULT '0',,
+  `mc` tinyint(1) NOT NULL DEFAULT '0',
   `ram` int(11) NOT NULL,
   `test` int(11) NOT NULL,
   `show` tinyint(1) NOT NULL,
