@@ -3,6 +3,7 @@
     "symfony/polyfill": "1.28.0",
     "filp/whoops": "2.15.4",
     "monolog/monolog": "2.9.2",
-    "xpaw/php-source-query-class": "2.1.0"
+    "xpaw/php-source-query-class": "2.1.0",
+    "szymach/c-pchart": "3.0.17"
   }
 }

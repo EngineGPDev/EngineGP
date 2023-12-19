@@ -14,10 +14,6 @@ if (!$sql->num())
 
 $graph = $sql->get();
 
-include(LIB . 'games/graph/pData.php');
-include(LIB . 'games/graph/pDraw.php');
-include(LIB . 'games/graph/pImage.php');
-
 if (isset($url['type'])) {
     include(DATA . 'graph.php');
 

@@ -2,6 +2,9 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
 
+use CpChart\Data;
+use CpChart\Image;
+
 class graph
 {
     public static function full($server, $slots, $key, $time)
@@ -15,7 +18,7 @@ class graph
         $aRAM = $aData['ram'];
         $aHDD = $aData['hdd'];
 
-        $MyData = new pData();
+        $MyData = new Data();
 
         // Онлайн
         $MyData->addPoints($aOnline, 'ONLINE');
@@ -51,7 +54,7 @@ class graph
         $MyData->setPalette('RAM', array('R' => 26, 'G' => 150, 'B' => 38));
         $MyData->setPalette('HDD', array('R' => 205, 'G' => 196, 'B' => 37));
 
-        $myPicture = new pImage(896, 220, $MyData);
+        $myPicture = new Image(896, 220, $MyData);
 
         $myPicture->drawFilledRectangle(0, 0, 896, 220, array('R' => 255, 'G' => 255, 'B' => 255));
 
@@ -60,17 +63,17 @@ class graph
         $myPicture->setFontProperties(array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8));
         $myPicture->setGraphArea(40, 20, 616, 190);
         $myPicture->drawFilledRectangle(40, 20, 616, 190, array('R' => 240, 'G' => 242, 'B' => 242, 'Alpha' => 100));
-        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'GridR' => 76, 'GridG' => 109, 'GridB' => 120, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array(0 => array($slots), 1 => array(25, 50, 75, 100)), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $slots), 1 => array('Min' => 0, 'Max' => 100))));
+        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'GridR' => 76, 'GridG' => 109, 'GridB' => 120, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'ManualScale' => array(0 => array('Min' => 0, 'Max' => 32), 1 => array('Min' => 0, 'Max' => 100))));
 
         $myPicture->drawText(676, 34, 'Средний онлайн: ' . graph::average($aOnline), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
         $myPicture->drawText(676, 54, 'Средняя нагрузка (CPU): ' . graph::average($aCPU) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
         $myPicture->drawText(676, 74, 'Средняя нагрузка (RAM): ' . graph::average($aRAM) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 94, 'Средняя нагрузка (HDD): ' . graph::average($aHDD) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
+        $myPicture->drawText(676, 94, 'Средняя нагрузка (HDD): ' . graph::average($aHDD), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
 
         $myPicture->drawText(676, 129, 'Максимальный онлайн: ' . max($aOnline), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
         $myPicture->drawText(676, 153, 'Максимальная нагрузка (CPU): ' . max($aCPU) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
         $myPicture->drawText(676, 173, 'Максимальная нагрузка (RAM): ' . max($aRAM) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 193, 'Максимальная нагрузка (HDD): ' . max($aHDD) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
+        $myPicture->drawText(676, 193, 'Максимальная нагрузка (HDD): ' . max($aHDD), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
 
         $myPicture->setFontProperties(array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 7));
         $myPicture->drawSplineChart();
@@ -89,7 +92,7 @@ class graph
     {
         global $cfg, $aGname;
 
-        $MyData = new pData();
+        $MyData = new Data();
 
         // Значения
         $MyData->addPoints($aPoints, 'ONLINE');
@@ -101,7 +104,7 @@ class graph
         $MyData->setPalette('ONLINE', $aStyle[$style]['line']);
 
         // Размер баннера
-        $myPicture = new pImage(160, 248, $MyData);
+        $myPicture = new Image(160, 248, $MyData);
 
         // Цвет фона
         $myPicture->drawFilledRectangle(0, 0, 160, 248, $aStyle[$style]['fon']);
@@ -119,7 +122,7 @@ class graph
         $myPicture->drawFilledRectangle(35, 160, 150, 210, $aStyle[$style]['graph']);
 
         // График
-        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => TRUE, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array(0 => array($server['slots_start'])), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $server['slots_start']))));
+        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => TRUE, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array($server['slots_start']), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $server['slots_start']))));
 
         // Название игрового сервера
         $myPicture->drawFilledRectangle(0, 0, 18, 248, $aStyle[$style]['leftbox']);
@@ -166,7 +169,7 @@ class graph
     {
         global $cfg, $aGname;
 
-        $MyData = new pData();
+        $MyData = new Data();
 
         // Значения
         $MyData->addPoints($aPoints, 'ONLINE');
@@ -178,7 +181,7 @@ class graph
         $MyData->setPalette('ONLINE', $aStyle[$style]['line']);
 
         // Размер баннера
-        $myPicture = new pImage(560, 95, $MyData);
+        $myPicture = new Image(560, 95, $MyData);
 
         // Цвет фона
         $myPicture->drawFilledRectangle(0, 0, 560, 95, $aStyle[$style]['fon']);
@@ -204,7 +207,7 @@ class graph
         $myPicture->drawFilledRectangle(430, 5, 554, 60, $aStyle[$style]['graph']);
 
         // График
-        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => TRUE, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array(0 => array($server['slots_start'])), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $server['slots_start']))));
+        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => TRUE, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array($server['slots_start']), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $server['slots_start']))));
 
         // Адрес игрового сервера
         $myPicture->drawFilledRectangle(5, 36, 210, 49, $aStyle[$style]['box']);

@@ -175,6 +175,15 @@
                 0 => 'v1.28.0',
             ),
         ),
+        'szymach/c-pchart' => array(
+            'pretty_version' => 'v3.0.17',
+            'version' => '3.0.17.0',
+            'reference' => 'c022568da78f73bb7acf7db7a974934a434d47d7',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../szymach/c-pchart',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'xpaw/php-source-query-class' => array(
             'pretty_version' => '2.1.0',
             'version' => '2.1.0.0',

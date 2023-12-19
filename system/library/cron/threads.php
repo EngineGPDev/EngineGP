@@ -15,7 +15,7 @@ class threads extends cron
             return NULL;
 
         while ($unit = $sql->get())
-            $aUnit[$unit['id']] = '';
+            $aUnit[$unit['id']] = [];
 
         $sql->query('SELECT `id` FROM `servers` LIMIT 1');
 
@@ -26,14 +26,19 @@ class threads extends cron
 
         $all = $sql->num();
 
-        while ($server = $sql->get())
-            $aUnit[$server['unit']][$server['game']] = $server['id'] . ' ';
+        while($server = $sql->get()) {
+            $aUnit[$server['unit']][$server['game']] ??= [];
+            $aUnit[$server['unit']][$server['game']][] = $server['id'];
+        }
 
         if ($argv[3] == 'scan_servers_route')
             cron::$seping = 50;
 
         foreach ($aUnit as $unit => $aGame) {
             foreach ($aGame as $game => $servers) {
+                if(is_array($servers)) {
+                    $servers = implode(' ', $servers);
+                }
                 $aData = explode(' ', $servers);
 
                 $num = count($aData) - 1;
@@ -49,9 +54,10 @@ class threads extends cron
 
         foreach ($threads as $thread) {
             foreach ($thread as $screen => $servers)
-                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php7.4 cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
         }
 
+        $start_point = $_SERVER['REQUEST_TIME'];
         exec('screen -dmS threads_' . date('His', $start_point) . ' sh -c "' . $cmd . '"');
 
         return NULL;

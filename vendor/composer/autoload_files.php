@@ -17,4 +17,5 @@ return array(
     'a4e34e0535907b5c234b9abc547237ca' => $vendorDir . '/symfony/polyfill/src/Intl/MessageFormatter/bootstrap.php',
     '299b3c040b39cb03c6eceb9bb272ad1d' => $vendorDir . '/symfony/polyfill/src/Intl/Normalizer/bootstrap.php',
     'e59f725579f9974327c76777296d6dcc' => $vendorDir . '/symfony/polyfill/src/Mbstring/bootstrap.php',
+    '7bb4f001eb5212bde073bf47a4bbedad' => $vendorDir . '/szymach/c-pchart/constants.php',
 );

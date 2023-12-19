@@ -18,6 +18,7 @@ class ComposerStaticInit76468c2eb232fdf4a8e3502b319270a4
         'a4e34e0535907b5c234b9abc547237ca' => __DIR__ . '/..' . '/symfony/polyfill/src/Intl/MessageFormatter/bootstrap.php',
         '299b3c040b39cb03c6eceb9bb272ad1d' => __DIR__ . '/..' . '/symfony/polyfill/src/Intl/Normalizer/bootstrap.php',
         'e59f725579f9974327c76777296d6dcc' => __DIR__ . '/..' . '/symfony/polyfill/src/Mbstring/bootstrap.php',
+        '7bb4f001eb5212bde073bf47a4bbedad' => __DIR__ . '/..' . '/szymach/c-pchart/constants.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -41,6 +42,10 @@ class ComposerStaticInit76468c2eb232fdf4a8e3502b319270a4
         array (
             'Monolog\\' => 8,
         ),
+        'C' => 
+        array (
+            'CpChart\\' => 8,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -63,6 +68,10 @@ class ComposerStaticInit76468c2eb232fdf4a8e3502b319270a4
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'CpChart\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/szymach/c-pchart/src',
         ),
     );
 
