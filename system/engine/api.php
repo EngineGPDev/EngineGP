@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $key = isset($url['key']) ? $url['key'] : sys::outjs(array('e' => 'ключ не указан'));
 $action = isset($url['action']) ? $url['action'] : sys::outjs(array('e' => 'метод не указан'));

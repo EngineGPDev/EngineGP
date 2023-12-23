@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class sys
 {
@@ -419,7 +419,7 @@ class sys
     public static function cookie($name, $value, $expires)
     {
         $expires = time() + ($expires * 86400);
-        setcookie($name, $value, $expires, "/", $_SERVER['SERVER_NAME'], null, true);
+        setcookie($name, $value, $expires, "/", $_SERVER['HTTP_HOST'], null, true);
     }
 
     public static function auth()
