@@ -732,15 +732,16 @@ class sys
         global $cfg, $mcache;
 
         // Если повтор ввода капчи выключен и в кеше есть подтвержденный сеанс
-        if (!$cfg['recaptcha'] and $mcache->get($type . '_captcha_valid_' . $ip))
-            return false;
+        if (!$cfg['recaptcha'] && $mcache->get($type . '_captcha_valid_' . $ip))
+            // Сбрасываем подтверждение сеанса в кеше
+            $mcache->delete($type . '_captcha_valid_' . $ip);
 
-        if ($mcache->get($type . '_captcha_' . $ip) != strtolower($cod)) {
-            $mcache->set($type . '_captcha_valid_' . $ip, true, false, 60);
-
+        if ($mcache->get($type . '_captcha_' . $ip) != strtolower((string) $cod))
+            // Неверный ввод капчи, возвращаем true и не сохраняем подтверждение сеанса в кеше
             return true;
-        }
 
+        // Верный ввод капчи, возвращаем false и сохраняем подтверждение сеанса в кеше
+        $mcache->set($type . '_captcha_valid_' . $ip, true, false, 60);
         return false;
     }
 
