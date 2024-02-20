@@ -57,9 +57,13 @@ szymach
 ## Getting Started
 
 Operating system: Debian 10 - 12, Ubuntu 20.04 - 22.04
+
 php-fpm: 7.4 and higher
+
 Webserver: Apache or NGINX
+
 Database: MySQL or MariaDB
+
 Composer
 
 ### Installation
@@ -93,10 +97,6 @@ Contributions are what make the open source community such an amazing place to b
 * Please make sure you check your spelling and grammar.
 * Create individual PR for each suggestion.
 * Please also read through the [Code Of Conduct](https://github.com/EngineGPDev/EngineGP/blob/main/CODE_OF_CONDUCT.md) before posting your first idea as well.
-
-### Creating A Pull Request
-
-
 
 ## License
 
