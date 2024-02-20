@@ -19,9 +19,7 @@
   </p>
 </p>
 
-<p align="center">
 ![Contributors](https://img.shields.io/github/contributors/EngineGPDev/EngineGP?color=dark-green) ![Forks](https://img.shields.io/github/forks/EngineGPDev/EngineGP?style=social) ![Stargazers](https://img.shields.io/github/stars/EngineGPDev/EngineGP?style=social) ![Issues](https://img.shields.io/github/issues/EngineGPDev/EngineGP) ![License](https://img.shields.io/github/license/EngineGPDev/EngineGP) 
-</p>
 
 ## Table Of Contents
 
