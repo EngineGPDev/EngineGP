@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 define('DIRECTION_VERTICAL', 690001);
 define('DIRECTION_HORIZONTAL', 690002);
@@ -2134,6 +2134,7 @@ class pDraw
                             $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
                         }
 
+                        $Width = array();
                         $Width[] = $BoxArray[1]["X"];
                     }
 
@@ -2206,6 +2207,7 @@ class pDraw
                     $Width = "";
                     foreach ($Lines as $Key => $Value) {
                         $BoxArray = $this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $Value, array("R" => $FontR, "G" => $FontG, "B" => $FontB, "Align" => TEXT_ALIGN_MIDDLELEFT, "FontSize" => $FontSize, "FontName" => $FontName));
+                        $Width = array();
                         $Width[] = $BoxArray[1]["X"];
                     }
                     $X = max($Width) + 2 + $XStep;
@@ -3902,6 +3904,7 @@ class pDraw
                     }
                 }
             } else {
+                $Result = array();
                 foreach ($Values as $Key => $Value) {
                     if ($Value == VOID) {
                         $Result[] = VOID;
@@ -4481,6 +4484,7 @@ class pDraw
                             $this->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
                         }
 
+                        $WayPoints = array();
                         if ($Y != VOID)
                             $WayPoints[] = array($X, $Y);
 

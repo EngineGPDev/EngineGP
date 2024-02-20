@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class sys
 {
@@ -464,14 +464,14 @@ class sys
     {
         $aData = explode(' ', $data);
 
-        return ceil(($aData[0] - ($aData[1] + $aData[2] + $aData[3])) * 100 / $aData[0]);
+        return ceil((floatval($aData[0]) - (floatval($aData[1]) + floatval($aData[2]) + floatval($aData[3]))) * 100 / floatval($aData[0]));
     }
 
     public static function cpu_load($data)
     {
         $aData = explode(' ', $data);
 
-        $load = ceil($aData[0] / $aData[1]);
+        $load = ceil(floatval($aData[0]) / floatval($aData[1]));
 
         return $load > 100 ? 100 : $load;
     }
@@ -561,7 +561,7 @@ class sys
 
     public static function passwdkey($passwd)
     {
-        return md5(sha1($passwd));
+        return md5($passwd);
     }
 
     public static function mail($name, $text, $mail)
@@ -693,6 +693,13 @@ class sys
             $text = str_replace('[' . $name . ']', $val, $text);
 
         return $text;
+    }
+
+    public static function logMessage($message, $logFile = 'enginegp_info', $context = [])
+    {
+        $logger = new \Monolog\Logger('EngineGP');
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler(ROOT . '/logs/' . $logFile . '.log'));
+        $logger->info($message, $context);
     }
 }
 

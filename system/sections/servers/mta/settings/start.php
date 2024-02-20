@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT `uid`, `slots`, `slots_start`, `autorestart` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());

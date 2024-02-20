@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP')) {
-    header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404');
+    header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404');
     exit();
 }
 

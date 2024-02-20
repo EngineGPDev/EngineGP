@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 // Парсинг адреса
 $url = is_array(sys::url()) ? sys::url() : array();

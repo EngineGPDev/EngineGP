@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 include(LIB . 'games/actions.php');
 
@@ -38,6 +38,17 @@ class action extends actions
             $proc_stat = array();
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
+        }
+
+        // Проверка наличия steamclient.so
+        $checkLinkCommand = 'ls ' . $tarif['install'] . $server['uid'] . '/.steam/sdk32/steamclient.so';
+        $checkLinkOutput = $ssh->get($checkLinkCommand);
+
+        if (strpos($checkLinkOutput, 'steamclient.so') === false) {
+            // Символическая ссылка отсутствует, создаем ее
+            $createLinkCommand ='mkdir -p ' . $tarif['install'] . $server['uid'] . '/.steam/sdk32/' . ';'
+                . 'ln -s /path/cmd/linux32/steamclient.so ' . $tarif['install'] . $server['uid'] . '/.steam/sdk32/';
+            $ssh->get($createLinkCommand);
         }
 
         // Проверка наличия стартовой карты

@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
 
@@ -15,7 +15,7 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
@@ -37,7 +37,7 @@ if (in_array($check[0], array('server', 'user'))) {
         case 'user':
             $sql->query('SELECT ' . $select . ' WHERE `user`="' . sys::int($val) . '" ORDER BY `id` DESC');
     }
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $sql->query('SELECT ' . $select . ' WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'

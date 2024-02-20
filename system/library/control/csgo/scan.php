@@ -1,19 +1,16 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 include(LIB . 'control/scans.php');
+
+use xPaw\SourceQuery\SourceQuery;
 
 class scan extends scans
 {
     public static function mon($id, $players_get = false)
     {
         global $cfg, $sql, $html, $mcache;
-
-        include(LIB . 'games/query/Buffer.php');
-        include(LIB . 'games/query/BaseSocket.php');
-        include(LIB . 'games/query/Socket.php');
-        include(LIB . 'games/query/SourceQuery.php');
 
         $sq = new SourceQuery();
 

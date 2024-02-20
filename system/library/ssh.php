@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class ssh
 {
@@ -17,10 +17,12 @@ class ssh
 
     public function connect($address)
     {
-        list($host, $port) = explode(':', $address);
-
-        if ($port == '')
+        if (strpos($address, ':') !== false) {
+            list($host, $port) = explode(':', $address);
+        } else {
+            $host = $address;
             $port = 22;
+        }
 
         ini_set('default_socket_timeout', '3');
 

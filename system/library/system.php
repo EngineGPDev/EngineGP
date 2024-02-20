@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class sys
 {
@@ -69,7 +69,7 @@ class sys
             if ($sql->num()) {
                 $notice = $sql->get();
 
-                $nmc = $notice['server'] ? 'notice_' . $sid : 'notice_' . $server['unit'];
+                $nmc = isset($notice['server']) ? 'notice_' . $sid : 'notice_' . $server['unit'];
 
                 $mcache->set('notice_' . $nmc, $notice, false, 10);
             } else
@@ -419,7 +419,7 @@ class sys
     public static function cookie($name, $value, $expires)
     {
         $expires = time() + ($expires * 86400);
-        setcookie($name, $value, $expires, "/", $_SERVER['SERVER_NAME'], null, true);
+        setcookie($name, $value, $expires, "/", $_SERVER['HTTP_HOST'], null, true);
     }
 
     public static function auth()
@@ -732,15 +732,16 @@ class sys
         global $cfg, $mcache;
 
         // Если повтор ввода капчи выключен и в кеше есть подтвержденный сеанс
-        if (!$cfg['recaptcha'] and $mcache->get($type . '_captcha_valid_' . $ip))
-            return false;
+        if (!$cfg['recaptcha'] && $mcache->get($type . '_captcha_valid_' . $ip))
+            // Сбрасываем подтверждение сеанса в кеше
+            $mcache->delete($type . '_captcha_valid_' . $ip);
 
-        if ($mcache->get($type . '_captcha_' . $ip) != strtolower($cod)) {
-            $mcache->set($type . '_captcha_valid_' . $ip, true, false, 60);
-
+        if ($mcache->get($type . '_captcha_' . $ip) != strtolower((string) $cod))
+            // Неверный ввод капчи, возвращаем true и не сохраняем подтверждение сеанса в кеше
             return true;
-        }
 
+        // Верный ввод капчи, возвращаем false и сохраняем подтверждение сеанса в кеше
+        $mcache->set($type . '_captcha_valid_' . $ip, true, false, 60);
         return false;
     }
 
@@ -1151,8 +1152,9 @@ class sys
 
         $cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) : sys::buttons($id, $data['status'], $data['game']);
 
-        if (isset($data['players']))
+        if (isset($data['players']) && is_array($data['players'])) {
             $cache['players'] = $data['players'];
+        }
 
         $mcache->set($nmch, $cache, false, 5);
 
@@ -1415,6 +1417,13 @@ class sys
 
             exit;
         }
+    }
+
+    public static function logMessage($message, $logFile = 'enginegp_info', $context = [])
+    {
+        $logger = new \Monolog\Logger('EngineGP');
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler(ROOT . '/logs/' . $logFile . '.log'));
+        $logger->info($message, $context);
     }
 }
 

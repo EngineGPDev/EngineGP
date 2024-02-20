@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT * FROM `tarifs` WHERE `id`="' . $id . '" LIMIT 1');
 $tarif = $sql->get();
@@ -50,7 +50,7 @@ if ($go) {
     if (!$sql->num())
         sys::outjs(array('e' => 'Необходимо указать локацию'));
 
-    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc')))
         sys::outjs(array('e' => 'Необходимо указать игру'));
 
     $aSlots = explode('-', $aData['slots']);
@@ -84,7 +84,7 @@ if ($go) {
     if ($aData['install'] == '')
         sys::outjs(array('e' => 'Необходимо указать путь для установки серверов'));
 
-    if ($aData['update'] == '' and !in_array($aData['game'], array('css', 'csgo')))
+    if ($aData['update'] == '' and !in_array($aData['game'], array('css', 'csgo', 'cs2', 'rust')))
         sys::outjs(array('e' => 'Необходимо указать путь до обновления сборки'));
 
     if (substr($aData['path'], -1) != '/' || substr($aData['install'], -1) != '/' || (substr($aData['update'], -1) != '/' and !in_array($aData['game'], array('css', 'csgo'))))
@@ -332,6 +332,7 @@ if ($go) {
 
         case 'css':
         case 'csgo':
+        case 'cs2':
             if (count(explode(':', $aData['tickrate'])) != count(explode(':', $aData['price'])))
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));
 
@@ -390,7 +391,7 @@ if ($go) {
 }
 
 $games = '<option value="cs">Counter-Strike: 1.6</option><option value="cssold">Counter-Strike: Source v34</option><option value="css">Counter-Strike: Source</option>'
-    . '<option value="csgo">Counter-Strike: Global Offensive</option><option value="samp">San Andreas Multiplayer</option><option value="crmp">GTA: Criminal Russia</option>'
+    . '<option value="csgo">Counter-Strike: Global Offensive</option><option value="cs2">Counter-Strike: 2</option><option value="rust">RUST</option><option value="samp">San Andreas Multiplayer</option><option value="crmp">GTA: Criminal Russia</option>'
     . '<option value="mta">Multi Theft Auto</option><option value="mc">Minecraft</option>';
 
 $fix = $tarif['param_fix'] ? '<option value="1">Фиксированные параметры</option><option value="0">Не фиксированные параметры</option>' : '<option value="0">Не фиксированные параметры</option><option value="1">Фиксированные параметры</option>';
@@ -456,8 +457,11 @@ $plugins = '';
 
 $aPlugins = sys::b64djs($tarif['plugins_install']);
 
-foreach ($aPlugins as $pack => $list)
-    $plugins .= '"' . $pack . '":"' . $list . '",';
+if (is_array($aPlugins)) {
+    foreach ($aPlugins as $pack => $list) {
+        $plugins .= '"' . $pack . '":"' . $list . '",';
+    }
+}
 
 $plugins = isset($plugins[0]) ? substr($plugins, 0, -1) : '';
 

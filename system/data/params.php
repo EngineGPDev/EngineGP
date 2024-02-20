@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class params
 {
@@ -40,6 +40,8 @@ class params
         'cssold' => 27015,
         'css' => 27015,
         'csgo' => 27015,
+        'cs2' => 27015,
+        'rust' => 28015,
         'samp' => 7777,
         'crmp' => 7777,
         'mta' => 22003,
@@ -123,6 +125,52 @@ class params
 
         'csgo' => array(
             'CopyFull' => 'csgo',
+
+            'aCopy' => array(
+                'addons' => 'Директория с дополнениями (модули/плагины)',
+                'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
+                'maps' => 'Директория с картами (название.bsp)',
+                'models' => 'Директория с моделями (название.mdl)',
+                'sound' => 'Директория со звуками (название.mp3/название.wav)'
+            ),
+
+            'aCopyDir' => array(
+                'addons' => 'csgo/addons',
+                'maps' => 'csgo/maps',
+                'models' => 'csgo/models',
+                'sound' => 'csgo/sound'
+            ),
+
+            'aCopyFile' => array(
+                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt'
+            )
+        ),
+
+        'cs2' => array(
+            'CopyFull' => 'csgo',
+
+            'aCopy' => array(
+                'addons' => 'Директория с дополнениями (модули/плагины)',
+                'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
+                'maps' => 'Директория с картами (название.bsp)',
+                'models' => 'Директория с моделями (название.mdl)',
+                'sound' => 'Директория со звуками (название.mp3/название.wav)'
+            ),
+
+            'aCopyDir' => array(
+                'addons' => 'csgo/addons',
+                'maps' => 'csgo/maps',
+                'models' => 'csgo/models',
+                'sound' => 'csgo/sound'
+            ),
+
+            'aCopyFile' => array(
+                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt'
+            )
+        ),
+
+        'rust' => array(
+            'CopyFull' => '*',
 
             'aCopy' => array(
                 'addons' => 'Директория с дополнениями (модули/плагины)',
@@ -228,6 +276,8 @@ class params
         'cssold' => 'cstrike',
         'css' => 'cstrike',
         'csgo' => 'csgo',
+        'cs2' => 'cs2',
+        'rust' => '',
         'samp' => '',
         'crmp' => '',
         'mta' => '',
@@ -240,6 +290,8 @@ class params
         'cssold' => 'srcds_run srcds_i486 srcds_i686',
         'css' => 'srcds_linux srcds_run',
         'csgo' => 'srcds_linux srcds_run',
+        'cs2' => 'srcds_linux srcds_run',
+        'rust' => 'RustDedicated',
         'samp' => 'samp03svr',
         'crmp' => 'samp03svr-cr',
         'mta' => 'mta-server',

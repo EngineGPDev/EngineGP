@@ -98,6 +98,27 @@ CREATE TABLE `admins_csgo` (
 
 -- --------------------------------------------------------
 
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `admins_cs2`
+--
+
+CREATE TABLE `admins_cs2` (
+  `id` int(11) NOT NULL,
+  `server` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  `passwd` char(32) NOT NULL,
+  `flags` varchar(50) NOT NULL,
+  `immunity` int(11) NOT NULL,
+  `time` int(11) NOT NULL,
+  `text` varchar(100) NOT NULL,
+  `info` varchar(100) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
 --
 -- Структура таблицы `admins_css`
 --
@@ -122,6 +143,25 @@ CREATE TABLE `admins_css` (
 --
 
 CREATE TABLE `admins_cssold` (
+  `id` int(11) NOT NULL,
+  `server` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  `passwd` char(32) NOT NULL,
+  `flags` varchar(50) NOT NULL,
+  `immunity` int(11) NOT NULL,
+  `time` int(11) NOT NULL,
+  `text` varchar(100) NOT NULL,
+  `info` varchar(100) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `admins_rust`
+--
+
+CREATE TABLE `admins_rust` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
@@ -304,6 +344,25 @@ CREATE TABLE `control_admins_cs` (
 --
 
 CREATE TABLE `control_admins_csgo` (
+  `id` int(11) NOT NULL,
+  `server` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  `passwd` char(32) NOT NULL,
+  `flags` varchar(50) NOT NULL,
+  `immunity` int(11) NOT NULL,
+  `time` int(11) NOT NULL,
+  `text` varchar(100) NOT NULL,
+  `info` varchar(100) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `control_admins_cs2`
+--
+
+CREATE TABLE `control_admins_cs2` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
@@ -1246,8 +1305,10 @@ CREATE TABLE `units` (
   `sql_ftp` char(20) NOT NULL,
   `cs` tinyint(1) NOT NULL DEFAULT '0',
   `cssold` tinyint(1) NOT NULL DEFAULT '0',
+  `rust` tinyint(1) NOT NULL DEFAULT '0',
   `css` tinyint(1) NOT NULL DEFAULT '0',
   `csgo` tinyint(1) NOT NULL DEFAULT '0',
+  `cs2` tinyint(1) NOT NULL DEFAULT '0',
   `samp` tinyint(1) NOT NULL DEFAULT '0',
   `crmp` tinyint(1) NOT NULL DEFAULT '0',
   `mta` tinyint(1) NOT NULL DEFAULT '0',
@@ -1401,6 +1462,12 @@ ALTER TABLE `admins_csgo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `admins_cs2`
+--
+ALTER TABLE `admins_cs2`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `admins_css`
 --
 ALTER TABLE `admins_css`
@@ -1410,6 +1477,12 @@ ALTER TABLE `admins_css`
 -- Индексы таблицы `admins_cssold`
 --
 ALTER TABLE `admins_cssold`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `admins_rust`
+--
+ALTER TABLE `admins_rust`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1482,6 +1555,12 @@ ALTER TABLE `control_admins_cs`
 -- Индексы таблицы `control_admins_csgo`
 --
 ALTER TABLE `control_admins_csgo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `control_admins_cs2`
+--
+ALTER TABLE `control_admins_cs2`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1856,6 +1935,11 @@ ALTER TABLE `admins_cs`
 ALTER TABLE `admins_csgo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT для таблицы `admins_cs2`
+--
+ALTER TABLE `admins_cs2`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT для таблицы `admins_css`
 --
 ALTER TABLE `admins_css`
@@ -1865,6 +1949,11 @@ ALTER TABLE `admins_css`
 --
 ALTER TABLE `admins_cssold`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT для таблицы `admins_rust`
+--
+ALTER TABLE `admins_rust`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `admins_mc`
 --

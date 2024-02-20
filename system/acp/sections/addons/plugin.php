@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT * FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 $plugin = $sql->get();
@@ -10,6 +10,7 @@ $aGames = array(
     'cssold' => 'Counter-Strike: Source v34',
     'css' => 'Counter-Strike: Source',
     'csgo' => 'Counter-Strike: Global Offensive',
+    'cs2' => 'Counter-Strike: 2',
     'samp' => 'San Andreas Multiplayer',
     'crmp' => 'GTA: Criminal Russia',
     'mta' => 'Multi Theft Auto',
@@ -58,7 +59,7 @@ if ($go) {
     foreach ($aPacks as $packs)
         $spacks .= trim($packs) . ':';
 
-    $spacks = isset($spacks{0}) ? substr($spacks, 0, -1) : '';
+    $spacks = isset($spacks[0]) ? substr($spacks, 0, -1) : '';
 
     $aData['packs'] = $spacks == '' ? 'all' : $spacks;
 
@@ -75,7 +76,7 @@ if ($go) {
         $incoms .= intval($incom) . ':';
     }
 
-    $incoms = isset($incoms{0}) ? substr($incoms, 0, -1) : '';
+    $incoms = isset($incoms[0]) ? substr($incoms, 0, -1) : '';
 
     $aData['incompatible'] = $incoms;
 
@@ -98,7 +99,7 @@ if ($go) {
         $choice .= ' ';
     }
 
-    $choice = isset($choice{0}) ? substr(trim($choice), 0, -1) : '';
+    $choice = isset($choice[0]) ? substr(trim($choice), 0, -1) : '';
 
     $aData['choice'] = $choice;
 
@@ -115,7 +116,7 @@ if ($go) {
         $requis .= intval($requi) . ':';
     }
 
-    $requis = isset($requis{0}) ? substr($requis, 0, -1) : '';
+    $requis = isset($requis[0]) ? substr($requis, 0, -1) : '';
 
     $aData['required'] = $requis;
 

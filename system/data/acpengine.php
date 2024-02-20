@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 // Массив главных разделов
 $aRoute = array(
@@ -43,8 +43,10 @@ $aValid = array(
 $aGname = array(
     'cs' => 'CS: 1.6',
     'css' => 'CS: Source',
-    'csgo' => 'CS: Global Offensive',
     'cssold' => 'CS: Source v34',
+    'csgo' => 'CS: Global Offensive',
+    'cs2' => 'CS: 2',
+    'rust' => 'RUST',
     'mc' => 'MineCraft',
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP'

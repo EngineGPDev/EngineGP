@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class scans
 {
@@ -9,6 +9,7 @@ class scans
         'cssold' => 'srcds_i686',
         'css' => 'srcds_',
         'csgo' => 'srcds_',
+        'cs2' => 'cs2',
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
@@ -68,7 +69,7 @@ class scans
         // ram на сервер
         $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$server['game']];
 
-        $resources['ram'] = $unit['ram'] / 100 * $resources['ram'] / ($ram / 100);
+        $resources['ram'] = floatval($unit['ram']) / 100 * floatval($resources['ram']) / (floatval($ram) / 100);
 
         $resources['ram'] = $resources['ram'] > 100 ? 100 : round($resources['ram']);
 

@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
 
@@ -15,7 +15,7 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
@@ -25,9 +25,9 @@ if (!isset($text{2})) {
 if (substr($text, 0, 5) == 'game=') {
     $game = trim(substr($text, 5));
 
-    if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+    if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc')))
         $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `game`="' . $game . '" ORDER BY `id` ASC');
-} elseif ($text{0} == 'i' and $text{1} == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd')
     $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'

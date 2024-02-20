@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class games
 {
@@ -355,7 +355,7 @@ class games
         $sql->query('SELECT `' . $sel . '` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
         $user = array_merge($user, $sql->get());
 
-        $sum = strpos($user[$sel], '%') ? $sum - $sum / 100 * $user[$sel] : $sum - $user[$sel];
+        $sum = strpos($user[$sel], '%') ? $sum - $sum / 100 * floatval($user[$sel]) : $sum - floatval($user[$sel]);
 
         if ($sum < 0)
             sys::outjs(array('e' => 'Ошибка: сумма за услугу неверна'));
@@ -620,6 +620,17 @@ class games
     {
         if (!is_array($aMaps))
             $aMaps = explode("\n", str_ireplace(array('./', '.bsp'), '', $aMaps));
+
+        if (in_array($map, $aMaps))
+            return false;
+
+        return true;
+    }
+
+    public static function map2($map, $aMaps)
+    {
+        if (!is_array($aMaps))
+            $aMaps = explode("\n", str_ireplace(array('./', '.vpk'), '', $aMaps));
 
         if (in_array($map, $aMaps))
             return false;

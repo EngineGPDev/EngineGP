@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $cats = $sql->query('SELECT `id`, `game`, `name`, `sort` FROM `plugins_category` ORDER BY `game` ASC');
 while ($cat = $sql->get($cats)) {

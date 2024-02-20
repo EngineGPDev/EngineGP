@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if (isset($url['subsection']) and $url['subsection'] == 'search')
     include(SEC . 'tarifs/search.php');
@@ -39,7 +39,11 @@ else {
         $list .= '<tr>';
         $list .= '<td>' . $tarif['id'] . '</td>';
         $list .= '<td><a href="' . $cfg['http'] . 'acp/tarifs/id/' . $tarif['id'] . '">' . $tarif['name'] . '</a></td>';
-        $list .= '<td>#' . $tarif['unit'] . ' ' . $unit['name'] . '</td>';
+        if ($unit) {
+            $list .= '<td>#' . $tarif['unit'] . ' ' . $unit['name'] . '</td>';
+        } else {
+            $list .= '<td>Локация отсутствует</td>';
+        }
         $list .= '<td>' . $tarif['slots_min'] . '-' . $tarif['slots_max'] . '</td>';
         $list .= '<td>' . $tarif['port_min'] . '-' . $tarif['port_max'] . '</td>';
         $list .= '<td>' . strtoupper($tarif['game']) . '</td>';

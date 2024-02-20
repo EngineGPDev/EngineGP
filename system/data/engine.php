@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 // Массив главных разделов
 $aRoute = array(
@@ -118,8 +118,10 @@ $tHelp = 0; // 0 - вариант: * минут назад (макс 10мин) |
 $aGname = array(
     'cs' => 'CS: 1.6',
     'css' => 'CS: Source',
-    'csgo' => 'CS: Global Offensive',
     'cssold' => 'CS: Source v34',
+    'csgo' => 'CS: Global Offensive',
+    'cs2' => 'CS: 2',
+    'rust' => 'RUST',
     'mc' => 'MineCraft',
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP',
@@ -144,6 +146,8 @@ $aSLdir = array(
     'cssold' => 'cstrike/oldstart',
     'css' => 'cstrike/oldstart',
     'csgo' => 'csgo/oldstart',
+    'cs2' => 'csgo/oldstart',
+    'rust' => 'oldstart',
     'mc' => 'oldstart',
     'mta' => 'mods/deathmatch/oldstart',
     'samp' => 'oldstart',
@@ -156,6 +160,8 @@ $aSLdirFtp = array(
     'cssold' => 'oldstart',
     'css' => 'oldstart',
     'csgo' => 'csgo/oldstart',
+    'cs2' => 'csgo/oldstart',
+    'rust' => 'oldstart',
     'mc' => 'oldstart',
     'mta' => 'mods/deathmatch/oldstart',
     'samp' => 'oldstart',
@@ -168,6 +174,8 @@ $aOwners = array(
     'cssold' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
     'css' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
     'csgo' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
+    'cs2' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
+    'rust' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
     'mc' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
     'mta' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
     'samp' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),

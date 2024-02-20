@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT `name`, `lastname`, `patronymic`, `mail`, `wmr`, `phone`, `contacts`, `date`, `part_money`, `rental`, `extend` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
 $user = array_merge($user, $sql->get());

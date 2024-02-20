@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
 
@@ -15,14 +15,14 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
     sys::outjs(array('e' => ''));
 }
 
-if ($text{0} == 'i' and $text{1} == 'd')
+if ($text[0] == 'i' and $text[1] == 'd')
     $wikis = $sql->query('SELECT `id`, `name`, `cat`, `date` FROM `wiki` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'

@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT * FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 $unit = $sql->get();
@@ -19,6 +19,8 @@ if ($go) {
     $aData['cssold'] = isset($_POST['cssold']) ? $_POST['cssold'] : $unit['cssold'];
     $aData['css'] = isset($_POST['css']) ? $_POST['css'] : $unit['css'];
     $aData['csgo'] = isset($_POST['csgo']) ? $_POST['csgo'] : $unit['csgo'];
+    $aData['cs2'] = isset($_POST['cs2']) ? $_POST['cs2'] : $unit['cs2'];
+    $aData['rust'] = isset($_POST['rust']) ? $_POST['rust'] : $unit['rust'];
     $aData['samp'] = isset($_POST['samp']) ? $_POST['samp'] : $unit['samp'];
     $aData['crmp'] = isset($_POST['crmp']) ? $_POST['crmp'] : $unit['crmp'];
     $aData['mta'] = isset($_POST['mta']) ? $_POST['mta'] : $unit['mta'];
@@ -29,7 +31,7 @@ if ($go) {
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $unit['sort'];
     $aData['domain'] = isset($_POST['domain']) ? trim($_POST['domain']) : $unit['domain'];
 
-    foreach (array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc') as $game)
+    foreach (array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc') as $game)
         $aData[$game] = (string)$aData[$game] == 'on' ? '1' : '0';
 
     if (in_array('', $aData))
@@ -52,6 +54,8 @@ if ($go) {
         . '`cssold`="' . $aData['cssold'] . '",'
         . '`css`="' . $aData['css'] . '",'
         . '`csgo`="' . $aData['csgo'] . '",'
+        . '`cs2`="' . $aData['cs2'] . '",'
+        . '`rust`="' . $aData['rust'] . '",'
         . '`samp`="' . $aData['samp'] . '",'
         . '`crmp`="' . $aData['crmp'] . '",'
         . '`mta`="' . $aData['mta'] . '",'
@@ -70,7 +74,7 @@ $html->get('unit', 'sections/units');
 foreach ($unit as $i => $val)
     $html->set($i, $val);
 
-foreach (array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc') as $game) {
+foreach (array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc') as $game) {
     if ($unit[$game])
         $html->unit('game_' . $game, 1);
     else

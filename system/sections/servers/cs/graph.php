@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if ($go) {
     $sql->query('SELECT `key` FROM `graph` WHERE `server`="' . $id . '" LIMIT 1');
@@ -18,10 +18,6 @@ if ($go) {
         header('Content-type: image/png');
         exit(file_get_contents(TEMP . (md5($graph['key'] . 'full_' . $time)) . '.png'));
     }
-
-    include(LIB . 'games/graph/pData.php');
-    include(LIB . 'games/graph/pDraw.php');
-    include(LIB . 'games/graph/pImage.php');
 
     include(LIB . 'games/graph.php');
 

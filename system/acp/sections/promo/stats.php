@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if (isset($url['delete'])) {
     $sql->query('DELETE FROM `promo_use` WHERE `id`="' . sys::int($url['delete']) . '" LIMIT 1');

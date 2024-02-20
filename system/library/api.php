@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class api
 {
@@ -74,7 +74,7 @@ class api
     {
         global $sql, $cfg;
 
-        $aGames = array('cs', 'css', 'cssold', 'csgo', 'mc', 'mta');
+        $aGames = array('cs', 'css', 'cssold', 'csgo', 'cs2', 'mc', 'mta');
 
         $sql->query('SELECT `game` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         if (!$sql->num())
@@ -87,7 +87,7 @@ class api
 
         $go = true;
 
-        $_POST['command'] = isset($cmd{0}) ? urldecode($cmd) : '';
+        $_POST['command'] = isset($cmd[0]) ? urldecode($cmd) : '';
 
         include(SEC . 'servers/' . $server['game'] . '/console.php');
     }

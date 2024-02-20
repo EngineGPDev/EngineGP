@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $cats = $sql->query('SELECT `id`, `name`, `sort` FROM `wiki_category` ORDER BY `id` ASC');
 while ($cat = $sql->get($cats)) {

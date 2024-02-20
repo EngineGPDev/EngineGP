@@ -1,8 +1,8 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-$aGames = array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc');
+$aGames = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc');
 $types = array('cfg', 'txt', 'ini', 'js');
 
 if (isset($url['get'])) {

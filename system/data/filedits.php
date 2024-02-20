@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 // Массив файлов для редактирования (раздел "настройки")
 $aEdits = array(
@@ -72,6 +72,46 @@ $aEdits = array(
     ),
 
     'csgo' => array(
+        'all' => array(
+            'files' => array(
+                'autoexec.cfg',
+                'fastdl.cfg',
+                'webapi_authkey.txt',
+            ),
+            'path' => array(
+                'autoexec.cfg' => 'csgo/cfg/',
+                'fastdl.cfg' => 'csgo/cfg/',
+                'webapi_authkey.txt' => 'csgo/',
+            ),
+            'desc' => array(
+                'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
+                'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
+                'webapi_authkey.txt' => 'API ключ для установки карт из мастерской <u>WorkShop</u>.',
+            )
+        )
+    ),
+
+    'cs2' => array(
+        'all' => array(
+            'files' => array(
+                'autoexec.cfg',
+                'fastdl.cfg',
+                'webapi_authkey.txt',
+            ),
+            'path' => array(
+                'autoexec.cfg' => 'csgo/cfg/',
+                'fastdl.cfg' => 'csgo/cfg/',
+                'webapi_authkey.txt' => 'csgo/',
+            ),
+            'desc' => array(
+                'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
+                'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
+                'webapi_authkey.txt' => 'API ключ для установки карт из мастерской <u>WorkShop</u>.',
+            )
+        )
+    ),
+
+    'rust' => array(
         'all' => array(
             'files' => array(
                 'autoexec.cfg',

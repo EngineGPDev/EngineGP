@@ -1,17 +1,13 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+
+use xPaw\SourceQuery\SourceQuery;
 
 class rcon
 {
     public static function cmd($server, $cmd = 'status')
     {
-        include(LIB . 'games/query/Buffer.php');
-        include(LIB . 'games/query/BaseSocket.php');
-        include(LIB . 'games/query/Socket.php');
-        include(LIB . 'games/query/GoldSourceRcon.php');
-        include(LIB . 'games/query/SourceQuery.php');
-
         $sq = new SourceQuery();
 
         list($ip, $port) = explode(':', $server['address']);
@@ -73,7 +69,7 @@ class rcon
 
     public static function rcon_passwd($server)
     {
-        global $cfg, $sql, $user;
+        global $cfg, $sql, $user, $nmch;
 
         include(LIB . 'ssh.php');
 
@@ -90,7 +86,7 @@ class rcon
         $get = explode(' ', str_replace('"', '', trim($ssh->get())));
         $rcon = trim(end($get));
 
-        if (!isset($rcon{0}))
+        if (!isset($rcon[0]))
             sys::outjs(array('r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'), $nmch);
 
         return $rcon;

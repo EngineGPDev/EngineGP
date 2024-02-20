@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if ($go) {
     $aData = array();
@@ -16,6 +16,8 @@ if ($go) {
     $aData['cssold'] = isset($_POST['cssold']) ? $_POST['cssold'] : 0;
     $aData['css'] = isset($_POST['css']) ? $_POST['css'] : 0;
     $aData['csgo'] = isset($_POST['csgo']) ? $_POST['csgo'] : 0;
+    $aData['cs2'] = isset($_POST['cs2']) ? $_POST['cs2'] : 0;
+    $aData['rust'] = isset($_POST['rust']) ? $_POST['rust'] : 0;
     $aData['samp'] = isset($_POST['samp']) ? $_POST['samp'] : 0;
     $aData['crmp'] = isset($_POST['crmp']) ? $_POST['crmp'] : 0;
     $aData['mta'] = isset($_POST['mta']) ? $_POST['mta'] : 0;
@@ -26,7 +28,7 @@ if ($go) {
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : 0;
     $aData['domain'] = isset($_POST['domain']) ? trim($_POST['domain']) : '';
 
-    foreach (array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc') as $game)
+    foreach (array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc') as $game)
         $aData[$game] = (string)$aData[$game] == 'on' ? '1' : '0';
 
     if (in_array('', $aData))
@@ -49,6 +51,8 @@ if ($go) {
         . '`cssold`="' . $aData['cssold'] . '",'
         . '`css`="' . $aData['css'] . '",'
         . '`csgo`="' . $aData['csgo'] . '",'
+        . '`cs2`="' . $aData['cs2'] . '",'
+        . '`rust`="' . $aData['rust'] . '",'
         . '`samp`="' . $aData['samp'] . '",'
         . '`crmp`="' . $aData['crmp'] . '",'
         . '`mta`="' . $aData['mta'] . '",'

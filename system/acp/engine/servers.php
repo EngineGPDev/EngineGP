@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $info = '<i class="fa fa-gamepad"></i> Список серверов';
 
@@ -10,6 +10,8 @@ $aSection = array(
     'cssold',
     'css',
     'csgo',
+    'cs2',
+    'rust',
     'samp',
     'crmp',
     'mta',
@@ -47,6 +49,12 @@ $html->set('css', $sql->num());
 
 $sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="csgo"');
 $html->set('csgo', $sql->num());
+
+$sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="cs2"');
+$html->set('cs2', $sql->num());
+
+$sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="rust"');
+$html->set('rust', $sql->num());
 
 $sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1" AND `game`="samp"');
 $html->set('samp', $sql->num());

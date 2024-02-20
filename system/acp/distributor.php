@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 // Подключение filp/whoops
 $whoops = new \Whoops\Run;
@@ -14,7 +14,7 @@ $whoops->pushHandler($loggingInConsole);
 // Логи в файл
 $loggingInFile = new \Whoops\Handler\PlainTextHandler();
 $loggingInFile->loggerOnly(true);
-$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(DIR . 'logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 
 $device = '!mobile';

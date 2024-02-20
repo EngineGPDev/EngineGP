@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $key = isset($url['key']) ? $url['key'] : exit;
 
@@ -13,10 +13,6 @@ if (!$sql->num())
     exit;
 
 $graph = $sql->get();
-
-include(LIB . 'games/graph/pData.php');
-include(LIB . 'games/graph/pDraw.php');
-include(LIB . 'games/graph/pImage.php');
 
 if (isset($url['type'])) {
     include(DATA . 'graph.php');

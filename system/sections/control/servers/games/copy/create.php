@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT `id` FROM `control_copy` WHERE `server`="' . $sid . '" ORDER BY `id` DESC LIMIT 5');
 if ($sql->num() > 4)

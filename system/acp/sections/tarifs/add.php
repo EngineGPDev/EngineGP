@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if ($go) {
     $aData = array();
@@ -47,7 +47,7 @@ if ($go) {
     if (!$sql->num())
         sys::outjs(array('e' => 'Необходимо указать локацию'));
 
-    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc')))
+    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc')))
         sys::outjs(array('e' => 'Необходимо указать игру'));
 
     $aSlots = explode('-', $aData['slots']);
@@ -328,6 +328,7 @@ if ($go) {
             break;
 
         case 'css':
+        case 'cs2':
         case 'csgo':
             if (count(explode(':', $aData['tickrate'])) != count(explode(':', $aData['price'])))
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));

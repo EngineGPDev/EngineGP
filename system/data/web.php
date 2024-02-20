@@ -1,6 +1,6 @@
 <?php
 if (!DEFINED('EGP'))
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['SERVER_NAME'] . '/404'));
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $aSub = array(
     'csbans',
@@ -94,6 +94,13 @@ $aWeb = array(
         'hosting' => true
     ),
 
+    'cs2' => array(
+        'sourcebans' => true,
+
+        'mysql' => true,
+        'hosting' => true
+    ),
+
     'samp' => array(
         'mysql' => true,
         'hosting' => true
@@ -141,6 +148,12 @@ $aWebOne = array(
     ),
 
     'csgo' => array(
+        'sourcebans' => array(),
+        'mysql' => array(),
+        'hosting' => array()
+    ),
+
+    'cs2' => array(
         'sourcebans' => array(),
         'mysql' => array(),
         'hosting' => array()
@@ -207,6 +220,13 @@ $aWebInstall = array(
     ),
 
     'csgo' => array(
+        'sourcebans' => 'unit',
+
+        'mysql' => 'server',
+        'hosting' => 'user'
+    ),
+
+    'cs2' => array(
         'sourcebans' => 'unit',
 
         'mysql' => 'server',
@@ -294,6 +314,12 @@ $aWebTypeInfo = array(
     ),
 
     'csgo' => array(
+        'bans' => 'Системы управления банами',
+        'stats' => 'Статистика',
+        'other' => 'Прочее'
+    ),
+
+    'cs2' => array(
         'bans' => 'Системы управления банами',
         'stats' => 'Статистика',
         'other' => 'Прочее'
