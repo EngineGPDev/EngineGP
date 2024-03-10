@@ -40,4 +40,3 @@ $html->set('full', htmlspecialchars_decode($news['full_text']));
 $html->set('tags', htmlspecialchars_decode($news['tags']));
 
 $html->pack('main');
-?>

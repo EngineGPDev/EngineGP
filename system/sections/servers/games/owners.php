@@ -143,4 +143,3 @@ $html->set('time', date('d.m.Y', $start_point));
 $html->set('access', $html->arr['access']);
 $html->set('owners', isset($html->arr['owners']) ? $html->arr['owners'] : 'Для данного сервера совладельцы отсутсвуют.');
 $html->pack('main');
-?>

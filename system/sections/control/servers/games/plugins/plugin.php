@@ -83,4 +83,3 @@ else {
 
     $mcache->set('ctrl_server_plugin_' . $pid . $sid, $html->arr['main'], false, 60);
 }
-?>

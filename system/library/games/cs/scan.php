@@ -129,5 +129,3 @@ class scan extends scans
         return $server;
     }
 }
-
-?>

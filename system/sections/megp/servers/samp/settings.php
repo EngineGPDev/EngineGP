@@ -42,4 +42,3 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $mcache->set('server_settings_' . $id, $html->arr['main'], false, 20);
     }
 }
-?>

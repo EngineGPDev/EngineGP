@@ -70,4 +70,3 @@ $mcache->delete('ctrl_server_plugins_' . $sid);
 $sql->query('UPDATE `control_servers` set `status`="recovery" WHERE `id`="' . $sid . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

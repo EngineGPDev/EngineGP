@@ -32,5 +32,3 @@ class control_install extends cron
         exit('install');
     }
 }
-
-?>

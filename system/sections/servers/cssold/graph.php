@@ -65,4 +65,3 @@ else {
 
     $mcache->set('server_graph_' . $id, $html->arr['main'], false, 4);
 }
-?>

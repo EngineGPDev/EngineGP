@@ -106,5 +106,3 @@ class action extends actions
         return $config;
     }
 }
-
-?>

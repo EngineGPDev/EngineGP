@@ -145,4 +145,3 @@ if (!$check) {
     $html->unit('informer', true, true);
     $html->pack('main');
 }
-?>

@@ -15,4 +15,3 @@ if (isset($url['update_status']))
     sys::outjs(ctrl::update_status($id));
 
 exit;
-?>

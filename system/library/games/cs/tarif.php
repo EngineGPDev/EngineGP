@@ -216,5 +216,3 @@ class tarif extends tarifs
         return NULL;
     }
 }
-
-?>

@@ -38,4 +38,3 @@ if (!isset($result['result']) || strtolower($result['result']) != 'ok')
 $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

@@ -41,4 +41,3 @@ $html->set('category', $category['name']);
 $html->set('list', isset($html->arr['question']) ? $html->arr['question'] : '');
 
 $html->pack('main');
-?>

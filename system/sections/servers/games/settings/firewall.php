@@ -33,4 +33,3 @@ $html->get('firewall', 'sections/servers/games/settings');
 $html->set('id', $id);
 $html->set('firewall', isset($html->arr['firewall']) ? $html->arr['firewall'] : '');
 $html->pack('main');
-?>

@@ -69,4 +69,3 @@ if ($url['type'] == 2) {
 $mcache->delete('server_settings_' . $id);
 
 sys::outjs(array('s' => 'ok'), $name_mcache);
-?>

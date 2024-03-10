@@ -104,5 +104,3 @@ class action extends actions
         return array('s' => 'ok');
     }
 }
-
-?>

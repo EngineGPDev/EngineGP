@@ -346,4 +346,3 @@ if ($go) {
 
 $html->get('addpl', 'sections/addons');
 $html->pack('main');
-?>

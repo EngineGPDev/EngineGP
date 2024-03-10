@@ -33,4 +33,3 @@ if ($url['edit']) {
     $html->set('list', $list);
     $html->pack('main');
 }
-?>

@@ -336,5 +336,3 @@ class service
         return $id;
     }
 }
-
-?>

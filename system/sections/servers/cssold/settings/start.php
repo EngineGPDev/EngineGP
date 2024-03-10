@@ -162,4 +162,3 @@ if (!tarif::price($tarif['price'])) {
 }
 
 $html->pack('start');
-?>

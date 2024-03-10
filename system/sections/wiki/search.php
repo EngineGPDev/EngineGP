@@ -154,4 +154,3 @@ $html->set('text', $text);
 $html->set('result', $html->arr['question']);
 
 $html->pack('main');
-?>

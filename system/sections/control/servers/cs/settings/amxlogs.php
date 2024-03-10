@@ -83,4 +83,3 @@ if (isset($url['log'])) {
 
     $html->pack('main');
 }
-?>

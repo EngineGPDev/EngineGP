@@ -41,4 +41,3 @@ if ($go) {
 $html->get('addcat', 'sections/addons');
 
 $html->pack('main');
-?>

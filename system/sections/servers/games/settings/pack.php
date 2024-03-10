@@ -19,4 +19,3 @@ if (!array_key_exists($pack, $aPacks))
 $sql->query('UPDATE `servers` set `pack`="' . $pack . '" WHERE `id`="' . $id . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), 'server_settings_' . $id);
-?>

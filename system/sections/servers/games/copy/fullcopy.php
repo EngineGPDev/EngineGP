@@ -22,4 +22,3 @@ $sql->query('INSERT INTO `copy` set `user`="' . $server['user'] . '_' . $server[
 $mcache->delete('server_copy_' . $id);
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

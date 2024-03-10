@@ -398,4 +398,3 @@ $html->get('add', 'sections/tarifs');
 $html->set('units', $units);
 
 $html->pack('main');
-?>

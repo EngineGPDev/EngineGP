@@ -110,5 +110,3 @@ class boost
         return array('error' => $aErr[$result]);
     }
 }
-
-?>

@@ -166,5 +166,3 @@ class plugins
         return NULL;
     }
 }
-
-?>

@@ -77,5 +77,3 @@ $html->set('name', end($file));
 $html->set('data', htmlspecialchars($ssh->get()));
 
 $html->pack('main');
-
-?>

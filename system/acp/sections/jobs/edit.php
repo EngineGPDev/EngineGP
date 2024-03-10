@@ -35,4 +35,3 @@ $data = ['id', 'name', 'job', 'desc'];
 foreach ($data as $idata)
     $html->set($idata, $jobs[$idata]);
 $html->pack('main');
-?>

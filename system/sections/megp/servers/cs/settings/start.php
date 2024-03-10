@@ -150,4 +150,3 @@ if (!tarif::price($tarif['price'])) {
     $html->unit('fps');
 
 $html->pack('main');
-?>

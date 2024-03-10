@@ -118,4 +118,3 @@ if ($go) {
 
 $html->get('auth', 'sections/user');
 $html->pack('main');
-?>

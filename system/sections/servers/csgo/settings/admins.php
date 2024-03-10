@@ -107,4 +107,3 @@ $html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
 $html->set('index', $max['id'] < 1 ? 0 : $max['id']);
 
 $html->pack('main');
-?>

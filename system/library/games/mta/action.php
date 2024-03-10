@@ -150,5 +150,3 @@ class action extends actions
         return $config . "\n" . '</config>';
     }
 }
-
-?>

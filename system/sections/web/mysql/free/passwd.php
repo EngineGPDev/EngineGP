@@ -48,4 +48,3 @@ $ssh->set('mysql --login-path=local -e "SET PASSWORD FOR  \'' . $web['login'] . 
 $sql->query('UPDATE `web` set `passwd`="' . $passwd . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

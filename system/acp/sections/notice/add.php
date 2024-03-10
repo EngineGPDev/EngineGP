@@ -50,4 +50,3 @@ $html->get('add', 'sections/notice');
 $html->set('units', $units);
 
 $html->pack('main');
-?>

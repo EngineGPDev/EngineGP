@@ -14,4 +14,3 @@ if ($server['status'] == 'blocked') {
     include(SEC . 'megp/servers/noaccess.php');
 } else
     include(SEC . 'megp/servers/' . $server['game'] . '/tarif.php');
-?>

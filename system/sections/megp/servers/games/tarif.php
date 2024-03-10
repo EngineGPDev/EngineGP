@@ -45,4 +45,3 @@ if (!$server['test']) {
     if ($tarif['slots_min'] != $tarif['slots_max'])
         tarif::slots($server, array('min' => $tarif['slots_min'], 'max' => $tarif['slots_max']), $id);
 }
-?>

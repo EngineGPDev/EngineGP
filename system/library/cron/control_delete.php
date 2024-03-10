@@ -32,5 +32,3 @@ class control_delete extends cron
         return NULL;
     }
 }
-
-?>

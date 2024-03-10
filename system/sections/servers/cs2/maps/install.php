@@ -52,4 +52,3 @@ foreach ($in_aMaps as $mid => $sel)
     }
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

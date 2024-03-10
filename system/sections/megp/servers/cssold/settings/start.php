@@ -155,4 +155,3 @@ if (!tarif::price($tarif['price'])) {
 }
 
 $html->pack('main');
-?>

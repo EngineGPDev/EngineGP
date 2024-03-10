@@ -13,4 +13,3 @@ $aData = array(
 );
 
 web::passwd($aData, $nmch);
-?>

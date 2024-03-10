@@ -87,5 +87,3 @@ class MtaQuery
         return $string;
     }
 }
-
-?>

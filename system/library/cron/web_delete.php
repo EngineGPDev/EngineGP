@@ -32,5 +32,3 @@ class web_delete extends cron
         web::delete($aData, false);
     }
 }
-
-?>

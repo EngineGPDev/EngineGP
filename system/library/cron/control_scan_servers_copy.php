@@ -48,5 +48,3 @@ class control_scan_servers_copy extends cron
         return NULL;
     }
 }
-
-?>

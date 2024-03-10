@@ -200,4 +200,3 @@ $html->set('inputs', $html->arr['inputs'], true);
 $html->set('inputsjs', $inputsjs);
 
 $html->pack('main');
-?>

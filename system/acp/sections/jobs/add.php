@@ -24,4 +24,3 @@ if ($go) {
 
 $html->get('add', 'sections/jobs');
 $html->pack('main');
-?>

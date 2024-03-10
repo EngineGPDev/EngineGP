@@ -117,5 +117,3 @@ class SampQuery
         return $connected;
     }
 }
-
-?>

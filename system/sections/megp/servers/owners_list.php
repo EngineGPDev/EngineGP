@@ -91,4 +91,3 @@ while ($owner = $sql->get($owners)) {
         $updates_servers .= 'setTimeout(function() {update_info(\'' . $server['id'] . '\', true)}, 5000); setTimeout(function() {update_status(\'' . $server['id'] . '\', true)}, 10000);';
     }
 }
-?>

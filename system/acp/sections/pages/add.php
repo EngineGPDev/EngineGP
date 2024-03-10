@@ -27,4 +27,3 @@ if ($go) {
 $html->get('add', 'sections/pages');
 
 $html->pack('main');
-?>

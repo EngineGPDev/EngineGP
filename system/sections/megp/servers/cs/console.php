@@ -11,4 +11,3 @@ $server = array_merge($server, $sql->get());
 $html->get('console', 'sections/servers/' . $server['game']);
 $html->set('id', $id);
 $html->pack('main');
-?>

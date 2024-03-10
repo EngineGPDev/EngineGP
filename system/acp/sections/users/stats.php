@@ -32,4 +32,3 @@ while ($us = $sql->get())
 $html->set('money', $money);
 
 $html->pack('main');
-?>

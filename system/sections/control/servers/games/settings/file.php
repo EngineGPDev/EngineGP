@@ -54,4 +54,3 @@ $html->set('file', $file);
 $html->set('data', htmlspecialchars($ssh->get()));
 
 $html->pack('main');
-?>

@@ -16,5 +16,3 @@ class control_server_scan extends cron
         return NULL;
     }
 }
-
-?>

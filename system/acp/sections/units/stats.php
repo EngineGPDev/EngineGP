@@ -59,4 +59,3 @@ $html->set('all_money_month', $all_money_month);
 $html->set('cur', $cfg['currency']);
 
 $html->pack('main');
-?>

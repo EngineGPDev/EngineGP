@@ -56,4 +56,3 @@ while ($map = $sql->get()) {
 $mcache->set($mkey, array('maps' => $html->arr['maps'], 'mapsjs' => $mapsjs), false, 15);
 
 sys::outjs(array('maps' => $html->arr['maps'], 'mapsjs' => $mapsjs));
-?>

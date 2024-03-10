@@ -64,4 +64,3 @@ else {
 
     $mcache->set('server_boost_' . $id, $html->arr['main'], false, 4);
 }
-?>

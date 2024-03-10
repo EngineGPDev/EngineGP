@@ -32,5 +32,3 @@ class notice_help_admin extends cron
         return NULL;
     }
 }
-
-?>

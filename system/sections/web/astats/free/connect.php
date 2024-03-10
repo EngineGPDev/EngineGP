@@ -92,4 +92,3 @@ $ssh->setfile($temp, $install . '/config/servers.config.php', 0644);
 unlink($temp);
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

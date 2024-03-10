@@ -9,4 +9,3 @@ $tarif = $sql->get();
 $aSub = array('extend', 'slots');
 
 include(SEC . 'megp/servers/games/tarif.php');
-?>

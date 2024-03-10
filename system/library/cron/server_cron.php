@@ -21,5 +21,3 @@ class server_cron extends cron
         return NULL;
     }
 }
-
-?>

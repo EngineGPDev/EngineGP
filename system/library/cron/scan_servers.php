@@ -137,5 +137,3 @@ class scan_servers extends cron
         return NULL;
     }
 }
-
-?>

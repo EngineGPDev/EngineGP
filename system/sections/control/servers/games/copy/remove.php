@@ -21,4 +21,3 @@ $sql->query('DELETE FROM `control_copy` WHERE `id`="' . $cid . '" LIMIT 1');
 $mcache->delete('ctrl_server_copy_' . $sid);
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

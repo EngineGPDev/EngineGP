@@ -10,4 +10,3 @@ else {
 }
 
 sys::outjs(array('s' => 'ok'));
-?>

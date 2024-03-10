@@ -92,4 +92,3 @@ $html->get('install', 'sections/web/' . $url['subsection'] . '/free');
 $html->set('id', $id);
 
 $html->pack('main');
-?>

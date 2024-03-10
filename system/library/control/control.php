@@ -429,5 +429,3 @@ class ctrl
         return $cron_task;
     }
 }
-
-?>

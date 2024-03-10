@@ -52,4 +52,3 @@ else {
     $html->set('fcpu', $ctrl['fcpu'] ? '<option value="1">Активный</option><option value="0">Пассивный</option>' : '<option value="0">Пассивный</option><option value="1">Активный</option>');
     $html->pack('main');
 }
-?>

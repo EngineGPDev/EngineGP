@@ -35,4 +35,3 @@ while ($msg = $sql->get($q_Msgs)) {
 }
 
 sys::out(isset($html->arr['dialog']) ? $html->arr['dialog'] : '');
-?>

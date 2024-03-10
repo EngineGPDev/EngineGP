@@ -71,4 +71,3 @@ while ($log = $sql->get()) {
 $mcache->set($mkey, array('s' => $list), false, 15);
 
 sys::outjs(array('s' => $list));
-?>

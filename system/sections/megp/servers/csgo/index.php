@@ -38,4 +38,3 @@ $html->set('date', sys::today($server['date']));
 $html->set('btn', $btn);
 
 $html->pack('main');
-?>

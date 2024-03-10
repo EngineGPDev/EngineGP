@@ -110,4 +110,3 @@ $html->set('cfg', $html->arr['list']);
 $html->set('other', $other);
 
 $html->pack('main');
-?>

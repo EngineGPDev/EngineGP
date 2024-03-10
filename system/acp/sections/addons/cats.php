@@ -22,4 +22,3 @@ $html->get('cats', 'sections/addons');
 $html->set('list', $list);
 
 $html->pack('main');
-?>

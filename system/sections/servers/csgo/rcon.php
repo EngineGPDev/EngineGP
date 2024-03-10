@@ -48,4 +48,3 @@ $html->get('rcon', 'sections/servers/' . $server['game']);
 $html->set('id', $id);
 
 $html->pack('main');
-?>

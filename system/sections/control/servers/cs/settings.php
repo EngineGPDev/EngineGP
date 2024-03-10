@@ -58,4 +58,3 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $mcache->set('ctrl_server_settings_' . $sid, $html->arr['main'], false, 20);
     }
 }
-?>

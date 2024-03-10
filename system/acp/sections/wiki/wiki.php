@@ -54,4 +54,3 @@ $html->set('tags', htmlspecialchars_decode($wiki['tags']));
 $html->set('cats', str_replace('"' . $wiki['cat'] . '"', '"' . $wiki['cat'] . '" selected', $cats));
 
 $html->pack('main');
-?>

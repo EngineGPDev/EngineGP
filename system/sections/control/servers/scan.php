@@ -24,4 +24,3 @@ if (isset($url['status']))
     sys::outjs(scan::status($sid));
 
 exit;
-?>

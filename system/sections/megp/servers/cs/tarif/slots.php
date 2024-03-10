@@ -30,4 +30,3 @@ $max = $tarif['slots_max'] - $server['slots'];
 $sum = round(($server['time'] - $start_point) / 86400 * ($aPrice[array_search($server['fps'], $aFPS)] / 30) * $slots, 2);
 
 include(SEC . 'servers/games/tarif/slots.php');
-?>

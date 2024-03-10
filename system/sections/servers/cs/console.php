@@ -60,4 +60,3 @@ $html->nav('Консоль');
 $html->get('console', 'sections/servers/' . $server['game']);
 $html->set('id', $id);
 $html->pack('main');
-?>

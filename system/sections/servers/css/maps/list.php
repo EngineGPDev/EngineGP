@@ -58,4 +58,3 @@ $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
 $html->set('cdn', $cfg['cdn']);
 
 $html->pack('main');
-?>
