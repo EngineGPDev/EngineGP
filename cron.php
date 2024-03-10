@@ -21,14 +21,14 @@ DEFINE('CRON', LIB . 'cron/');
 $start_point = $_SERVER['REQUEST_TIME'];
 
 $mcache = new Memcache;
-$mcache->connect('127.0.0.1', 11211) or exit('Ошибка: не удалось создать связь с Memcache.' . PHP_EOL);
+$mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache.' . PHP_EOL);
 
 // Настройки
 include(DATA . 'config.php');
 
-/*if($argv[1] != $cfg['cron_key'])
-    exit('error key.'.PHP_EOL);
-*/
+// Проверка ключа и указания параметра
+if($argv[1] != $cfg['cron_key'])
+    exit('Invalid cron key' . PHP_EOL);
 $task = $argv[2];
 
 include(DATA . 'engine.php');
