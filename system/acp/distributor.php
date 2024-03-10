@@ -139,4 +139,3 @@ foreach ($aRoute as $route)
 $html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
 
 $html->pack('all');
-?>

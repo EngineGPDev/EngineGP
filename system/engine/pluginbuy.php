@@ -24,4 +24,3 @@ if ($sql->num())
     sys::out('true');
 
 sys::out('false');
-?>

@@ -48,4 +48,3 @@ include(ACP . 'distributor.php');
 
 // Выхлоп
 echo $html->arr['all'];
-?>

@@ -37,4 +37,3 @@ if ($id) {
     $html->set('list', isset($html->arr['news']) ? $html->arr['news'] : '');
     $html->pack('main');
 }
-?>

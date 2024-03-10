@@ -50,5 +50,3 @@ class users
         return NULL;
     }
 }
-
-?>

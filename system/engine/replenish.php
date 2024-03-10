@@ -9,4 +9,3 @@ if ($url['response'] == 'success')
     sys::out(file_get_contents(ROOT . 'success.html'));
 else
     sys::out(file_get_contents(ROOT . 'fail.html'));
-?>

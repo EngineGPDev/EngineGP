@@ -492,5 +492,3 @@ class ftp
         return $address;
     }
 }
-
-?>

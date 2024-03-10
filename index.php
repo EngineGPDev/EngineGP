@@ -65,4 +65,3 @@ if ($device == '!mobile')
 
 // Выхлоп
 echo $html->arr['all'];
-?>

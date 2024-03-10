@@ -8,4 +8,3 @@ sys::noauth();
 $title = 'Онлайн чат';
 
 include(SEC . 'chat/chats.php');
-?>

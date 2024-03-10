@@ -8,4 +8,3 @@ $html->nav($title);
 
 $html->get('contacts');
 $html->pack('main');
-?>

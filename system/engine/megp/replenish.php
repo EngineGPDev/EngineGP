@@ -26,4 +26,3 @@ $html->set('balance', round($user['balance'], 2));
 $html->set('cur', $cfg['currency']);
 $html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
 $html->pack('main');
-?>

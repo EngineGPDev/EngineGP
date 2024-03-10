@@ -702,5 +702,3 @@ class sys
         $logger->info($message, $context);
     }
 }
-
-?>

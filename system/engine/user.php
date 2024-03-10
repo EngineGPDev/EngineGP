@@ -23,4 +23,3 @@ else
     $html->nav($title);
 
 include(SEC . 'user/' . $section . '.php');
-?>

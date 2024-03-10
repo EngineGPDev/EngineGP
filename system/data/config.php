@@ -335,4 +335,3 @@ $cfg = array(
         'cs2' => false
     )
 );
-?>

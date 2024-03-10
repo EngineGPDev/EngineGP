@@ -23,4 +23,3 @@ $html->get('index');
 
 $html->set('news', isset($html->arr['news']) ? $html->arr['news'] : '');
 $html->pack('main');
-?>

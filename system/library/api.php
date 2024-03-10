@@ -92,5 +92,3 @@ class api
         include(SEC . 'servers/' . $server['game'] . '/console.php');
     }
 }
-
-?>

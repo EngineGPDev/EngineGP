@@ -26,4 +26,3 @@ $aFindMap = array(
         '35hp' => array('35hp')
     )
 );
-?>

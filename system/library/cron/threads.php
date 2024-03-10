@@ -63,5 +63,3 @@ class threads extends cron
         return NULL;
     }
 }
-
-?>

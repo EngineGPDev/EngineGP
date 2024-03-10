@@ -112,4 +112,3 @@ if ($auth) {
     else
         $html->unitall('all', 'servers', 0, 1);
 }
-?>

@@ -724,4 +724,3 @@ class megp
 }
 
 $megp = new megp;
-?>

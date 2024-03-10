@@ -41,4 +41,3 @@ switch ($action) {
 }
 
 sys::outjs(array('e' => 'Метод не найден'));
-?>

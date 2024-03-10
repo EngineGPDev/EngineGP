@@ -55,4 +55,3 @@ if (isset($url['type'])) {
     header('Content-type: image/png');
     exit(file_get_contents(TEMP . (md5($key . $style . $type)) . '.png'));
 }
-?>

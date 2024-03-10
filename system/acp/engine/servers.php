@@ -74,4 +74,3 @@ $html->set('overdue', $sql->num());
 $html->pack('menu');
 
 include(SEC . 'servers/' . $section . '.php');
-?>

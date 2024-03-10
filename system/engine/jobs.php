@@ -75,4 +75,3 @@ else
     $html->set('jobs', '');
 
 $html->pack('main');
-?>

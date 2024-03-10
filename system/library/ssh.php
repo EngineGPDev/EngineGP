@@ -96,4 +96,3 @@ class ssh
 }
 
 $ssh = new ssh;
-?>

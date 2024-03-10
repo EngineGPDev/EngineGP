@@ -119,5 +119,3 @@ class smtp
         return true;
     }
 }
-
-?>
