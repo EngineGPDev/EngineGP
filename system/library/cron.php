@@ -85,4 +85,3 @@ class cron
 include(CRON . $task . '.php');
 
 new $task();
-?>

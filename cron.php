@@ -46,4 +46,3 @@ include(LIB . 'sql.php');
 include(LIB . 'html.php');
 include(LIB . 'system.php');
 include(LIB . 'cron.php');
-?>
