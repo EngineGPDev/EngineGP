@@ -98,7 +98,7 @@ class scan_servers extends cron
 
                             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Включение сервера: сервер выключен не через панель", `time`="' . $start_point . '"');
 
-                            continue;
+                            continue 2;
                         }
                     }
 
