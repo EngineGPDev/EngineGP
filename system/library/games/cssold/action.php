@@ -71,7 +71,7 @@ class action extends actions
         $bots = $cfg['bots'][$server['game']] ? '' : '-nobots';
 
         // TV
-        $tv = $server['tv'] ? '+tv_enable 1 +tv_maxclients 30 +tv_port ' . ($port + 10000) : '-nohltv';
+        $tv = isset($server['tv']) ? '+tv_enable 1 +tv_maxclients 30 +tv_port ' . ($port + 10000) : '-nohltv';
 
         // FPS
         $fps = $server['fps'] + $cfg['fpsplus'];
