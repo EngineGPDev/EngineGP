@@ -71,7 +71,7 @@ class action extends actions
         $bots = $cfg['bots'][$server['game']] ? '' : '-nobots';
 
         // TV
-        $tv = $server['tv'] ? '+tv_enable 1 +tv_maxclients 30 +tv_port ' . ($port + 10000) : '-nohltv';
+        $tv = isset($server['tv']) ? '+tv_enable 1 +tv_maxclients 30 +tv_port ' . ($port + 10000) : '-nohltv';
 
         // Параметры запуска
         $bash = './srcds_run -debug -game cstrike -norestart -condebug console.log -tickrate ' . $server['tickrate'] . '  +servercfgfile server.cfg +map \'' . $server['map_start'] . '\' +maxplayers ' . $server['slots_start'] . ' +ip ' . $ip . ' +port ' . $port . ' -sv_lan 0 ' . $vac . ' ' . $bots . ' ' . $tv;
