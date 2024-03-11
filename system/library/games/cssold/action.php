@@ -77,7 +77,7 @@ class action extends actions
         $fps = $server['fps'] + $cfg['fpsplus'];
 
         // Параметры запуска
-        $bash = './srcds_run -debug -game cstrike -norestart -condebug console.log -tickrate ' . $server['tickrate'] . ' +fps_egp ' . $fps . ' +servercfgfile server.cfg +map \'' . $server['map_start'] . '\' +maxplayers ' . $server['slots_start'] . ' +ip ' . $ip . ' +port ' . $port . ' +sv_lan 0 -nomaster -localcser ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './srcds_run -debug -game cstrike -norestart -condebug console.log -tickrate ' . $server['tickrate'] . ' +fps_max ' . $fps . ' +servercfgfile server.cfg +map \'' . $server['map_start'] . '\' -maxplayers ' . $server['slots_start'] . ' -ip ' . $ip . ' -port ' . $port . ' +sv_lan 0 -nomaster -localcser ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);
