@@ -119,12 +119,20 @@ class scan extends scans
             return $data;
         }
 
-        $data = $sq->GetInfo();
+        try {
+            $data = $sq->GetInfo();
 
-        $server['name'] = $data['HostName'];
-        $server['map'] = $data['Map'];
-        $server['online'] = $data['Players'];
-        $server['status'] = strlen($server['map']) > 3 ? true : false;
+            $server['name'] = $data['HostName'];
+            $server['map'] = $data['Map'];
+            $server['online'] = $data['Players'];
+            $server['status'] = strlen($server['map']) > 3;
+        } catch (Exception $e) {
+            // В случае, если не удалось получить данные из сокета, то подставляем значения из базы данных
+            $server['name'] = isset($server['name']);
+            $server['map'] = isset($server['map']);
+            $server['online'] = isset($server['online']);
+            $server['status'] = strlen($server['map']) > 3;
+        }
 
         return $server;
     }
