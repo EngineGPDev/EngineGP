@@ -1242,14 +1242,10 @@ class sys
     {
         global $cfg;
 
-        $filename = 'http://cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
-        $file_headers = @get_headers($filename);
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-        if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' || trim($file_headers[0]) == 'HTTP/1.1 403 Forbidden') {
-            return $cfg['http'] . 'template/images/status/none.jpg';
-        } else {
-            return '' . $protocol . 'cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
-        }
+        if(file_exists(DIR.'/maps/'.$game.'/'.$name.'.jpg'))
+            return $cfg['http'].'maps/'.$game.'/'.$name.'.jpg';
+
+        return $cfg['http'].'template/images/status/none.jpg';
     }
 
     public static function buttons($id, $status, $game = false, $ctrl = false)
