@@ -280,19 +280,6 @@ CREATE TABLE `cashback` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `chat`
---
-
-CREATE TABLE `chat` (
-  `id` int(11) NOT NULL,
-  `userid` int(11) NOT NULL,
-  `date` datetime NOT NULL,
-  `msg` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `control`
 --
 
@@ -1534,12 +1521,6 @@ ALTER TABLE `cashback`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `chat`
---
-ALTER TABLE `chat`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Индексы таблицы `control`
 --
 ALTER TABLE `control`
@@ -1994,11 +1975,6 @@ ALTER TABLE `boost_rating`
 --
 ALTER TABLE `cashback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `chat`
---
-ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT для таблицы `control`
 --
