@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-$info = '<i class="fa fa-file-text-o"></i> Управление старницами';
+$info = '<i class="fa-regular fa-file-lines"></i> Управление старницами';
 
 $aSection = array(
     'index',

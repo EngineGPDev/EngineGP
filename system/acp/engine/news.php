@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-$info = '<i class="fa fa-newspaper-o"></i> Управление новостями';
+$info = '<i class="fa-regular fa-newspaper"></i> Управление новостями';
 
 $aSection = array(
     'index',

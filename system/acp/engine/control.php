@@ -2,7 +2,7 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-$info = '<i class="fa fa-dropbox"></i> Контроль';
+$info = '<i class="fa-brands fa-dropbox"></i> Контроль';
 
 $aSection = array(
     'index',
