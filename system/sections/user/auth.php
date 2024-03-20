@@ -5,10 +5,6 @@ if (!DEFINED('EGP'))
 // Проверка на авторизацию
 sys::auth();
 
-sys::cookie('egp_login', 'quit', -1);
-sys::cookie('egp_passwd', 'quit', -1);
-sys::cookie('egp_authkeycheck', 'quit', -1);
-
 // Генерация новой капчи
 if (isset($url['captcha']))
     sys::captcha('auth', $uip);
@@ -107,10 +103,8 @@ if ($go) {
     // Логирование ip
     $sql->query('INSERT INTO `auth` set `user`="' . $user['id'] . '", `ip`="' . $uip . '", `date`="' . $start_point . '", `browser`="' . sys::hb64($_SERVER['HTTP_USER_AGENT']) . '"');
 
-    // Запись cookie пользователю
-    sys::cookie('egp_login', $user['login'], 14);
-    sys::cookie('egp_passwd', $aData['passwd'], 14);
-    sys::cookie('egp_authkeycheck', md5($user['login'] . $uip . $aData['passwd']), 14);
+    // Запись сессии пользователя
+    $_SESSION['user_id'] = $user['id'];
 
     // Выхлоп удачной авторизации
     sys::outjs(array('s' => 'ok'), $nmch);

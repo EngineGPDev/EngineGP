@@ -144,8 +144,8 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
             $aNData['passwd'] = sys::passwd(10);
 
         // Реферал
-        if (isset($_COOKIE['part']))
-            $part = ', `part`="' . sys::int($_COOKIE['part']) . '"';
+        if (isset($_SESSION['referrer']))
+            $part = ', `part`="' . sys::int($_SESSION['referrer']) . '"';
 
         // Запись данных в базу
         $sql->query('INSERT INTO `users` set '

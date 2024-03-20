@@ -45,11 +45,6 @@ if ($go) {
             // Обновление пароля в базе, если он не совпадает с текущим
             if ($auth_data['passwd'] != $passwd) {
                 $sql->query('UPDATE `users` set `passwd`="' . $passwd . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
-
-                // Обновление cookie
-                sys::cookie('login', $user['login'], 14);
-                sys::cookie('passwd', $passwd, 14);
-                sys::cookie('authkeycheck', md5($user['login'] . $_SERVER['REMOTE_ADDR'] . $passwd), 14);
             }
 
             // Выхлоп удачного выполнения операции
@@ -166,7 +161,7 @@ if ($go) {
             $wmr = isset($_POST['wmr']) ? $_POST['wmr'] : '';
 
             // Проверка наличия указанного кошелька
-            if (isset($user['wmr']{0}) and in_array($user['wmr']{0}, array('R', 'Z', 'U')))
+            if (isset($user['wmr'][0]) and in_array($user['wmr'][0], array('R', 'Z', 'U')))
                 sys::outjs(array('e' => sys::text('input', 'wmr_confirm')), $name_mcache);
 
             if (sys::valid($wmr, 'wm'))
