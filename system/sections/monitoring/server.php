@@ -21,7 +21,7 @@ $html->nav('Мониторинг', $cfg['http'] . 'monitoring');
 $html->nav('Сервер #' . $id);
 
 // Получаем информацию о сервере
-$sql->query("SELECT `id`, `unit`, `tarif`, `address`, `name`, `map`, `slots_start`, `online`, `players`, `status`, `game`, `pack`, `date` FROM servers WHERE id = '{$id}' LIMIT 1");
+$sql->query('SELECT `id`, `unit`, `tarif`, `address`, `name`, `map`, `slots_start`, `online`, `players`, `status`, `game`, `pack`, `date` FROM servers WHERE id ="' . $id . '" LIMIT 1');
 $server = $sql->get();
 
 // Если результат пустой
@@ -31,18 +31,18 @@ if (empty($server)) {
 }
 
 // Получаем название локации
-$sql->query("SELECT name FROM units WHERE id = '{$server['unit']}' LIMIT 1");
+$sql->query('SELECT name FROM units WHERE id = "' . $server['unit'] . '" LIMIT 1');
 $unit = $sql->get();
 
 // Получаем название тарифа и доступные сборки
-$sql->query("SELECT name, packs FROM tarifs WHERE id = '{$server['tarif']}' LIMIT 1");
+$sql->query('SELECT name, packs FROM tarifs WHERE id = "' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
 // Получаем массив сборок
 $aPacks = json_decode(base64_decode($tarif['packs']), true);
 
 // Получаем ключ для графиков
-$sql->query("SELECT `key` FROM graph WHERE server = '{$id}' LIMIT 1");
+$sql->query('SELECT `key` FROM graph WHERE server = "' . $id . '" LIMIT 1');
 
 // Если ключ отсуствует, создаем
 if (!$sql->num()) {
@@ -51,7 +51,7 @@ if (!$sql->num()) {
     $key = md5($id . sys::key('graph'));
 
     // Добавляем в DB
-    $sql->query("INSERT INTO graph SET `server` = '{id}', `key` = '{key}', `time` = '0'");
+    $sql->query('INSERT INTO graph SET `server` = "' . $id . '", `key` = "' . $key . '", `time` = 0');
 } else {
 
     // Получаем ключ из бд
