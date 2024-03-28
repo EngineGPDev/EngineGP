@@ -677,36 +677,6 @@ CREATE TABLE `help_upload` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `jobs`
---
-
-CREATE TABLE `jobs` (
-  `id` int(11) NOT NULL,
-  `name` varchar(500) NOT NULL,
-  `job` varchar(150) NOT NULL,
-  `desc` text NOT NULL,
-  `status` int(11) NOT NULL,
-  `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `jobs_app`
---
-
-CREATE TABLE `jobs_app` (
-  `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `text` text NOT NULL,
-  `contact` varchar(100) NOT NULL,
-  `job` int(11) NOT NULL,
-  `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `logs`
 --
 
@@ -1653,18 +1623,6 @@ ALTER TABLE `help_upload`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `jobs`
---
-ALTER TABLE `jobs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `jobs_app`
---
-ALTER TABLE `jobs_app`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Индексы таблицы `logs`
 --
 ALTER TABLE `logs`
@@ -2064,16 +2022,6 @@ ALTER TABLE `help_dialogs`
 -- AUTO_INCREMENT для таблицы `help_upload`
 --
 ALTER TABLE `help_upload`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `jobs`
---
-ALTER TABLE `jobs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `jobs_app`
---
-ALTER TABLE `jobs_app`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `logs`

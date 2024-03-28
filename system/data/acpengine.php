@@ -21,8 +21,7 @@ $aRoute = array(
     'pages',
     'letter',
     'logs',
-    'cashback',
-    'jobs'
+    'cashback'
 );
 
 // Массив регулярных выражений

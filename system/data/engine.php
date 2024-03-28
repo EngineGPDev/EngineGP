@@ -26,7 +26,6 @@ $aRoute = array(
     'api_v1',
     'check',
     'monitoring',
-    'jobs',
     'partners',
 );
 
