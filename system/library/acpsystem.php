@@ -561,7 +561,7 @@ class sys
 
     public static function passwdkey($passwd)
     {
-        return md5($passwd);
+        return password_hash($passwd, PASSWORD_DEFAULT);
     }
 
     public static function mail($name, $text, $mail)

@@ -42,10 +42,8 @@ if ($go) {
 
             $passwd = sys::passwdkey($passwd);
 
-            // Обновление пароля в базе, если он не совпадает с текущим
-            if ($auth_data['passwd'] != $passwd) {
-                $sql->query('UPDATE `users` set `passwd`="' . $passwd . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
-            }
+            // Обновление пароля в базе
+            $sql->query('UPDATE `users` set `passwd`="' . $passwd . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
             // Выхлоп удачного выполнения операции
             sys::outjs(array('s' => 'ok'), $name_mcache);

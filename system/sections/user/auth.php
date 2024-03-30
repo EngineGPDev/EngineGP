@@ -25,7 +25,7 @@ if ($go) {
     $aData = array();
 
     $aData['login'] = isset($_POST['login']) ? $_POST['login'] : '';
-    $aData['passwd'] = isset($_POST['passwd']) ? sys::passwdkey($_POST['passwd']) : '';
+    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
 
     // Проверка входных данных
     foreach ($aData as $val)
@@ -50,11 +50,15 @@ if ($go) {
         $sql_q = '`mail`';
 
     // Проверка существования пользователя
-    $sql->query('SELECT `id`, `login`, `mail`, `security_ip`, `security_code` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" AND `passwd`="' . $aData['passwd'] . '" LIMIT 1');
+    $sql->query('SELECT `id`, `login`, `mail`, `security_ip`, `security_code`, `passwd` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" LIMIT 1');
     if (!$sql->num())
         sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
 
     $user = $sql->get();
+
+    // Проверка пароля
+    if (!sys::passwdverify($aData['passwd'], $user['passwd']))
+        sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
 
     $subnetwork = sys::whois($uip);
 

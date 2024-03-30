@@ -413,7 +413,12 @@ class sys
 
     public static function passwdkey($passwd)
     {
-        return md5($passwd);
+        return password_hash($passwd, PASSWORD_DEFAULT);
+    }
+
+    public static function passwdverify($passwd, $passwdhash)
+    {
+        return password_verify($passwd, $passwdhash);
     }
 
     public static function cookie($name, $value, $expires)
