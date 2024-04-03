@@ -15,7 +15,6 @@ $whoops->pushHandler($loggingInFile);
 if (!file_exists(CRON . $task . '.php'))
     exit('Invalid cron method');
 
-$device = '!mobile';
 $user = array('id' => 0, 'group' => 'admin');
 
 class cron

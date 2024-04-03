@@ -17,8 +17,6 @@ $loggingInFile->loggerOnly(true);
 $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 
-$device = '!mobile';
-
 // Парсинг адреса
 $url = is_array(sys::url()) ? sys::url() : array();
 $route = sys::url(false);

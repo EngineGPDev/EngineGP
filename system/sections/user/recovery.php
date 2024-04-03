@@ -50,7 +50,7 @@ if ($go) {
 
     $user = $sql->get();
 
-    $link = $device == '!mobile' ? 'user/section/recovery/confirm/' : 'recovery/confirm/';
+    $link = 'user/section/recovery/confirm/';
 
     // Проверка подачи запроса на восстановление
     $sql->query('SELECT `id`, `key` FROM `recovery` WHERE `user`="' . $user['id'] . '" LIMIT 1');

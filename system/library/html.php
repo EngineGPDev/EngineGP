@@ -54,11 +54,7 @@ class html
 
     public function get($name, $path = '')
     {
-        global $device, $cfg;
-
-        $path_root = $device == '!mobile' ? '' : 'megp/';
-
-        $path = $path_root . $path;
+        global $cfg;
 
         if ($path != '')
             $name = str_replace('//', '/', $path . '/' . $name);

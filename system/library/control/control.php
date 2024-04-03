@@ -215,7 +215,7 @@ class ctrl
 
     public static function route($server, $inc, $go)
     {
-        global $device, $start_point;
+        global $start_point;
 
         if (in_array($server['status'], array('install', 'reinstall', 'update', 'recovery'))) {
             if ($go)
@@ -232,7 +232,7 @@ class ctrl
 
     public static function cpulist($unit, $core, $count = false)
     {
-        global $device, $start_point;
+        global $start_point;
 
         include(LIB . 'ssh.php');
 

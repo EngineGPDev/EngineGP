@@ -29,19 +29,6 @@ $aRoute = array(
     'partners',
 );
 
-// Массив главных разделов megp
-$amRoute = array(
-    'index',
-    'servers',
-    'services',
-    'replenish',
-    'help',
-    'news',
-    'auth',
-    'quit',
-    'recovery'
-);
-
 // Массив регулярных выражений
 $aValid = array(
     'login' => '/^[A-Za-z0-9_]{4,16}$/',
