@@ -1,11 +1,29 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-
+header('X-Powered-By: EGP');
 date_default_timezone_set('Europe/Moscow');
 
-@ini_set('display_errors', FALSE);
-@ini_set('html_errors', FALSE);
-@ini_set('error_reporting', E_ALL);
+// Composer
+if (!file_exists('../vendor/autoload.php')) {
+    die('Please <a href="https://getcomposer.org/download/" target="_blank" rel="noreferrer" style="color:#0a25bb;">install composer</a> and run <code style="background:#222;color:#00e01f;padding:2px 6px;border-radius:3px;">composer install</code>');
+}
+require('../vendor/autoload.php');
+
+// Загружаем .env
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load('../.env');
+
+if ($_ENV['RUN_MODE'] === 'dev') {
+    // Включение отображения ошибок в режиме разработки
+    ini_set('display_errors', TRUE);
+    ini_set('html_errors', TRUE);
+    ini_set('error_reporting', E_ALL);
+} else {
+    // Отключение отображения ошибок в продакшене
+    ini_set('display_errors', FALSE);
+    ini_set('html_errors', FALSE);
+    ini_set('error_reporting', 0);
+}
 
 DEFINE('EGP', TRUE);
 DEFINE('ROOT', '../');
@@ -23,12 +41,6 @@ $start_point = $_SERVER['REQUEST_TIME'];
 
 $mcache = new Memcache;
 $mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
-
-// Composer
-if (!file_exists(ROOT . 'vendor/autoload.php')) {
-    die('Please <a href="https://getcomposer.org/download/" target="_blank" rel="noreferrer" style="color:#0a25bb;">install composer</a> and run <code style="background:#222;color:#00e01f;padding:2px 6px;border-radius:3px;">composer install</code>');
-}
-require(ROOT . 'vendor/autoload.php');
 
 // Настройки
 include(DATA . 'config.php');

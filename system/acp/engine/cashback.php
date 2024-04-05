@@ -2,9 +2,21 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-@ini_set('display_errors', TRUE);
-@ini_set('html_errors', TRUE);
-@ini_set('error_reporting', E_ALL);
+// Загружаем .env
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load(ROOT . '/.env');
+
+if ($_ENV['RUN_MODE'] === 'dev') {
+    // Включение отображения ошибок в режиме разработки
+    ini_set('display_errors', TRUE);
+    ini_set('html_errors', TRUE);
+    ini_set('error_reporting', E_ALL);
+} else {
+    // Отключение отображения ошибок в продакшене
+    ini_set('display_errors', FALSE);
+    ini_set('html_errors', FALSE);
+    ini_set('error_reporting', 0);
+}
 
 $nmc = 'cashback_' . $id;
 
