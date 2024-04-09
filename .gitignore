@@ -1,5 +1,6 @@
 .idea
 .vscode
 .env
+*.log
 vendor
 composer.phar
