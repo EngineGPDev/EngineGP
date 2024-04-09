@@ -1,5 +1,6 @@
 {
   "require": {
+    "ext-memcache": "*",
     "symfony/polyfill": "1.28.0",
     "symfony/dotenv": "5.4.35",
     "filp/whoops": "2.15.4",
