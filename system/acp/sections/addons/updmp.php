@@ -72,4 +72,3 @@ $html->get('updmp', 'sections/addons');
 $html->set('units', $units);
 
 $html->pack('main');
-?>

@@ -179,5 +179,3 @@ class scans
         return 'server -> no change -> end scan';
     }
 }
-
-?>

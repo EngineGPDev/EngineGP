@@ -280,19 +280,6 @@ CREATE TABLE `cashback` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `chat`
---
-
-CREATE TABLE `chat` (
-  `id` int(11) NOT NULL,
-  `userid` int(11) NOT NULL,
-  `date` datetime NOT NULL,
-  `msg` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `control`
 --
 
@@ -685,36 +672,6 @@ CREATE TABLE `help_upload` (
   `name` varchar(36) NOT NULL,
   `time` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `jobs`
---
-
-CREATE TABLE `jobs` (
-  `id` int(11) NOT NULL,
-  `name` varchar(500) NOT NULL,
-  `job` varchar(150) NOT NULL,
-  `desc` text NOT NULL,
-  `status` int(11) NOT NULL,
-  `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `jobs_app`
---
-
-CREATE TABLE `jobs_app` (
-  `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `text` text NOT NULL,
-  `contact` varchar(100) NOT NULL,
-  `job` int(11) NOT NULL,
-  `date` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1330,7 +1287,7 @@ CREATE TABLE `units` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` char(15) NOT NULL,
-  `passwd` char(32) NOT NULL,
+  `passwd` char(60) NOT NULL,
   `name` char(32) NOT NULL,
   `lastname` char(32) NOT NULL,
   `patronymic` char(32) NOT NULL,
@@ -1534,12 +1491,6 @@ ALTER TABLE `cashback`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `chat`
---
-ALTER TABLE `chat`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Индексы таблицы `control`
 --
 ALTER TABLE `control`
@@ -1669,18 +1620,6 @@ ALTER TABLE `help_dialogs`
 -- Индексы таблицы `help_upload`
 --
 ALTER TABLE `help_upload`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `jobs`
---
-ALTER TABLE `jobs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `jobs_app`
---
-ALTER TABLE `jobs_app`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1995,11 +1934,6 @@ ALTER TABLE `boost_rating`
 ALTER TABLE `cashback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `chat`
---
-ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
 -- AUTO_INCREMENT для таблицы `control`
 --
 ALTER TABLE `control`
@@ -2088,16 +2022,6 @@ ALTER TABLE `help_dialogs`
 -- AUTO_INCREMENT для таблицы `help_upload`
 --
 ALTER TABLE `help_upload`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `jobs`
---
-ALTER TABLE `jobs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `jobs_app`
---
-ALTER TABLE `jobs_app`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `logs`

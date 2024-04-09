@@ -143,4 +143,3 @@ $html->arr['question'] = isset($html->arr['question']) ? $html->arr['question'] 
 $mcache->set($mkey, $html->arr['question'], false, 15);
 
 sys::outjs(array('s' => $html->arr['question']), $nmch);
-?>

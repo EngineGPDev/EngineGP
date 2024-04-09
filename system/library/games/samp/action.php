@@ -122,5 +122,3 @@ class action extends actions
         return $eConfig;
     }
 }
-
-?>

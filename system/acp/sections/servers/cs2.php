@@ -72,4 +72,3 @@ else {
 
     $html->pack('main');
 }
-?>

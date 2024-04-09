@@ -101,4 +101,3 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
         $mcache->set('servers_' . $user['id'], $html->arr['main'], false, 4);
     }
 }
-?>

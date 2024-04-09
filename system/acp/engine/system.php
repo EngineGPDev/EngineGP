@@ -52,4 +52,3 @@ if ($go) {
 $html->get('index', 'sections/system');
 
 $html->pack('main');
-?>

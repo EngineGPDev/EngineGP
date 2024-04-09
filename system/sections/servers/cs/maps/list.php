@@ -76,6 +76,4 @@ $html->set('types', isset($html->arr['types']) ? $html->arr['types'] : '');
 $html->set('maps', isset($html->arr['maps']) ? $html->arr['maps'] : 'К сожалению карты не найдены в базе');
 $html->set('amaps', $mapsjs);
 $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
-$html->set('cdn', $cfg['cdn']);
 $html->pack('main');
-?>

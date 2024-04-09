@@ -21,4 +21,3 @@ $html->get('page');
 $html->set('content', file_get_contents(FILES . 'pages/' . $page['file']));
 
 $html->pack('main');
-?>

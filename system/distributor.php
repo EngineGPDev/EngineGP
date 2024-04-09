@@ -27,52 +27,27 @@ $go = array_key_exists('go', $url);
 $page = array_key_exists('page', $url) ? sys::int($url['page']) : 1;
 $route = $route == '' ? 'index' : $route;
 
+session_start();
+
 // Реферал
 if (isset($_GET['account']))
-    sys::cookie('part', sys::int($_GET['account']), 10);
+    $_SESSION['referrer'] = sys::int($_GET['account']);
 
 $auth = false;
 
-// Проверка cookie на авторизацию
-$aAuth = array();
+// Проверка сессии на авторизацию
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
 
-$aAuth['login'] = isset($_COOKIE['egp_login']) ? $_COOKIE['egp_login'] : '';
-$aAuth['passwd'] = isset($_COOKIE['egp_passwd']) ? $_COOKIE['egp_passwd'] : '';
-$aAuth['authkeycheck'] = isset($_COOKIE['egp_authkeycheck']) ? $_COOKIE['egp_authkeycheck'] : '';
+    $sql->query('SELECT `id`, `login`, `balance`, `group`, `level`, `time` FROM `users` WHERE `id`="' . $userId . '" LIMIT 1');
+    if ($sql->num()) {
+        $user = $sql->get();
 
-$authkey = md5($aAuth['login'] . $uip . $aAuth['passwd']);
-$userkey = md5($aAuth['login'] . $authkey . $aAuth['passwd']);
+        // Обновление активности
+        if ($user['time'] + 10 < $start_point)
+            $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-if (!in_array('', $aAuth) && $authkey == $aAuth['authkeycheck']) {
-    $users = $mcache->get('users_auth');
-
-    $user = isset($users[$userkey]) ? $users[$userkey] : 0;
-
-    if (!$user) {
-        if ((!sys::valid($aAuth['login'], 'other', $aValid['login'])) && !sys::valid($aAuth['passwd'], 'md5')) {
-            $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aAuth['login'] . '" AND `passwd`="' . $aAuth['passwd'] . '" LIMIT 1');
-            if ($sql->num()) {
-                $sql->query('SELECT `id`, `login`, `passwd`, `balance`, `group`, `level`, `time` FROM `users` WHERE `login`="' . $aAuth['login'] . '" AND `passwd`="' . $aAuth['passwd'] . '" LIMIT 1');
-                $user = array_merge(array('authkey' => $authkey), $sql->get());
-
-                $auth = 1;
-
-                sys::users($users, $user, $authkey);
-            }
-        }
-
-        if (!$auth) {
-            sys::cookie('egp_login', 'quit', -1);
-            sys::cookie('egp_passwd', 'quit', -1);
-            sys::cookie('egp_authkeycheck', 'quit', -1);
-        }
-    } else {
-        $sql->query('SELECT `balance`, `time` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
-        $user = array_merge($user, $sql->get());
-
-        sys::user($user);
-
-        $auth = 1;
+        $auth = true;
     }
 }
 
@@ -136,11 +111,14 @@ $html->set('cur', $cfg['currency']);
 
 // Если авторизован
 if ($auth) {
+    // Здесь вы можете использовать информацию о пользователе, например, $user['balance']
     $html->set('login', $user['login']);
     $html->set('balance', round($user['balance'], 2));
     $html->set('other_menu', isset($html->arr['vmenu']) ? $html->arr['vmenu'] : '');
-} else
+} else {
+    // Если пользователь не авторизован, выполните необходимые действия
     $html->set('other_menu', '');
+}
 
 $html->set('nav', isset($html->arr['nav']) ? $html->arr['nav'] : '', true);
 $html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
@@ -186,4 +164,3 @@ if ($auth) {
     $html->unitall('all', 'admin', 0, 1);
     $html->unitall('all', 'support', 0, 1);
 }
-?>

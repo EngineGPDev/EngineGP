@@ -75,4 +75,3 @@ else {
 
     $html->pack('main');
 }
-?>

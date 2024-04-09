@@ -90,5 +90,3 @@ class McQuery
         return SubStr($Data, 5);
     }
 }
-
-?>

@@ -16,21 +16,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteRule ^(?!acp).* index.php [L]
 
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
 ErrorDocument 403 /403.html
 ErrorDocument 404 /404.html
-
-#***Раскодировать, если не загружаются большие файлы:
-php_value max_execution_time 500
-php_value max_input_time 500
-php_value upload_max_filesize 30M
-php_value post_max_size 30M
-
-#***Раскодировать, если белый экран:
-#php_flag short_open_tag = On
-
-php_flag display_startup_errors on
-php_flag display_errors on
-php_flag html_errors on
 
 <ifModule mod_expires.c>
 

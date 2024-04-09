@@ -1,12 +1,29 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 header('X-Powered-By: EGP');
-
 date_default_timezone_set('Europe/Moscow');
 
-@ini_set('display_errors', TRUE);
-@ini_set('html_errors', TRUE);
-@ini_set('error_reporting', E_ALL);
+// Composer
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    die('Please <a href="https://getcomposer.org/download/" target="_blank" rel="noreferrer" style="color:#0a25bb;">install composer</a> and run <code style="background:#222;color:#00e01f;padding:2px 6px;border-radius:3px;">composer install</code>');
+}
+require(__DIR__ . '/vendor/autoload.php');
+
+// Загружаем .env
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load(__DIR__ . '/.env');
+
+if ($_ENV['RUN_MODE'] === 'dev') {
+    // Включение отображения ошибок в режиме разработки
+    ini_set('display_errors', TRUE);
+    ini_set('html_errors', TRUE);
+    ini_set('error_reporting', E_ALL);
+} else {
+    // Отключение отображения ошибок в продакшене
+    ini_set('display_errors', FALSE);
+    ini_set('html_errors', FALSE);
+    ini_set('error_reporting', 0);
+}
 
 DEFINE('EGP', TRUE);
 DEFINE('DIR', dirname('index.php'));
@@ -20,17 +37,10 @@ DEFINE('LIB', SYS . 'library/');
 DEFINE('ENG', SYS . 'engine/');
 DEFINE('SEC', SYS . 'sections/');
 
-$device = isset($_COOKIE['egp_device']) ? $_COOKIE['egp_device'] : '!mobile';
 $start_point = $_SERVER['REQUEST_TIME'];
 
 $mcache = new Memcache;
 $mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
-
-// Composer
-if (!file_exists(ROOT . 'vendor/autoload.php')) {
-    die('Please <a href="https://getcomposer.org/download/" target="_blank" rel="noreferrer" style="color:#0a25bb;">install composer</a> and run <code style="background:#222;color:#00e01f;padding:2px 6px;border-radius:3px;">composer install</code>');
-}
-require(ROOT . 'vendor/autoload.php');
 
 // Настройки
 include(DATA . 'config.php');
@@ -45,24 +55,8 @@ include(LIB . 'system.php');
 
 $uip = sys::ip();
 
-/* if(!isset($_COOKIE['egp_device']))
-{
-    include(LIB.'megp.php');
-
-    $device = $megp->isMobile() ? 'mobile' : '!mobile';
-
-    sys::cookie('egp_device', $device, 14);
-
-    if($device == 'mobile')
-        sys::back();
-} */
-
 // Распределитель
-if ($device == '!mobile')
-    include(SYS . 'distributor.php');
-/* else
-    include(SYS.'mdistributor.php'); */
+include(SYS . 'distributor.php');
 
 // Выхлоп
 echo $html->arr['all'];
-?>

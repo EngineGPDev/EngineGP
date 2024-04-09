@@ -84,14 +84,10 @@ class sys
         $html->set('home', $cfg['http']);
 
         if (is_array($notice)) {
-            global $device;
-
-            if ($device == '!mobile')
-                $html->set('notice', '<div class="informer ' . $notice['color'] . ' topifon">' . $notice['text'] . '</div><div class="space"></div>');
-            else
-                $html->set('notice', '<div class="heading-style-1 container"><div class="smaller-text color-' . $notice['color'] . '-light">' . $notice['text'] . '</div><div class="heading-decoration bg-' . $notice['color'] . '-light" style="margin-top: 0px"></div></div>');
-        } else
+            $html->set('notice', '<div class="informer ' . $notice['color'] . ' topifon">' . $notice['text'] . '</div><div class="space"></div>');
+        } else {
             $html->set('notice', '');
+        }
 
         if ($server['console_use']) $html->unit('console_use', 1); else $html->unit('console_use');
         if ($server['plugins_use']) $html->unit('plugins_use', 1); else $html->unit('plugins_use');
@@ -127,9 +123,9 @@ class sys
 
     public static function route($server, $inc, $go, $all = false)
     {
-        global $device, $start_point;
+        global $start_point;
 
-        $dir = $device == '!mobile' ? '' : 'megp/';
+        $dir = '';
         $use = true;
 
         if (in_array($inc, array('plugins', 'ftp', 'console', 'graph', 'copy', 'web'))) {
@@ -208,12 +204,12 @@ class sys
 
     public static function outhtml($text, $time = 3, $url = false, $cache = false)
     {
-        global $device, $mcache, $html, $cfg;
+        global $mcache, $html, $cfg;
 
         if ($cache)
             $mcache->delete($cache);
 
-        $tpl = $device == '!mobile' ? '' : '/megp';
+        $tpl = '';
 
         $html->get('out');
 
@@ -413,7 +409,12 @@ class sys
 
     public static function passwdkey($passwd)
     {
-        return md5($passwd);
+        return password_hash($passwd, PASSWORD_DEFAULT);
+    }
+
+    public static function passwdverify($passwd, $passwdhash)
+    {
+        return password_verify($passwd, $passwdhash);
     }
 
     public static function cookie($name, $value, $expires)
@@ -430,9 +431,7 @@ class sys
             if ($go)
                 sys::outjs(array('e' => sys::text('output', 'auth')));
 
-            global $device;
-
-            $link = $device == '!mobile' ? 'user/section/lk' : '';
+            $link = 'user/section/lk';
 
             exit(header('Refresh: 0; URL=' . $cfg['http'] . $link));
         }
@@ -448,9 +447,7 @@ class sys
             if ($go)
                 sys::outjs(array('e' => sys::text('output', 'noauth')));
 
-            global $device;
-
-            $link = $device == '!mobile' ? 'user/section/auth' : 'auth';
+            $link = 'user/section/auth';
 
             exit(header('Refresh: 0; URL=' . $cfg['http'] . $link));
         }
@@ -1242,14 +1239,10 @@ class sys
     {
         global $cfg;
 
-        $filename = 'http://cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
-        $file_headers = @get_headers($filename);
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-        if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' || trim($file_headers[0]) == 'HTTP/1.1 403 Forbidden') {
-            return $cfg['http'] . 'template/images/status/none.jpg';
-        } else {
-            return '' . $protocol . 'cdn.enginegp.ru/maps/' . $game . '/' . $name . '.jpg';
-        }
+        if(file_exists(DIR.'/maps/'.$game.'/'.$name.'.jpg'))
+            return $cfg['http'].'maps/'.$game.'/'.$name.'.jpg';
+
+        return $cfg['http'].'template/images/status/none.jpg';
     }
 
     public static function buttons($id, $status, $game = false, $ctrl = false)
@@ -1426,5 +1419,3 @@ class sys
         $logger->info($message, $context);
     }
 }
-
-?>

@@ -129,4 +129,3 @@ while ($server = $sql->get($servers)) {
 $mcache->set($mkey, array('s' => $list), false, 15);
 
 sys::outjs(array('s' => $list));
-?>

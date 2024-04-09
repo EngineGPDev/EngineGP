@@ -106,5 +106,3 @@ class scan extends scans
         return $aData;
     }
 }
-
-?>

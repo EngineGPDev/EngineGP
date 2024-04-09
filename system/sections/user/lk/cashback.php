@@ -116,4 +116,3 @@ $sql->query('UPDATE `users` set `part_money`="' . ($user['part_money'] - $aData[
 $sql->query('INSERT INTO `cashback` set `user`="' . $user['id'] . '", `purse`="' . $purse[$aData['purse']] . '", `money`="' . $aData['sum'] . '", `date`="' . $start_point . '", `status`="1"');
 
 sys::outjs(array('s' => 'Заявка на вывод средств была успешно создана'), $name_mcache);
-?>

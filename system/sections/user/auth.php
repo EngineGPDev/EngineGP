@@ -5,10 +5,6 @@ if (!DEFINED('EGP'))
 // Проверка на авторизацию
 sys::auth();
 
-sys::cookie('egp_login', 'quit', -1);
-sys::cookie('egp_passwd', 'quit', -1);
-sys::cookie('egp_authkeycheck', 'quit', -1);
-
 // Генерация новой капчи
 if (isset($url['captcha']))
     sys::captcha('auth', $uip);
@@ -29,7 +25,7 @@ if ($go) {
     $aData = array();
 
     $aData['login'] = isset($_POST['login']) ? $_POST['login'] : '';
-    $aData['passwd'] = isset($_POST['passwd']) ? sys::passwdkey($_POST['passwd']) : '';
+    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
 
     // Проверка входных данных
     foreach ($aData as $val)
@@ -54,11 +50,15 @@ if ($go) {
         $sql_q = '`mail`';
 
     // Проверка существования пользователя
-    $sql->query('SELECT `id`, `login`, `mail`, `security_ip`, `security_code` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" AND `passwd`="' . $aData['passwd'] . '" LIMIT 1');
+    $sql->query('SELECT `id`, `login`, `mail`, `security_ip`, `security_code`, `passwd` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" LIMIT 1');
     if (!$sql->num())
         sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
 
     $user = $sql->get();
+
+    // Проверка пароля
+    if (!sys::passwdverify($aData['passwd'], $user['passwd']))
+        sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
 
     $subnetwork = sys::whois($uip);
 
@@ -107,10 +107,8 @@ if ($go) {
     // Логирование ip
     $sql->query('INSERT INTO `auth` set `user`="' . $user['id'] . '", `ip`="' . $uip . '", `date`="' . $start_point . '", `browser`="' . sys::hb64($_SERVER['HTTP_USER_AGENT']) . '"');
 
-    // Запись cookie пользователю
-    sys::cookie('egp_login', $user['login'], 14);
-    sys::cookie('egp_passwd', $aData['passwd'], 14);
-    sys::cookie('egp_authkeycheck', md5($user['login'] . $uip . $aData['passwd']), 14);
+    // Запись сессии пользователя
+    $_SESSION['user_id'] = $user['id'];
 
     // Выхлоп удачной авторизации
     sys::outjs(array('s' => 'ok'), $nmch);
@@ -118,4 +116,3 @@ if ($go) {
 
 $html->get('auth', 'sections/user');
 $html->pack('main');
-?>

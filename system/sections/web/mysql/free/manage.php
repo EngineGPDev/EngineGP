@@ -35,4 +35,3 @@ $html->set('login', $web['login']);
 $html->set('passwd', $web['passwd']);
 
 $html->pack('main');
-?>

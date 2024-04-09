@@ -124,5 +124,3 @@ if ($plugin['cfg'])
     sys::outjs(array('s' => 'cfg'), $nmch);
 
 sys::outjs(array('s' => 'ok'), $nmch);
-
-?>

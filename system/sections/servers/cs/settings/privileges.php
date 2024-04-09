@@ -127,4 +127,3 @@ $html->set('id', $id);
 $html->set('list', $html->arr['list']);
 
 $html->pack('main');
-?>

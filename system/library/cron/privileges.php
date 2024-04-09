@@ -93,5 +93,3 @@ class privileges extends cron
         return NULL;
     }
 }
-
-?>

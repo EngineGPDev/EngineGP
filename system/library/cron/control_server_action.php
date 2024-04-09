@@ -51,5 +51,3 @@ class control_server_action extends cron
         return NULL;
     }
 }
-
-?>

@@ -53,5 +53,3 @@ class services
         return $list;
     }
 }
-
-?>

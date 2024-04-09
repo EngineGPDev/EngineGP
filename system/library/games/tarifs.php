@@ -259,5 +259,3 @@ class tarifs
         return NULL;
     }
 }
-
-?>

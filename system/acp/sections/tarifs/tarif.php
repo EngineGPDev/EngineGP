@@ -468,4 +468,3 @@ $plugins = isset($plugins[0]) ? substr($plugins, 0, -1) : '';
 $html->set('plugins_install', $plugins);
 
 $html->pack('main');
-?>

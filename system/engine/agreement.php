@@ -7,4 +7,3 @@ $html->nav($title);
 
 $html->get('agreement');
 $html->pack('main');
-?>

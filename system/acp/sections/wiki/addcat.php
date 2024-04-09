@@ -21,4 +21,3 @@ if ($go) {
 $html->get('addcat', 'sections/wiki');
 
 $html->pack('main');
-?>

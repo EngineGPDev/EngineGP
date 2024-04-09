@@ -60,4 +60,3 @@ $ssh->set('cat ' . $install . '/include/db.config.inc.php > ' . $path . '/includ
 $sql->query('UPDATE `web` set `update`="' . $start_point . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

@@ -87,4 +87,3 @@ $html->set('mapcycle', $mapcycle);
 $html->set('maps', $maps);
 
 $html->pack('main');
-?>

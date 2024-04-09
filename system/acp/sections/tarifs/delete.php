@@ -9,4 +9,3 @@ if ($sql->num())
 $sql->query('DELETE FROM `tarifs` WHERE `id`="' . $id . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'));
-?>

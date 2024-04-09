@@ -42,4 +42,3 @@ else {
 
     $html->pack('main');
 }
-?>

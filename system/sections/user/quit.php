@@ -5,13 +5,9 @@ if (!DEFINED('EGP'))
 // Проверка на авторизацию
 sys::noauth($auth, $go);
 
-sys::cookie('egp_login', 'quit', -1);
-sys::cookie('egp_passwd', 'quit', -1);
-sys::cookie('egp_authkeycheck', 'quit', -1);
+session_unset();
 
 // Обновление активности
 $sql->query('UPDATE `users` set `time`="' . ($start_point - 10) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-sys::users($users, $user, $authkey, true);
 sys::back($cfg['http']);
-?>

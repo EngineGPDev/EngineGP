@@ -477,5 +477,3 @@ class web
         return array('address' => $aWebUnit['address'], 'passwd' => $aWebUnit['passwd']);
     }
 }
-
-?>

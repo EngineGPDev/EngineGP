@@ -50,4 +50,3 @@ $ssh->set("mysql --login-path=local -e \"DROP DATABASE IF EXISTS " . $web['login
 $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

@@ -39,5 +39,3 @@ class update_address extends cron
         return NULL;
     }
 }
-
-?>

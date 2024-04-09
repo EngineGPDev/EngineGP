@@ -19,10 +19,6 @@ if ($go) {
         exit(file_get_contents(TEMP . (md5($graph['key'] . 'full_' . $time)) . '.png'));
     }
 
-    include(LIB . 'games/graph/pData.php');
-    include(LIB . 'games/graph/pDraw.php');
-    include(LIB . 'games/graph/pImage.php');
-
     include(LIB . 'games/graph.php');
 
     graph::full($id, $server['slots_start'], $graph['key'], $time);
@@ -65,4 +61,3 @@ else {
 
     $mcache->set('server_graph_' . $id, $html->arr['main'], false, 4);
 }
-?>

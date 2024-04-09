@@ -27,4 +27,3 @@ $aData['orcfg'] = array(
 $aData['orsql'] = array();
 
 web::connect($aData, $nmch);
-?>

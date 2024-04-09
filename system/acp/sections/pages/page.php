@@ -33,4 +33,3 @@ $html->set('name', htmlspecialchars_decode($page['name']));
 $html->set('text', htmlspecialchars(file_get_contents(FILES . 'pages/' . $page['file'])));
 
 $html->pack('main');
-?>

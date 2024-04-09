@@ -303,4 +303,3 @@ $html->set('config_write_del_all', $config_write_del_all);
 $html->set('files_delete_all', $files_delete_all);
 
 $html->pack('main');
-?>

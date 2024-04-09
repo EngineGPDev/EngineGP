@@ -234,5 +234,3 @@ class tarif extends tarifs
         return false;
     }
 }
-
-?>

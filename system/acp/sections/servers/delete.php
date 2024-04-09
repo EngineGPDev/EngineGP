@@ -5,4 +5,3 @@ if (!DEFINED('EGP'))
 $sql->query('UPDATE `servers` set `user`="-1", `status`="overdue", `time`="0", `overdue`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
 sys::outjs(array('s' => 'ok'));
-?>

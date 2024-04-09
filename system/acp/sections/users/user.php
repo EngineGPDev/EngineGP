@@ -118,4 +118,3 @@ $html->set('rental', $us['rental']);
 $html->set('extend', $us['extend']);
 
 $html->pack('main');
-?>

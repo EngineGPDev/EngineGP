@@ -78,4 +78,3 @@ if ($sql->num()) {
 }
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

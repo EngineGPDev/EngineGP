@@ -22,4 +22,3 @@ while ($copy = $sql->get($copys)) {
 $mcache->delete('server_copy_' . $id);
 
 sys::outjs(array('s' => 'ok'), $nmch);
-?>

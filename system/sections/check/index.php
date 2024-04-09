@@ -100,4 +100,3 @@ $html->nav('Проверка плагинов на наличие бэкдоро
 $html->get('check', 'sections/check');
 
 $html->pack('main');
-?>

@@ -21,4 +21,3 @@ $sql->query('UPDATE `control_servers` set `status`="off" WHERE `unit`="' . $id .
 $mcache->set('reboot_control_' . $id, true, false, 10);
 
 sys::outjs(array('s' => 'ok'));
-?>

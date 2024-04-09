@@ -8,4 +8,3 @@ $server = $sql->get();
 sys::nav($server, $id, 'rcon');
 
 include(sys::route($server, 'rcon', $go));
-?>

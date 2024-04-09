@@ -50,4 +50,3 @@ $html->set('wait_servers', $wait_servers);
 $html->set('updates_servers', $updates_servers);
 
 $html->pack('main');
-?>

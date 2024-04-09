@@ -318,4 +318,3 @@ while ($data = $sql->get()) {
 $html->set('update', $update);
 
 $html->pack('main');
-?>

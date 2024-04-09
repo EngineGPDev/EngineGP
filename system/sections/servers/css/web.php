@@ -78,4 +78,3 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_arr
         $mcache->set('server_web_' . $id, $html->arr['main'], false, 4);
     }
 }
-?>

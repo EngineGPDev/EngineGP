@@ -2,9 +2,12 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-DEFINE('USER_DATABASE', 'root');
-DEFINE('PASSWORD_DATABASE', 'SQLPASS'); // пароль mysql
-DEFINE('NAME_DATABASE', 'enginegp');
-DEFINE('CONNECT_DATABASE', 'localhost');
-DEFINE('ERROR_DATABASE', FALSE);
-?>
+// Загружаем .env
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load(ROOT.'.env');
+
+define('USER_DATABASE', $_ENV['DB_USERNAME']);
+define('PASSWORD_DATABASE', $_ENV['DB_PASSWORD']);
+define('NAME_DATABASE', $_ENV['DB_DATABASE']);
+define('CONNECT_DATABASE', $_ENV['DB_HOST']);
+define('ERROR_DATABASE', false);

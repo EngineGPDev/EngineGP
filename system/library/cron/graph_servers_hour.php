@@ -24,5 +24,3 @@ class graph_servers_hour extends cron
         return NULL;
     }
 }
-
-?>

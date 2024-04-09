@@ -51,5 +51,3 @@ class server_action extends cron
         return NULL;
     }
 }
-
-?>

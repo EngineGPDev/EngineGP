@@ -18,5 +18,3 @@ class scan_control extends cron
         return NULL;
     }
 }
-
-?>

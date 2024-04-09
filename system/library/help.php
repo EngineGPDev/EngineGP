@@ -96,5 +96,3 @@ class help
         return $titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
 }
-
-?>

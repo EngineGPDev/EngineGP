@@ -77,4 +77,3 @@ else {
 
     $mcache->set('ctrl_server_copy_' . $sid, $html->arr['main'], false, 4);
 }
-?>

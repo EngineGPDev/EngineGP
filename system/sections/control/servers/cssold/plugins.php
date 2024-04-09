@@ -148,4 +148,3 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $mcache->set('ctrl_server_plugins_' . $sid, $html->arr['main'], false, 60);
     }
 }
-?>

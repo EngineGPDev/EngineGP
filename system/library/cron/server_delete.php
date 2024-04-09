@@ -139,5 +139,3 @@ class server_delete extends cron
         return NULL;
     }
 }
-
-?>

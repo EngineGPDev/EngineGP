@@ -215,7 +215,7 @@ class ctrl
 
     public static function route($server, $inc, $go)
     {
-        global $device, $start_point;
+        global $start_point;
 
         if (in_array($server['status'], array('install', 'reinstall', 'update', 'recovery'))) {
             if ($go)
@@ -232,7 +232,7 @@ class ctrl
 
     public static function cpulist($unit, $core, $count = false)
     {
-        global $device, $start_point;
+        global $start_point;
 
         include(LIB . 'ssh.php');
 
@@ -421,7 +421,7 @@ class ctrl
         else {
             $weeks = $week[1] . ',' . $week[2] . ',' . $week[3] . ',' . $week[4] . ',' . $week[5] . ',' . $week[6] . ',' . $week[7];
             $weeks = str_replace(array(',0', '0'), '', $weeks);
-            $week = $weeks{0} == ',' ? substr($weeks, 1) : $weeks;
+            $week = $weeks[0] == ',' ? substr($weeks, 1) : $weeks;
         }
 
         $cron_task = $time . $week . ' screen -dmS s' . $id . ' bash -c \'cd /var/enginegp && php cron.php ' . $cfg['cron_key'] . ' control_server_cron ' . $id . ' ' . $cid . '\'';
@@ -429,5 +429,3 @@ class ctrl
         return $cron_task;
     }
 }
-
-?>

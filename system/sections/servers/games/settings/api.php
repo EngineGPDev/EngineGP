@@ -11,4 +11,3 @@ else
 $mcache->delete('server_settings_' . $id);
 
 sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
-?>

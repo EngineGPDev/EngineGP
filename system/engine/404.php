@@ -4,4 +4,3 @@ if (!DEFINED('EGP'))
 
 http_response_code(404);
 exit(file_get_contents(ROOT . '404.html'));
-?>

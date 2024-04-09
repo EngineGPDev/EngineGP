@@ -58,5 +58,3 @@ class scan_servers_down extends cron
         return NULL;
     }
 }
-
-?>

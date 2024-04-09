@@ -47,4 +47,3 @@ $html->set('autorestart', $autorestart);
 $html->set('slots', str_replace('"' . $server['slots_start'] . '"', '"' . $server['slots_start'] . '" selected="select"', $slots));
 
 $html->pack('start');
-?>

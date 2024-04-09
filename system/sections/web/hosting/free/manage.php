@@ -48,4 +48,3 @@ $html->set('passwd', $web['passwd']);
 $html->set('date', sys::today($web['date']));
 
 $html->pack('main');
-?>

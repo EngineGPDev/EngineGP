@@ -17,8 +17,6 @@ $loggingInFile->loggerOnly(true);
 $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 
-$device = '!mobile';
-
 // Парсинг адреса
 $url = is_array(sys::url()) ? sys::url() : array();
 $route = sys::url(false);
@@ -29,30 +27,25 @@ $go = array_key_exists('go', $url);
 $page = array_key_exists('page', $url) ? sys::int($url['page']) : 1;
 $route = $route == '' ? 'index' : $route;
 
+session_start();
+
 $auth = false;
 
-// Проверка cookie на авторизацию
-$aAuth = array();
+// Проверка сессии на авторизацию
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
 
-$aAuth['login'] = isset($_COOKIE['egp_login']) ? $_COOKIE['egp_login'] : '';
-$aAuth['passwd'] = isset($_COOKIE['egp_passwd']) ? $_COOKIE['egp_passwd'] : '';
-$aAuth['authkeycheck'] = isset($_COOKIE['egp_authkeycheck']) ? $_COOKIE['egp_authkeycheck'] : '';
+    $sql->query('SELECT `id`, `login`, `balance`, `group`, `level`, `time` FROM `users` WHERE `id`="' . $userId . '" LIMIT 1');
+    if ($sql->num()) {
+        $user = $sql->get();
 
-$authkey = md5($aAuth['login'] . $uip . $aAuth['passwd']);
+        // Обновление активности
+        if ($user['time'] + 10 < $start_point)
+            $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-if (!in_array('', $aAuth) and $authkey == $aAuth['authkeycheck']) {
-    if ((!sys::valid($aAuth['login'], 'other', $aValid['login'])) and !sys::valid($aAuth['passwd'], 'md5')) {
-        $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aAuth['login'] . '" AND `passwd`="' . $aAuth['passwd'] . '" AND `group`="admin" LIMIT 1');
-        if ($sql->num()) {
-            $sql->query('SELECT `id`, `login`, `balance`, `group`, `time` FROM `users` WHERE `login`="' . $aAuth['login'] . '" AND `passwd`="' . $aAuth['passwd'] . '" LIMIT 1');
-            $user = $sql->get();
-
-            // Обновление активности
-            if ($user['time'] + 10 < $start_point)
-                $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
-
+        // Проверка принадлежности к группе admin
+        if ($user['group'] === "admin")
             $auth = true;
-        }
     }
 }
 
@@ -139,4 +132,3 @@ foreach ($aRoute as $route)
 $html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
 
 $html->pack('all');
-?>

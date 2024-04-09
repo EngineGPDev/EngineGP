@@ -53,5 +53,3 @@ class scan_servers_stop extends cron
         return NULL;
     }
 }
-
-?>

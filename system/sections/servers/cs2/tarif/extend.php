@@ -47,4 +47,3 @@ if ($cfg['settlement_period'])
 $days = params::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : games::parse_day($aData['time'], true);
 
 include(SEC . 'servers/games/tarif/extend.php');
-?>

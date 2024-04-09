@@ -54,7 +54,7 @@ class threads extends cron
 
         foreach ($threads as $thread) {
             foreach ($thread as $screen => $servers)
-                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php7.4 cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
         }
 
         $start_point = $_SERVER['REQUEST_TIME'];
@@ -63,5 +63,3 @@ class threads extends cron
         return NULL;
     }
 }
-
-?>

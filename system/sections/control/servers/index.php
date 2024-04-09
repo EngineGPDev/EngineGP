@@ -8,4 +8,3 @@ $server = $sql->get();
 ctrl::nav($server, $id, $sid, 'index');
 
 include(SEC . 'control/servers/' . $server['game'] . '/index.php');
-?>

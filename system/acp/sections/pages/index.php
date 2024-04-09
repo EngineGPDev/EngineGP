@@ -32,4 +32,3 @@ else {
 
     $html->pack('main');
 }
-?>

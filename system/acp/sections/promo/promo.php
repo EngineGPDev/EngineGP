@@ -86,4 +86,3 @@ $html->set('extend', $promo['extend'] ? '<option value="1">Для продлен
 $html->set('tarif', $unit['name'] . ' / #' . $tarif['id'] . ' ' . $tarif['name'] . ' (' . strtoupper($tarif['game']) . ')');
 
 $html->pack('main');
-?>

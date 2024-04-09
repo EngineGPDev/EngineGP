@@ -96,4 +96,3 @@ $html->set('list', $list);
 $html->set('loads', $loads);
 
 $html->pack('main');
-?>

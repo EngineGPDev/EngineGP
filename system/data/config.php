@@ -2,16 +2,18 @@
 if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-$cfg = array(
-    'name' => 'EngineGP', // Название сайта
-    'graph' => 'EngineGP', // Описание сайта
-    'url' => 'IPADDR', // Тут ваш IP или Домен, пример: 127.0.0.1
-    'http' => 'http://IPADDR/', // Тут ваш IP или Домен с указанием http, пример: http://127.0.0.1
-    'plugins' => 'http://IPADDR/files/plugins/', // Путь к плагинам
-    'ip' => 'IPADDR', // IP-Адрес сайта прмер: 127.0.0.1
-    'subnet' => 'IPADDR.0/23', // Подсеть сайта пример: 127.0.0.1.0/23 .0/23(не стирать)
+// Загружаем .env
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load(ROOT.'.env');
 
-    'cdn' => 'http://cdn.enginegp.ru/', // CDN сервис EGP, если ваш сайт переехал на https то следует тут тоже сменить протокол с http на https
+$cfg = array(
+    'name' => $_ENV['APP_NAME'],
+    'graph' => $_ENV['APP_NAME'],
+    'url' => $_ENV['APP_URL'],
+    'http' => $_ENV['APP_PROTOCOL'] . $_ENV['APP_URL'] . '/',
+    'plugins' => $_ENV['APP_PROTOCOL'] . $_ENV['APP_URL'] . '/files/plugins/',
+    'ip' => $_ENV['APP_IP'],
+    'subnet' => $_ENV['APP_IP'],
 
     // Данные для пополнения баланса пользователям
     'freekassa_id' => '', // Номер кассы
@@ -335,4 +337,3 @@ $cfg = array(
         'cs2' => false
     )
 );
-?>

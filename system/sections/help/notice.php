@@ -44,4 +44,3 @@ $html->set('ago', help::ago($msg['time']));
 $html->pack('notice');
 
 sys::outjs(array('notice' => $html->arr['notice']));
-?>

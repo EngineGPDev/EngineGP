@@ -54,4 +54,3 @@ if ($url['type'] == 'plugin') {
 }
 
 sys::outjs(array('s' => 'ok'));
-?>

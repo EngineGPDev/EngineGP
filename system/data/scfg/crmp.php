@@ -50,4 +50,3 @@ $aScfg_form = array(
         . '<option value="0">Интернет</option>'
         . '<option value="1">Локальный</option></select>'
 );
-?>

@@ -161,4 +161,3 @@ if (!tarif::price($tarif['price'])) {
     $html->unit('tickrate');
 
 $html->pack('start');
-?>

@@ -397,5 +397,3 @@ class graph
         return !count($arr) ? 0 : ceil(array_sum($arr) / count($arr));
     }
 }
-
-?>

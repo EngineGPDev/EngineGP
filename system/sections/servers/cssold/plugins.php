@@ -146,4 +146,3 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $mcache->set('server_plugins_' . $id, $html->arr['main'], false, 60);
     }
 }
-?>

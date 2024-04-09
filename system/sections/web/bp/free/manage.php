@@ -36,4 +36,3 @@ else
     $html->unit('update');
 
 $html->pack('main');
-?>

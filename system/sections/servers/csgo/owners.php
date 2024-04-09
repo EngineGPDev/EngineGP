@@ -162,4 +162,3 @@ else {
 
     $mcache->set('server_owners_' . $id, $html->arr['main'], false, 1);
 }
-?>

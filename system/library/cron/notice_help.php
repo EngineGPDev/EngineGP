@@ -28,5 +28,3 @@ class notice_help extends cron
         return NULL;
     }
 }
-
-?>

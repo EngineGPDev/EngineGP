@@ -105,5 +105,3 @@ class rcon
         return array('ico' => $ico, 'name' => empty($cData['country']['name_ru']) ? 'Не определена' : $cData['country']['name_ru']);
     }
 }
-
-?>

@@ -20,4 +20,3 @@ $text = array(
     'buy_plugin' => 'Покупка плагина: [plugin], списана сумма: [money] руб. (сервер: #[id])',
     'ctrl_buy_plugin' => 'Покупка плагина: [plugin], списана сумма: [money] руб. (CTRL сервер: #[id])',
 );
-?>

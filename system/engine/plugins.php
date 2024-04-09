@@ -158,4 +158,3 @@ if (!isset($html->arr['main'])) {
         $mcache->set('plugins_list_view_' . $url['game'], $html->arr['main'], false, 60);
     }
 }
-?>

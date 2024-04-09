@@ -26,4 +26,3 @@ $html->get('signup', 'sections/users');
 $html->set('list', $list);
 
 $html->pack('main');
-?>
