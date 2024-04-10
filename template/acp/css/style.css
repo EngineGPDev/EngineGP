@@ -1,3 +1,13 @@
+/*
+ * EngineGP   (https://enginegp.ru or https://enginegp.com)
+ *
+ * @link      https://github.com/EngineGPDev/EngineGP
+ * @link      https://gitforge.ru/EngineGP/EngineGP
+ * @copyright Copyright (c) Solovev Sergei <inbox@seansolovev.ru>
+ * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE
+ * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE
+ */
+
 @font-face {
     font-family: 'Cuprum';
     src: local('Cuprum'), local('Cuprum-Regular'), url('../fonts/cuprum.woff2') format('woff2'), url('../fonts/cuprum.woff') format('woff'), url('../fonts/cuprum.ttf') format('truetype');

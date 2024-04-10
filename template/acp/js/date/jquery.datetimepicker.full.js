@@ -1,12 +1,11 @@
-/*!
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version 1.3.3
+/*
+ * EngineGP   (https://enginegp.ru or https://enginegp.com)
  *
- * Date formatter utility library that allows formatting date/time variables or Date objects using PHP DateTime format.
- * @see http://php.net/manual/en/function.date.php
- *
- * For more JQuery plugins visit http://plugins.krajee.com
- * For more Yii related demos visit http://demos.krajee.com
+ * @link      https://github.com/EngineGPDev/EngineGP
+ * @link      https://gitforge.ru/EngineGP/EngineGP
+ * @copyright Copyright (c) Solovev Sergei <inbox@seansolovev.ru>
+ * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE
+ * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE
  */
 var DateFormatter;
 (function () {

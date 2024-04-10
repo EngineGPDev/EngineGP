@@ -1,13 +1,12 @@
 /*
-jquery.percentageloader.js 
- 
-Copyright (c) 2012, Better2Web
-All rights reserved.
-
-This jQuery plugin is licensed under the Simplified BSD License. Please
-see the file license.txt that was included with the plugin bundle.
-
-*/
+ * EngineGP   (https://enginegp.ru or https://enginegp.com)
+ *
+ * @link      https://github.com/EngineGPDev/EngineGP
+ * @link      https://gitforge.ru/EngineGP/EngineGP
+ * @copyright Copyright (c) Solovev Sergei <inbox@seansolovev.ru>
+ * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE
+ * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE
+ */
 
 /*global jQuery */
 
