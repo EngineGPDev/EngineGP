@@ -56,7 +56,7 @@ function maps_update() {
 function plugins_category() {
     $.get(home + 'addons/section/addpl/get/cat/game/' + $('#game').val(),
         function (data) {
-            $('#category').html('<option value="0">Выберете категорию</option>' + data);
+            $('#category').html('<option value="0">Выберите категорию</option>' + data);
         });
 
     return false;

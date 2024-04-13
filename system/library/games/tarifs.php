@@ -54,7 +54,7 @@ class tarifs
             return NULL;
         }
 
-        $options = '<option value="0">Выберете выделенный адрес</option>';
+        $options = '<option value="0">Выберите выделенный адрес</option>';
 
         $sql->query('SELECT `id`, `ip`, `price` FROM `address` WHERE `unit`="' . $server['unit'] . '" AND `buy`="0"');
         if (!$sql->num())
@@ -138,7 +138,7 @@ class tarifs
     {
         global $cfg, $html, $start_point;
 
-        $options = '<option value="0">Выберете количество слот</option>';
+        $options = '<option value="0">Выберите количество слот</option>';
 
         // С уменьшением (min ==> max) || закончился срок аренды
         if (($cfg['change_slots'][$server['game']]['days'] and $cfg['change_slots'][$server['game']]['down']) || $server['time'] < $start_point) {

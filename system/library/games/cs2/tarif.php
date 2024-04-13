@@ -32,7 +32,7 @@ class tarif extends tarifs
 
         $html->set('id', $sid);
         $html->set('time', sys::date('min', $server['time']));
-        $html->set('options', '<option value="0">Выберете период продления</option>' . $options);
+        $html->set('options', '<option value="0">Выберите период продления</option>' . $options);
         $html->set('slots', $server['slots']);
         $html->set('info', $server['tickrate'] . ' TickRate');
         $html->set('tarif', $tarif_name);
@@ -65,7 +65,7 @@ class tarif extends tarifs
         $html->set('id', $sid);
         $html->set('time', sys::date('min', $server['time']));
         $html->set('date', $server['time'] > $start_point ? 'Сервер продлен до: ' . date('d.m.Y', $server['time']) : 'Текущая дата: ' . date('d.m.Y', $start_point));
-        $html->set('options', '<option value="0">Выберете период продления</option>' . $options);
+        $html->set('options', '<option value="0">Выберите период продления</option>' . $options);
         $html->set('slots', $server['slots']);
         $html->set('info', $server['tickrate'] . ' TickRate');
         $html->set('tarif', $tarif['name']);
@@ -88,7 +88,7 @@ class tarif extends tarifs
 
         $tarif = $sql->get();
 
-        $options = '<option value="0">Выберете тарифный план</option>';
+        $options = '<option value="0">Выберите тарифный план</option>';
 
         $aPrice = explode(':', $tarif['price']);
         $aTick = explode(':', $tarif['tickrate']);
@@ -133,7 +133,7 @@ class tarif extends tarifs
 
         $units = 0;
 
-        $options = '<option value="0">Выберете новую локацию</option>';
+        $options = '<option value="0">Выберите новую локацию</option>';
 
         while ($tarif = $sql->get($tarifs)) {
             if (!in_array($server['tickrate'], explode(':', $tarif['tickrate'])))
