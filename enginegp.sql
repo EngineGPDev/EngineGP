@@ -1287,7 +1287,7 @@ CREATE TABLE `units` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` char(15) NOT NULL,
-  `passwd` char(60) NOT NULL,
+  `passwd` char(255) NOT NULL,
   `name` char(32) NOT NULL,
   `lastname` char(32) NOT NULL,
   `patronymic` char(32) NOT NULL,
