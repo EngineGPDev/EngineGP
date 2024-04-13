@@ -412,7 +412,7 @@ $discount = $tarif['discount'] ? '<option value="1">Включены</option><op
 $autostop = $tarif['autostop'] ? '<option value="1">Включено</option><option value="0">Выключено</option>' : '<option value="0">Выключено</option><option value="1">Включено</option>';
 $show = $tarif['show'] ? '<option value="1">Доступна</option><option value="0">Недоступна</option>' : '<option value="0">Недоступна</option><option value="1">Доступна</option>';
 
-$units = '<option value="0">Выберете локацию</option>';
+$units = '<option value="0">Выберите локацию</option>';
 
 $sql->query('SELECT `id`, `name` FROM `units` ORDER BY `id` ASC');
 while ($unit = $sql->get())

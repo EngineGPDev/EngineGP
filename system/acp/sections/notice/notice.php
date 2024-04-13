@@ -42,7 +42,7 @@ if ($go) {
 
         $aData['unit'] = 0;
     } else
-        sys::outjs(array('e' => 'Выберете получателя уведомления'));
+        sys::outjs(array('e' => 'Выберите получателя уведомления'));
 
     $sql->query('UPDATE `notice` set '
         . '`unit`="' . $aData['unit'] . '",'
