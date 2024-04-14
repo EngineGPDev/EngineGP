@@ -76,7 +76,7 @@ class scan_servers extends cron
                 if ($server['user'] != -1)
                     $sql->query('UPDATE `servers` set `user`="-1" WHERE `id`="' . $id . '" LIMIT 1');
 
-                exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_delete ' . $id . '"');
+                exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_delete ' . $id . '"');
 
                 continue;
             }
@@ -91,12 +91,12 @@ class scan_servers extends cron
 
                         // Запуск сервера (если он был выключен не через панель)
                         if ($server['stop']) {
-                            exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action start ' . $game . ' ' . $id . '"');
+                            exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action start ' . $game . ' ' . $id . '"');
 
                             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Включение сервера: сервер выключен не через панель", `time`="' . $start_point . '"');
                         }
                     } else
-                        exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_scan ' . $game . ' ' . $id . '"');
+                        exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_scan ' . $game . ' ' . $id . '"');
 
                     break;
 
@@ -106,7 +106,7 @@ class scan_servers extends cron
                     else {
                         // Запуск сервера (если он был выключен не через панель)
                         if ($server['stop']) {
-                            exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action start ' . $game . ' ' . $id . '"');
+                            exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action start ' . $game . ' ' . $id . '"');
 
                             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Включение сервера: сервер выключен не через панель", `time`="' . $start_point . '"');
 

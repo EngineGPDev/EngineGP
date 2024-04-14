@@ -87,11 +87,11 @@ class scan_servers_load extends cron
             $max_ram = $server['ram_use_max'] ? $server['ram_use_max'] : $cfg['ram_use_max'][$game];
 
             if ($average_cpu > $max_cpu) {
-                exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $game . ' ' . $id . '"');
+                exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $game . ' ' . $id . '"');
 
                 $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Перезагрука сервера: OVERLOAD^cpu = ' . $average_cpu . '%", `time`="' . $start_point . '"');
             } elseif ($average_ram > $max_ram) {
-                exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $game . ' ' . $id . '"');
+                exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $game . ' ' . $id . '"');
 
                 $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Перезагрука сервера: OVERLOAD^ram = ' . $average_ram . '%", `time`="' . $start_point . '"');
             }
