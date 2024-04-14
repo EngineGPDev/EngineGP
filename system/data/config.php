@@ -80,7 +80,7 @@ $cfg = array(
     'server_delete' => 3, // Через сколько дней удалить игровой сервер после окончания его аренды.
     'steamcmd' => '/path/cmd', // Путь к steamcmd на локациях (/path/steam)
     'iptables' => 'iptables_block', // Файл правил для FireWall (блокировка на уровне оборудования) (/root/_FILE_)
-    'cron_key' => $_ENV['APP_IP'], // Ключ для cron.php
+    'cron_key' => $_ENV['APP_CRONKEY'], // Ключ для cron.php
     'cron_taskset' => '0', // Ядро, на котором запускать cron.php (уставновить отличный от нуля, если на VDS больше 1 ядра/потока)
 
     // Кеш (кол-во секунд)
