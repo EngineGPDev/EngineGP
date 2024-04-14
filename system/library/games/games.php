@@ -188,7 +188,7 @@ class games
             $week = $weeks[0] == ',' ? substr($weeks, 1) : $weeks;
         }
 
-        $cron_task = $time . $week . ' screen -dmS s' . $id . ' bash -c \'cd /var/enginegp && php cron.php ' . $cfg['cron_key'] . ' server_cron ' . $id . ' ' . $cid . '\'';
+        $cron_task = $time . $week . ' screen -dmS s' . $id . ' bash -c \'cd /var/www/enginegp && php cron.php ' . $cfg['cron_key'] . ' server_cron ' . $id . ' ' . $cid . '\'';
 
         return $cron_task;
     }

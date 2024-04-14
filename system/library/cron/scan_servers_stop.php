@@ -57,7 +57,7 @@ class scan_servers_stop extends cron
             if (!$sql->num())
                 continue;
 
-            exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action stop ' . $game . ' ' . $id . '"');
+            exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action stop ' . $game . ' ' . $id . '"');
 
             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Выключение сервера: на сервере нет игроков", `time`="' . $start_point . '"');
         }

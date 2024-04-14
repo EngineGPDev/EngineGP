@@ -28,7 +28,7 @@ class server_cron extends cron
 
         $cmd = $cron['task'] == 'console' ? ' ' . $argv[4] : '';
 
-        exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action ' . $cron['task'] . ' ' . $server['game'] . ' ' . $argv[3] . $cmd . '"');
+        exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action ' . $cron['task'] . ' ' . $server['game'] . ' ' . $argv[3] . $cmd . '"');
 
         return NULL;
     }

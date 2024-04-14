@@ -798,7 +798,7 @@ CREATE TABLE `panel` (
 --
 
 INSERT INTO `panel` (`address`, `passwd`, `path`) VALUES
-('IPADDR:22', 'ROOTPASSWORD', '/var/enginegp/');
+('IPADDR:22', 'ROOTPASSWORD', '/var/www/enginegp/');
 
 -- --------------------------------------------------------
 

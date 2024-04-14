@@ -62,7 +62,7 @@ class control_scan_servers_down extends cron
             if (!in_array(trim($ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server['address'] . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), array('DOWN', 'no')))
                 continue;
 
-            exec('sh -c "cd /var/enginegp; php cron.php ' . $cfg['cron_key'] . ' control_server_action restart ' . $game . ' ' . $id . '"');
+            exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' control_server_action restart ' . $game . ' ' . $id . '"');
 
             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="[Контроль] Перезагрука сервера: сервер завис", `time`="' . $start_point . '"');
         }
