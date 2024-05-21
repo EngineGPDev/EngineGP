@@ -38,6 +38,7 @@ class action extends actions
             return array('e' => sys::text('error', 'ssh'));
 
         list($ip, $port) = explode(':', $server['address']);
+        $internalIp = $ssh->getInternalIp();
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -102,7 +103,7 @@ class action extends actions
         $fps = $server['fps'] + $cfg['fpsplus'];
 
         // Параметры запуска
-        $bash = './hlds_run -debug -game cstrike -norestart -condebug -sys_ticrate ' . $fps . ' +servercfgfile server.cfg +sys_ticrate ' . $fps . ' +map \'' . $server['map_start'] . '\' +maxplayers ' . $server['slots_start'] . ' +ip ' . $ip . ' +port ' . $port . ' +sv_lan 0 ' . $vac . ' ' . $pingboost;
+        $bash = './hlds_run -debug -game cstrike -norestart -condebug -sys_ticrate ' . $fps . ' +servercfgfile server.cfg +sys_ticrate ' . $fps . ' +map \'' . $server['map_start'] . '\' +maxplayers ' . $server['slots_start'] . ' +ip ' . $internalIp . ' +port ' . $port . ' +sv_lan 0 ' . $vac . ' ' . $pingboost;
 
         // Временный файл
         $temp = sys::temp($bash);

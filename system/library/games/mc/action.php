@@ -38,13 +38,14 @@ class action extends actions
             return array('e' => sys::text('error', 'ssh'));
 
         list($ip, $port) = explode(':', $server['address']);
+        $internalIp = $ssh->getInternalIp();
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
 
         // Временный файл
-        $temp = sys::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.properties')));
+        $temp = sys::temp(action::config($internalIp, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.properties')));
 
         // Обновление файла server.cfg
         $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.properties', 0644);
