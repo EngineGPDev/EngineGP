@@ -38,6 +38,7 @@ class action extends actions
             return array('e' => sys::text('error', 'ssh'));
 
         list($ip, $port) = explode(':', $server['address']);
+        $internalIp = $ssh->getInternalIp();
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -104,7 +105,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './RustDedicated -dedicated -debug -norestart -condebug console.log -usercon -ip ' . $ip . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './RustDedicated -dedicated -debug -norestart -condebug console.log -usercon -ip ' . $internalIp . ' -port ' . $port . ' -maxplayers ' . $server['slots_start'] . ' -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);

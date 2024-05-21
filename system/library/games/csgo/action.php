@@ -38,6 +38,7 @@ class action extends actions
             return array('e' => sys::text('error', 'ssh'));
 
         list($ip, $port) = explode(':', $server['address']);
+        $internalIp = $ssh->getInternalIp();
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -104,7 +105,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './srcds_run -debug -game csgo -norestart -condebug console.log -usercon -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' -maxplayers_override ' . $server['slots_start'] . ' +ip ' . $ip . ' +net_public_adr ' . $ip . ' +port ' . $port . ' -sv_lan 0 ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './srcds_run -debug -game csgo -norestart -condebug console.log -usercon -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' -maxplayers_override ' . $server['slots_start'] . ' +ip ' . $internalIp . ' +net_public_adr ' . $internalIp . ' +port ' . $port . ' -sv_lan 0 ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);

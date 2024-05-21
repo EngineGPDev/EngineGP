@@ -18,6 +18,7 @@ class ssh
 {
     var $conn;
     var $stream;
+    private $alternativeInterfaces = ['enp3s0', 'enp0s3', 'ens3', 'eth0'];
 
     public function auth($passwd, $address)
     {
@@ -104,6 +105,17 @@ class ssh
         }
 
         return NULL;
+    }
+
+    public function getInternalIp()
+    {
+        foreach ($this->alternativeInterfaces as $interface) {
+            $command = "ip addr show $interface | grep 'inet ' | awk '{print $2}' | cut -d/ -f1";
+            $internal_ip = $this->get($command);
+            if (!empty(trim($internal_ip))) {
+                return trim($internal_ip);
+            }
+        }
     }
 }
 
