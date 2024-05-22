@@ -34,16 +34,13 @@ if ($go) {
 
     $dir = $tarif['install'] . $server['uid'] . '/';
 
-    $filecmd = $dir . 'server_log.txt';
+    $filecmd = $dir . 'egpconsole.log';
 
-    $filecmd_copy = $dir . 'oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log';
+    $command = 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X hardcopy -h ' . $filecmd . ' && cat ' . $filecmd;
 
-    $weight = sys::int($ssh->get('du --block-size=1 ' . $filecmd . ' | awk \'{print $1}\''));
+    $output = $ssh->get($command);
 
-    if ($weight > 524288)
-        $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "mkdir -p ' . $dir . 'oldstart; cat ' . $filecmd . ' >> ' . $filecmd_copy . '; echo \"Выполнена очистка консоли, слишком большой объем данных\n\" > ' . $filecmd . '"');
-
-    sys::out(htmlspecialchars($ssh->get('cat ' . $filecmd), NULL, ''));
+    sys::out(htmlspecialchars($output, NULL, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
