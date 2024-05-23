@@ -19,23 +19,31 @@
 - **Minecraft Java**
 - **RUST**
 ## Automatic installation
-- **Update indexes and packages**
+**Update indexes and packages**
 ```bash
 apt -y update && apt -y upgrade
 ```
-- **Install GIT**
+**Install GIT**
 ```bash
 apt -y install git
 ```
-- **Clone the repository**
+**Clone the repository**
 ```bash
 git clone https://github.com/EngineGPDev/Autoinstall.git
 ```
-- **Make the installation file executable**
+**Make the installation file executable**
 ```bash
 chmod +x ./Autoinstall/install.sh
 ```
-- **Run automatic installation**
+**Run automatic installation**
 ```bash
 ./Autoinstall/install.sh
 ```
+## Contributors
+- [belomaxorka](https://github.com/belomaxorka)
+## Official sources
+- [Website](https://www.enginegp.com) - official website
+- [Documentation](https://docs.enginegp.com) - official documentation
+- [MantisBT](https://bugs.enginegp.com) - official bugtracker
+- [Telegram](https://t.me/enginegpdev) - telegram channel
+- [VKontakte](https://vk.com/enginegp) - vkontakte group
