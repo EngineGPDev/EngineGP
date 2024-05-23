@@ -1510,48 +1510,34 @@ blockquote {
     word-wrap: break-word
 }
 
-/*Стилизация кнопки ВВЕРХ */
-#back-top {
+.scroll-button {
+    width: 50px; /* Ширина кнопки */
+    height: 50px; /* Высота кнопки */
     position: fixed;
-    bottom: 30px;
-    left: 50%;
-    margin-left: 200px
-}
-
-#back-top a {
-    width: 64px;
-    display: block;
+    bottom: 20px; /* Отступ от нижнего края */
+    background-color: rgba(252, 252, 252, 0.8); /* Полупрозрачный фон */
+    color: #aaa;
+    font-size: 25px; /* Размер значка */
     text-align: center;
-    font: 11px/100% Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #bbb;
-    /* background color transition */
-    -webkit-transition: 1s;
-    -moz-transition: 1s;
-    transition: 1s;
+    line-height: 50px; /* Центрируем текст по вертикали */
+    border-radius: 10px; /* Закругленные углы */
+    cursor: pointer;
+    transition: background .2s ease, opacity .2s ease;
+    opacity: 0.5; /* Полупрозрачная кнопка */
 }
 
-#back-top a:hover {
-    color: #000;
+.scroll-button:hover {
+    background-color: rgba(238, 238, 238, 0.8); /* Прозрачность при наведении */
+    color: #777777;
+    opacity: 1; /* Полная непрозрачность при наведении */
 }
 
-/* графическая стрелка ВВЕРХ */
-#back-top span {
-    width: 64px;
-    height: 50px;
-    display: block;
-    background: url(../images/up-arrow.png) no-repeat center center;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    -webkit-transition: 1s;
-    -moz-transition: 1s;
-    transition: 1s;
+#scroll-up {
+    right: 80px; /* Отступ от правого края для кнопки "Наверх" */
 }
 
-#back-top a:hover span {
-    background-color: #eeeeee26
+#scroll-down {
+    right: 20px; /* Отступ от правого края для кнопки "Вниз" */
 }
 
 .partnerList {
