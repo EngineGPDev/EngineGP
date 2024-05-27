@@ -15,6 +15,9 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $cats = $sql->query('SELECT `id`, `name`, `sort` FROM `wiki_category` ORDER BY `id` ASC');
+
+$list = null;
+
 while ($cat = $sql->get($cats)) {
     $sql->query('SELECT `name` FROM `wiki` WHERE `cat`="' . $cat['id'] . '"');
     $wiki = $sql->num();
