@@ -155,6 +155,8 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
         if (empty($aNData['passwd']))
             $aNData['passwd'] = sys::passwd(10);
 
+        $part = null;
+
         // Реферал
         if (isset($_SESSION['referrer']))
             $part = ', `part`="' . sys::int($_SESSION['referrer']) . '"';
