@@ -27,15 +27,15 @@ $wiki = $sql->get();
 $sql->query('SELECT `name` FROM `wiki_category` WHERE `id`="' . $wiki['cat'] . '" LIMIT 1');
 $cat = $sql->get();
 
+$sql->query('SELECT `text` FROM `wiki_answer` WHERE `wiki`="' . $quest . '" LIMIT 1');
+$answer = $sql->get();
+
 $title = $wiki['name'];
 $description = $answer['text'];
 $keywords = $wiki['tags'];
 
 $html->nav($cat['name'], $cfg['http'] . 'wiki/section/question/category/' . $wiki['cat']);
 $html->nav('Ответ на вопрос');
-
-$sql->query('SELECT `text` FROM `wiki_answer` WHERE `wiki`="' . $quest . '" LIMIT 1');
-$answer = $sql->get();
 
 $aTags = explode(',', $wiki['tags']);
 
