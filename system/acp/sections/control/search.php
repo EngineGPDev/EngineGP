@@ -20,6 +20,8 @@ $mkey = md5($text . 'control');
 
 $cache = $mcache->get($mkey);
 
+$nmch = null;
+
 if (is_array($cache)) {
     if ($go)
         sys::outjs($cache, $nmch);
