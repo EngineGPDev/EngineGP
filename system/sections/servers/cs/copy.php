@@ -20,6 +20,8 @@ if ($go) {
 
     // Если выбран подраздел
     if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
+        $nmch = null;
+
         if ($url['subsection'] != 'check')
             $nmch = sys::rep_act('server_copy_go_' . $id, 10);
 
