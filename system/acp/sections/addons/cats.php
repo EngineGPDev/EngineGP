@@ -15,6 +15,9 @@ if (!DEFINED('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $cats = $sql->query('SELECT `id`, `game`, `name`, `sort` FROM `plugins_category` ORDER BY `game` ASC');
+
+$list = null;
+
 while ($cat = $sql->get($cats)) {
     $sql->query('SELECT `name` FROM `plugins` WHERE `cat`="' . $cat['id'] . '"');
     $plugins = $sql->num();
