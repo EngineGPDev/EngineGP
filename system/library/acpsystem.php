@@ -659,7 +659,7 @@ class sys
             "#\[b\](.+?)\[\/b\]#is",
             "#\[u\](.+?)\[\/u\]#is",
             "#\[code\](.+?)\[\/code\]#is",
-            "#<code>(.+?)<\/code>#isUe",
+            "#<code>(.+?)<\/code>#isU",
             "#\[quote\](.+?)\[\/quote\]#is",
             "#\[url=(.+?)\](.+?)\[\/url\]#is",
             "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
@@ -671,7 +671,9 @@ class sys
             "<b>\\1</b>",
             "<u>\\1</u>",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
-            "'<code>'.htmlspecialchars('$1').'</code>'",
+            function($matches) {
+                return '<code>' . htmlspecialchars($matches[1]) . '</code>';
+            },
             "<blockquote><p>\\1</p></blockquote>",
             "<a href='\\1'>\\2</a>",
             "<a href='\\2'>\\2</a>"
@@ -679,8 +681,16 @@ class sys
 
         $uptext = '';
 
-        foreach ($lines as $line)
-            $uptext .= preg_replace($str_search, $str_replace, $line) . PHP_EOL;
+        foreach ($lines as $line) {
+            foreach ($str_search as $key => $pattern) {
+                if (is_callable($str_replace[$key])) {
+                    $line = preg_replace_callback($pattern, $str_replace[$key], $line);
+                } else {
+                    $line = preg_replace($pattern, $str_replace[$key], $line);
+                }
+            }
+            $uptext .= $line . PHP_EOL;
+        }
 
         return $uptext;
     }
