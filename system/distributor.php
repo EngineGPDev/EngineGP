@@ -46,6 +46,7 @@ if (isset($_GET['account']))
     $_SESSION['referrer'] = sys::int($_GET['account']);
 
 $auth = false;
+$user = [];
 
 // Проверка сессии на авторизацию
 if (isset($_SESSION['user_id'])) {
@@ -61,6 +62,8 @@ if (isset($_SESSION['user_id'])) {
 
         $auth = true;
     }
+} else {
+    $user['id'] = null;
 }
 
 // Заголовок
