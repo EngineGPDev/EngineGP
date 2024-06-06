@@ -64,7 +64,7 @@ $aPlugins = explode(',', $copy['plugins']);
 foreach ($aPlugins as $plugin) {
     $aPlugin = explode('.', $plugin);
 
-    if (!count($aPlugin != 2))
+    if (count($aPlugin) != 2)
         continue;
 
     if (!$aPlugin[0])
