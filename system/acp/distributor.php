@@ -75,6 +75,7 @@ else {
 // Обновление ссылок
 if (isset($html->arr['main'])) {
     $html->upd(
+        'main',
         array(
             '[cur]',
             '[acp]',
@@ -83,7 +84,6 @@ if (isset($html->arr['main'])) {
             '[css]',
             '[img]'
         ),
-
         array(
             $cfg['currency'],
             $cfg['http'] . 'acp/',
@@ -91,13 +91,13 @@ if (isset($html->arr['main'])) {
             $cfg['http'] . 'template/acp/js/',
             $cfg['http'] . 'template/acp/css/',
             $cfg['http'] . 'template/acp/images/'
-        ),
-        'main'
+        )
     );
 }
 
 if (isset($html->arr['menu'])) {
     $html->upd(
+        'menu',
         array(
             '[acp]',
             '[home]',
@@ -105,15 +105,13 @@ if (isset($html->arr['menu'])) {
             '[css]',
             '[img]'
         ),
-
         array(
             $cfg['http'] . 'acp/',
             $cfg['http'],
             $cfg['http'] . 'template/acp/js/',
             $cfg['http'] . 'template/acp/css/',
             $cfg['http'] . 'template/acp/images/'
-        ),
-        'menu'
+        )
     );
 }
 

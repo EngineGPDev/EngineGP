@@ -83,20 +83,19 @@ else
 // Обновление ссылок
 if (isset($html->arr['main'])) {
     $html->upd(
+        'main',
         array(
             '[home]',
             '[js]',
             '[css]',
             '[img]'
         ),
-
         array(
             $cfg['http'],
             $cfg['http'] . 'template/js/',
             $cfg['http'] . 'template/css/',
             $cfg['http'] . 'template/images/'
-        ),
-        'main'
+        )
     );
 }
 

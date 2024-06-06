@@ -131,7 +131,7 @@ class html
         return NULL;
     }
 
-    public function upd($old = array(), $new = array(), $name)
+    public function upd($name, $old = array(), $new = array())
     {
         $this->arr[$name] = str_replace($old, $new, $this->arr[$name]);
 
