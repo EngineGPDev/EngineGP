@@ -78,7 +78,7 @@ if ($go) {
 
     include(LIB . 'games/games.php');
 
-    $cron_rule = ctrl::crontab($data, $sid, $cid);
+    $cron_rule = ctrl::crontab($sid, $cid, $data);
 
     $ssh->set('echo "' . $cron_rule . '" >> /etc/crontab;'
         . "sed -i '/^$/d' /etc/crontab;"
