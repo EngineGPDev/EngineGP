@@ -58,7 +58,7 @@ class server_action extends cron
         if ($argv[3] == 'restart')
             action::start($argv[5], 'restart');
         else
-            action::$argv[3]($argv[5]);
+            action::start($argv[5]);
 
         return NULL;
     }
