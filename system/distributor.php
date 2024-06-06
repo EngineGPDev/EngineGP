@@ -155,26 +155,28 @@ if ($auth) {
     // Проверка наличия игрового сервера
     $servers = $sql->query('(SELECT `id` FROM `servers` WHERE `user`="' . $user['id'] . '" LIMIT 1) UNION (SELECT `id` FROM `owners` WHERE `user`="' . $user['id'] . '" LIMIT 1)');
 
-    if ($sql->num())
-        $html->unitall('all', 'servers', 1, 1);
-    else
-        $html->unitall('all', 'servers', 0, 1);
+    if ($sql->num()) {
+        $html->unitall('servers', 'all', 1, 1);
+    } else {
+        $html->unitall('servers', 'all', 0, 1);
+    }
 
     // Проверка наличия игрового сервера
     $servers = $sql->query('SELECT `id` FROM `control` WHERE `user`="' . $user['id'] . '" LIMIT 1');
 
-    if ($sql->num())
-        $html->unitall('all', 'control', 1);
-    else
-        $html->unitall('all', 'control', 0);
+    if ($sql->num()) {
+        $html->unitall('control', 'all', 1);
+    } else {
+        $html->unitall('control', 'all', 0);
+    }
 
-    $html->unitall('all', 'auth', 1, 1);
-    $html->unitall('all', 'admin', $user['group'] == 'admin', 1);
-    $html->unitall('all', 'support', $user['group'] == 'support', 1);
+    $html->unitall('auth', 'all', 1, 1);
+    $html->unitall('admin', 'all', $user['group'] == 'admin', 1);
+    $html->unitall('support', 'all', $user['group'] == 'support', 1);
 } else {
-    $html->unitall('all', 'auth', 0, 1);
-    $html->unitall('all', 'servers', 0, 1);
-    $html->unitall('all', 'control', 0, 1);
-    $html->unitall('all', 'admin', 0, 1);
-    $html->unitall('all', 'support', 0, 1);
+    $html->unitall('auth', 'all', 0, 1);
+    $html->unitall('servers', 'all', 0, 1);
+    $html->unitall('control', 'all', 0, 1);
+    $html->unitall('admin', 'all', 0, 1);
+    $html->unitall('support', 'all', 0, 1);
 }
