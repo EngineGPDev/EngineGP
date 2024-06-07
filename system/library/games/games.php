@@ -451,7 +451,7 @@ class games
         $check = 0;
 
         // Проверка периода
-        if (in_array($data['time'], explode(':', $data_promo['time'])))
+        if (isset($data['time']) && isset($data_promo['time']) && in_array($data['time'], explode(':', $data_promo['time'])))
             $check = 1;
 
         // Проверка значения FPS
