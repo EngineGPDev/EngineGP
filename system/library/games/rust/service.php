@@ -126,15 +126,15 @@ class service
         // Проверка промо-кода
         $promo = games::define_promo(
             $aData['promo'],
+            $tarif['discount'],
+            $sum,
             array(
                 'tarif' => $aData['tarif'],
                 'tickrate' => $aData['tickrate'],
                 'slots' => $aData['slots'],
                 'time' => $aData['time'],
                 'user' => $user['id']
-            ),
-            $tarif['discount'],
-            $sum
+            )
         );
 
         $days = $aData['time']; // Кол-во дней аренды
