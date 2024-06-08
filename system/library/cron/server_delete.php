@@ -20,6 +20,8 @@ class server_delete extends cron
     {
         global $cfg, $sql, $argv;
 
+        $start_point = $_SERVER['REQUEST_TIME'];
+
         $sql->query('SELECT `id`, `uid`, `user`, `unit`, `tarif`, `game`, `slots`, `address`, `ddos` FROM `servers` WHERE `id`="' . $argv[3] . '" AND `user`="-1" LIMIT 1');
 
         if (!$sql->num())
