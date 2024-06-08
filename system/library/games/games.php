@@ -250,7 +250,7 @@ class games
 
         $aTime = explode(':', $aTarif['time']);
 
-        $time = games::parse_time($aTime, $aTarif['discount'], $aTarif['id']);
+        $time = games::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
 
         if ($aTarif['test'] and $aUnit['test'])
             $time .= '<option value="test">Тестовый период ' . games::parse_day($aTarif['test']) . '</option>';
@@ -269,7 +269,7 @@ class games
         return $data;
     }
 
-    public static function parse_time($aTime = array(), $discount, $tarif, $type = 'buy')
+    public static function parse_time($discount, $tarif, $aTime = array(), $type = 'buy')
     {
         global $cfg;
 

@@ -42,7 +42,7 @@ $html->pack('main');
 if ($cfg['settlement_period'])
     tarif::extend_sp($server, $tarif, $id);
 else {
-    $options = games::parse_time(explode(':', $tarif['timext']), $tarif['discount'], $server['tarif'], 'extend');
+    $options = games::parse_time($tarif['discount'], $server['tarif'], explode(':', $tarif['timext']), 'extend');
 
     tarif::extend($options, $server, $tarif['name'], $id);
 }
