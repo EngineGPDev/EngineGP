@@ -100,9 +100,9 @@ if ($sql->num()) {
         if ($url['get'] == 'promo')
             games::define_promo(
                 $url['cod'],
-                $aGet,
                 $tarif['discount'],
-                games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time'])
+                games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time']),
+                $aGet
             );
     }
 

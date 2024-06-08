@@ -378,7 +378,7 @@ class games
         return $sum;
     }
 
-    public static function define_promo($cod, $data = array(), $discount, $sum, $type = 'buy')
+    public static function define_promo($cod, $discount, $sum, $data = array(), $type = 'buy')
     {
         global $cfg, $sql, $go, $start_point;
 
