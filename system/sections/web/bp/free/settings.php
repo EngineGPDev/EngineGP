@@ -142,7 +142,7 @@ foreach ($conf as $str) {
     if (!in_array($var, $arSel))
         continue;
 
-    $aData[$var] = isset($val{0}) ? $val : '';
+    $aData[$var] = isset($val[0]) ? $val : '';
 }
 
 $webmoney = $aData['$wmr_on'] == 'on' ? '<option value="on">Включено</option><option value="off">Выключено</option>' : '<option value="off">Выключено</option><option value="on">Включено</option>';

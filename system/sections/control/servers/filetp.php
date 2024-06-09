@@ -91,7 +91,7 @@ else {
 
                     $bytes = $server['hdd'] * 1048576;
 
-                    $server['ftp_passwd'] = isset($server['ftp_passwd']{1}) ? $server['ftp_passwd'] : sys::passwd(8);
+                    $server['ftp_passwd'] = isset($server['ftp_passwd'][1]) ? $server['ftp_passwd'] : sys::passwd(8);
 
                     $qSql = 'DELETE FROM users WHERE username=\'' . $server['uid'] . '\';'
                         . 'INSERT INTO users set username=\'' . $server['uid'] . '\', password=\'' . $server['ftp_passwd'] . '\', uid=\'' . $server['uid'] . '\', gid=\'1000\', homedir=\'' . $homedir . '\', shell=\'/bin/false\';';
@@ -158,7 +158,7 @@ else {
                 case 'search':
                     $text = isset($_POST['find']) ? sys::first(explode('.', json_decode($_POST['find']))) : sys::out();
 
-                    if (!isset($text{2}))
+                    if (!isset($text[2]))
                         sys::out('Для выполнения поиска, необходимо больше данных');
 
                     $ftp->search($text, $id);
