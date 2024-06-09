@@ -139,7 +139,7 @@ $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
 $html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
-$html->set('index', $max['id'] < 1 ? 0 : $max['id']);
+$html->set('index', isset($max['id']) < 1 ? 0 : $max['id']);
 $html->set('address', 'ip/' . $ip . '/port/' . $port);
 
 $sql->query('SELECT `active` FROM `privileges` WHERE `server`="' . $id . '" LIMIT 1');
