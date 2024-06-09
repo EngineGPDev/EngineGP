@@ -326,18 +326,9 @@ class actions
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `control_crontab` WHERE `server`="' . $id . '"');
         while ($cron = $sql->get($crons)) {
-            $ssh->set('echo "" >> /etc/crontab && cat /etc/crontab');
-            $crontab = str_replace($cron['cron'], '', $ssh->get());
+            $crontab = preg_quote($cron['cron'], '/');
 
-            // Временный файл
-            $temp = sys::temp($crontab);
-
-            $ssh->setfile($temp, '/etc/crontab', 0644);
-
-            $ssh->set("sed -i '/^$/d' /etc/crontab");
-            $ssh->set('crontab -u root /etc/crontab');
-
-            unlink($temp);
+            $ssh->set('crontab -l | grep -v "' . $crontab . '" | crontab -');
 
             $sql->query('DELETE FROM `control_crontab` WHERE `id`="' . $cron['id'] . '" LIMIT 1');
         }
