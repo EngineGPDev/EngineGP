@@ -86,7 +86,7 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     }
 
     // Выхлоп информации
-    sys::outjs(array('s' => 'Сервер будет арендован до: ' . $arenda . ' ' . date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'));
+    sys::outjs(array('s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'));
 }
 
 if ($slots < 1 || $slots > $max)
