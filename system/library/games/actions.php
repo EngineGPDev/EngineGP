@@ -255,7 +255,7 @@ class actions
         $taskset = '';
 
         // Если включена система автораспределения и не установлен фиксированный поток
-        if ($cfg['cpu_route'] && !$server['core_fix']) {
+        if (isset($cfg['cpu_route']) && $cfg['cpu_route'] && !isset($server['core_fix']) || !$server['core_fix']) {
             $proc_stat = array();
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
@@ -280,7 +280,7 @@ class actions
             $taskset = 'taskset -c ' . $core;
         }
 
-        if ($server['core_fix']) {
+        if (isset($server['core_fix']) && $server['core_fix']) {
             $core = $server['core_fix'] - 1;
             $taskset = 'taskset -c ' . $core;
         }
