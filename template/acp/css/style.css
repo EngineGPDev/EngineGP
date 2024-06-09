@@ -408,38 +408,36 @@ table a {
 }
 
 .search {
-    width: 300px;
+    width: 100%;
     float: right;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .search input {
     padding: 5px;
-    width: 300px;
+    width: 70%;
     font-size: 12px;
     color: #000;
     background-color: #fff;
     border: 1px solid #dedede;
     outline: 0;
     border-radius: 10px;
+    flex-grow: 1;
 }
 
 .search button {
     text-align: center;
     border-radius: 10px;
-    border: 1px solid #ececec;
+    border: 1px solid #dedede;
     background-color: #ffffff;
     color: #000000;
     font-size: 13px;
     outline: 0;
     cursor: pointer;
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    margin: -25px 0 0 274px;
-    overflow: hidden;
-    line-height: 24px;
-    text-overflow: ellipsis;
+    margin-left: 10px;
+    padding: 5px 10px;
     transition: all 0.23s ease-in-out;
     -moz-transition: all 0.23s ease-in-out;
     -webkit-transition: all 0.23s ease-in-out;
@@ -447,10 +445,13 @@ table a {
 }
 
 .search button:hover {
-    width: 70px;
-    margin-left: 229px;
+    background-color: #f0f0f0;
 }
 
+.search button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
 
 .w5p {
     width: 5% !important;

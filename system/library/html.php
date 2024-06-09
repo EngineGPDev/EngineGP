@@ -131,14 +131,14 @@ class html
         return NULL;
     }
 
-    public function upd($old = array(), $new = array(), $name)
+    public function upd($name, $old = array(), $new = array())
     {
         $this->arr[$name] = str_replace($old, $new, $this->arr[$name]);
 
         return NULL;
     }
 
-    public function unitall($arr = array(), $name, $var = false, $mirror = false)
+    public function unitall($name, $arr = array(), $var = false, $mirror = false)
     {
         $block = str_replace($name, "'\\|" . $name . "\\|(.*?)\\|_" . $name . "\\|'si", $name);
 

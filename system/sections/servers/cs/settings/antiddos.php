@@ -17,6 +17,8 @@ if (!DEFINED('EGP'))
 if (!$go)
     exit;
 
+$name_mcache = null;
+
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $server['unit'] . '" AND `ddos`="1" LIMIT 1');
 if ($sql->num())
     sys::outjs(array('e' => 'В данный момент нельзя изменить параметр, т.к. включена защита на всю локацию.'), $name_mcache);

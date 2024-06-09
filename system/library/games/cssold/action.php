@@ -64,7 +64,7 @@ class action extends actions
             $proc_stat[1] = $ssh->get('cat /proc/stat');
 
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($proc_stat, $server['unit'], false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
+            $core = sys::cpu_idle($server['unit'], $proc_stat, false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core))
                 return array('e' => sys::text('error', 'cpu'));

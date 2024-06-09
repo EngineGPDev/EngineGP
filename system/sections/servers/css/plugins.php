@@ -69,6 +69,8 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
                 $images = plugins::images($plugin['images'], $plugin['id']);
 
+                $buy = null;
+
                 if ($plugin['price']) {
                     $sql->query('SELECT `id` FROM `plugins_buy` WHERE `plugin`="' . $plugin['id'] . '" AND `server`="' . $id . '" LIMIT 1');
                     $buy = $sql->num();

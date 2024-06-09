@@ -36,7 +36,7 @@ if ($_ENV['RUN_MODE'] === 'dev') {
 }
 
 DEFINE('EGP', TRUE);
-DEFINE('DIR', dirname('index.php'));
+DEFINE('DIR', __DIR__);
 DEFINE('ROOT', DIR . '/');
 DEFINE('SYS', ROOT . 'system/');
 DEFINE('TPL', ROOT . 'template/');

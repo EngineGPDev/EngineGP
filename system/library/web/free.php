@@ -62,7 +62,7 @@ class web
             sys::outjs(array('e' => 'Адрес должен состоять из букв a-z и цифр.'), $mcache);
 
         // Проверка длины поддомена
-        if (!isset($aData['subdomain']{3}) || isset($aData['subdomain']{15}))
+        if (!isset($aData['subdomain'][3]) || isset($aData['subdomain'][15]))
             sys::outjs(array('e' => 'Длина адреса не должна превышать 16-и символов и быть не менее 4-х символов.'), $mcache);
 
         // Проверка запрещенного поддомена
@@ -88,7 +88,7 @@ class web
                 $aData['passwd'] = sys::passwd($aWebParam[$aData['type']]['passwd']);
 
             // Проверка длинны пароля
-            if (!isset($aData['passwd']{5}) || isset($aData['passwd']{15}))
+            if (!isset($aData['passwd'][5]) || isset($aData['passwd'][5]))
                 sys::outjs(array('e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'), $mcache);
 
             // Проверка валидности пароля
@@ -391,7 +391,7 @@ class web
 
         $rcon = trim(end($get));
 
-        if (!isset($rcon{0}))
+        if (!isset($rcon[0]))
             sys::outjs(array('r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'), $mcache);
 
         $temp = sys::temp(sys::updtext(base64_decode($web['config']), $aData['orcfg']));

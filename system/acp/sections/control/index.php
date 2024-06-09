@@ -20,7 +20,8 @@ if (isset($url['subsection']) and $url['subsection'] == 'search')
 if ($id)
     include(SEC . 'control/server.php');
 else {
-    $list = '';
+    $list = null;
+    $url_search = null;
 
     $status = array(
         'working' => '<span class="text-green">Работает</span>',

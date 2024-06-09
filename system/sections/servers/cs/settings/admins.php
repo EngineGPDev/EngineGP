@@ -30,13 +30,13 @@ if ($go) {
 
     $aData = array();
 
-    $aData['active'] = isset($_POST['active']) ? $_POST['active'] : '';
-    $aData['value'] = isset($_POST['value']) ? $_POST['value'] : '';
-    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
-    $aData['flags'] = isset($_POST['flags']) ? $_POST['flags'] : '';
-    $aData['type'] = isset($_POST['type']) ? $_POST['type'] : '';
-    $aData['time'] = isset($_POST['time']) ? $_POST['time'] : '';
-    $aData['info'] = isset($_POST['info']) ? $_POST['info'] : '';
+    $aData['active'] = isset($_POST['active']) && is_array($_POST['active']) ? $_POST['active'] : array();
+    $aData['value'] = isset($_POST['value']) && is_array($_POST['value']) ? $_POST['value'] : array();
+    $aData['passwd'] = isset($_POST['passwd']) && is_array($_POST['passwd']) ? $_POST['passwd'] : array();
+    $aData['flags'] = isset($_POST['flags']) && is_array($_POST['flags']) ? $_POST['flags'] : array();
+    $aData['type'] = isset($_POST['type']) && is_array($_POST['type']) ? $_POST['type'] : array();
+    $aData['time'] = isset($_POST['time']) && is_array($_POST['time']) ? $_POST['time'] : array();
+    $aData['info'] = isset($_POST['info']) && is_array($_POST['info']) ? $_POST['info'] : array();
 
     // Удаление текущих записей
     $sql->query('DELETE FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '"');
@@ -139,7 +139,7 @@ $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
 $html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
-$html->set('index', $max['id'] < 1 ? 0 : $max['id']);
+$html->set('index', isset($max['id']) < 1 ? 0 : $max['id']);
 $html->set('address', 'ip/' . $ip . '/port/' . $port);
 
 $sql->query('SELECT `active` FROM `privileges` WHERE `server`="' . $id . '" LIMIT 1');

@@ -132,7 +132,7 @@ class games
         return $hour . ':' . $minute;
     }
 
-    public static function crontab($data = array(), $id, $cid)
+    public static function crontab($id, $cid, $data = array())
     {
         global $cfg;
 
@@ -250,7 +250,7 @@ class games
 
         $aTime = explode(':', $aTarif['time']);
 
-        $time = games::parse_time($aTime, $aTarif['discount'], $aTarif['id']);
+        $time = games::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
 
         if ($aTarif['test'] and $aUnit['test'])
             $time .= '<option value="test">Тестовый период ' . games::parse_day($aTarif['test']) . '</option>';
@@ -269,7 +269,7 @@ class games
         return $data;
     }
 
-    public static function parse_time($aTime = array(), $discount, $tarif, $type = 'buy')
+    public static function parse_time($discount, $tarif, $aTime = array(), $type = 'buy')
     {
         global $cfg;
 
@@ -362,12 +362,15 @@ class games
             }
         }
 
-        $sel = $type == 'buy' ? 'rental' : 'extend';
+        // Проверяем, что пользователь авторизован перед выполнением операций со скидкой
+        if ($user['id'] !== null) {
+            $sel = $type == 'buy' ? 'rental' : 'extend';
 
-        $sql->query('SELECT `' . $sel . '` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
-        $user = array_merge($user, $sql->get());
+            $sql->query('SELECT `' . $sel . '` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
+            $user = array_merge($user, $sql->get());
 
-        $sum = strpos($user[$sel], '%') ? $sum - $sum / 100 * floatval($user[$sel]) : $sum - floatval($user[$sel]);
+            $sum = strpos($user[$sel], '%') ? $sum - $sum / 100 * floatval($user[$sel]) : $sum - floatval($user[$sel]);
+        }
 
         if ($sum < 0)
             sys::outjs(array('e' => 'Ошибка: сумма за услугу неверна'));
@@ -375,7 +378,7 @@ class games
         return $sum;
     }
 
-    public static function define_promo($cod, $data = array(), $discount, $sum, $type = 'buy')
+    public static function define_promo($cod, $discount, $sum, $data = array(), $type = 'buy')
     {
         global $cfg, $sql, $go, $start_point;
 
@@ -448,7 +451,7 @@ class games
         $check = 0;
 
         // Проверка периода
-        if (in_array($data['time'], explode(':', $data_promo['time'])))
+        if (isset($data['time']) && isset($data_promo['time']) && in_array($data['time'], explode(':', $data_promo['time'])))
             $check = 1;
 
         // Проверка значения FPS

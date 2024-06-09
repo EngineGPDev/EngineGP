@@ -158,7 +158,7 @@ class actions
             $proc_stat[1] = $ssh->get('cat /proc/stat');
 
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($proc_stat, $server['unit'], $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
+            $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core))
                 return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
@@ -236,7 +236,7 @@ class actions
             $proc_stat[1] = $ssh->get('cat /proc/stat');
 
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($proc_stat, $server['unit'], $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
+            $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core))
                 return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
@@ -326,18 +326,9 @@ class actions
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `control_crontab` WHERE `server`="' . $id . '"');
         while ($cron = $sql->get($crons)) {
-            $ssh->set('echo "" >> /etc/crontab && cat /etc/crontab');
-            $crontab = str_replace($cron['cron'], '', $ssh->get());
+            $crontab = preg_quote($cron['cron'], '/');
 
-            // Временный файл
-            $temp = sys::temp($crontab);
-
-            $ssh->setfile($temp, '/etc/crontab', 0644);
-
-            $ssh->set("sed -i '/^$/d' /etc/crontab");
-            $ssh->set('crontab -u root /etc/crontab');
-
-            unlink($temp);
+            $ssh->set('crontab -l | grep -v "' . $crontab . '" | crontab -');
 
             $sql->query('DELETE FROM `control_crontab` WHERE `id`="' . $cron['id'] . '" LIMIT 1');
         }

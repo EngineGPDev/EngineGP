@@ -20,6 +20,8 @@ $mkey = md5($text . $id);
 
 $cache = $mcache->get($mkey);
 
+$nmch = null;
+
 if (is_array($cache)) {
     if ($go)
         sys::outjs($cache, $nmch);

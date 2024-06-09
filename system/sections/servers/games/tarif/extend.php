@@ -20,9 +20,9 @@ $promo = false;
 if (isset($url['promo']) || $aData['promo'] != '')
     $promo = games::define_promo(
         $aData['promo'],
-        $aData,
         $tarif['discount'],
         $sum,
+        $aData,
         'extend'
     );
 
