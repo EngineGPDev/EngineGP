@@ -46,7 +46,7 @@ if ($id) {
     if (!$cb['status'])
         sys::outjs(array('e' => 'Данная заявка уже была обработана'), $nmc);
 
-    $purse = $cb['purse']{0} == 'R' ? 'webmoney' : 'qiwi';
+    $purse = $cb['purse'][0] == 'R' ? 'webmoney' : 'qiwi';
 
     // Запрос на шлюз
     if ($cfg['part_gateway'] == 'unitpay') {

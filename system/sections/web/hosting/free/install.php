@@ -82,7 +82,7 @@ if ($go) {
         sys::outjs(array('e' => 'Адрес должен состоять из букв a-z и цифр.'), $nmch);
 
     // Проверка длины поддомена
-    if (!isset($aData['subdomain']{3}) || isset($aData['subdomain']{15}))
+    if (!isset($aData['subdomain'][3]) || isset($aData['subdomain'][15]))
         sys::outjs(array('e' => 'Длина адреса не должна превышать 16-и символов и быть не менее 4-х символов.'), $nmch);
 
     // Проверка наличия основного домена
@@ -103,7 +103,7 @@ if ($go) {
         $aData['passwd'] = sys::passwd($aWebParam[$aData['type']]['passwd']);
 
     // Проверка длинны пароля
-    if (!isset($aData['passwd']{5}))
+    if (!isset($aData['passwd'][5]))
         sys::outjs(array('e' => 'Необходимо указать пароль длинной не менее 6-и символов.'), $nmch);
 
     // Проверка валидности пароля

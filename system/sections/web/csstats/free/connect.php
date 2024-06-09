@@ -19,7 +19,7 @@ if (!$go || !isset($url['server']))
 
 $key = isset($url['key']) ? $url['key'] : exit;
 
-if (isset($key{32}))
+if (isset($key[32]))
     sys::outjs(array('e' => 'Длина ключа не должна превышать 32 символа.'), $nmch);
 
 include(LIB . 'web/free.php');

@@ -24,7 +24,7 @@ $mkey = md5($sid . $text . $id);
 if ($mcache->get($mkey) != '')
     sys::outjs(array('s' => $mcache->get($mkey)));
 
-if (!isset($text{2}))
+if (!isset($text[2]))
     sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
 
 $sPlugins = array();
@@ -52,7 +52,7 @@ if (!$sql->num($plugins)) {
         $sWord = false;
 
         foreach ($aText as $word) {
-            if ($word == '' || !isset($word{2}))
+            if ($word == '' || !isset($word[2]))
                 continue;
 
             // Поиск по плагинам

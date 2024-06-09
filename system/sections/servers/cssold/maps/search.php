@@ -27,7 +27,7 @@ if (is_array($cache)) {
     sys::outjs($cache);
 }
 
-if (!isset($text{2})) {
+if (!isset($text[2])) {
     if ($go)
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
 
@@ -35,7 +35,7 @@ if (!isset($text{2})) {
 }
 
 // Поиск по картам
-if ($text{0} == '^') {
+if ($text[0] == '^') {
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` REGEXP FROM_BASE64(\'' . base64_encode(str_replace('_', '\_', $text) . '') . '\') ORDER BY `name` ASC LIMIT 12');
     $text = substr($text, 1);
 } else

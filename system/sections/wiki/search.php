@@ -24,7 +24,7 @@ $mkey = md5($text . 'wiki');
 if ($mcache->get($mkey) != '' and !isset($url['tag']))
     sys::outjs(array('s' => $mcache->get($mkey)));
 
-if (!isset($text{2}) and !isset($url['tag']))
+if (!isset($text[2]) and !isset($url['tag']))
     sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
 
 $aWiki_q = array();
@@ -52,7 +52,7 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
     $sWord = false;
 
     foreach ($aText as $word) {
-        if ($word == '' || !isset($word{2}))
+        if ($word == '' || !isset($word[2]))
             continue;
 
         // Поиск по вопросу
