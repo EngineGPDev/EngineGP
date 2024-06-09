@@ -34,22 +34,13 @@ if ($go) {
 
         $sql->query('SELECT `cron` FROM `crontab` WHERE `id`="' . $task . '" AND `server`="' . $id . '" LIMIT 1');
         if (!$sql->num())
-            $sys->outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(array('s' => 'ok'), $nmch);
 
         $cron = $sql->get();
 
-        $ssh->set('touch /etc/crontab; cat /etc/crontab');
-        $crontab = str_replace($cron['cron'], '', $ssh->get());
+        $crontab = preg_quote($cron['cron'], '/');
 
-        // Временный файл
-        $temp = sys::temp($crontab);
-
-        $ssh->setfile($temp, '/etc/crontab', 0644);
-
-        $ssh->set("sed -i '/^$/d' /etc/crontab;"
-            . 'crontab -u root /etc/crontab');
-
-        unlink($temp);
+        $ssh->set('crontab -l | grep -v "' . $crontab . '" | crontab -');
 
         $sql->query('DELETE FROM `crontab` WHERE `id`="' . $task . '" LIMIT 1');
 
@@ -83,9 +74,7 @@ if ($go) {
 
     $cron_rule = games::crontab($id, $cid, $data);
 
-    $ssh->set('echo "' . $cron_rule . '" >> /etc/crontab;'
-        . "sed -i '/^$/d' /etc/crontab;"
-        . 'crontab -u root /etc/crontab');
+    $ssh->set('(crontab -l; echo "' . $cron_rule . '") | crontab -');
 
     $time = games::crontab_time($data['allhour'], $data['hour'], $data['minute']);
     $week = games::crontab_week($data['week']);
