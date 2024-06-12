@@ -75,7 +75,7 @@ while ($log = $sql->get()) {
     $list .= '<td>' . $log['id'] . '</td>';
     $list .= '<td>' . $log['text'] . '</td>';
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $log['user'] . '">USER_' . $log['user'] . '</a></td>';
-    $list .= '<td class="text-center">' . $log['money'] . ' ' . $cur['currency'] . '</td>';
+    $list .= '<td class="text-center">' . $log['money'] . ' ' . $cfg['currency'] . '</td>';
     $list .= '<td class="text-center">' . date('d.m.Y - H:i:s', $log['date']) . '</td>';
     $list .= '</tr>';
 }
