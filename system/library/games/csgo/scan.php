@@ -54,7 +54,7 @@ class scan extends scans
             $out['buttons'] = sys::buttons($id, $server['status']);
 
             if ($players_get)
-                $out['players'] = base64_decode($server['players']);
+                $out['players'] = base64_decode($server['players'] ?? '');
 
             $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
