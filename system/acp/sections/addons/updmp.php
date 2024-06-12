@@ -63,7 +63,8 @@ if ($go) {
     array_pop($aMaps);
 
     foreach ($aMaps as $map) {
-        $name = array_shift(explode('.', $map));
+        $aMapParts = explode('.', $map);
+        $name = array_shift($aMapParts);
 
         $sql->query('INSERT INTO `maps` set `unit`="' . $unit['id'] . '", `game`="' . $game . '", `name`="' . $name . '"');
     }
