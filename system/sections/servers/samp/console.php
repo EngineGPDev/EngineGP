@@ -38,7 +38,7 @@ if ($go) {
 
     $output = $ssh->get($command);
 
-    sys::out(htmlspecialchars($output, NULL, ''));
+    sys::out(htmlspecialchars($output, ENT_QUOTES, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
