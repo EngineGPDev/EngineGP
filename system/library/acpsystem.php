@@ -453,21 +453,25 @@ class sys
 
     public static function uptime_load($time)
     {
-        $uptime = '';
+        $uptime = null;
 
-        $day = floor($time / 60 / 60 / 24);
+        $day = floor($time / 86400);
         if ($day)
             $uptime .= $day . 'д. ';
 
-        $hour = $time / 60 / 60 % 24;
+        $hour = floor(($time % 86400) / 3600);
         if ($hour)
             $uptime .= $hour . 'ч. ';
 
-        $min = $time / 60 % 60;
+        $min = floor(($time % 3600) / 60);
         if ($min)
             $uptime .= $min . 'м. ';
 
-        return $uptime . ($time % 60) . 'с.';
+        $sec = $time % 60;
+        if ($sec)
+            $uptime .= $sec . 'с. ';
+
+        return $uptime;
     }
 
     public static function ram_load($data)
