@@ -687,11 +687,11 @@ class sys
     {
         global $mcache;
 
-        $cod = '';
+        $cod = null;
         $width = 100;
         $height = 45;
         $font_size = 16;
-        $symbols = 3;
+        $symbols = 4;
         $symbols_fon = 20;
         $font = LIB . 'captcha/text.ttf';
 
@@ -709,17 +709,17 @@ class sys
             $char = $chars[rand(0, sizeof($chars) - 1)];
             $size = rand($font_size - 2, $font_size + 2);
 
-            imagettftext($src, $size, rand(0, 45), rand($width * 0.1, $width - $width * 0.1), rand($height * 0.2, $height), $color, $font, $char);
+            imagettftext($src, $size, rand(0, 45), rand((int)($width * 0.1), $width - (int)($width * 0.1)), rand((int)($height * 0.2), $height), $color, $font, $char);
         }
 
         $i = 0;
         for ($i; $i < $symbols; $i += 1) {
             $color = imagecolorallocatealpha($src, $colors[rand(0, sizeof($colors) - 1)], $colors[rand(0, sizeof($colors) - 1)], $colors[rand(0, sizeof($colors) - 1)], rand(20, 40));
             $char = $chars[rand(0, sizeof($chars) - 1)];
-            $size = rand($font_size * 2.1 - 2, $font_size * 2.1 + 2);
+            $size = rand((int)($font_size * 2.1 - 2), (int)($font_size * 2.1 + 2));
 
             $x = ($i + 1) * $font_size + rand(6, 8);
-            $y = (($height * 2) / 3) + rand(3, 7);
+            $y = ((int)(($height * 2) / 3)) + rand(3, 7);
 
             $cod .= $char;
 
