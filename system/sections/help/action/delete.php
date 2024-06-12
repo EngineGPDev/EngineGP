@@ -25,7 +25,10 @@ if ($id) {
         foreach ($aImg as $img) {
             $sql->query('DELETE FROM `help_upload` WHERE `name`="' . $img . '" LIMIT 1');
 
-            unlink(ROOT . 'upload/' . $img);
+            $filePath = ROOT . 'upload/' . $img;
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
 
         $sql->query('DELETE FROM `help_dialogs` WHERE `id`="' . $dialog['id'] . '" LIMIT 1');
