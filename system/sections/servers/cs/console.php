@@ -25,8 +25,8 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     $command = isset($_POST['command']) ? sys::cmd($_POST['command']) : '';
-
-    if ($server['status'] == 'off') {
+    
+    if (isset($server['status']) && $server['status'] == 'off') {
         if ($command)
             sys::outjs(array('e' => sys::text('servers', 'off')));
 
