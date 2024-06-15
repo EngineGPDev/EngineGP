@@ -9,7 +9,7 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT `uid`, `address`, `game`, `pack`, `status` FROM `control_servers` WHERE `id`="' . $sid . '" LIMIT 1');

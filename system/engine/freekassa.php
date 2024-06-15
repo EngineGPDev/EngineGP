@@ -9,7 +9,7 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if (!isset($_POST['MERCHANT_ID']) || $_POST['MERCHANT_ID'] != $cfg['freekassa_id'])

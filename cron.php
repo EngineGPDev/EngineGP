@@ -33,18 +33,18 @@ if ($_ENV['RUN_MODE'] === 'dev') {
     ini_set('error_reporting', 0);
 }
 
-DEFINE('EGP', TRUE);
-DEFINE('DIR', __DIR__);
-DEFINE('ROOT', DIR . '/');
-DEFINE('SYS', ROOT . 'system/');
-DEFINE('TPL', ROOT . 'template/');
-DEFINE('TEMP', ROOT . 'temp/');
-DEFINE('FILES', ROOT . 'files/');
-DEFINE('DATA', SYS . 'data/');
-DEFINE('LIB', SYS . 'library/');
-DEFINE('ENG', SYS . 'engine/');
-DEFINE('SEC', SYS . 'sections/');
-DEFINE('CRON', LIB . 'cron/');
+define('EGP', TRUE);
+define('DIR', __DIR__);
+define('ROOT', DIR . '/');
+define('SYS', ROOT . 'system/');
+define('TPL', ROOT . 'template/');
+define('TEMP', ROOT . 'temp/');
+define('FILES', ROOT . 'files/');
+define('DATA', SYS . 'data/');
+define('LIB', SYS . 'library/');
+define('ENG', SYS . 'engine/');
+define('SEC', SYS . 'sections/');
+define('CRON', LIB . 'cron/');
 
 $start_point = $_SERVER['REQUEST_TIME'];
 
