@@ -35,17 +35,17 @@ if ($_ENV['RUN_MODE'] === 'dev') {
     ini_set('error_reporting', 0);
 }
 
-DEFINE('EGP', TRUE);
-DEFINE('ROOT', '../');
-DEFINE('SYS', ROOT . 'system/');
-DEFINE('ACP', ROOT . 'system/acp/');
-DEFINE('TPL', ROOT . 'template/acp/');
-DEFINE('TEMP', ROOT . 'temp/');
-DEFINE('FILES', ROOT . 'files/');
-DEFINE('DATA', SYS . 'data/');
-DEFINE('LIB', SYS . 'library/');
-DEFINE('ENG', SYS . 'acp/engine/');
-DEFINE('SEC', SYS . 'acp/sections/');
+define('EGP', TRUE);
+define('ROOT', '../');
+define('SYS', ROOT . 'system/');
+define('ACP', ROOT . 'system/acp/');
+define('TPL', ROOT . 'template/acp/');
+define('TEMP', ROOT . 'temp/');
+define('FILES', ROOT . 'files/');
+define('DATA', SYS . 'data/');
+define('LIB', SYS . 'library/');
+define('ENG', SYS . 'acp/engine/');
+define('SEC', SYS . 'acp/sections/');
 
 $start_point = $_SERVER['REQUEST_TIME'];
 

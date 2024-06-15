@@ -9,7 +9,7 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 function getSha256SignatureByMethodAndParams($method, array $params, $secretKey)

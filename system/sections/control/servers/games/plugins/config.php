@@ -9,7 +9,7 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $fid = isset($url['file']) ? sys::int($url['file']) : sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
