@@ -24,7 +24,7 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if ($server['status'] == 'off')
+    if (isset($server['status']) && $server['status'] == 'off')
         sys::out(sys::text('servers', 'off'));
 
     if (!$ssh->auth($unit['passwd'], $unit['address']))
