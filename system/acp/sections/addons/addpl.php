@@ -37,8 +37,8 @@ if ($go) {
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
     $aData['game'] = isset($_POST['game']) ? trim($_POST['game']) : '';
-    $aData['cat'] = isset($_POST['category']) ? ceil($_POST['category']) : 0;
-    $aData['status'] = isset($_POST['status']) ? ceil($_POST['status']) : 0;
+    $aData['cat'] = isset($_POST['category']) ? (is_numeric($_POST['category']) ? ceil((float)$_POST['category']) : 0) : 0;
+    $aData['status'] = isset($_POST['status']) ? (is_numeric($_POST['status']) ? ceil((float)$_POST['status']) : 0) : 0;
     $aData['packs'] = isset($_POST['packs']) ? trim($_POST['packs']) : '';
     $aData['desc'] = isset($_POST['desc']) ? trim($_POST['desc']) : '';
     $aData['info'] = isset($_POST['info']) ? trim($_POST['info']) : '';
@@ -46,11 +46,11 @@ if ($go) {
     $aData['incompatible'] = isset($_POST['incompatible']) ? trim($_POST['incompatible']) : '';
     $aData['choice'] = isset($_POST['choice']) ? trim($_POST['choice']) : '';
     $aData['required'] = isset($_POST['required']) ? trim($_POST['required']) : '';
-    $aData['update'] = isset($_POST['update']) ? ceil($_POST['update']) : 0;
-    $aData['delete'] = isset($_POST['delete']) ? ceil($_POST['delete']) : 0;
+    $aData['update'] = isset($_POST['update']) ? (is_numeric($_POST['update']) ? ceil((float)$_POST['update']) : 0) : 0;
+    $aData['delete'] = isset($_POST['delete']) ? (is_numeric($_POST['delete']) ? ceil((float)$_POST['delete']) : 0) : 0;
     $aData['aecfg'] = isset($_POST['aecfg']) ? $_POST['aecfg'] : 0;
-    $aData['sort'] = isset($_POST['sort']) ? ceil($_POST['sort']) : 0;
-    $aData['price'] = isset($_POST['price']) ? ceil($_POST['price']) : 0;
+    $aData['sort'] = isset($_POST['sort']) ? (is_numeric($_POST['sort']) ? ceil((float)$_POST['sort']) : 0) : 0;
+    $aData['price'] = isset($_POST['price']) ? (is_numeric($_POST['price']) ? ceil((float)$_POST['price']) : 0) : 0;
 
     $aData['config_files_file'] = isset($_POST['config_files_file']) ? $_POST['config_files_file'] : array();
     $aData['config_files_sort'] = isset($_POST['config_files_sort']) ? $_POST['config_files_sort'] : array();
