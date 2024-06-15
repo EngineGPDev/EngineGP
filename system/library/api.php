@@ -14,7 +14,7 @@ if (!defined('EGP'))
 
 class api
 {
-    public function data($id)
+    public static function data($id)
     {
         global $sql, $cfg;
 
@@ -58,7 +58,7 @@ class api
         );
     }
 
-    public function load($id)
+    public static function load($id)
     {
         global $sql, $cfg;
 
@@ -80,7 +80,7 @@ class api
         );
     }
 
-    public function console($id, $cmd)
+    public static function console($id, $cmd)
     {
         global $sql, $cfg;
 

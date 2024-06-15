@@ -46,7 +46,6 @@ switch ($action) {
 
     case 'console':
         $cmd = isset($url['command']) ? $url['command'] : false;
-
         sys::outjs(api::console($id, $cmd));
 }
 
