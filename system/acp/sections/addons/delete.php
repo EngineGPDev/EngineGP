@@ -5,17 +5,18 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 if (!isset($url['type']))
     exit;
+
+$id = $url['id'];
+$plugin = array();
 
 if ($url['type'] == 'plugin') {
     $sql->query('DELETE FROM `plugins_config` WHERE `plugin`="' . $id . '"');
@@ -26,7 +27,7 @@ if ($url['type'] == 'plugin') {
     $sql->query('DELETE FROM `plugins_delete_ins` WHERE `plugin`="' . $id . '" LIMIT 1');
     $sql->query('DELETE FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 
-    $sql->query('SELECT `id` FROM `plugins_update` WHERE `plugin`="' . $plugin['plugin'] . '"');
+    $sql->query('SELECT `id` FROM `plugins_update` WHERE `plugin`="' . $id . '"');
     while ($update = $sql->get()) {
         unlink(FILES . 'plugins/delete/u' . $update['id'] . '.rm');
         unlink(FILES . 'plugins/delete/' . $update['id'] . '.rm');
@@ -52,17 +53,19 @@ if ($url['type'] == 'plugin') {
 
     $sql->query('DELETE FROM `plugins_update` WHERE `id`="' . $id . '" LIMIT 1');
 
-    $sql->query('SELECT `id` FROM `plugins_update` WHERE `plugin`="' . $plugin['plugin'] . '" ORDER BY `id` DESC LIMIT 1');
+    $sql->query('SELECT `id` FROM `plugins_update` WHERE `plugin`="' . $id . '" ORDER BY `id` DESC LIMIT 1');
     if ($sql->num()) {
         $update = $sql->get();
 
-        $sql->query('UPDATE `plugins` set `upd`="' . $update['id'] . '" WHERE `id`="' . $plugin['plugin'] . '" LIMIT 1');
-    } else
-        $sql->query('UPDATE `plugins` set `upd`="0" WHERE `id`="' . $plugin['plugin'] . '" LIMIT 1');
+        $sql->query('UPDATE `plugins` set `upd`="' . $update['id'] . '" WHERE `id`="' . $id . '" LIMIT 1');
+    } else {
+        $sql->query('UPDATE `plugins` set `upd`="0" WHERE `id`="' . $id . '" LIMIT 1');
+    }
 } else {
     $sql->query('SELECT `id` FROM `plugins` WHERE `cat`="' . $id . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         $sql->query('DELETE FROM `plugins_category` WHERE `id`="' . $id . '" LIMIT 1');
+    }
 }
 
 sys::outjs(array('s' => 'ok'));

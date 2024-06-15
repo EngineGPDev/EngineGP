@@ -5,10 +5,8 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
 header('Content-Type: text/html; charset=utf-8');
@@ -37,17 +35,17 @@ if ($_ENV['RUN_MODE'] === 'dev') {
     ini_set('error_reporting', 0);
 }
 
-DEFINE('EGP', TRUE);
-DEFINE('ROOT', '../');
-DEFINE('SYS', ROOT . 'system/');
-DEFINE('ACP', ROOT . 'system/acp/');
-DEFINE('TPL', ROOT . 'template/acp/');
-DEFINE('TEMP', ROOT . 'temp/');
-DEFINE('FILES', ROOT . 'files/');
-DEFINE('DATA', SYS . 'data/');
-DEFINE('LIB', SYS . 'library/');
-DEFINE('ENG', SYS . 'acp/engine/');
-DEFINE('SEC', SYS . 'acp/sections/');
+define('EGP', TRUE);
+define('ROOT', '../');
+define('SYS', ROOT . 'system/');
+define('ACP', ROOT . 'system/acp/');
+define('TPL', ROOT . 'template/acp/');
+define('TEMP', ROOT . 'temp/');
+define('FILES', ROOT . 'files/');
+define('DATA', SYS . 'data/');
+define('LIB', SYS . 'library/');
+define('ENG', SYS . 'acp/engine/');
+define('SEC', SYS . 'acp/sections/');
 
 $start_point = $_SERVER['REQUEST_TIME'];
 

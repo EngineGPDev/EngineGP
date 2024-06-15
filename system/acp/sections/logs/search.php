@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
@@ -77,7 +75,7 @@ while ($log = $sql->get()) {
     $list .= '<td>' . $log['id'] . '</td>';
     $list .= '<td>' . $log['text'] . '</td>';
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $log['user'] . '">USER_' . $log['user'] . '</a></td>';
-    $list .= '<td class="text-center">' . $log['money'] . ' ' . $cur['currency'] . '</td>';
+    $list .= '<td class="text-center">' . $log['money'] . ' ' . $cfg['currency'] . '</td>';
     $list .= '<td class="text-center">' . date('d.m.Y - H:i:s', $log['date']) . '</td>';
     $list .= '</tr>';
 }

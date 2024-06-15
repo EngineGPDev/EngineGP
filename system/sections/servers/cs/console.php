@@ -5,10 +5,8 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
 if (!defined('EGP'))
@@ -27,8 +25,8 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     $command = isset($_POST['command']) ? sys::cmd($_POST['command']) : '';
-
-    if ($server['status'] == 'off') {
+    
+    if (isset($server['status']) && $server['status'] == 'off') {
         if ($command)
             sys::outjs(array('e' => sys::text('servers', 'off')));
 
@@ -58,7 +56,7 @@ if ($go) {
 
     $output = $ssh->get($command);
 
-    sys::out(htmlspecialchars($output, NULL, ''));
+    sys::out(htmlspecialchars($output, ENT_QUOTES, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

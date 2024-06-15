@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 define('DIRECTION_VERTICAL', 690001);
@@ -2306,7 +2304,7 @@ class pDraw
             $DrawYLines = array("zarma" => "31");
         }
 
-        /* Define the color for the skipped elements */
+        /* define the color for the skipped elements */
         $SkippedAxisColor = array("R" => $SkippedAxisR, "G" => $SkippedAxisG, "B" => $SkippedAxisB, "Alpha" => $SkippedAxisAlpha, "Ticks" => $SkippedAxisTicks);
         $SkippedTickColor = array("R" => $SkippedTickR, "G" => $SkippedTickG, "B" => $SkippedTickB, "Alpha" => $SkippedTickAlpha);
 

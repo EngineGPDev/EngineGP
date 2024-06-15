@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 $sql->query('SELECT `unit`, `tarif`, `slots_start`, `online`, `players`, `name`, `pack`, `fps`,  `tickrate`, `map`, `time`, `date`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
@@ -42,7 +40,7 @@ $html->set('address', $server['address']);
 $html->set('game', $aGname[$server['game']]);
 $html->set('slots', $server['slots_start']);
 $html->set('online', $server['online']);
-$html->set('players', base64_decode($server['players']));
+$html->set('players', base64_decode($server['players'] ?? ''));
 $html->set('name', $server['name']);
 $html->set('status', sys::status($server['status'], $server['game'], $server['map']));
 $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img'));

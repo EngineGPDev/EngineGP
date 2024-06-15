@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 // Массив главных разделов
@@ -36,9 +34,8 @@ $aRoute = array(
     'autocontrol',
     'graph',
     'api_v1',
-    'check',
     'monitoring',
-    'partners',
+    'partners'
 );
 
 // Массив регулярных выражений
@@ -54,7 +51,7 @@ $aValid = array(
     'cslogs' => '/^L[A-Za-z0-9\.]/',
     'csamxlogs' => '/^[A-Za-z0-9_\.-]/',
     'csssmlogs' => '/^[A-Za-z0-9_\.-]/',
-    'address' => '/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}:[0-9]{4,5}$/',
+    'address' => '/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}:[0-9]{4,5}$/'
 );
 
 // Массив данных для регистрации
@@ -176,7 +173,7 @@ $aOwners = array(
     'mc' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
     'mta' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
     'samp' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
-    'crmp' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
+    'crmp' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph')
 );
 
 $aOwnersI = array(

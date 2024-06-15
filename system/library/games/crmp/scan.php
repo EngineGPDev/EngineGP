@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 include(LIB . 'games/scans.php');
@@ -56,7 +54,7 @@ class scan extends scans
             $out['buttons'] = sys::buttons($id, $server['status'], $server['game']);
 
             if ($players_get)
-                $out['players'] = base64_decode($server['players']);
+                $out['players'] = base64_decode($server['players'] ?? '');
 
             $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 

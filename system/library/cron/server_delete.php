@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class server_delete extends cron
@@ -43,6 +41,9 @@ class server_delete extends cron
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return NULL;
+
+        // Разделение адреса на IP и порт
+        list($ip, $port) = explode(':', $server['address']);
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -85,7 +86,7 @@ class server_delete extends cron
             $country = $server['ddos'] == 2 ? 'AM,BY,UA,RU,KZ' : 'UA,RU';
 
             $ssh->set('iptables -D INPUT -p udp -d ' . $ip . ' --dport ' . $port . ' -m geoip ! --source-country ' . $country . ' -j DROP;'
-                . 'sed "`nl ' . $geo . ' | grep \"#' . $id . '\" | awk \'{print $1","$1+1}\'`d" ' . $geo . ' > ' . $geo . '_temp; cat ' . $geo . '_temp > ' . $geo . '; rm ' . $geo . '_temp;');
+                . 'sed "`nl ' . $geo . ' | grep \"#' . $server['id'] . '\" | awk \'{print $1","$1+1}\'`d" ' . $geo . ' > ' . $geo . '_temp; cat ' . $geo . '_temp > ' . $geo . '; rm ' . $geo . '_temp;');
         }
 
         // Удаление заданий из crontab

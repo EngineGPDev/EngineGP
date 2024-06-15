@@ -5,13 +5,11 @@
  * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
  *
  * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- * @link      https://gitforge.ru/EngineGP/EngineGP for the canonical source repository
  *
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- * @license   https://gitforge.ru/EngineGP/EngineGP/src/branch/main/LICENSE MIT License
  */
 
-if (!DEFINED('EGP'))
+if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
 class sys
@@ -455,21 +453,25 @@ class sys
 
     public static function uptime_load($time)
     {
-        $uptime = '';
+        $uptime = null;
 
-        $day = floor($time / 60 / 60 / 24);
+        $day = floor($time / 86400);
         if ($day)
             $uptime .= $day . 'д. ';
 
-        $hour = $time / 60 / 60 % 24;
+        $hour = floor(($time % 86400) / 3600);
         if ($hour)
             $uptime .= $hour . 'ч. ';
 
-        $min = $time / 60 % 60;
+        $min = floor(($time % 3600) / 60);
         if ($min)
             $uptime .= $min . 'м. ';
 
-        return $uptime . ($time % 60) . 'с.';
+        $sec = $time % 60;
+        if ($sec)
+            $uptime .= $sec . 'с. ';
+
+        return $uptime;
     }
 
     public static function ram_load($data)
