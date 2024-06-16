@@ -16,6 +16,8 @@ class html
 {
     var $dir = TPL;
     var $template = null;
+    var $select_template = null;
+    var $arr = array();
     var $data = array();
     var $unitblock = array();
 
