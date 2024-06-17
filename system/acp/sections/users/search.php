@@ -20,6 +20,8 @@ $cache = $mcache->get($mkey);
 
 $nmch = null;
 
+$aGroup = array('user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор');
+
 if (is_array($cache)) {
     if ($go)
         sys::outjs($cache, $nmch);
