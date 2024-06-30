@@ -236,7 +236,7 @@ $copys = $sql->query('SELECT `id`, `user` FROM `copy` WHERE `server`="' . $id . 
 while ($copy = $sql->get($copys)) {
     $aCP = explode('_', $copy['user']);
 
-    if ($aCP[0] != $aData['user'])
+    if (isset($aCP[0]) && isset($aData['user']) && $aCP[0] != $aData['user'])
         $sql->query('UPDATE `copy` set `user`="' . $aData['user'] . '_' . $aCP[1] . '" WHERE `id`="' . $copy['id'] . ' LIMIT 1');
 }
 
