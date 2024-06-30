@@ -85,6 +85,10 @@ class sys
 
     public static function valid($val, $type, $preg = '')
     {
+        if (!is_string($val)) {
+            return true;
+        }
+        
         switch ($type) {
             case 'promo':
                 if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
