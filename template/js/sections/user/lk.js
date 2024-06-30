@@ -68,6 +68,12 @@ function lk(type) {
 
             break;
 
+        case 'cashback':
+            url = 'user/section/lk/subsection/cashback/purse/'+$('#purse').val()+'/sum/'+$('#sum').val()+'/go';
+            val = '';
+
+            break;
+
         default:
             loading(0);
 
@@ -81,39 +87,43 @@ function lk(type) {
         dataType: 'json',
         success: function (data) {
             $.each(data, function (i, val) {
-                if (i == 'e' && val != '')
-                    bootbox.dialog(val,
-                        [{
-                            "label": "Продолжить",
-                        }]
-                    );
+                if (i === 'e' && val !== '') {
+                    bootbox.dialog(val, [{
+                        "label": "Продолжить"
+                    }]);
+                }
 
-                if (i == 's' && val != '') {
-                    if (type == 'confirm' || type == 'mail') {
-                        if (type == 'confirm')
-                            bootbox.dialog(form,
-                                [{
-                                    "label": "Подтвердить",
-                                    callback: function () {
-                                        lk('confirm_end');
-                                    }
-                                }]
-                            );
-                        else
-                            bootbox.dialog(val,
-                                [{
-                                    "label": "Продолжить",
-                                    callback: function () {
-                                        location.href = 'http://' + data['mail'];
-                                    }
-                                }]
-                            );
-                    } else
+                if (i === 's' && val !== '') {
+                    if (type === 'confirm' || type === 'mail') {
+                        if (type === 'confirm') {
+                            bootbox.dialog(form, [{
+                                "label": "Подтвердить",
+                                callback: function () {
+                                    lk('confirm_end');
+                                }
+                            }]);
+                        } else {
+                            bootbox.dialog(val, [{
+                                "label": "Продолжить",
+                                callback: function () {
+                                    location.href = 'http://' + data['mail'];
+                                }
+                            }]);
+                        }
+                    } else if (type === 'cashback') {
+                        bootbox.dialog(val, [{
+                            "label": "Продолжить",
+                            callback: function () {
+                                location.reload();
+                            }
+                        }]);
+                    } else {
                         location.reload();
+                    }
                 }
             });
 
-            loading(0)
+            loading(0);
         }
     });
 }
