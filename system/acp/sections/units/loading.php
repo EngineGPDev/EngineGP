@@ -18,7 +18,7 @@ if ($id) {
 
     include(LIB . 'ssh.php');
 
-    if (isset($url['service']) and in_array($url['service'], array('apache2', 'nginx', 'mysql', 'unit', 'geo', 'ungeo'))) {
+    if (isset($url['service']) and in_array($url['service'], array('nginx', 'mysql', 'unit', 'geo', 'ungeo'))) {
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
 
@@ -50,7 +50,6 @@ if ($id) {
         'cpu' => '0%',
         'ram' => '0%',
         'hdd' => '0%',
-        'apache' => 'unknown',
         'nginx' => 'unknown',
         'mysql' => 'unknown',
         'uptime' => 'unknown',
@@ -67,7 +66,6 @@ if ($id) {
 
     $aData['hdd'] = $ssh->get('df -P / | awk \'{print $5}\' | tail -1');
 
-    $aData['apache'] = sys::status($ssh->get('service apache2 status')) ? 'Работает' : '<a href="#" onclick="return units_restart(\'' . $id . '\', \'apache2\')">Поднять</a>';
     $aData['nginx'] = sys::status($ssh->get('service nginx status')) ? 'Работает' : '<a href="#" onclick="return units_restart(\'' . $id . '\', \'nginx\')">Поднять</a>';
     $aData['mysql'] = sys::status($ssh->get('service mysql status')) ? 'Работает' : '<a href="#" onclick="return units_restart\'' . $id . '\', (\'mysql\')">Поднять</a>';
 
@@ -90,7 +88,6 @@ while ($unit = $sql->get()) {
     $list .= '<td id="cpu_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
     $list .= '<td id="ram_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
     $list .= '<td id="hdd_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
-    $list .= '<td id="apache_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
     $list .= '<td id="nginx_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
     $list .= '<td id="mysql_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
     $list .= '<td id="uptime_' . $unit['id'] . '" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i></td>';
