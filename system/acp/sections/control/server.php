@@ -21,6 +21,8 @@ if ($ctrl['time'] > $start_point and $ctrl['overdue'])
 $sql->query('SELECT * FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
+$aData = array();
+
 if ($go) {
     if (isset($url['type']) and in_array($url['type'], array('overdue', 'block', 'tarif'))) {
         if ($url['type'] != 'tarif') {
@@ -49,8 +51,6 @@ if ($go) {
 
         sys::outjs(array('s' => 'ok'));
     }
-
-    $aData = array();
 
     $aData['user'] = isset($_POST['user']) ? sys::int($_POST['user']) : $ctrl['user'];
     $aData['address'] = isset($_POST['address']) ? trim($_POST['address']) : $ctrl['address'];
