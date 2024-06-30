@@ -18,7 +18,7 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if (isset($url['service']) and in_array($url['service'], array('apache2', 'nginx', 'mysql', 'unit'))) {
+    if (isset($url['service']) and in_array($url['service'], array('nginx', 'mysql', 'unit'))) {
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             sys::outjs(array('e' => 'Не удалось создать связь с сервером'));
 
@@ -34,7 +34,6 @@ if ($go) {
         'cpu' => '0%',
         'ram' => '0%',
         'hdd' => '0%',
-        'apache' => '<a href="#" onclick="return system_restart(\'apache\')">Перезагрузить</a>',
         'nginx' => '<a href="#" onclick="return system_restart(\'nginx\')">Перезагрузить</a>',
         'mysql' => '<a href="#" onclick="return system_restart(\'mysql\')">Перезагрузить</a>',
         'uptime' => 'unknown',
