@@ -27,7 +27,7 @@ if (!in_array($section, array('cs', 'css', 'cssold', 'csgo', 'cs2', 'rust',  'mc
         'csgo' => 'Counter-Srike: Global Offensive',
         'cs2' => 'Counter-Srike: 2',
         'rust' => 'RUST',
-        'mc' => 'MineCraft',
+        'mc' => 'Minecraft',
         'mta' => 'GTA: MTA',
         'samp' => 'GTA: SA-MP',
         'crmp' => 'GTA: CR-MP',
