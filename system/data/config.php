@@ -35,11 +35,12 @@ $cfg = array(
     'unitpay_pubkey' => '', // Публичный ключ UnitPay
 
     // Данные для отправки почты
-    'smtp_url' => '', // * SMTP URL, пример: ssl://smtp.mail.ru | ssl://smtp.yandex.ru | ssl://smtp.google.com
-    'smtp_login' => '', // * E-mail отправителя, пример: support@enginegp.ru
-    'smtp_passwd' => '', // * Пароль от E-mail отправителя support@enginegp.ru
-    'smtp_name' => '', // * Имя отправителя, пример: EngineGP Support
-    'smtp_mail' => '', // * E-mail отправителя(ещё раз) - (support@enginegp.ru)
+    'smtp_url' => $_ENV['SMTP_URL'],
+    'smtp_login' => $_ENV['SMTP_LOGIN'],
+    'smtp_passwd' => $_ENV['SMTP_PASSWD'],
+    'smtp_name' => $_ENV['SMTP_NAME'],
+    'smtp_mail' => $_ENV['SMTP_MAIL'],
+    'smtp_port' => $_ENV['SMTP_PORT'],
 
     // Уведомления о сообщениях в тикетах
     'notice_admin' => array(1), // перечислить id пользователя, на их почты будут отправлять уведомления

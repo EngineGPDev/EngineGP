@@ -586,8 +586,6 @@ class sys
     {
         global $cfg;
 
-        require_once(LIB . 'smtp.php');
-
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
         $text = str_replace(
@@ -596,16 +594,21 @@ class sys
             $tpl
         );
 
-        $smtp = new smtp($cfg['smtp_login'], $cfg['smtp_passwd'], $cfg['smtp_url'], $cfg['smtp_mail'], 465);
+        $transport = Transport::fromDsn("smtp://{$cfg['smtp_login']}:{$cfg['smtp_passwd']}@{$cfg['smtp_url']}:{$cfg['smtp_port']}");
+        $mailer = new Mailer($transport);
 
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "From: " . $cfg['smtp_name'] . " <" . $cfg['smtp_mail'] . ">\r\n";
+        $email = (new Email())
+            ->from("{$cfg['smtp_name']} <{$cfg['smtp_mail']}>")
+            ->to($mail)
+            ->subject($name)
+            ->html($text);
 
-        if ($smtp->send($mail, $name, $text, $headers))
+        try {
+            $mailer->send($email);
             return true;
-
-        return false;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public static function country($address)

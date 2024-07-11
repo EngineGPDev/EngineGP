@@ -2,6 +2,7 @@
   "require": {
     "ext-memcache": "*",
     "symfony/dotenv": "5.4.35",
+    "symfony/mailer": "5.4.41",
     "filp/whoops": "2.15.4",
     "monolog/monolog": "2.9.2",
     "xpaw/php-source-query-class": "2.1.0",
