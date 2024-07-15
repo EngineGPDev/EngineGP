@@ -34,14 +34,6 @@ $cfg = array(
     'unitpay_key' => '', // Секретный ключ UnitPay
     'unitpay_pubkey' => '', // Публичный ключ UnitPay
 
-    // Данные для отправки почты
-    'smtp_url' => $_ENV['SMTP_URL'],
-    'smtp_login' => $_ENV['SMTP_LOGIN'],
-    'smtp_passwd' => $_ENV['SMTP_PASSWD'],
-    'smtp_name' => $_ENV['SMTP_NAME'],
-    'smtp_mail' => $_ENV['SMTP_MAIL'],
-    'smtp_port' => $_ENV['SMTP_PORT'],
-
     // Уведомления о сообщениях в тикетах
     'notice_admin' => array(1), // перечислить id пользователя, на их почты будут отправлять уведомления
 

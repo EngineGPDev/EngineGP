@@ -598,11 +598,12 @@ class sys
             $tpl
         );
 
-        $transport = Transport::fromDsn("smtp://{$cfg['smtp_login']}:{$cfg['smtp_passwd']}@{$cfg['smtp_url']}:{$cfg['smtp_port']}");
+        $dsn = $_ENV['MAILER_DSN'];
+        $transport = Transport::fromDsn($dsn);
         $mailer = new Mailer($transport);
 
         $email = (new Email())
-            ->from("{$cfg['smtp_name']} <{$cfg['smtp_mail']}>")
+            ->from($_ENV['MAIL_FROM_NAME'] . ' <' . $_ENV['MAIL_FROM_ADDRESS'] . '>')
             ->to($mail)
             ->subject($name)
             ->html($text);
