@@ -18,7 +18,6 @@ $aData = array();
 
 $aData['title'] = isset($_POST['title']) ? trim($_POST['title']) : sys::outjs(array('e' => 'Необходимо указать заголовок'));
 $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : sys::outjs(array('e' => 'Необходимо указать сообщение'));
-
 $aData['users'] = isset($_POST['users']) ? $_POST['users'] : sys::outjs(array('e' => 'Необходимо указать получателей'));
 
 if ($aData['title'] == '' || $aData['text'] == '')
@@ -38,7 +37,7 @@ foreach ($aData['users'] as $id => $cheked) {
     $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . sys::int($id) . '" LIMIT 1');
     $us = $sql->get();
 
-    $tpl = file_get_contents(DATA . 'mail.ini', "r");
+    $tpl = file_get_contents(DATA . 'mail.ini');
 
     $text = str_replace(
         array('[name]', '[text]', '[http]', '[img]', '[css]'),
@@ -46,13 +45,9 @@ foreach ($aData['users'] as $id => $cheked) {
         $tpl
     );
 
-    $smtp = new smtp($cfg['smtp_login'], $cfg['smtp_passwd'], $cfg['smtp_url'], $cfg['smtp_mail'], 465);
+    $smtp = new smtp();
 
-    $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/html; charset=utf-8\r\n";
-    $headers .= "From: " . $cfg['smtp_name'] . " <" . $cfg['smtp_mail'] . ">\r\n";
-
-    if (!$smtp->send($us['mail'], strip_tags($aData['title']), $text, $headers))
+    if (!$smtp->send($us['mail'], strip_tags($aData['title']), $text))
         $noletter .= '<p>' . $us['mail'] . '</p>';
 }
 
