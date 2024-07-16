@@ -18,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="[css]fonts.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="[css]bootbox.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="[css]code.css" media="screen"/>
-    <link rel="stylesheet" type="text/css" href="[css]google-translate.css" media="screen"/>
 
     <!-- scripts !-->
     <script type="text/javascript" src="[js]jquery.js"></script>
@@ -91,26 +90,11 @@
     <script type="text/javascript" src="[js]code.js"></script>
     <script type="text/javascript" src="[js]functions.js"></script>
     <script type="text/javascript" src="[js]scrollup.js"></script>
-    <script type="text/javascript" src="[js]google-translate.js"></script>
-    <script src="//translate.google.com/translate_a/element.js?cb=TranslateInit"></script>
     <script type="text/javascript" src="[js]jquery.cookie.min.js"></script>
 
 
 </head>
 <body>
-<div class="language">
-    <img src="[home]template/images/lang/lang__ru.png" alt="ru" data-google-lang="ru" class="language__img">
-    <img src="[home]template/images/lang/lang__en.png" alt="en" data-google-lang="en" class="language__img">
-    <img src="[home]template/images/lang/lang__de.png" alt="de" data-google-lang="de" class="language__img">
-    <img src="[home]template/images/lang/lang__fr.png" alt="fr" data-google-lang="fr" class="language__img">
-    <img src="[home]template/images/lang/lang__pt.png" alt="pt" data-google-lang="pt" class="language__img">
-    <img src="[home]template/images/lang/lang__es.png" alt="es" data-google-lang="es" class="language__img">
-    <img src="[home]template/images/lang/lang__it.png" alt="it" data-google-lang="it" class="language__img">
-    <img src="[home]template/images/lang/lang__zh.png" alt="zh" data-google-lang="zh-CN" class="language__img">
-    <img src="[home]template/images/lang/lang__ar.png" alt="ar" data-google-lang="ar" class="language__img">
-    <img src="[home]template/images/lang/lang__nl.png" alt="nl" data-google-lang="nl" class="language__img">
-    <img src="[home]template/images/lang/lang__sv.png" alt="sv" data-google-lang="sv" class="language__img">
-</div>
 <div class="space"></div>
 <div class="all">
     <div class="top">
@@ -233,5 +217,16 @@
 
     <div class="scroll-button" id="scroll-up">&#9650;</div>
     <div class="scroll-button" id="scroll-down">&#9660;</div>
+
+    <div class="gtranslate_wrapper"></div>
+    <script>
+        window.gtranslateSettings = {
+            "default_language": "ru",
+            "native_language_names": true,
+            "detect_browser_language": true,
+            "wrapper_selector": ".gtranslate_wrapper"
+        }
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 </body>
 </html>
