@@ -19,9 +19,6 @@ function system_load(go) {
 
 function system_restart(service) {
     switch (service) {
-        case 'apache2':
-            type = 'apache2';
-            break;
         case 'nginx':
             type = 'nginx';
             break;

@@ -9,6 +9,10 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
@@ -85,6 +89,10 @@ class sys
 
     public static function valid($val, $type, $preg = '')
     {
+        if (!is_string($val)) {
+            return true;
+        }
+        
         switch ($type) {
             case 'promo':
                 if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
@@ -582,8 +590,6 @@ class sys
     {
         global $cfg;
 
-        require_once(LIB . 'smtp.php');
-
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
         $text = str_replace(
@@ -592,16 +598,22 @@ class sys
             $tpl
         );
 
-        $smtp = new smtp($cfg['smtp_login'], $cfg['smtp_passwd'], $cfg['smtp_url'], $cfg['smtp_mail'], 465);
+        $dsn = $_ENV['MAILER_DSN'];
+        $transport = Transport::fromDsn($dsn);
+        $mailer = new Mailer($transport);
 
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "From: " . $cfg['smtp_name'] . " <" . $cfg['smtp_mail'] . ">\r\n";
+        $email = (new Email())
+            ->from($_ENV['MAIL_FROM_NAME'] . ' <' . $_ENV['MAIL_FROM_ADDRESS'] . '>')
+            ->to($mail)
+            ->subject($name)
+            ->html($text);
 
-        if ($smtp->send($mail, $name, $text, $headers))
+        try {
+            $mailer->send($email);
             return true;
-
-        return false;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public static function country($address)

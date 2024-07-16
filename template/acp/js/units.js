@@ -38,9 +38,6 @@ function units_load(id, go) {
 
 function units_restart(id, service) {
     switch (service) {
-        case 'apache2':
-            type = 'apache2';
-            break;
         case 'nginx':
             type = 'nginx';
             break;

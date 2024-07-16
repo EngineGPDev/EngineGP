@@ -27,6 +27,8 @@ $unit = $sql->get();
 $sql->query('SELECT `name`, `slots_min`, `slots_max`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
+$aData = array();
+
 if ($go) {
     if (isset($url['type']) and in_array($url['type'], array('overdue', 'block', 'tarif'))) {
         if ($url['type'] != 'tarif') {
@@ -94,8 +96,6 @@ if ($go) {
 
         sys::outjs(array('s' => 'ok'));
     }
-
-    $aData = array();
 
     $aData['user'] = isset($_POST['user']) ? sys::int($_POST['user']) : $server['user'];
     $aData['address'] = isset($_POST['address']) ? trim($_POST['address']) : $server['address'];
@@ -236,7 +236,7 @@ $copys = $sql->query('SELECT `id`, `user` FROM `copy` WHERE `server`="' . $id . 
 while ($copy = $sql->get($copys)) {
     $aCP = explode('_', $copy['user']);
 
-    if ($aCP[0] != $aData['user'])
+    if (isset($aCP[0]) && isset($aData['user']) && $aCP[0] != $aData['user'])
         $sql->query('UPDATE `copy` set `user`="' . $aData['user'] . '_' . $aCP[1] . '" WHERE `id`="' . $copy['id'] . ' LIMIT 1');
 }
 

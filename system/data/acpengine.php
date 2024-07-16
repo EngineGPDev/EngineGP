@@ -56,7 +56,7 @@ $aGname = array(
     'csgo' => 'CS: Global Offensive',
     'cs2' => 'CS: 2',
     'rust' => 'RUST',
-    'mc' => 'MineCraft',
+    'mc' => 'Minecraft',
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP'
 );
