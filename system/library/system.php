@@ -42,30 +42,6 @@ class sys
         return $url;
     }
 
-    public static function user($user)
-    {
-        global $sql, $start_point;
-
-        if ($user['time'] + 10 < $start_point)
-            $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
-
-        return NULL;
-    }
-
-    public static function users($users, $user, $authkey, $del = false)
-    {
-        global $mcache;
-
-        if ($del)
-            unset($users[md5($user['login'] . $user['authkey'] . $user['passwd'])]);
-        else
-            $users[md5($user['login'] . $user['authkey'] . $user['passwd'])] = $user;
-
-        $mcache->set('users_auth', $users, false, 1000);
-
-        return NULL;
-    }
-
     public static function nav($server, $sid, $active)
     {
         global $cfg, $html, $sql, $mcache, $start_point;
@@ -189,11 +165,6 @@ class sys
     public static function hb64($data)
     {
         return base64_encode(htmlspecialchars($data));
-    }
-
-    public static function hb64d($data)
-    {
-        return htmlspecialchars_decode(base64_decode($data));
     }
 
     public static function outjs($val, $cache = false)
@@ -369,15 +340,6 @@ class sys
         }
     }
 
-    public static function domain($domain)
-    {
-        $domain = explode('.', $domain);
-
-        unset($domain[0]);
-
-        return implode('.', $domain);
-    }
-
     public static function updtext($text, $data)
     {
         foreach ($data as $name => $val)
@@ -437,12 +399,6 @@ class sys
     public static function passwdverify($passwd, $passwdhash)
     {
         return password_verify($passwd, $passwdhash);
-    }
-
-    public static function cookie($name, $value, $expires)
-    {
-        $expires = time() + ($expires * 86400);
-        setcookie($name, $value, $expires, "/", $_SERVER['HTTP_HOST'], null, true);
     }
 
     public static function auth()
@@ -824,13 +780,6 @@ class sys
         return $text;
     }
 
-    public static function str_first_replace($search, $replace, $text)
-    {
-        $pos = strpos($text, $search);
-
-        return $pos !== false ? substr_replace($text, $replace, $pos, strlen($search)) : $text;
-    }
-
     public static function cmd($command)
     {
         $text = preg_replace('/\\$/', '$ы', trim($command));
@@ -1060,16 +1009,6 @@ class sys
         $mcache->set($name, true, false, $time);
 
         return $name;
-    }
-
-    public static function check_php_config($file, &$error)
-    {
-        exec('php -l ' . $file, $error, $code);
-
-        if (!$code)
-            return true;
-
-        return false;
     }
 
     public static function cpu_idle($unit, $pros_stat = array(), $fcpu = false, $ctrl = false)
@@ -1342,17 +1281,6 @@ class sys
         $html->pack('buttons');
 
         return $html->arr['buttons'];
-    }
-
-    public static function entoru($month)
-    {
-        $ru = array(
-            1 => 'Янв', 2 => 'Фев', 3 => 'Мар', 4 => 'Апр',
-            5 => 'Май', 6 => 'Июн', 7 => 'Июл', 8 => 'Авг',
-            9 => 'Сен', 10 => 'Окт', 11 => 'Ноя', 12 => 'Дек'
-        );
-
-        return $ru[$month];
     }
 
     public static function head($head)
