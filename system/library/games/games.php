@@ -656,7 +656,7 @@ class games
         $sql = 'AND (';
 
         foreach ($arr as $map)
-            $sql .= ' `name` REGEXP FROM_BASE64(\'' . base64_encode('^' . $map . '\_') . '\') OR';
+            $sql .= ' `name` LIKE "' . $map . '_%" OR';
 
         return $sql == 'AND (' ? '' : substr($sql, 0, -3) . ')';
     }
