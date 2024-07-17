@@ -115,18 +115,18 @@ function maps_search(go) {
 
 function hidden_map_sel() {
     $.each(maps, function (i, map) {
-        if (!$('#block_' + map + ' i').hasClass('fa fa-square-o'))
+        if (!$('#block_' + map + ' i').hasClass('fa-regular fa-square'))
             $('#form_' + map).css('display', 'none');
     });
 }
 
 function select_map(map) {
     block = document.getElementById('block_' + map).getElementsByTagName('i')[0];
-    if ($('#block_' + map + ' i').hasClass('fa fa-square-o')) {
-        block.className = "fa fa-check-square-o";
+    if ($('#block_' + map + ' i').hasClass('fa-regular fa-square')) {
+        block.className = "fa-regular fa-square-check";
         $('#' + map).val('1');
     } else {
-        block.className = "fa fa-square-o";
+        block.className = "fa-regular fa-square";
         $('#' + map).val('0');
     }
 }
@@ -136,8 +136,8 @@ function select_map_all(arr) {
 
     $.each(array, function (i, map) {
         block = document.getElementById('block_' + map).getElementsByTagName('i')[0];
-        if ($('#block_' + map + ' i').hasClass('fa fa-square-o')) {
-            block.className = "fa fa-check-square-o";
+        if ($('#block_' + map + ' i').hasClass('fa-regular fa-square')) {
+            block.className = "fa-regular fa-square-check";
             $('#' + map).val('1');
         }
     });
@@ -148,8 +148,8 @@ function diselect_map_all(arr) {
 
     $.each(array, function (i, map) {
         block = document.getElementById('block_' + map).getElementsByTagName('i')[0];
-        if (!$('#block_' + map + ' i').hasClass('fa fa-square-o')) {
-            block.className = "fa fa-square-o";
+        if (!$('#block_' + map + ' i').hasClass('fa-regular fa-square')) {
+            block.className = "fa-regular fa-square";
             $('#' + map).val('0');
         }
     });
