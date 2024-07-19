@@ -14,8 +14,13 @@ if (!defined('EGP'))
 
 // Подключение filp/whoops
 $whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
+$prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
+foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
+    foreach ($secrets as $secret) {
+        $prettyPageHandler->blacklist($key, $secret);
+    }
+}
+$whoops->pushHandler($prettyPageHandler);
 // Логи в консоль браузера
 $loggingInConsole = new \Whoops\Handler\PlainTextHandler();
 $loggingInConsole->loggerOnly(true);
@@ -26,6 +31,7 @@ $loggingInFile = new \Whoops\Handler\PlainTextHandler();
 $loggingInFile->loggerOnly(true);
 $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
+$whoops->register();
 
 // Парсинг адреса
 $url = is_array(sys::url()) ? sys::url() : array();
