@@ -11,15 +11,22 @@
 
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+
 // Подключение filp/whoops
 $whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
+$prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
+foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
+    foreach ($secrets as $secret) {
+        $prettyPageHandler->blacklist($key, $secret);
+    }
+}
+$whoops->pushHandler($prettyPageHandler);
 // логи в файл
 $loggingInFile = new \Whoops\Handler\PlainTextHandler();
 $loggingInFile->loggerOnly(true);
 $loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/cron.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
+$whoops->register();
 
 // Подгрузка трейта
 if (!file_exists(CRON . $task . '.php'))

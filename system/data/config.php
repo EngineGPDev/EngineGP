@@ -25,6 +25,15 @@ $cfg = array(
     'ip' => $_ENV['APP_IP'],
     'subnet' => $_ENV['APP_IP'],
 
+    // Whoops
+    'whoops' => [
+        'blacklist' => [
+            '_COOKIE' => array_keys($_COOKIE),
+            '_SERVER' => array_keys($_SERVER),
+            '_ENV' => array_keys($_ENV),
+        ]
+    ],
+
     // Данные для пополнения баланса пользователям
     'freekassa_id' => '', // Номер кассы
     'freekassa_key_1' => '', // Первый секретный ключ FreeKassa
