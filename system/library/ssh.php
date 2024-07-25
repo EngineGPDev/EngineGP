@@ -16,7 +16,7 @@ class ssh
 {
     var $conn;
     var $stream;
-    private $alternativeInterfaces = ['enp3s0', 'enp0s3', 'ens3', 'eth0'];
+    private $alternativeInterfaces = ['enp3s0', 'enp0s31f6', 'enp0s3', 'ens3', 'eth0'];
 
     public function auth($passwd, $address)
     {

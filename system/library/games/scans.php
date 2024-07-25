@@ -20,6 +20,7 @@ class scans
         'css' => 'srcds_',
         'csgo' => 'srcds_',
         'cs2' => 'cs2',
+        'rust' => 'RustDedicated',
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
@@ -71,6 +72,7 @@ class scans
         if (isset($cr[0]))
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
 
+        $resources['cpu'] = floatval($resources['cpu']);
         $resources['cpu'] = $resources['cpu'] > 100 ? 100 : round($resources['cpu']);
 
         if (isset($cr[1]))

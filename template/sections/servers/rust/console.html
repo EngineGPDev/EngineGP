@@ -5,61 +5,35 @@
 
         <pre id="console">...</pre>
 
+        <!-- цвет консоли начало-->
+        <tr>
+            <td colspan="4">
+                <p>Цвет консоли:</p>
+                <div class="btn console_hover" onclick="console_color('#fff')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_slategray" onclick="console_color('#708090')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_red" onclick="console_color('#f94747')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_maroon" onclick="console_color('#800000')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_green" onclick="console_color('#03aa46')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_darkgreen" onclick="console_color('#105310')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_lime" onclick="console_color('#7CFC00')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_olive" onclick="console_color('#808000')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_yellow" onclick="console_color('#ffcc3c')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_tan" onclick="console_color('#D2B48C')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_blue" onclick="console_color('#3c7fff')"><i class="fa fa-terminal"></i></div>
+                <div class="btn console_skyblue" onclick="console_color('#87CEEB')"><i class="fa fa-terminal"></i></div>
+            </td>
+        </tr>
+        <!-- цвет консоли конец-->
+
         <form action="[home]servers/id/[id]/section/console/go" method="POST" id="form_console">
             <table class="table_pad input_pad">
                 <tbody>
-                <tr>
-                    <td colspan="4">
-                        <div class="btn" onclick="set_command('status')">status</div>
-                        <div class="btn" onclick="set_command('stats')">stats</div>
-                        <div class="btn" onclick="set_command('sm plugins list')">sm plugins list</div>
-                        <div class="btn" onclick="set_command('meta list')">meta list</div>
-                        <div class="btn" onclick="set_command(sm_reloadadmins')">sm_reloadadmins</div>
-                        <div class="btn" onclick="set_command('sm version')">sm version</div>
-                    </td>
-                </tr>
-
-                <!-- цвет консоли начало-->
-                <tr>
-                    <td colspan="4">
-                        <p>Цвет консоли:</p>
-                        <div class="btn console_hover" onclick="console_color('#fff')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_slategray" onclick="console_color('#708090')"><i
-                                class="fa fa-terminal"></i></div>
-                        <div class="btn console_red" onclick="console_color('#f94747')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_maroon" onclick="console_color('#800000')"><i
-                                class="fa fa-terminal"></i></div>
-                        <div class="btn console_green" onclick="console_color('#03aa46')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_darkgreen" onclick="console_color('#105310')"><i
-                                class="fa fa-terminal"></i></div>
-                        <div class="btn console_lime" onclick="console_color('#7CFC00')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_olive" onclick="console_color('#808000')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_yellow" onclick="console_color('#ffcc3c')"><i
-                                class="fa fa-terminal"></i></div>
-                        <div class="btn console_tan" onclick="console_color('#D2B48C')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_blue" onclick="console_color('#3c7fff')"><i class="fa fa-terminal"></i>
-                        </div>
-                        <div class="btn console_skyblue" onclick="console_color('#87CEEB')"><i
-                                class="fa fa-terminal"></i></div>
-                    </td>
-                </tr>
-                <!-- цвет консоли конец-->
-
                 <tr>
                     <td width="5">
                         <div class="btn btn-info" onclick="update_switch()">Обновление</div>
                     </td>
                     <td width="5" id="console_update"><i class="fa fa-toggle-on"></i></td>
-                    <td><input placeholder="Введите команду для отправки" name="command"></td>
-                    <td width="5">
-                        <button class="btn-success" onclick="loading(1)">Отправить</button>
-                    </td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>

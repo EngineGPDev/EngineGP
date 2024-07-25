@@ -288,7 +288,7 @@ class service
             . 'cd ' . $install . ' && sudo -u server' . $uid . ' screen -dmS i_' . $uid . ' sh -c "cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . params::$aFileGame['RustDedicated'] . '"');
+            . 'chmod 500 ' . params::$aFileGame['rust'] . '"');
 
         // Запись данных нового сервера
         $sql->query('UPDATE `servers` set

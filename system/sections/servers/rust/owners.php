@@ -21,11 +21,10 @@ $aAccessI = array(
     'update' => 'Обновление',
     'console' => 'Раздел "Консоль"',
     'settings' => 'Раздел "Настройки"',
-    'plugins' => 'Раздел "Плагины"',
-    'maps' => 'Раздел "Карты"'
+    'plugins' => 'Раздел "Плагины"'
 );
 
-$aAccess = array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps');
+$aAccess = array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins');
 
 // Проверка прав
 if (isset($url['rights']) and $url['rights'] > 0) {

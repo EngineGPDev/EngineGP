@@ -12,7 +12,7 @@
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 
-$sql->query('SELECT `uid`, `slots`, `slots_start`, `map_start`, `vac`, `fastdl`, `autorestart`, `fps`, `tickrate`, `pingboost` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+$sql->query('SELECT `uid`, `slots`, `slots_start`, `vac`, `fastdl`, `autorestart`, `fps`, `tickrate`, `pingboost` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
 $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -25,24 +25,11 @@ include(LIB . 'games/games.php');
 include(LIB . 'games/tarifs.php');
 include(LIB . 'games/' . $server['game'] . '/tarif.php');
 
-// Вывод списка карт
-if (isset($url['maps']))
-    games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/game/csgo/maps', $server['map_start'], false);
-
 // Сохранение
 if ($go and $url['save']) {
     $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
 
     switch ($url['save']) {
-        case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
-
-            if ($map != $server['map_start'])
-                games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/game/csgo/maps', $map, true, $nmch);
-
-            $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
-
         case 'vac':
             if ($value != $server['vac'])
                 $sql->query('UPDATE `servers` set `vac`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
@@ -157,7 +144,6 @@ $mod = str_replace('value="' . $server['pingboost'], 'value="' . $server['pingbo
 $html->get('start', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
-$html->set('map', $server['map_start']);
 $html->set('vac', $vac);
 $html->set('fastdl', $fastdl);
 $html->set('autorestart', $autorestart);

@@ -24,11 +24,13 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if (isset($server['status']) && $server['status'] == 'off')
+    if (isset($server['status']) && $server['status'] == 'off') {
         sys::out(sys::text('servers', 'off'));
+    }
 
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::out(sys::text('error', 'ssh'));
+    }
 
     $dir = $tarif['install'] . $server['uid'] . '/';
 

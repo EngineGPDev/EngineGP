@@ -109,6 +109,9 @@ class scan extends scans
 
         list($ip, $port) = explode(':', $server['address']);
 
+        // Прибавляем 1 к порту
+        $port = (int)$port + 1;
+
         $sq->Connect($ip, $port, 1, SourceQuery::SOURCE);
 
         if ($pl) {
