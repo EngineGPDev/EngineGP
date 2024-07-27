@@ -1095,6 +1095,8 @@ CREATE TABLE `servers` (
   `user` int(11) NOT NULL DEFAULT '0',
   `address` char(21) NOT NULL DEFAULT '',
   `port` int(11) NOT NULL DEFAULT '0',
+  `port_query` int NOT NULL DEFAULT '0',
+  `port_rcon` int NOT NULL DEFAULT '0',
   `game` char(6) NOT NULL DEFAULT '',
   `slots` int(11) NOT NULL DEFAULT '0',
   `slots_start` int(11) NOT NULL DEFAULT '0',

@@ -31,7 +31,7 @@ $html->nav('Мониторинг', $cfg['http'] . 'monitoring');
 $html->nav('Сервер #' . $id);
 
 // Получаем информацию о сервере
-$sql->query('SELECT `id`, `unit`, `tarif`, `address`, `name`, `map`, `slots_start`, `online`, `players`, `status`, `game`, `pack`, `date` FROM servers WHERE id ="' . $id . '" LIMIT 1');
+$sql->query('SELECT `id`, `unit`, `tarif`, `address`, `port`, `name`, `map`, `slots_start`, `online`, `players`, `status`, `game`, `pack`, `date` FROM servers WHERE id ="' . $id . '" LIMIT 1');
 $server = $sql->get();
 
 // Если результат пустой
@@ -73,7 +73,7 @@ if (!$sql->num()) {
 $html->get('server', 'sections/monitoring');
 $html->set('id', $server['id']);
 $html->set('key', $key);
-$html->set('address', $server['address']);
+$html->set('address', $server['address'] . ':' . $server['port']);
 $html->set('name', $server['name']);
 $html->set('map', $server['map']);
 $html->set('slots', $server['slots_start']);

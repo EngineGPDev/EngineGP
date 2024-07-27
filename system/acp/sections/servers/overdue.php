@@ -17,13 +17,15 @@ if ($id)
 else {
     $list = '';
 
-    $servers = $sql->query('SELECT `id`, `unit`, `tarif`, `user`, `address`, `game`, `slots`, `name`, `overdue` FROM `servers` WHERE `user`!="-1" AND `time`<"' . $start_point . '" AND `overdue`>"' . $start_point . '" ORDER BY `id` ASC');
+    $servers = $sql->query('SELECT `id`, `unit`, `tarif`, `user`, `address`, `port`, `game`, `slots`, `name`, `overdue` FROM `servers` WHERE `user`!="-1" AND `time`<"' . $start_point . '" AND `overdue`>"' . $start_point . '" ORDER BY `id` ASC');
     while ($server = $sql->get($servers)) {
         $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
         $sql->query('SELECT `name` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
+
+        $server_address = $server['address'] . ':' . $server['port'];
 
         $list .= '<tr>';
         $list .= '<td class="text-center">' . $server['id'] . '</td>';
@@ -36,7 +38,7 @@ else {
 
         $list .= '<tr>';
         $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $server['user'] . '">USER_' . $server['user'] . '</a></td>';
-        $list .= '<td>' . $server['address'] . '</td>';
+        $list .= '<td>' . $server_address . '</td>';
         $list .= '<td>#' . $server['tarif'] . ' ' . $tarif['name'] . '</td>';
         $list .= '<td class="text-center">Просрочен</td>';
         $list .= '<td class="text-center">Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) . '</td>';

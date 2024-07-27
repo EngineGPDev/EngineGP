@@ -48,13 +48,15 @@ else {
 
     sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/servers' . $url_search);
 
-    $servers = $sql->query('SELECT `id`, `unit`, `tarif`, `user`, `address`, `game`, `status`, `slots`, `name`, `time` FROM `servers` ' . $select . ' ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
+    $servers = $sql->query('SELECT `id`, `unit`, `tarif`, `user`, `address`, `port`, `game`, `status`, `slots`, `name`, `time` FROM `servers` ' . $select . ' ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
     while ($server = $sql->get($servers)) {
         $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
         $sql->query('SELECT `name` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
+
+        $server_address = $server['address'] . ':' . $server['port'];
 
         $list .= '<tr>';
         $list .= '<td class="text-center">' . $server['id'] . '</td>';
@@ -67,7 +69,7 @@ else {
 
         $list .= '<tr>';
         $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $server['user'] . '">USER_' . $server['user'] . '</a></td>';
-        $list .= '<td>' . $server['address'] . '</td>';
+        $list .= '<td>' . $server_address . '</td>';
         $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/search/tarif/tarif/' . $server['tarif'] . '">#' . $server['tarif'] . ' ' . $tarif['name'] . '</a></td>';
         $list .= '<td class="text-center">' . $status[$server['status']] . '</td>';
         $list .= '<td class="text-center">' . date('d.m.Y - H:i:s', $server['time']) . '</td>';

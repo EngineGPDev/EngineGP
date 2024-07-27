@@ -45,7 +45,7 @@ class scan_servers extends cron
             return NULL;
 
         foreach ($servers as $id) {
-            $sql->query('SELECT `user`, `uid`, `address`, `status`, `time`, `overdue`, `ftp`, `stop`, `block` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+            $sql->query('SELECT `user`, `uid`, `address`, `port`, `status`, `time`, `overdue`, `ftp`, `stop`, `block` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
             $server = $sql->get();
 
             // Если аренда не закончилась, а сервер просрочен
@@ -57,9 +57,11 @@ class scan_servers extends cron
 
             // Если аренда закончилась, а сервер не просрочен (и не заблокирован)
             if ($server['time'] < $start_point && !in_array($server['status'], array('overdue', 'blocked'))) {
+                $server_address = $server['address'] . ':' . $server['port'];
+
                 // Убить процессы
                 $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-                    . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+                    . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
                 if ($server['ftp'])
                     $ssh->set("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");

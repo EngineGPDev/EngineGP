@@ -20,7 +20,7 @@ class server_delete extends cron
 
         $start_point = $_SERVER['REQUEST_TIME'];
 
-        $sql->query('SELECT `id`, `uid`, `user`, `unit`, `tarif`, `game`, `slots`, `address`, `ddos` FROM `servers` WHERE `id`="' . $argv[3] . '" AND `user`="-1" LIMIT 1');
+        $sql->query('SELECT `id`, `uid`, `user`, `unit`, `tarif`, `game`, `slots`, `address`, `port`, `ddos` FROM `servers` WHERE `id`="' . $argv[3] . '" AND `user`="-1" LIMIT 1');
 
         if (!$sql->num())
             return NULL;
@@ -43,11 +43,13 @@ class server_delete extends cron
             return NULL;
 
         // Разделение адреса на IP и порт
-        list($ip, $port) = explode(':', $server['address']);
+        $ip = $server['address'];
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@:' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@:' . $server_address . ' | awk ' . "'{print $2}'" . ' | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
