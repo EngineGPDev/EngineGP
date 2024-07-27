@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `slots_start`, `name`, `fps`, `map_start`, `vac`, `pingboost`, `time_start`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port` , `slots_start`, `name`, `fps`, `map_start`, `vac`, `pingboost`, `time_start`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -35,12 +35,13 @@ class action extends actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
-        list($ip, $port) = explode(':', $server['address']);
-        $internalIp = $ssh->getInternalIp();
+        $ip = $ssh->getInternalIp();
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         $taskset = '';
 
@@ -101,7 +102,7 @@ class action extends actions
         $fps = $server['fps'] + $cfg['fpsplus'];
 
         // Параметры запуска
-        $bash = './hlds_run -debug -game cstrike -norestart -condebug -sys_ticrate ' . $fps . ' +servercfgfile server.cfg +sys_ticrate ' . $fps . ' +map \'' . $server['map_start'] . '\' +maxplayers ' . $server['slots_start'] . ' +ip ' . $internalIp . ' +port ' . $port . ' +sv_lan 0 ' . $vac . ' ' . $pingboost;
+        $bash = './hlds_run -debug -game cstrike -norestart -condebug -sys_ticrate ' . $fps . ' +servercfgfile server.cfg +sys_ticrate ' . $fps . ' +map \'' . $server['map_start'] . '\' +maxplayers ' . $server['slots_start'] . ' +ip ' . $ip . ' +port ' . $port . ' +sv_lan 0 ' . $vac . ' ' . $pingboost;
 
         // Временный файл
         $temp = sys::temp($bash);
@@ -115,7 +116,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p cstrike/oldstart;' // Создание папки логов
             . 'cat cstrike/qconsole.log >> cstrike/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm cstrike/qconsole.log; rm cstrike/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' ' . $taskset . ' sh -c ./start.sh'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c ./start.sh'); // Запуск игровго сервера
 
         $core = !isset($core) ? 0 : $core + 1;
 

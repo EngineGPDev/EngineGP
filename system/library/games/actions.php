@@ -185,7 +185,7 @@ class actions
         $ssh->set('rm -r ' . $install . ';' // Удаление директории игрового сервера
             . 'mkdir ' . $install . ';' // Создание директории
             . 'chown server' . $server['uid'] . ':1000 ' . $install . ';' // Изменение владельца и группы директории
-            . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' ' . $taskset . ' screen -dmS r_' . $server['uid'] . ' sh -c "'
+            . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS r_' . $server['uid'] . ' sh -c "'
             . 'cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
@@ -289,7 +289,7 @@ class actions
             $taskset = 'taskset -c ' . $core;
         }
 
-        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' ' . $taskset . ' screen -dmS u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
+        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
             . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');

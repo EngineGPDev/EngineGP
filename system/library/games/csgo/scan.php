@@ -104,10 +104,11 @@ class scan extends scans
     {
         global $sql;
 
-        $sql->query('SELECT `address` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `address`, `port_query` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        list($ip, $port) = explode(':', $server['address']);
+        $ip = $server['address'];
+        $port = $server['port_query'];
 
         $sq->Connect($ip, $port, 1, SourceQuery::SOURCE);
 

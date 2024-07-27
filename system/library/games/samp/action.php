@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `slots_start`, `name`, `map_start`, `time_start`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `map_start`, `time_start`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -35,15 +35,16 @@ class action extends actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
-        list($ip, $port) = explode(':', $server['address']);
-        $internalIp = $ssh->getInternalIp();
+        $ip = $ssh->getInternalIp();
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
 
         // Временный файл
-        $temp = sys::temp(action::config($internalIp, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.cfg')));
+        $temp = sys::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.cfg')));
 
         // Обновление файла server.cfg
         $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.cfg', 0644);
@@ -92,7 +93,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p oldstart;' // Создание папки логов
             . 'cat server_log.txt >> oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm server_log.txt; rm oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 server.cfg start.sh;' // Обновление владельца файлов
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' ' . $taskset . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         $core = !isset($core) ? 0 : $core + 1;
 
