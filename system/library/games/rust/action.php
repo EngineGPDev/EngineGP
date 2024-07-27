@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `slots_start`, `name`, `tickrate`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `tickrate`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -36,19 +36,20 @@ class action extends actions
             return array('e' => sys::text('error', 'ssh'));
         }
 
-        list($ip, $port) = explode(':', $server['address']);
-        $internalIp = $ssh->getInternalIp();
+        $ip = $ssh->getInternalIp();
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         // Определяем identity директорию сервера
         $server_identity = "server" . $server['uid'];
 
         // Параметры запуска
         $bash = 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`dirname $0`/RustDedicated_Data/Plugins:`dirname $0`/RustDedicated_Data/Plugins/x86_64 && '
-            . './RustDedicated -batchmode +server.ip ' . $internalIp . ' +server.port ' . $port . ' +server.tickrate ' . $server['tickrate'] . ' +server.identity ' . $server_identity . ' +server.maxplayers ' . $server['slots_start'];
+            . './RustDedicated -batchmode +server.ip ' . $ip . ' +server.port ' . $port . ' +server.tickrate ' . $server['tickrate'] . ' +server.identity ' . $server_identity . ' +server.maxplayers ' . $server['slots_start'];
 
         // Временный файл
         $temp = sys::temp($bash);
@@ -59,7 +60,7 @@ class action extends actions
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игрового сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игрового сервера
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `core_use`="0", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');

@@ -60,6 +60,7 @@ $sql->query('SELECT '
     . '`unit`,'
     . '`tarif`,'
     . '`address`,'
+    . '`port`,'
     . '`game`,'
     . '`slots_start`,'
     . '`online`,'
@@ -96,7 +97,7 @@ while ($server = $sql->get()) {
     );
 
     $html->set('pack', $aTarifs[$server['tarif']]['packs'][$server['pack']]);
-    $html->set('address', $server['address']);
+    $html->set('address', $server['address'] . ':' . $server['port']);
     $html->set('game', $aGname[$server['game']]);
     $html->set('slots', $server['slots_start']);
     $html->set('online', $server['online']);

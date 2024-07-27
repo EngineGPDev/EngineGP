@@ -18,7 +18,7 @@ class api
     {
         global $sql, $cfg;
 
-        $sql->query('SELECT `unit`, `tarif`, `address`, `game`, `slots_start`, `online`, `players`, `status`, `name`, `map`, `pack`, `fps`, `tickrate`, `ram`, `time`, `date`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `unit`, `tarif`, `address`, `port`, `game`, `slots_start`, `online`, `players`, `status`, `name`, `map`, `pack`, `fps`, `tickrate`, `ram`, `time`, `date`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         if (!$sql->num())
             return array('e' => 'сервер не найден');
 
@@ -41,7 +41,7 @@ class api
 
         return array(
             'id' => $id,
-            'address' => $server['address'],
+            'address' => $server['address'] . ':' . $server['port'],
             'unit' => $unit['name'],
             'tarif' => games::info_tarif($server['game'], $tarif['name'], array('fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram'])),
             'game' => $server['game'],

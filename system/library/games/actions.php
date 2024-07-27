@@ -20,7 +20,7 @@ class actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `game`, `address`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `game`, `address`, `port`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -30,8 +30,10 @@ class actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="off", `online`="0", `players`="", `stop`="0" WHERE `id`="' . $id . '" LIMIT 1');
@@ -123,7 +125,7 @@ class actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `reinstall`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `port`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `reinstall`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         // Проверка времени переустановки
@@ -142,8 +144,10 @@ class actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         $taskset = '';
 
@@ -228,7 +232,7 @@ class actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `port`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         // Проверка времени обновления
@@ -247,8 +251,10 @@ class actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         $taskset = '';
 

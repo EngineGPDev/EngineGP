@@ -346,7 +346,7 @@ class web
 
         include(DATA . 'web.php');
 
-        $sql->query('SELECT `id`, `uid`, `unit`, `game`, `user`, `tarif`, `address`, `status`, `name` FROM `servers` WHERE `id`="' . $aData['server'] . '" AND `user`="' . $aData['user'] . '" LIMIT 1');
+        $sql->query('SELECT `id`, `uid`, `unit`, `game`, `user`, `tarif`, `address`, `port`, `status`, `name` FROM `servers` WHERE `id`="' . $aData['server'] . '" AND `user`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num())
             sys::outjs(array('e' => 'Игровой сервер не найден.'), $mcache);
 
@@ -404,12 +404,14 @@ class web
         // sql запросы
         $sql_q = '';
 
-        list($ip, $port) = explode(':', $server['address']);
+        $ip = $server['address'];
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
 
         if (isset($aWebSQL[$aData['type']]['connect']))
             foreach ($aWebSQL[$aData['type']]['connect'] as $query)
                 $sql_q .= "mysql --login-path=local " . $web['login'] . " -e \"" . sys::updtext($query,
-                        array_merge(array('id' => $aData['server']['id'], 'rcon' => $rcon, 'address' => $server['address'], 'ip' => $ip, 'port' => $port, 'name' => $server['name'], 'time' => $start_point), $aData['orsql'])) . "\";";
+                        array_merge(array('id' => $aData['server']['id'], 'rcon' => $rcon, 'address' => $server_address, 'ip' => $ip, 'port' => $port, 'name' => $server['name'], 'time' => $start_point), $aData['orsql'])) . "\";";
 
         $ssh->set('chown server' . $server['uid'] . ':servers ' . $dir . $aData['file'] . ';' // Смена владельца файла
             . $sql_q); // sql запросы
