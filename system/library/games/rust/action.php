@@ -131,7 +131,7 @@ class action extends actions
             $taskset = 'taskset -c ' . $core;
         }
 
-        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . $taskset . ' screen -dmS u_' . $server['uid'] . ' sh -c "'
+        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . 'screen -dmS u_' . $server['uid'] . ' sh -c "'
             . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 258550 +quit;'
             . 'cd ' . $install . ';'
             . 'chown -R server' . $server['uid'] . ':servers .;'

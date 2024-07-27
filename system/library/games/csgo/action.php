@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `slots_start`, `name`, `tickrate`, `map_start`, `vac`, `time_start`, `core_fix`, `pingboost` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `tickrate`, `map_start`, `vac`, `time_start`, `core_fix`, `pingboost` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -35,12 +35,13 @@ class action extends actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
-        list($ip, $port) = explode(':', $server['address']);
-        $internalIp = $ssh->getInternalIp();
+        $ip = $ssh->getInternalIp();
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         $taskset = '';
 
@@ -103,7 +104,7 @@ class action extends actions
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
         // Параметры запуска
-        $bash = './srcds_run -debug -game csgo -norestart -condebug console.log -usercon -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' -maxplayers_override ' . $server['slots_start'] . ' +ip ' . $internalIp . ' +net_public_adr ' . $internalIp . ' +port ' . $port . ' -sv_lan 0 ' . $vac . ' ' . $bots . ' ' . $tv;
+        $bash = './srcds_run -debug -game csgo -norestart -condebug console.log -usercon -tickrate ' . $server['tickrate'] . ' ' . $mod . ' +servercfgfile server.cfg ' . $map . ' -maxplayers_override ' . $server['slots_start'] . ' +ip ' . $ip . ' +net_public_adr ' . $ip . ' +port ' . $port . ' -sv_lan 0 ' . $vac . ' ' . $bots . ' ' . $tv;
 
         // Временный файл
         $temp = sys::temp($bash);
@@ -117,7 +118,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p csgo/oldstart;' // Создание папки логов
             . 'cat csgo/console.log >> csgo/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm csgo/console.log; rm csgo/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' ' . $taskset . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         $core = !isset($core) ? 0 : $core + 1;
 
@@ -277,7 +278,7 @@ class action extends actions
             $taskset = 'taskset -c ' . $core;
         }
 
-        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . $taskset . ' screen -dmS u_' . $server['uid'] . ' sh -c "'
+        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . 'screen -dmS u_' . $server['uid'] . ' sh -c "'
             . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 740 +quit;'
             . 'cd ' . $install . ';'
             . 'chown -R server' . $server['uid'] . ':servers .;'
