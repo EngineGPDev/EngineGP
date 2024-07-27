@@ -1,5 +1,6 @@
 {
   "require": {
+    "php": "^7.4 || ^8.0 || ^8.1 || ^8.2",
     "ext-memcache": "*",
     "symfony/dotenv": "5.4.35",
     "symfony/mailer": "5.4.41",
