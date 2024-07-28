@@ -29,13 +29,15 @@ class ssh
             $port = 22;
         }
 
+        // SSH2
         $this->conn = new SSH2($host, $port);
-        $this->sftp = new SFTP($host, $port);
-        if ($this->conn && $this->sftp) {
-            return true;
-        }
+        $this->conn->setTimeout(180);
 
-        return false;
+        // SFTP
+        $this->sftp = new SFTP($host, $port);
+        $this->sftp->setTimeout(180);
+
+        return $this->conn && $this->sftp;
     }
 
     public function setfile($localFile, $remoteFile)
