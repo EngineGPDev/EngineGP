@@ -21,7 +21,8 @@ class rcon
 
         $sq = new SourceQuery();
 
-        list($ip, $port) = explode(':', $server['address']);
+        $ip = $server['address'];
+        $port = $server['port_rcon'];
 
         $sq->Connect($ip, $port, 3, SourceQuery::SOURCE);
 
