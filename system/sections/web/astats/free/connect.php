@@ -97,7 +97,8 @@ if (!$ssh->auth($unit['passwd'], $unit['address']))
 $install = $aWebUnit['install'][$aWebUnit['unit'][$aData['type']]][$aData['type']] . $web['domain'];
 
 $temp = sys::temp($aData['config'] . ');');
-$ssh->setfile($temp, $install . '/config/servers.config.php', 0644);
+$ssh->setfile($temp, $install . '/config/servers.config.php');
+$ssh->set('chmod 0644' . ' ' . $install . '/config/servers.config.php');
 
 unlink($temp);
 

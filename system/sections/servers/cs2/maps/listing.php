@@ -73,7 +73,8 @@ if ($go and isset($url['file'])) {
     $temp = sys::temp($data);
 
     // Отправление файла на сервер
-    $ssh->setfile($temp, $dir . $aFiles[$url['file']], 0644);
+    $ssh->setfile($temp, $dir . $aFiles[$url['file']]);
+    $ssh->set('chmod 0644' . ' ' . $dir . $aFiles[$url['file']]);
 
     // Смена владельца/группы файла
     $ssh->set('chown server' . $server['uid'] . ':servers ' . $dir . $aFiles[$url['file']]);

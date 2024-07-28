@@ -92,7 +92,8 @@ class action extends actions
         $temp = sys::temp($bash);
 
         // Обновление файла start.sh
-        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh', 0500);
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
+        $ssh->set('chmod 0500' . ' ' . $tarif['install'] . $server['uid'] . '/start.sh');
 
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
