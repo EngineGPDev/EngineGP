@@ -48,7 +48,8 @@ if ($go) {
     // Временый файл
     $temp = sys::temp($config . $config_end);
 
-    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.cfg', 0644);
+    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.cfg');
+    $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/server.cfg');
 
     $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/server.cfg');
 

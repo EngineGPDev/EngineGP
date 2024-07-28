@@ -85,7 +85,8 @@ class privileges extends cron
 
             $temp = sys::temp($text);
 
-            $ssh->setfile($temp, $file, 0644);
+            $ssh->setfile($temp, $file);
+            $ssh->set('chmod 0500' . ' ' . $file);
 
             unlink($temp);
 

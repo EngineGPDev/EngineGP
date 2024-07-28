@@ -47,7 +47,8 @@ class action extends actions
         $temp = sys::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/mods/deathmatch/mtaserver.conf')));
 
         // Обновление файла server.cfg
-        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/mods/deathmatch/mtaserver.conf', 0644);
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/mods/deathmatch/mtaserver.conf');
+        $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/mods/deathmatch/mtaserver.conf');
 
         unlink($temp);
 
@@ -85,7 +86,8 @@ class action extends actions
         $temp = sys::temp($bash);
 
         // Обновление файла start.sh
-        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh', 0500);
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
+        $ssh->set('chmod 0500' . ' ' . $tarif['install'] . $server['uid'] . '/start.sh');
 
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера

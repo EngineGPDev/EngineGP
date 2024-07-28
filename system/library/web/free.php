@@ -142,7 +142,8 @@ class web
             $aData['config_php'] = sys::updtext($aData['config_php'], $conf);
 
             $temp = sys::temp($aData['config_php']);
-            $ssh->setfile($temp, $path . $aWebdbConf[$aData['type']]['file'], $aWebdbConf[$aData['type']]['chmod']);
+            $ssh->setfile($temp, $path . $aWebdbConf[$aData['type']]['file']);
+            $ssh->set('chmod ' . $aWebdbConf[$aData['type']]['chmod'] . ' ' . $path . $aWebdbConf[$aData['type']]['file']);
 
             unlink($temp);
         }
@@ -151,7 +152,8 @@ class web
             $aData['config_oth'] = sys::updtext($aData['config_oth'], $conf);
 
             $temp = sys::temp($aData['config_oth']);
-            $ssh->setfile($temp, $path . $aWebothPath[$aData['type']]['file'], $aWebothPath[$aData['type']]['chmod']);
+            $ssh->setfile($temp, $path . $aWebothPath[$aData['type']]['file']);
+            $ssh->set('chmod ' . $aWebothPath[$aData['type']]['chmod'] . ' ' . $aWebothPath[$aData['type']]['file']);
 
             unlink($temp);
         }
@@ -394,7 +396,8 @@ class web
 
         $temp = sys::temp(sys::updtext(base64_decode($web['config']), $aData['orcfg']));
 
-        $ssh->setfile($temp, $dir . $aData['file'], 0644);
+        $ssh->setfile($temp, $dir . $aData['file']);
+        $ssh->set('chmod 0644' . ' ' . $dir . $aData['file']);
 
         $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 

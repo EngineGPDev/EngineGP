@@ -108,7 +108,8 @@ class action extends actions
         $temp = sys::temp($bash);
 
         // Обновление файла start.sh
-        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh', 0500);
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
+        $ssh->set('chmod 0500' . ' ' . $tarif['install'] . $server['uid'] . '/start.sh');
 
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
@@ -116,7 +117,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p cstrike/oldstart;' // Создание папки логов
             . 'cat cstrike/qconsole.log >> cstrike/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm cstrike/qconsole.log; rm cstrike/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c ./start.sh'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=20% -p MemoryMax=512M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c ./start.sh'); // Запуск игровго сервера
 
         $core = !isset($core) ? 0 : $core + 1;
 

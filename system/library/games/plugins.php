@@ -139,7 +139,8 @@ class plugins
             // Временный файл
             $temp = sys::temp($file);
 
-            $ssh->setfile($temp, $dir . $clear['file'], 0644);
+            $ssh->setfile($temp, $dir . $clear['file']);
+            $ssh->set('chmod 0644' . ' ' . $dir . $clear['file']);
 
             unlink($temp);
 

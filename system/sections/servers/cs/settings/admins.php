@@ -79,7 +79,8 @@ if ($go) {
 
     $temp = sys::temp($usini);
 
-    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini', 0644);
+    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
+    $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
 
     unlink($temp);
 
