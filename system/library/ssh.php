@@ -1,20 +1,14 @@
 <?php
-/*
- * EngineGP   (https://enginegp.ru or https://enginegp.com)
- *
- * @copyright Copyright (c) 2018-present Solovev Sergei <inbox@seansolovev.ru>
- *
- * @link      https://github.com/EngineGPDev/EngineGP for the canonical source repository
- *
- * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
- */
-
 if (!defined('EGP'))
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+
+use phpseclib3\Net\SSH2;
+use phpseclib3\Net\SFTP;
 
 class ssh
 {
     var $conn;
+    var $sftp;
     var $stream;
     private $alternativeInterfaces = ['enp3s0', 'enp0s31f6', 'enp0s3', 'ens3', 'eth0'];
 
@@ -35,43 +29,43 @@ class ssh
             $port = 22;
         }
 
-        ini_set('default_socket_timeout', '3');
-
-        if ($this->conn = ssh2_connect($host, $port)) {
-            ini_set('default_socket_timeout', '180');
-
+        $this->conn = new SSH2($host, $port);
+        $this->sftp = new SFTP($host, $port);
+        if ($this->conn && $this->sftp) {
             return true;
         }
 
         return false;
     }
 
-    public function setfile($localFile, $remoteFile, $permision)
+    public function setfile($localFile, $remoteFile)
     {
-        if (@ssh2_scp_send($this->conn, $localFile, $remoteFile, $permision))
-            return true;
+        if ($this->sftp->isConnected() && $this->sftp->isAuthenticated()) {
+            if ($this->sftp->put($remoteFile, $localFile, SFTP::SOURCE_LOCAL_FILE))
+                return true;
+        }
 
         return false;
     }
 
     public function getfile($remoteFile, $localFile)
     {
-        if (@ssh2_scp_recv($this->conn, $remoteFile, $localFile))
-            return true;
+        if ($this->sftp->isConnected() && $this->sftp->isAuthenticated()) {
+            if ($this->sftp->get($remoteFile, $localFile))
+                return true;
+        }
 
         return false;
     }
 
     public function set($cmd)
     {
-        $this->stream = ssh2_exec($this->conn, $cmd);
-
-        stream_set_blocking($this->stream, true);
+        $this->stream = $this->conn->exec($cmd);
     }
 
     public function auth_pwd($u, $p)
     {
-        if (@ssh2_auth_password($this->conn, $u, $p))
+        if ($this->conn->login($u, $p) && $this->sftp->login($u, $p))
             return true;
 
         return false;
@@ -80,35 +74,21 @@ class ssh
     public function get($cmd = false)
     {
         if ($cmd) {
-            $this->stream = ssh2_exec($this->conn, $cmd);
-
-            stream_set_blocking($this->stream, true);
+            $this->stream = $this->conn->exec($cmd);
         }
 
-        $line = '';
-
-        while ($get = fgets($this->stream))
-            $line .= $get;
-
-        return $line;
+        return $this->stream;
     }
 
     public function esc()
     {
-        if (function_exists('ssh2_disconnect'))
-            ssh2_disconnect($this->conn);
-        else {
-            @fclose($this->conn);
-            unset($this->conn);
-        }
-
-        return NULL;
+        $this->conn->disconnect();
     }
 
     public function getInternalIp()
     {
         foreach ($this->alternativeInterfaces as $interface) {
-            $command = "ip addr show $interface | grep 'inet ' | awk '{print $2}' | cut -d/ -f1";
+            $command = "ip addr show $interface 2>/dev/null | grep 'inet ' | awk '{print \$2}' | cut -d/ -f1";
             $internal_ip = $this->get($command);
             if (!empty(trim($internal_ip))) {
                 return trim($internal_ip);

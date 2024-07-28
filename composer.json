@@ -6,6 +6,7 @@
     "symfony/mailer": "5.4.41",
     "filp/whoops": "2.15.4",
     "monolog/monolog": "2.9.2",
+    "phpseclib/phpseclib": "3.0.39",
     "xpaw/php-source-query-class": "2.1.0",
     "szymach/c-pchart": "3.0.17"
   }
