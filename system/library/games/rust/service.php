@@ -173,96 +173,104 @@ class service
 
             // Проверка наличия свободного порта
             for ($tarif['port_min']; $tarif['port_min'] <= $tarif['port_max']; $tarif['port_min'] += 1) {
-                $port_rcon = $tarif['port_min'];
-                $port_query = $port_rcon + 1;
-                $port_game = $port_query + 1;
+                $port_game = $tarif['port_min'];
+                $port_query = $port_game + 1;
+                $port_rcon = $port_query + 1;
 
                 // Проверка, не занят ли любой из портов в столбцах port, port_query, port_rcon
-                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND (`port`="' . $port_game . '" OR `port_query`="' . $port_query . '" OR `port_rcon`="' . $port_rcon . '") LIMIT 1');
+                $sql->query('SELECT `id` FROM `servers` 
+                            WHERE `unit`="' . $aData['unit'] . '" 
+                            AND (
+                                `port`="' . $port_game . '" OR 
+                                `port`="' . $port_query . '" OR 
+                                `port`="' . $port_rcon . '" OR 
+                                `port_query`="' . $port_game . '" OR 
+                                `port_query`="' . $port_query . '" OR 
+                                `port_query`="' . $port_rcon . '" OR 
+                                `port_rcon`="' . $port_game . '" OR 
+                                `port_rcon`="' . $port_query . '" OR 
+                                `port_rcon`="' . $port_rcon . '"
+                                ) 
+                            LIMIT 1');
 
                 if (!$sql->num()) {
                     $port = $port_game;
                     break;
                 }
             }
+        }
 
-            if (!$ip || !$port) {
+        if (!$ip || !$port) {
+            $sql->query('UPDATE `tarifs` set `show`="0" WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
+            sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
+        }
+
+        // Продолжение обработки данных
+        if ($test)
+            $aData['time'] = games::time($start_point, $tarif['test']);
+        else
+            $aData['time'] = games::time($start_point, $days);
+
+        $fix_one = 0;
+        $core = 0;
+
+        if ($tarif['core_fix'] != '') {
+            $aCore = explode(',', $tarif['core_fix']);
+
+            foreach ($aCore as $cpu) {
+                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND `tarif`="' . $aData['tarif'] . '" AND `core_fix`="' . $cpu . '" AND `core_fix_one`="1" LIMIT 1');
+
+                if ($sql->num())
+                    continue;
+
+                $fix_one = 1;
+                $core = $cpu;
+
+                break;
+            }
+
+            if (!$core) {
                 $sql->query('UPDATE `tarifs` set `show`="0" WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
+
                 sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
             }
-
-            // Установка портов в $aSDATA
-            $aSDATA['port'] = $port; // порт игрового сервера
-            $aSDATA['port_query'] = $port + 1; // порт для проверки query
-            $aSDATA['port_rcon'] = $port + 2; // порт для подключения по rcon
-
-            // Продолжение обработки данных
-            if ($test)
-                $aData['time'] = games::time($start_point, $tarif['test']);
-            else
-                $aData['time'] = games::time($start_point, $days);
-
-            $fix_one = 0;
-            $core = 0;
-
-            if ($tarif['core_fix'] != '') {
-                $aCore = explode(',', $tarif['core_fix']);
-
-                foreach ($aCore as $cpu) {
-                    $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND `tarif`="' . $aData['tarif'] . '" AND `core_fix`="' . $cpu . '" AND `core_fix_one`="1" LIMIT 1');
-
-                    if ($sql->num())
-                        continue;
-
-                    $fix_one = 1;
-                    $core = $cpu;
-
-                    break;
-                }
-
-                if (!$core) {
-                    $sql->query('UPDATE `tarifs` set `show`="0" WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
-
-                    sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
-                }
-            }
-
-            $ram = isset($tarif['param_fix']) ? $aData['ram'] : $cfg['ram']['rust'] * $aData['slots'];
-
-            // Массив данных
-            $aSDATA = array(
-                'unit' => $aData['unit'], // идентификатор локации
-                'tarif' => $aData['tarif'], // идентификатор тарифа
-                'ram' => $ram, // значение ram
-                'param_fix' => isset($tarif['param_fix']), // фиксированные параметры
-                'tickrate' => $aData['tickrate'], // значение tickrate
-                'pack' => $aData['pack'], // Выбранная сборка для установки
-                'time' => $aData['time'], // Время аренды
-                'days' => $days, // Число дней
-                'sum' => $sum, // Сумма списания
-                'test' => $test, // тестовый период
-                'address' => $ip, // адрес игрового сервера
-                'port' => $aSDATA['port'], // порт игрового сервера
-                'port_query' => $aSDATA['port_query'], // порт для проверки query
-                'port_rcon' => $aSDATA['port_rcon'], // порт для подключения по rcon
-                'slots' => $aData['slots'], // Кол-во слот
-                'map' => $tarif['map'], // Фиксированное значение слот
-                'autostop' => $tarif['autostop'], // Выключение при 0 онлайне
-                'ftp' => $tarif['ftp'], // Использование ftp
-                'plugins' => $tarif['plugins'], // Использование плагинов
-                'console' => $tarif['console'], // Использование консоли
-                'stats' => $tarif['stats'], // Использование графиков (ведение статистики)
-                'copy' => $tarif['copy'], // Использование резервных копий
-                'web' => $tarif['web'], // Использование доп услуг
-                'plugins_install' => $tarif['plugins_install'], // Список установленных плагинов
-                'hdd' => $tarif['hdd'], // Дисковое пространство
-                'core_fix' => $core, // Выделенный поток
-                'core_fix_one' => $fix_one, // Выделенный поток
-                'promo' => $promo // Использование промо-кода
-            );
-
-            return $aSDATA;
         }
+
+        $ram = isset($tarif['param_fix']) ? $aData['ram'] : $cfg['ram']['rust'] * $aData['slots'];
+
+        // Массив данных
+        $aSDATA = array(
+            'unit' => $aData['unit'], // идентификатор локации
+            'tarif' => $aData['tarif'], // идентификатор тарифа
+            'ram' => $ram, // значение ram
+            'param_fix' => isset($tarif['param_fix']), // фиксированные параметры
+            'tickrate' => $aData['tickrate'], // значение tickrate
+            'pack' => $aData['pack'], // Выбранная сборка для установки
+            'time' => $aData['time'], // Время аренды
+            'days' => $days, // Число дней
+            'sum' => $sum, // Сумма списания
+            'test' => $test, // тестовый период
+            'address' => $ip, // адрес игрового сервера
+            'port' => $port, // порт игрового сервера
+            'port_query' => $port_query, // порт для проверки query
+            'port_rcon' => $port_rcon, // порт для подключения по rcon
+            'slots' => $aData['slots'], // Кол-во слот
+            'map' => $tarif['map'], // Фиксированное значение слот
+            'autostop' => $tarif['autostop'], // Выключение при 0 онлайне
+            'ftp' => $tarif['ftp'], // Использование ftp
+            'plugins' => $tarif['plugins'], // Использование плагинов
+            'console' => $tarif['console'], // Использование консоли
+            'stats' => $tarif['stats'], // Использование графиков (ведение статистики)
+            'copy' => $tarif['copy'], // Использование резервных копий
+            'web' => $tarif['web'], // Использование доп услуг
+            'plugins_install' => $tarif['plugins_install'], // Список установленных плагинов
+            'hdd' => $tarif['hdd'], // Дисковое пространство
+            'core_fix' => $core, // Выделенный поток
+            'core_fix_one' => $fix_one, // Выделенный поток
+            'promo' => $promo // Использование промо-кода
+        );
+
+        return $aSDATA;
     }
 
     public static function install($aSDATA = array())

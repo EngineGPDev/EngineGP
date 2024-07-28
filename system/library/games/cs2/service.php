@@ -173,10 +173,22 @@ class service
 
             // Проверка наличия свободного порта
             for ($tarif['port_min']; $tarif['port_min'] <= $tarif['port_max']; $tarif['port_min'] += 1) {
-                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND (`address`="' . $ip . ':' . $tarif['port_min'] . '" OR `port`="' . $tarif['port_min'] . '") LIMIT 1');
-                if (!$sql->num()) {
-                    $port = $tarif['port_min'];
+                $port_game = $tarif['port_min'];
+                $port_query = $port_game;
+                $port_rcon = $port_query;
 
+                // Проверка, не занят ли любой из портов в столбцах port, port_query, port_rcon
+                $sql->query('SELECT `id` FROM `servers` 
+                            WHERE `unit`="' . $aData['unit'] . '" 
+                            AND (
+                                `port`="' . $port_game . '" OR 
+                                `port`="' . $port_query . '" OR 
+                                `port`="' . $port_rcon . '"
+                                ) 
+                            LIMIT 1');
+
+                if (!$sql->num()) {
+                    $port = $port_game;
                     break;
                 }
             }
@@ -232,8 +244,10 @@ class service
             'days' => $days, // Число дней
             'sum' => $sum, // Сумма списания
             'test' => $test, // тестовый период
-            'address' => $ip . ':' . $port, // адрес игрового сервера
+            'address' => $ip, // адрес игрового сервера
             'port' => $port, // порт игрового сервера
+            'port_query' => $port_query, // порт для проверки query
+            'port_rcon' => $port_rcon, // порт для подключения по rcon
             'slots' => $aData['slots'], // Кол-во слот
             'map' => $tarif['map'], // Фиксированное значение слот
             'autostop' => $tarif['autostop'], // Выключение при 0 онлайне
@@ -298,6 +312,8 @@ class service
 				`user`="' . $user['id'] . '",
 				`address`="' . $aSDATA['address'] . '",
 				`port`="' . $aSDATA['port'] . '",
+				`port_query`="' . $aSDATA['port_query'] . '",
+				`port_rcon`="' . $aSDATA['port_rcon'] . '",
 				`game`="cs2",
 				`slots`="' . $aSDATA['slots'] . '",
 				`slots_start`="' . $aSDATA['slots'] . '",
