@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `tickrate`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `tickrate`, `ram`, `cpu`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -61,10 +61,10 @@ class action extends actions
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
             . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
-            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игрового сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игрового сервера
 
         // Обновление информации в базе
-        $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `core_use`="0", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
 
         unlink($temp);
 
@@ -83,7 +83,7 @@ class action extends actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `name`, `ftp`, `update`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `name`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         // Проверка времени обновления
@@ -102,35 +102,8 @@ class action extends actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
-        $taskset = '';
-
-        // Если включена система автораспределения и не установлен фиксированный поток
-        if ($cfg['cpu_route'] and !$server['core_fix']) {
-            $proc_stat = array();
-
-            $proc_stat[0] = $ssh->get('cat /proc/stat');
-        }
-
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
-
-        // Если система автораспределения продолжить парсинг загрузки процессора
-        if (isset($proc_stat)) {
-            $proc_stat[1] = $ssh->get('cat /proc/stat');
-
-            // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($server['unit'], $proc_stat, false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
-
-            if (!is_numeric($core))
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
-
-            $taskset = 'taskset -c ' . $core;
-        }
-
-        if ($server['core_fix']) {
-            $core = $server['core_fix'] - 1;
-            $taskset = 'taskset -c ' . $core;
-        }
 
         $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . 'screen -dmS u_' . $server['uid'] . ' sh -c "'
             . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 258550 +quit;'
@@ -140,10 +113,8 @@ class action extends actions
             . 'find . -type f -exec chmod 600 {} \;;'
             . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
 
-        $core = !isset($core) ? 0 : $core + 1;
-
         // Обновление информации в базе
-        $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '", `core_use`="' . $core . '" WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Логирование
         $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'update') . '", `time`="' . $start_point . '"');
