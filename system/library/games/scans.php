@@ -36,7 +36,7 @@ class scans
         if (is_array($mcache->get($nmch)))
             return $mcache->get($nmch);
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `slots`, `slots_start`, `status`, `online`, `ram`, `hdd`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `slots`, `slots_start`, `status`, `online`, `ram`, `cpu`, `hdd`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 
         if (!$sql->num())
             return NULL;
@@ -72,15 +72,11 @@ class scans
         if (isset($cr[0]))
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
 
+        $resources['cpu'] = $resources['cpu'] / $server['cpu'] * 100;
         $resources['cpu'] = $resources['cpu'] > 100 ? 100 : round($resources['cpu']);
 
         if (isset($cr[1]))
             $resources['ram'] = str_replace(',', '.', $cr[1]);
-
-        // ram на сервер
-        $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$server['game']];
-
-        $resources['ram'] = floatval($unit['ram']) / 100 * floatval($resources['ram']) / (floatval($ram) / 100);
 
         $resources['ram'] = $resources['ram'] > 100 ? 100 : round($resources['ram']);
 

@@ -23,7 +23,7 @@ if ($go) {
     if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true)))
         sys::outjs(array('e' => 'Сборка не найдена.'));
 
-    $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `core_fix`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
+    $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
     $tarif = array_merge(array('pack' => $pack), $sql->get());
 
     $sql->query('SELECT `name`, `address`, `passwd` FROM `units` WHERE `id`="' . $tarif['unit'] . '" LIMIT 1');

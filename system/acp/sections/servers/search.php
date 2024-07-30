@@ -41,7 +41,7 @@ if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif')))
 
 $check = explode('=', $text);
 
-if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status', 'slots'))) {
+if (in_array($check[0], array('game', 'unit', 'tarif', 'user', 'status', 'slots'))) {
     $val = trim($check[1]);
 
     switch ($check[0]) {
@@ -52,10 +52,6 @@ if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status',
 
         case 'unit':
             $servers = $sql->query('SELECT ' . $select . ' `unit`="' . sys::int($val) . '" ORDER BY `id` ASC');
-            break;
-
-        case 'core':
-            $servers = $sql->query('SELECT ' . $select . ' `core_use`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
 
         case 'tarif':
