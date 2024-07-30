@@ -159,19 +159,6 @@ $cfg = array(
         'rust' => '60'
     ),
 
-    // RAM на 1 слот
-    'ram' => array(
-        'cs' => '32',
-        'cssold' => '32',
-        'css' => '32',
-        'csgo' => '32',
-        'cs2' => '32',
-        'rust' => '32',
-        'samp' => '32',
-        'crmp' => '32',
-        'mta' => '32'
-    ),
-
     // Параметры ftp игровых серверов
     'ftp' => array(
         // Корневая директория серверов (false = server/(cstrike | csgo | l4d)/ | true = server/)
