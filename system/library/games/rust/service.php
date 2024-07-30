@@ -50,6 +50,8 @@ class service
             . '`copy`,'
             . '`web`,'
             . '`plugins_install`,'
+            . '`cpu`,'
+            . '`ram`,'
             . '`hdd`,'
             . '`autostop`,'
             . '`ip`,'
@@ -210,13 +212,10 @@ class service
         else
             $aData['time'] = games::time($start_point, $days);
 
-        $ram = isset($tarif['param_fix']) ? $aData['ram'] : $cfg['ram']['rust'] * $aData['slots'];
-
         // Массив данных
         $aSDATA = array(
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
-            'ram' => $ram, // значение ram
             'param_fix' => isset($tarif['param_fix']), // фиксированные параметры
             'tickrate' => $aData['tickrate'], // значение tickrate
             'pack' => $aData['pack'], // Выбранная сборка для установки
@@ -238,6 +237,8 @@ class service
             'copy' => $tarif['copy'], // Использование резервных копий
             'web' => $tarif['web'], // Использование доп услуг
             'plugins_install' => $tarif['plugins_install'], // Список установленных плагинов
+            'cpu' => $tarif['cpu'], // значение cpu
+            'ram' => $tarif['ram'], // значение ram
             'hdd' => $tarif['hdd'], // Дисковое пространство
             'promo' => $promo // Использование промо-кода
         );
@@ -307,11 +308,12 @@ class service
 				`tickrate`="' . $aSDATA['tickrate'] . '",
 				`map_start`="' . $aSDATA['map'] . '",
 				`vac`="1",
+				`cpu`="' . $aSDATA['cpu'] . '",
+				`ram`="' . $aSDATA['ram'] . '",
 				`hdd`="' . $aSDATA['hdd'] . '",
 				`time`="' . $aSDATA['time'] . '",
 				`date`="' . $start_point . '",
 				`test`="' . $aSDATA['test'] . '",
-				`ram`="' . $aSDATA['ram'] . '",
 				`autostop`="' . $aSDATA['autostop'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Запись установленных плагинов
