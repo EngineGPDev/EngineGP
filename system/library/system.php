@@ -1061,7 +1061,7 @@ class sys
             if ($ctrl)
                 $sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="' . $unit . '" AND `core_fix`="' . ($core + 1) . '" LIMIT 1');
             else
-                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $unit . '" AND `core_fix`="' . ($core + 1) . '" AND `core_fix_one`="1" LIMIT 1');
+                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $unit . '" LIMIT 1');
             if ($sql->num()) {
                 unset($threads[$core]);
 

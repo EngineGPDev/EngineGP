@@ -48,7 +48,7 @@ if ($go) {
     $aData['hdd'] = isset($_POST['hdd']) ? sys::int($_POST['hdd']) : $tarif['hdd'];
     $aData['autostop'] = isset($_POST['autostop']) ? sys::int($_POST['autostop']) : $tarif['autostop'];
     $aData['price'] = isset($_POST['price']) ? trim($_POST['price']) : $tarif['price'];
-    $aData['core_fix'] = isset($_POST['core_fix']) ? trim($_POST['core_fix']) : $tarif['core_fix'];
+    $aData['cpu'] = isset($_POST['cpu']) ? trim($_POST['cpu']) : $tarif['cpu'];
     $aData['ip'] = isset($_POST['ip']) ? trim($_POST['ip']) : $tarif['ip'];
     $aData['show'] = isset($_POST['show']) ? sys::int($_POST['show']) : $tarif['show'];
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $tarif['sort'];
@@ -186,26 +186,6 @@ if ($go) {
     }
 
     $aData['plugins_install'] = count($plugins) ? sys::b64js($plugins) : '';
-
-    $aCores = explode(',', $aData['core_fix']);
-
-    $cores = '';
-
-    foreach ($aCores as $core) {
-        $core = trim($core);
-
-        if (!is_numeric($core))
-            continue;
-
-        if ($core < 1)
-            continue;
-
-        $cores .= intval($core) . ',';
-    }
-
-    $cores = isset($cores[0]) ? substr($cores, 0, -1) : '';
-
-    $aData['core_fix'] = $cores;
 
     $aTime = explode(':', $aData['time']);
 
@@ -392,7 +372,7 @@ if ($go) {
         . '`hdd`="' . $aData['hdd'] . '",'
         . '`autostop`="' . $aData['autostop'] . '",'
         . '`price`="' . $aData['price'] . '",'
-        . '`core_fix`="' . $aData['core_fix'] . '",'
+        . '`cpu`="' . $aData['cpu'] . '",'
         . '`ip`="' . $aData['ip'] . '",'
         . '`show`="' . $aData['show'] . '",'
         . '`sort`="' . $aData['sort'] . '" WHERE `id`="' . $id . '" LIMIT 1');

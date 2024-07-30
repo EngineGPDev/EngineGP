@@ -106,12 +106,9 @@ if ($go) {
     $aData['fps'] = isset($_POST['fps']) ? sys::int($_POST['fps']) : $server['fps'];
     $aData['tickrate'] = isset($_POST['tickrate']) ? sys::int($_POST['tickrate']) : $server['tickrate'];
     $aData['ram'] = isset($_POST['ram']) ? sys::int($_POST['ram']) : $server['ram'];
-    $aData['core_fix_one'] = isset($_POST['core_fix_one']) ? sys::int($_POST['core_fix_one']) : $server['core_fix_one'];
-    $aData['core_fix'] = isset($_POST['core_fix']) ? sys::int($_POST['core_fix']) : $server['core_fix'];
-    $aData['cpu_use_max'] = isset($_POST['cpu_use_max']) ? sys::int($_POST['cpu_use_max']) : $server['cpu_use_max'];
+    $aData['cpu'] = isset($_POST['cpu']) ? sys::int($_POST['cpu']) : $server['cpu'];
     $aData['pingboost'] = isset($_POST['pingboost']) ? sys::int($_POST['pingboost']) : $server['pingboost'];
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : $server['time'];
-
     $aData['ftp_use'] = isset($_POST['ftp_use']) ? $_POST['ftp_use'] : $server['ftp_use'];
     $aData['ftp_root'] = isset($_POST['ftp_root']) ? sys::int($_POST['ftp_root']) : $server['ftp_root'];
     $aData['plugins_use'] = isset($_POST['plugins_use']) ? $_POST['plugins_use'] : $server['plugins_use'];
@@ -160,15 +157,6 @@ if ($go) {
     if (!array_key_exists($aData['pack'], $aPacks))
         sys::outjs(array('e' => 'Указанная сборка не найдена.'));
 
-    if ($aData['core_fix_one']) {
-        if ($aData['core_fix']) {
-            $sql->query('SELECT `id` FROM `servers` WHERE `id`!="' . $id . '" AND `unit`="' . $server['unit'] . '" AND `core_fix`="' . $aData['core_fix'] . '" AND `core_fix_one`="1"');
-            if ($sql->num())
-                sys::outjs(array('e' => 'Указанное ядро занято другим сервером.'));
-        } else
-            $aData['core_fix_one'] = 0;
-    }
-
     if (!in_array($aData['pingboost'], array(1, 2, 3)))
         $aData['pingboost'] = 0;
 
@@ -186,9 +174,7 @@ if ($go) {
         . '`fps`="' . $aData['fps'] . '",'
         . '`tickrate`="' . $aData['tickrate'] . '",'
         . '`ram`="' . $aData['ram'] . '",'
-        . '`core_fix`="' . $aData['core_fix'] . '",'
-        . '`core_fix_one`="' . $aData['core_fix_one'] . '",'
-        . '`cpu_use_max`="' . $aData['cpu_use_max'] . '",'
+        . '`cpu`="' . $aData['cpu'] . '",'
         . '`pingboost`="' . $aData['pingboost'] . '",'
         . '`time`="' . $aData['time'] . '",'
         . '`ftp_use`="' . $aData['ftp_use'] . '",'
@@ -222,7 +208,6 @@ foreach ($aPacks as $name => $fullname)
 
 $packs = str_replace('"' . $server['pack'] . '"', '"' . $server['pack'] . '" selected', $packs);
 
-$cfo = $server['core_fix_one'] ? '<option value="1">Личное</option><option value="0">Общее</option>' : '<option value="0">Общее</option><option value="1">Личное</option>';
 $pingboost = str_replace('="' . $server['pingboost'] . '"', '="' . $server['pingboost'] . '" selected', '<option value="0">По умолчанию</option><option value="1">PINGBOOST 1</option><option value="2">PINGBOOST 2</option><option value="3">PINGBOOST 3</option>');
 $ftp_root = $server['ftp_root'] ? '<option value="1">Корневой каталог</option><option value="0">Обычный (cstrike)</option>' : '<option value="0">Обычный (cstrike)</option><option value="1">Корневой каталог</option>';
 
@@ -255,14 +240,11 @@ $html->set('hdd', $server['hdd']);
 $html->set('fps', $server['fps']);
 $html->set('tickrate', $server['tickrate']);
 $html->set('ram', $server['ram']);
+$html->set('cpu', $server['cpu']);
 $html->set('ftp_on', $server['ftp_on'] ? 'Использовался' : 'Не использовался');
 $html->set('tarifs', $tarifs);
 $html->set('pingboost', $pingboost);
 $html->set('ftp_root', $ftp_root);
-$html->set('core_fix', $server['core_fix']);
-$html->set('cpu_use_max', $server['cpu_use_max']);
-$html->set('cpu_limi', $cfg['cpu_use_max'][$server['game']]);
-$html->set('core_fix_one', $cfo);
 $html->set('packs', $packs);
 $html->set('time', date('d/m/Y H:i', $server['time']));
 $html->set('date', date('d.m.Y - H:i:s', $server['date']));

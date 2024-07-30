@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `time_start`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `ram`, `cpu`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -52,33 +52,6 @@ class action extends actions
 
         unlink($temp);
 
-        $taskset = '';
-
-        // Если включена система автораспределения и не установлен фиксированный поток
-        if ($cfg['cpu_route'] and !$server['core_fix']) {
-            $proc_stat = array();
-
-            $proc_stat[0] = $ssh->get('cat /proc/stat');
-        }
-
-        // Если система автораспределения продолжить парсинг загрузки процессора
-        if (isset($proc_stat)) {
-            $proc_stat[1] = $ssh->get('cat /proc/stat');
-
-            // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($server['unit'], $proc_stat, false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
-
-            if (!is_numeric($core))
-                return array('e' => sys::text('error', 'cpu'));
-
-            $taskset = 'taskset -c ' . $core;
-        }
-
-        if ($server['core_fix']) {
-            $core = $server['core_fix'] - 1;
-            $taskset = 'taskset -c ' . $core;
-        }
-
         // Параметры запуска
         $bash = './mta-server';
 
@@ -95,12 +68,10 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p mods/deathmatch/oldstart;' // Создание папки логов
             . 'cat mods/deathmatch/logs/server.log >> mods/deathmatch/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm mods/deathmatch/logs/server.log; rm mods/deathmatch/logs/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 mods/deathmatch/mtaserver.conf start.sh;' // Обновление владельца файлов
-            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=200% -p MemoryMax=10240M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
-
-        $core = !isset($core) ? 0 : $core + 1;
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе
-        $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `core_use`="' . $core . '", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
 
         unlink($temp);
 

@@ -1119,7 +1119,6 @@ CREATE TABLE `servers` (
   `tickrate` int(11) NOT NULL DEFAULT '0',
   `ram` int(11) NOT NULL DEFAULT '0',
   `ram_use` int(11) NOT NULL DEFAULT '0',
-  `ram_use_max` int(11) NOT NULL DEFAULT '0',
   `ram_fix` tinyint(1) NOT NULL DEFAULT '0',
   `map` varchar(100) NOT NULL DEFAULT '',
   `map_start` varchar(100) NOT NULL DEFAULT '',
@@ -1128,10 +1127,6 @@ CREATE TABLE `servers` (
   `pingboost` int(11) NOT NULL DEFAULT '0',
   `cpu` int(11) NOT NULL DEFAULT '0',
   `cpu_use` int(11) NOT NULL DEFAULT '0',
-  `cpu_use_max` int(11) NOT NULL DEFAULT '0',
-  `core_fix` int(11) NOT NULL DEFAULT '0',
-  `core_fix_one` tinyint(1) NOT NULL DEFAULT '0',
-  `core_use` int(11) NOT NULL DEFAULT '0',
   `hdd` int(11) NOT NULL DEFAULT '0',
   `hdd_use` int(11) NOT NULL DEFAULT '0',
   `time` int(11) NOT NULL DEFAULT '0',
@@ -1187,6 +1182,7 @@ CREATE TABLE `tarifs` (
   `update` varchar(100) NOT NULL,
   `fps` varchar(100) NOT NULL,
   `tickrate` varchar(100) NOT NULL,
+  `cpu` varchar(100) NOT NULL DEFAULT '',
   `ram` varchar(100) NOT NULL,
   `param_fix` tinyint(1) NOT NULL DEFAULT '0',
   `time` varchar(100) NOT NULL,
@@ -1205,21 +1201,10 @@ CREATE TABLE `tarifs` (
   `hdd` int(11) NOT NULL,
   `autostop` tinyint(1) NOT NULL,
   `price` text,
-  `core_fix` varchar(100) NOT NULL DEFAULT '',
   `ip` text,
   `show` tinyint(1) NOT NULL,
   `sort` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `tarifs`
---
-
-INSERT INTO `tarifs` (`id`, `unit`, `game`, `name`, `slots_min`, `slots_max`, `port_min`, `port_max`, `hostname`, `packs`, `path`, `install`, `update`, `fps`, `tickrate`, `ram`, `param_fix`, `time`, `timext`, `test`, `tests`, `discount`, `map`, `ftp`, `plugins`, `console`, `stats`, `copy`, `web`, `plugins_install`, `hdd`, `autostop`, `price`, `core_fix`, `ip`, `show`, `sort`) VALUES
-(1, 1, 'cs', 'Обычный', 10, 32, 27016, 27116, 'Новый игровой сервер', 'eyJzdGVhbSI6IlNURUFNIFtcdTA0MjdcdTA0MzhcdTA0NDFcdTA0NDJcdTA0NGJcdTA0MzkgXHUwNDQxXHUwNDM1XHUwNDQwXHUwNDMyXHUwNDM1XHUwNDQwXSIsInJlaGxkcyI6IlJlSExEUyAzLjcuMC54eHgtZGV2IiwiODMwOCI6IkJVSUxEIDgzMDgiLCI4MTk2IjoiQlVJTEQgODE5NiIsIjc4ODIiOiJCVUlMRCA3ODgyIiwiNzU1OSI6IkJVSUxEIDc1NTkiLCI2MTUzIjoiQlVJTEQgNjE1MyIsIjU3ODciOiJCVUlMRCA1Nzg3In0=', '/path/cs/', '/servers/cs/', '/path/update/cs/', '500:1000', '66:100', '512', 0, '15:30:90:180', '7:30:90:180', 0, 0, 1, 'de_dust2', 1, 0, 1, 0, 1, 0, '', 5000, 0, '25:35', '', '', 1, 1),
-(2, 1, 'cssold', 'Обычный', 10, 64, 27117, 27217, 'Новый игровой сервер', 'eyJzdGVhbSI6IlN0ZWFtIFtcdTA0MjdcdTA0MzhcdTA0NDFcdTA0NDJcdTA0NGJcdTA0MzkgXHUwNDQxXHUwNDM1XHUwNDQwXHUwNDMyXHUwNDM1XHUwNDQwXSJ9', '/path/cssold/', '/servers/cssold/', '/path/update/cssold/', '500:1000', '66:100', '512', 0, '15:30:90:180', '7:30:90:180', 0, 0, 1, 'de_dust2', 1, 0, 1, 0, 1, 0, '', 15000, 0, 'eyI2Nl81MDAiOiIyNyIsIjEwMF81MDAiOiIzNSIsIjY2XzEwMDAiOiI0NSIsIjEwMF8xMDAwIjoiNTUifQ==', '', '', 1, 1),
-(3, 1, 'css', 'Обычный', 10, 64, 27218, 27318, 'Новый игровой сервер', 'eyJzdGVhbSI6IlN0ZWFtIFtcdTA0MjdcdTA0MzhcdTA0NDFcdTA0NDJcdTA0NGJcdTA0MzkgXHUwNDQxXHUwNDM1XHUwNDQwXHUwNDMyXHUwNDM1XHUwNDQwXSJ9', '/path/css/', '/servers/css/', '/path/update/css/', '500:1000', '66:100', '512', 0, '15:30:90:180', '7:30:90:180', 0, 0, 1, 'de_dust2', 1, 0, 1, 0, 1, 0, '', 15000, 0, '27:35', '', '', 1, 1),
-(4, 1, 'csgo', 'Обычный', 10, 64, 27319, 27419, 'Новый игровой сервер', 'eyJzdGVhbSI6IlN0ZWFtIFtcdTA0MjdcdTA0MzhcdTA0NDFcdTA0NDJcdTA0NGJcdTA0MzkgXHUwNDQxXHUwNDM1XHUwNDQwXHUwNDMyXHUwNDM1XHUwNDQwXSJ9', '/path/csgo/', '/servers/csgo/', '/path/update/csgo/', '500:1000', '64:128', '1024', 0, '15:30:90:180', '7:30:90:180', 0, 0, 1, 'de_dust2', 1, 0, 1, 0, 1, 0, '', 30000, 0, '40:55', '', '', 1, 1);
 
 -- --------------------------------------------------------
 

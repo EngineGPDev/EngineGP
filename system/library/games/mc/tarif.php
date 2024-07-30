@@ -111,7 +111,6 @@ class tarif extends tarifs
             return NULL;
 
         $html->get('plan', 'sections/servers/games/tarif');
-
         $html->set('id', $sid);
         $html->set('options', $options);
         $html->set('info', $server['ram'] . ' RAM');
@@ -195,8 +194,6 @@ class tarif extends tarifs
 
         $address = explode(':', $server['address']);
 
-        $fix_one = $tarif['core_fix'] ? 1 : 0;
-
         // Обновление данных нового сервера
         $sql->query('UPDATE `servers` set
 				`unit`="' . $tarif['unit'] . '",
@@ -211,8 +208,6 @@ class tarif extends tarifs
 				`hdd`="' . $tarif['hdd'] . '",
 				`time`="' . $tarif['time'] . '",
 				`autostop`="' . $tarif['autostop'] . '",
-				`core_fix`="' . $tarif['core_fix'] . '",
-				`core_fix_one`="' . $fix_one . '",
 				`reinstall`="' . $start_point . '" WHERE `id`="' . $server['id'] . '" LIMIT 1');
 
         // Запись установленных плагинов

@@ -53,7 +53,6 @@ class service
             . '`plugins_install`,'
             . '`hdd`,'
             . '`autostop`,'
-            . '`core_fix`,'
             . '`ip`,'
             . '`price`'
             . ' FROM `tarifs` WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
@@ -212,31 +211,6 @@ class service
         else
             $aData['time'] = games::time($start_point, $days);
 
-        $fix_one = 0;
-        $core = 0;
-
-        if ($tarif['core_fix'] != '') {
-            $aCore = explode(',', $tarif['core_fix']);
-
-            foreach ($aCore as $cpu) {
-                $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND `tarif`="' . $aData['tarif'] . '" AND `core_fix`="' . $cpu . '" AND `core_fix_one`="1" LIMIT 1');
-
-                if ($sql->num())
-                    continue;
-
-                $fix_one = 1;
-                $core = $cpu;
-
-                break;
-            }
-
-            if (!$core) {
-                $sql->query('UPDATE `tarifs` set `show`="0" WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
-
-                sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
-            }
-        }
-
         $ram = isset($tarif['param_fix']) ? $aData['ram'] : $cfg['ram']['cssold'] * $aData['slots'];
 
         // Массив данных
@@ -267,8 +241,6 @@ class service
             'web' => $tarif['web'], // Использование доп услуг
             'plugins_install' => $tarif['plugins_install'], // Список установленных плагинов
             'hdd' => $tarif['hdd'], // Дисковое пространство
-            'core_fix' => $core, // Выделенный поток
-            'core_fix_one' => $fix_one, // Выделенный поток
             'promo' => $promo // Использование промо-кода
         );
 
@@ -343,8 +315,6 @@ class service
 				`date`="' . $start_point . '",
 				`test`="' . $aSDATA['test'] . '",
 				`ram`="' . $aSDATA['ram'] . '",
-				`core_fix`="' . $aSDATA['core_fix'] . '",
-				`core_fix_one`="' . $aSDATA['core_fix_one'] . '",
 				`autostop`="' . $aSDATA['autostop'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Запись установленных плагинов

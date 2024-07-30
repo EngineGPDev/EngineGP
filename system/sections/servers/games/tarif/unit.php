@@ -62,25 +62,7 @@ if ($go) {
         }
     }
 
-    $core = 0;
-
-    if ($tarif['core_fix'] != '') {
-        $aCore = explode(',', $tarif['core_fix']);
-
-        foreach ($aCore as $cpu) {
-            $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $tarif['unit'] . '" AND `tarif`="' . $tarif['id'] . '" AND `core_fix`="' . $cpu . '" AND `core_fix_one`="1" LIMIT 1');
-
-            if ($sql->num())
-                continue;
-
-            $core = $cpu;
-            $tarif['core_fix'] = $cpu;
-
-            break;
-        }
-    }
-
-    if (!$ip || !$port || !$core)
+    if (!$ip || !$port)
         sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
 
     $server['id'] = $id;
