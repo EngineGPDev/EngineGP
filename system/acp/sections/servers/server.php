@@ -131,10 +131,6 @@ if ($go) {
     if (sys::valid($aData['address'], 'other', $aValid['address']))
         $aData['address'] = $server['address'];
 
-    $sql->query('SELECT `id` FROM `servers` WHERE `id`!="' . $id . '" AND `address`="' . $aData['address'] . '" LIMIT 1');
-    if ($sql->num())
-        sys::outjs(array('e' => 'Данный адрес занят другим сервером.'));
-
     $sql->query('SELECT `id` FROM `servers` WHERE `id`!="' . $id . '" AND `address` LIKE \'%' . sys::first(explode(':', $unit['address'])) . '\' AND `port`="' . $aData['port'] . '" LIMIT 1');
     if ($sql->num())
         sys::outjs(array('e' => 'Данный порт занят другим сервером.'));
