@@ -39,6 +39,13 @@ class action extends actions
         $port = $server['port'];
         $server_address = $server['address'] . ':' . $server['port'];
 
+        $serverSystemdStatus = trim($ssh->get('sudo systemctl show -p ActiveState server' . $server['uid'] . '.scope | awk -F \'=\' \'{print $2}\''));
+
+        if ($serverSystemdStatus == 'failed') {
+            $ssh->set('sudo systemctl stop server' . $server['uid'] . '.scope');
+            $ssh->set('sudo systemctl reset-failed server' . $server['uid'] . '.scope');
+        }
+
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
