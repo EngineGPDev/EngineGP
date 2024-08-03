@@ -49,13 +49,13 @@ $i = 0;
 include(LIB . 'web/free.php');
 
 foreach ($aData['server'] as $sid) {
-    $sql->query('SELECT `id`, `uid`, `unit`, `user`, `address`, `game`, `ftp_use`, `ftp`, `ftp_root`, `ftp_passwd` FROM `servers` WHERE `id`="' . $sid . '" AND `user`="' . $server['user'] . '" AND `game`="cs" LIMIT 1');
+    $sql->query('SELECT `id`, `uid`, `unit`, `user`, `address`, `port`, `game`, `ftp_use`, `ftp`, `ftp_root`, `ftp_passwd` FROM `servers` WHERE `id`="' . $sid . '" AND `user`="' . $server['user'] . '" AND `game`="cs" LIMIT 1');
     if (!$sql->num())
         continue;
 
     $server = $sql->get();
 
-    $address = explode(':', $server['address']);
+    $address = $server['address'];
 
     if (!$server['ftp_use'])
         continue;
