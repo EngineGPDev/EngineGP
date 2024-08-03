@@ -161,24 +161,22 @@ class service
             $ip = sys::first(explode(':', $unit['address']));
             $port = false;
 
-            // Проверка наличия свободного порта
-            for ($tarif['port_min']; $tarif['port_min'] <= $tarif['port_max']; $tarif['port_min'] += 1) {
-                $port_game = $tarif['port_min'];
-                $port_query = $port_game;
-                $port_rcon = $port_query;
-
-                // Проверка, не занят ли любой из портов в столбцах port, port_query, port_rcon
+            // Проверка наличия свободных портов для сервера, query и rcon
+            for ($portMin = $tarif['port_min']; $portMin <= $tarif['port_max']; $portMin++) {
+                // Проверка порта для сервера
                 $sql->query('SELECT `id` FROM `servers` 
-                            WHERE `unit`="' . $aData['unit'] . '" 
-                            AND (
-                                `port`="' . $port_game . '" OR 
-                                `port`="' . $port_query . '" OR 
-                                `port`="' . $port_rcon . '"
-                                ) 
-                            LIMIT 1');
+                 WHERE `unit`="' . $aData['unit'] . '" 
+                 AND (
+                     `port`="' . $portMin . '" OR
+                     `port_query`="' . $portMin . '" OR
+                     `port_rcon`="' . $portMin . '"
+                 ) 
+                 LIMIT 1');
 
                 if (!$sql->num()) {
-                    $port = $port_game;
+                    $port = $portMin;
+                    $port_query = $portMin;
+                    $port_rcon = $portMin;
                     break;
                 }
             }
