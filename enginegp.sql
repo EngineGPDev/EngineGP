@@ -1119,7 +1119,6 @@ CREATE TABLE `servers` (
   `tickrate` int(11) NOT NULL DEFAULT '0',
   `ram` int(11) NOT NULL DEFAULT '0',
   `ram_use` int(11) NOT NULL DEFAULT '0',
-  `ram_fix` tinyint(1) NOT NULL DEFAULT '0',
   `map` varchar(100) NOT NULL DEFAULT '',
   `map_start` varchar(100) NOT NULL DEFAULT '',
   `vac` tinyint(1) NOT NULL DEFAULT '0',

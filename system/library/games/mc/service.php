@@ -297,7 +297,6 @@ class service
 				`copy_use`="' . $aSDATA['copy'] . '",
 				`web_use`="' . $aSDATA['web'] . '",
 				`ram`="' . $aSDATA['ram'] . '",
-				`ram_fix`="' . $aSDATA['param_fix'] . '",
 				`map_start`="' . $aSDATA['map'] . '",
 				`vac`="1",
 				`hdd`="' . $aSDATA['hdd'] . '",
