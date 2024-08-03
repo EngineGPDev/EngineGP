@@ -186,14 +186,12 @@ class tarif extends tarifs
             . 'chown ' . $uS . ':1000 ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' screen -dmS i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
 
-        $address = explode(':', $server['address']);
-
         // Обновление данных нового сервера
         $sql->query('UPDATE `servers` set
 				`unit`="' . $tarif['unit'] . '",
 				`tarif`="' . $tarif['id'] . '",
 				`address`="' . $server['address'] . '",
-				`port`="' . $address[1] . '",
+				`port`="' . $server['port'] . '",
 				`status`="install",
 				`name`="' . $tarif['hostname'] . '",
 				`pack`="' . $tarif['pack'] . '",

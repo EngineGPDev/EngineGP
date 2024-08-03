@@ -132,7 +132,8 @@ while ($admin = $sql->get()) {
 $sql->query('SELECT `id` FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '" ORDER BY `id` DESC LIMIT 1');
 $max = $sql->get();
 
-list($ip, $port) = explode(':', $server['address']);
+$ip = $server['address'];
+$port = $server['port'];
 
 $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 

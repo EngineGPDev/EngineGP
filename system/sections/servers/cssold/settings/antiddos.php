@@ -32,7 +32,8 @@ include(LIB . 'ssh.php');
 if (!$ssh->auth($unit['passwd'], $unit['address']))
     sys::outjs(array('e' => sys::text('error', 'ssh', $user['group'])), $name_mcache);
 
-list($ip, $port) = explode(':', $server['address']);
+$ip = $server['address'];
+$port = $server['port'];
 
 $geo = $cfg['iptables'] . '_geo';
 
