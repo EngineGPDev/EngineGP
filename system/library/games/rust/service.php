@@ -172,31 +172,57 @@ class service
             $ip = sys::first(explode(':', $unit['address']));
             $port = false;
 
-            // Проверка наличия свободного порта
-            for ($tarif['port_min']; $tarif['port_min'] <= $tarif['port_max']; $tarif['port_min'] += 1) {
-                $port_game = $tarif['port_min'];
-                $port_query = $port_game + 1;
-                $port_rcon = $port_query + 1;
-
-                // Проверка, не занят ли любой из портов в столбцах port, port_query, port_rcon
+            // Проверка наличия свободных портов для сервера, query и rcon
+            for ($portMin = $tarif['port_min']; $portMin <= $tarif['port_max']; $portMin++) {
+                // Проверка порта для сервера
                 $sql->query('SELECT `id` FROM `servers` 
-                            WHERE `unit`="' . $aData['unit'] . '" 
-                            AND (
-                                `port`="' . $port_game . '" OR 
-                                `port`="' . $port_query . '" OR 
-                                `port`="' . $port_rcon . '" OR 
-                                `port_query`="' . $port_game . '" OR 
-                                `port_query`="' . $port_query . '" OR 
-                                `port_query`="' . $port_rcon . '" OR 
-                                `port_rcon`="' . $port_game . '" OR 
-                                `port_rcon`="' . $port_query . '" OR 
-                                `port_rcon`="' . $port_rcon . '"
-                                ) 
-                            LIMIT 1');
+                 WHERE `unit`="' . $aData['unit'] . '" 
+                 AND (
+                     `port`="' . $portMin . '" OR
+                     `port_query`="' . $portMin . '" OR
+                     `port_rcon`="' . $portMin . '"
+                 ) 
+                 LIMIT 1');
 
                 if (!$sql->num()) {
-                    $port = $port_game;
-                    break;
+                    $port = $portMin;
+
+                    // Проверка порта для query
+                    for ($portQueryMin = $tarif['port_min']; $portQueryMin <= $tarif['port_max']; $portQueryMin++) {
+                        if ($portQueryMin != $port) {
+                            $sql->query('SELECT `id` FROM `servers` 
+                             WHERE `unit`="' . $aData['unit'] . '" 
+                             AND (
+                                 `port`="' . $portQueryMin . '" OR
+                                 `port_query`="' . $portQueryMin . '" OR
+                                 `port_rcon`="' . $portQueryMin . '"
+                             ) 
+                             LIMIT 1');
+
+                            if (!$sql->num()) {
+                                $port_query = $portQueryMin;
+
+                                // Проверка порта для rcon
+                                for ($portRconMin = $tarif['port_min']; $portRconMin <= $tarif['port_max']; $portRconMin++) {
+                                    if ($portRconMin != $port && $portRconMin != $port_query) {
+                                        $sql->query('SELECT `id` FROM `servers` 
+                                         WHERE `unit`="' . $aData['unit'] . '" 
+                                         AND (
+                                             `port`="' . $portRconMin . '" OR
+                                             `port_query`="' . $portRconMin . '" OR
+                                             `port_rcon`="' . $portRconMin . '"
+                                         ) 
+                                         LIMIT 1');
+
+                                        if (!$sql->num()) {
+                                            $port_rcon = $portRconMin;
+                                            break 3;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

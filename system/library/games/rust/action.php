@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `tickrate`, `ram`, `cpu`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `port_query`, `port_rcon`, `slots_start`, `name`, `tickrate`, `ram`, `cpu`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -56,7 +56,7 @@ class action extends actions
 
         // Параметры запуска
         $bash = 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`dirname $0`/RustDedicated_Data/Plugins:`dirname $0`/RustDedicated_Data/Plugins/x86_64 && '
-            . './RustDedicated -batchmode +server.ip ' . $ip . ' +server.port ' . $port . ' +server.tickrate ' . $server['tickrate'] . ' +server.identity ' . $server_identity . ' +server.maxplayers ' . $server['slots_start'];
+            . './RustDedicated -batchmode +server.ip ' . $ip . ' +server.port ' . $port . ' +server.queryport ' . $server['port_query'] . ' +rcon.port ' . $server['port_rcon'] . ' +server.tickrate ' . $server['tickrate'] . ' +server.identity ' . $server_identity . ' +server.maxplayers ' . $server['slots_start'];
 
         // Временный файл
         $temp = sys::temp($bash);
