@@ -38,7 +38,6 @@ class service
             . '`hostname`,'
             . '`packs`,'
             . '`ram`,'
-            . '`param_fix`,'
             . '`time`,'
             . '`test`,'
             . '`tests`,'
@@ -203,14 +202,11 @@ class service
         else
             $aData['time'] = games::time($start_point, $days);
 
-        $ram = $tarif['param_fix'] ? $aData['ram'] : $aData['ram'] * $aData['slots'];
-
         // Массив данных
         $aSDATA = array(
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
-            'ram' => $ram, // значение ram
-            'param_fix' => $tarif['param_fix'], // фиксированные параметры
+            'ram' => $aData['ram'], // значение ram
             'pack' => $aData['pack'], // Выбранная сборка для установки
             'time' => $aData['time'], // Время аренды
             'days' => $days, // Число дней

@@ -28,7 +28,6 @@ if ($go) {
     $aData['fps'] = isset($_POST['fps']) ? trim($_POST['fps']) : '';
     $aData['tickrate'] = isset($_POST['tickrate']) ? trim($_POST['tickrate']) : '';
     $aData['ram'] = isset($_POST['ram']) ? trim($_POST['ram']) : '';
-    $aData['param_fix'] = isset($_POST['param_fix']) ? trim($_POST['param_fix']) : '';
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : '';
     $aData['timext'] = isset($_POST['timext']) ? trim($_POST['timext']) : '';
     $aData['test'] = isset($_POST['test']) ? sys::int($_POST['test']) : '';
@@ -352,7 +351,6 @@ if ($go) {
         . '`fps`="' . $aData['fps'] . '",'
         . '`tickrate`="' . $aData['tickrate'] . '",'
         . '`ram`="' . $aData['ram'] . '",'
-        . '`param_fix`="' . $aData['param_fix'] . '",'
         . '`time`="' . $aData['time'] . '",'
         . '`timext`="' . $aData['timext'] . '",'
         . '`test`="' . $aData['test'] . '",'

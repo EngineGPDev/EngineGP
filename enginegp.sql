@@ -1183,7 +1183,6 @@ CREATE TABLE `tarifs` (
   `tickrate` varchar(100) NOT NULL,
   `cpu` int(11) NOT NULL,
   `ram` int(11) NOT NULL,
-  `param_fix` tinyint(1) NOT NULL DEFAULT '0',
   `time` varchar(100) NOT NULL,
   `timext` varchar(100) NOT NULL,
   `test` int(11) NOT NULL,
