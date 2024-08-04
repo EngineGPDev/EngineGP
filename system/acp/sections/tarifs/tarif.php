@@ -31,7 +31,6 @@ if ($go) {
     $aData['fps'] = isset($_POST['fps']) ? trim($_POST['fps']) : $tarif['fps'];
     $aData['tickrate'] = isset($_POST['tickrate']) ? trim($_POST['tickrate']) : $tarif['tickrate'];
     $aData['ram'] = isset($_POST['ram']) ? trim($_POST['ram']) : $tarif['ram'];
-    $aData['param_fix'] = isset($_POST['param_fix']) ? trim($_POST['param_fix']) : $tarif['param_fix'];
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : $tarif['time'];
     $aData['timext'] = isset($_POST['timext']) ? trim($_POST['timext']) : $tarif['timext'];
     $aData['test'] = isset($_POST['test']) ? sys::int($_POST['test']) : $tarif['test'];
@@ -355,7 +354,6 @@ if ($go) {
         . '`fps`="' . $aData['fps'] . '",'
         . '`tickrate`="' . $aData['tickrate'] . '",'
         . '`ram`="' . $aData['ram'] . '",'
-        . '`param_fix`="' . $aData['param_fix'] . '",'
         . '`time`="' . $aData['time'] . '",'
         . '`timext`="' . $aData['timext'] . '",'
         . '`test`="' . $aData['test'] . '",'
@@ -384,7 +382,6 @@ $games = '<option value="cs">Counter-Strike: 1.6</option><option value="cssold">
     . '<option value="csgo">Counter-Strike: Global Offensive</option><option value="cs2">Counter-Strike: 2</option><option value="rust">RUST</option><option value="samp">San Andreas Multiplayer</option><option value="crmp">GTA: Criminal Russia</option>'
     . '<option value="mta">Multi Theft Auto</option><option value="mc">Minecraft</option>';
 
-$fix = $tarif['param_fix'] ? '<option value="1">Фиксированные параметры</option><option value="0">Не фиксированные параметры</option>' : '<option value="0">Не фиксированные параметры</option><option value="1">Фиксированные параметры</option>';
 $test = $tarif['test'] ? '<option value="1">Доступно</option><option value="0">Недоступно</option>' : '<option value="0">Недоступно</option><option value="1">Доступно</option>';
 $discount = $tarif['discount'] ? '<option value="1">Включены</option><option value="0">Без скидок</option>' : '<option value="0">Без скидок</option><option value="1">Включены</option>';
 $autostop = $tarif['autostop'] ? '<option value="1">Включено</option><option value="0">Выключено</option>' : '<option value="0">Выключено</option><option value="1">Включено</option>';
@@ -419,7 +416,6 @@ foreach ($tarif as $field => $val)
 
 $html->set('units', $units);
 $html->set('games', $games);
-$html->set('param_fix', $fix);
 $html->set('test', $test);
 $html->set('discount', $discount);
 $html->set('autostop', $autostop);
