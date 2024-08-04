@@ -23,11 +23,7 @@
                 <td id="time_end">[time_end]</td>
             </tr>
             <tr>
-                <td>
-                    Онлайн: <span id="online">[online]</span> / [slots]
-                    <div class="change_close" id="maps_close" onclick="server_change_close('[id]')">x</div>
-                    <div class="change_map" id="maps_list"></div>
-                </td>
+                <td>Онлайн: <span id="online">[online]</span> / [slots]</td>
                 <td colspan="2">Тариф: [tarif]</td>
             </tr>
             <tr>
@@ -107,12 +103,6 @@
 
 <div class="space"></div>
 
-<a href="[home]servers/id/[id]/section/rcon">
-    <div class="btn btn-success btn-short right">RCON УПРАВЛЕНИЕ</div>
-</a>
-
-<div class="space"></div>
-
 <h4 class="hblock_content">Игроки онлайн</h4>
 
 <div class="block_content">
@@ -151,7 +141,7 @@
     var $load_usr = $("#load_usr").percentageLoader({width: 105, height: 105, progress: 0, value: 'USR'});
     var $load_cpu = $("#load_cpu").percentageLoader({width: 105, height: 105, progress: 0, value: 'CPU'});
     var $load_ram = $("#load_ram").percentageLoader({width: 105, height: 105, progress: 0, value: 'RAM'});
-    var $load_hdd = $("#load_hdd").percentageLoader({width: 105, height: 105, progress: 0, value: 'SSD'});
+    var $load_hdd = $("#load_hdd").percentageLoader({width: 105, height: 105, progress: 0, value: 'ROM'});
 </script>
 
 <script src="[js]sections/servers/index.js" type="text/javascript"></script>

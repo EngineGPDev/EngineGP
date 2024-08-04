@@ -50,9 +50,7 @@ class tarif extends tarifs
         $aPrice = explode(':', $tarif['price']);
         $aRAM = explode(':', $tarif['ram']);
 
-        $ram = $server['ram_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
-
-        $sum = $tarif['slots'] ? $aPrice[array_search($ram, $aRAM)] : $aPrice[array_search($ram, $aRAM)] * $server['slots'];
+        $sum = $tarif['slots'] ? $aPrice[array_search($server['ram'], $aRAM)] : $aPrice[array_search($server['ram'], $aRAM)] * $server['slots'];
 
         $html->get('extend_sp', 'sections/servers/games/tarif');
 
@@ -93,17 +91,15 @@ class tarif extends tarifs
         $aPrice = explode(':', $tarif['price']);
         $aRAM = explode(':', $tarif['ram']);
 
-        $ram = $server['ram_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
-
         // Если есть выбор
         if (count($aRAM) > 1) {
             // Удалить при наличии ram сервера из выбора
-            if (in_array($ram, $aRAM))
-                unset($aRAM[array_search($ram, $aRAM)]);
+            if (in_array($server['ram'], $aRAM))
+                unset($aRAM[array_search($server['ram'], $aRAM)]);
 
-            foreach ($aRAM as $index => $ram)
-                $options .= '<option value="' . $ram . '">'
-                    . $ram . ' RAM '
+            foreach ($aRAM as $index => $server['ram'])
+                $options .= '<option value="' . $server['ram'] . '">'
+                    . $server['ram'] . ' RAM '
                     . '(' . $aPrice[$index] . ' ' . $cfg['currency'] . '/слот | '
                     . ($aPrice[$index] * $server['slots']) . ' ' . $cfg['currency'] . '/месяц)'
                     . '</option>';
@@ -111,7 +107,6 @@ class tarif extends tarifs
             return NULL;
 
         $html->get('plan', 'sections/servers/games/tarif');
-
         $html->set('id', $sid);
         $html->set('options', $options);
         $html->set('info', $server['ram'] . ' RAM');
@@ -137,10 +132,8 @@ class tarif extends tarifs
 
         $options = '<option value="0">Выберите новую локацию</option>';
 
-        $ram = $server['ram_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
-
         while ($tarif = $sql->get($tarifs)) {
-            if (!in_array($ram, explode(':', $tarif['ram'])))
+            if (!in_array($server['ram'], explode(':', $tarif['ram'])))
                 continue;
 
             $sql->query('SELECT `id`, `name` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
@@ -193,16 +186,12 @@ class tarif extends tarifs
             . 'chown ' . $uS . ':1000 ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' screen -dmS i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
 
-        $address = explode(':', $server['address']);
-
-        $fix_one = $tarif['core_fix'] ? 1 : 0;
-
         // Обновление данных нового сервера
         $sql->query('UPDATE `servers` set
 				`unit`="' . $tarif['unit'] . '",
 				`tarif`="' . $tarif['id'] . '",
 				`address`="' . $server['address'] . '",
-				`port`="' . $address[1] . '",
+				`port`="' . $server['port'] . '",
 				`status`="install",
 				`name`="' . $tarif['hostname'] . '",
 				`pack`="' . $tarif['pack'] . '",
@@ -211,8 +200,6 @@ class tarif extends tarifs
 				`hdd`="' . $tarif['hdd'] . '",
 				`time`="' . $tarif['time'] . '",
 				`autostop`="' . $tarif['autostop'] . '",
-				`core_fix`="' . $tarif['core_fix'] . '",
-				`core_fix_one`="' . $fix_one . '",
 				`reinstall`="' . $start_point . '" WHERE `id`="' . $server['id'] . '" LIMIT 1');
 
         // Запись установленных плагинов

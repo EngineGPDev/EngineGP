@@ -34,14 +34,14 @@ if (!isset($text[2])) {
     sys::outjs(array('e' => ''));
 }
 
-$select = '`id`, `unit`, `tarif`, `user`, `address`, `game`, `status`, `slots`, `name`, `time` FROM `servers` WHERE `user`!="-1" AND';
+$select = '`id`, `unit`, `tarif`, `user`, `address`, `port`, `game`, `status`, `slots`, `name`, `time` FROM `servers` WHERE `user`!="-1" AND';
 
 if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif')))
     $select .= ' `' . $url['search'] . '`=' . sys::int($url[$url['search']]) . ' AND';
 
 $check = explode('=', $text);
 
-if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status', 'slots'))) {
+if (in_array($check[0], array('game', 'unit', 'tarif', 'user', 'status', 'slots'))) {
     $val = trim($check[1]);
 
     switch ($check[0]) {
@@ -52,10 +52,6 @@ if (in_array($check[0], array('game', 'unit', 'core', 'tarif', 'user', 'status',
 
         case 'unit':
             $servers = $sql->query('SELECT ' . $select . ' `unit`="' . sys::int($val) . '" ORDER BY `id` ASC');
-            break;
-
-        case 'core':
-            $servers = $sql->query('SELECT ' . $select . ' `core_use`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
 
         case 'tarif':
@@ -119,6 +115,8 @@ while ($server = $sql->get($servers)) {
     $sql->query('SELECT `name` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = $sql->get();
 
+    $server_address = $server['address'] . ':' . $server['port'];
+
     $list .= '<tr>';
     $list .= '<td class="text-center">' . $server['id'] . '</td>';
     $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/id/' . $server['id'] . '">' . $server['name'] . '</a></td>';
@@ -130,7 +128,7 @@ while ($server = $sql->get($servers)) {
 
     $list .= '<tr>';
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $server['user'] . '">USER_' . $server['user'] . '</a></td>';
-    $list .= '<td>' . $server['address'] . '</td>';
+    $list .= '<td>' . $server_address . '</td>';
     $list .= '<td><a href="' . $cfg['http'] . 'acp/servers/search/tarif/tarif/' . $server['tarif'] . '">#' . $server['tarif'] . ' ' . $tarif['name'] . '</a></td>';
     $list .= '<td class="text-center">' . $status[$server['status']] . '</td>';
     $list .= '<td class="text-center">' . date('d.m.Y - H:i:s', $server['time']) . '</td>';

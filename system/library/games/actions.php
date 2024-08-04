@@ -20,7 +20,7 @@ class actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `game`, `address`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `game`, `address`, `port`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -30,8 +30,10 @@ class actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="off", `online`="0", `players`="", `stop`="0" WHERE `id`="' . $id . '" LIMIT 1');
@@ -123,7 +125,7 @@ class actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `reinstall`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `port`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `reinstall` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         // Проверка времени переустановки
@@ -142,17 +144,10 @@ class actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
-
-        $taskset = '';
-
-        // Если включена система автораспределения и не установлен фиксированный поток
-        if ($cfg['cpu_route'] && !$server['core_fix']) {
-            $proc_stat = array();
-
-            $proc_stat[0] = $ssh->get('cat /proc/stat');
-        }
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         // Директория сборки
         $path = $tarif['path'] . $server['pack'];
@@ -160,28 +155,10 @@ class actions
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        // Если система автораспределения продолжить парсинг загрузки процессора
-        if (isset($proc_stat)) {
-            $proc_stat[1] = $ssh->get('cat /proc/stat');
-
-            // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($server['unit'], $proc_stat, false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
-
-            if (!is_numeric($core))
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
-
-            $taskset = 'taskset -c ' . $core;
-        }
-
-        if ($server['core_fix']) {
-            $core = $server['core_fix'] - 1;
-            $taskset = 'taskset -c ' . $core;
-        }
-
         $ssh->set('rm -r ' . $install . ';' // Удаление директории игрового сервера
             . 'mkdir ' . $install . ';' // Создание директории
             . 'chown server' . $server['uid'] . ':1000 ' . $install . ';' // Изменение владельца и группы директории
-            . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' ' . $taskset . ' screen -dmS r_' . $server['uid'] . ' sh -c "'
+            . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS r_' . $server['uid'] . ' sh -c "'
             . 'cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
@@ -205,10 +182,8 @@ class actions
             }
         }
 
-        $core = !isset($core) ? 0 : $core + 1;
-
         // Обновление информации в базе
-        $sql->query('UPDATE `servers` set `status`="reinstall", `reinstall`="' . $start_point . '", `core_use`="' . $core . '", `fastdl`="0" WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `status`="reinstall", `reinstall`="' . $start_point . '", `fastdl`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Логирование
         $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'reinstall') . '", `time`="' . $start_point . '"');
@@ -228,7 +203,7 @@ class actions
 
         include(LIB . 'ssh.php');
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `port`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         // Проверка времени обновления
@@ -247,17 +222,10 @@ class actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
-
-        $taskset = '';
-
-        // Если включена система автораспределения и не установлен фиксированный поток
-        if (isset($cfg['cpu_route']) && $cfg['cpu_route'] && !isset($server['core_fix']) || !$server['core_fix']) {
-            $proc_stat = array();
-
-            $proc_stat[0] = $ssh->get('cat /proc/stat');
-        }
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
         // Директория обновлений сборки
         $path = $tarif['update'] . $server['pack'];
@@ -265,33 +233,13 @@ class actions
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        // Если система автораспределения продолжить парсинг загрузки процессора
-        if (isset($proc_stat)) {
-            $proc_stat[1] = $ssh->get('cat /proc/stat');
-
-            // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($server['unit'], $proc_stat, false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
-
-            if (!is_numeric($core))
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
-
-            $taskset = 'taskset -c ' . $core;
-        }
-
-        if (isset($server['core_fix']) && $server['core_fix']) {
-            $core = $server['core_fix'] - 1;
-            $taskset = 'taskset -c ' . $core;
-        }
-
-        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' ' . $taskset . ' screen -dmS u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
+        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
             . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
 
-        $core = !isset($core) ? 0 : $core + 1;
-
         // Обновление информации в базе
-        $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '", `core_use`="' . $core . '" WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Логирование
         $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'update') . '", `time`="' . $start_point . '"');

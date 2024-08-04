@@ -75,7 +75,8 @@ if ($go) {
 
     $temp = sys::temp($usini);
 
-    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/csgo/addons/sourcemod/configs/admins_simple.ini', 0644);
+    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/csgo/addons/sourcemod/configs/admins_simple.ini');
+    $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/csgo/addons/sourcemod/configs/admins_simple.ini');
 
     unlink($temp);
 

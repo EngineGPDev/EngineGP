@@ -44,7 +44,7 @@ class cron
         'css' => 'srcds_',
         'csgo' => 'srcds_',
         'cs2' => 'cs2',
-        'cs2' => 'RustDedicated',
+        'rust' => 'Rust',
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
@@ -57,7 +57,6 @@ class cron
         'css' => 'a2s',
         'csgo' => 'a2s',
         'cs2' => 'a2s',
-        'rust' => 'a2s',
         'mta' => 'eye'
     );
 

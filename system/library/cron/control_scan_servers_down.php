@@ -51,13 +51,15 @@ class control_scan_servers_down extends cron
             $sql->query('SELECT `uid`, `address`, `status`, `autorestart` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
             $server = $sql->get();
 
+            $server_address = $server['address'] . ':' . $server['port'];
+
             if (!$server['autorestart'])
                 continue;
 
             if ($server['status'] != 'working')
                 continue;
 
-            if (!in_array(trim($ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server['address'] . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), array('DOWN', 'no')))
+            if (!in_array(trim($ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server_address . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), array('DOWN', 'no')))
                 continue;
 
             exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' control_server_action restart ' . $game . ' ' . $id . '"');

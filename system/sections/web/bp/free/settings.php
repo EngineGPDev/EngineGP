@@ -123,7 +123,8 @@ if ($go) {
 
     $temp = sys::temp($data);
 
-    $ssh->setfile($temp, $install . '/core/cfg.php', 0644);
+    $ssh->setfile($temp, $install . '/core/cfg.php');
+    $ssh->set('chmod 0644' . ' ' . $install . '/core/cfg.php');
 
     sys::outjs(array('s' => 'ok'), $name_mcache);
 }

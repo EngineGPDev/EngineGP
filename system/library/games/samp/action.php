@@ -20,7 +20,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `slots_start`, `name`, `map_start`, `time_start`, `core_fix` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `map_start`, `ram`, `cpu`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -35,47 +35,29 @@ class action extends actions
         if (!$ssh->auth($unit['passwd'], $unit['address']))
             return array('e' => sys::text('error', 'ssh'));
 
-        list($ip, $port) = explode(':', $server['address']);
-        $internalIp = $ssh->getInternalIp();
+        $ip = $ssh->getInternalIp();
+        $port = $server['port'];
+        $server_address = $server['address'] . ':' . $server['port'];
+
+        $serverSystemdStatus = trim($ssh->get('sudo systemctl show -p ActiveState server' . $server['uid'] . '.scope | awk -F \'=\' \'{print $2}\''));
+
+        if ($serverSystemdStatus == 'failed') {
+            $ssh->set('sudo systemctl stop server' . $server['uid'] . '.scope');
+            $ssh->set('sudo systemctl reset-failed server' . $server['uid'] . '.scope');
+        }
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
 
         // Временный файл
-        $temp = sys::temp(action::config($internalIp, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.cfg')));
+        $temp = sys::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.cfg')));
 
         // Обновление файла server.cfg
-        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.cfg', 0644);
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.cfg');
+        $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/server.cfg');
 
         unlink($temp);
-
-        $taskset = '';
-
-        // Если включена система автораспределения и не установлен фиксированный поток
-        if ($cfg['cpu_route'] and !$server['core_fix']) {
-            $proc_stat = array();
-
-            $proc_stat[0] = $ssh->get('cat /proc/stat');
-        }
-
-        // Если система автораспределения продолжить парсинг загрузки процессора
-        if (isset($proc_stat)) {
-            $proc_stat[1] = $ssh->get('cat /proc/stat');
-
-            // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
-            $core = sys::cpu_idle($server['unit'], $proc_stat, false); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
-
-            if (!is_numeric($core))
-                return array('e' => sys::text('error', 'cpu'));
-
-            $taskset = 'taskset -c ' . $core;
-        }
-
-        if ($server['core_fix']) {
-            $core = $server['core_fix'] - 1;
-            $taskset = 'taskset -c ' . $core;
-        }
 
         // Параметры запуска
         $bash = './samp03svr';
@@ -84,7 +66,8 @@ class action extends actions
         $temp = sys::temp($bash);
 
         // Обновление файла start.sh
-        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh', 0500);
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
+        $ssh->set('chmod 0500' . ' ' . $tarif['install'] . $server['uid'] . '/start.sh');
 
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
@@ -92,12 +75,10 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p oldstart;' // Создание папки логов
             . 'cat server_log.txt >> oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm server_log.txt; rm oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':1000 server.cfg start.sh;' // Обновление владельца файлов
-            . 'sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' ' . $taskset . ' sh -c "./start.sh"'); // Запуск игровго сервера
-
-        $core = !isset($core) ? 0 : $core + 1;
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе
-        $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `core_use`="' . $core . '", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
 
         unlink($temp);
 

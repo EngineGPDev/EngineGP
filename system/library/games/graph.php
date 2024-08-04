@@ -104,6 +104,8 @@ class graph
 
         $MyData = new Data();
 
+        $server_address = $server['address'] . ':' . $server['port'];
+
         // Значения
         $MyData->addPoints($aPoints, 'ONLINE');
 
@@ -142,7 +144,7 @@ class graph
         // Адрес игрового сервера
         $myPicture->drawFilledRectangle(25, 5, 153, 18, $aStyle[$style]['box']);
         $myPicture->drawText(28, 17, 'Адрес сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(26, 30, $server['address'], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(26, 30, $server_address, array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
 
         // Статус игрового сервера
         $myPicture->drawFilledRectangle(25, 35, 153, 48, $aStyle[$style]['box']);
@@ -180,6 +182,8 @@ class graph
         global $cfg, $aGname;
 
         $MyData = new Data();
+
+        $server_address = $server['address'] . ':' . $server['port'];
 
         // Значения
         $MyData->addPoints($aPoints, 'ONLINE');
@@ -222,7 +226,7 @@ class graph
         // Адрес игрового сервера
         $myPicture->drawFilledRectangle(5, 36, 210, 49, $aStyle[$style]['box']);
         $myPicture->drawText(8, 48, 'Адрес сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(6, 62, $server['address'], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(6, 62, $server_address, array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
 
         // Статус игрового сервера
         $myPicture->drawFilledRectangle(215, 36, 410, 49, $aStyle[$style]['box']);

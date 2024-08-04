@@ -79,7 +79,8 @@ if ($go) {
 
     $temp = sys::temp($usini);
 
-    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini', 0644);
+    $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
+    $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
 
     unlink($temp);
 
@@ -131,7 +132,8 @@ while ($admin = $sql->get()) {
 $sql->query('SELECT `id` FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '" ORDER BY `id` DESC LIMIT 1');
 $max = $sql->get();
 
-list($ip, $port) = explode(':', $server['address']);
+$ip = $server['address'];
+$port = $server['port'];
 
 $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 

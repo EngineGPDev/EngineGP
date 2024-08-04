@@ -225,14 +225,9 @@ class games
 
         $ram = '';
 
-        if (isset($aRAM)) {
-            if ($aTarif['param_fix'])
-                foreach ($aRAM as $value)
-                    $ram .= '<option value="' . $value . '">' . $value . ' Ram</option>';
-            else
-                foreach ($aRAM as $value)
-                    $ram .= '<option value="' . $value . '">' . $value . ' Ram/Слот</option>';
-        }
+        if (isset($aRAM))
+            foreach ($aRAM as $value)
+                $ram .= '<option value="' . $value . '">' . $value . ' RAM</option>';
 
         $packs = '';
         $aPack = sys::b64djs($aTarif['packs'], true);
@@ -536,7 +531,7 @@ class games
         if ($game == 'cssold')
             return $tarif . ' / ' . $param['fps'] . ' FPS / ' . $param['tickrate'] . ' TickRate';
 
-        if (in_array($game, array('css', 'csgo')))
+        if (in_array($game, array('css', 'csgo', 'cs2', 'rust')))
             return $tarif . ' / ' . $param['tickrate'] . ' TickRate';
 
         return $tarif;

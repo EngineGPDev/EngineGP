@@ -87,7 +87,7 @@ if ($type) {
 }
 
 // Получаем список серверов
-$sql->query('SELECT `id`, `address`, `name`, `map`, `slots_start`, `online` FROM servers WHERE ' . $qSql . ' ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 30');
+$sql->query('SELECT `id`, `address`, `port`, `name`, `map`, `slots_start`, `online` FROM servers WHERE ' . $qSql . ' ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 30');
 
 // Циклически собираем шаблон серверов
 while ($server = $sql->get()) {
@@ -98,7 +98,7 @@ while ($server = $sql->get()) {
     $html->get('list', 'sections/monitoring');
     $html->set('id', $i);
     $html->set('server', $server['id']);
-    $html->set('address', $server['address']);
+    $html->set('address', $server['address'] . ':' . $server['port']);
     $html->set('name', $server['name']);
     $html->set('map', $server['map']);
     $html->set('slots', $server['slots_start']);
@@ -106,7 +106,7 @@ while ($server = $sql->get()) {
     $html->pack('monitoring_list');
 }
 
-$games = array('cs', 'cssold', 'css', 'csgo', 'samp', 'crmp', 'mta', 'mc');
+$games = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc');
 $online = array();
 foreach ($games as $game) {
     $sql->query('SELECT SUM(`online`) AS `online` FROM `servers` WHERE (`status`="working" OR `status`="change") AND `game`="' . $game . '"');

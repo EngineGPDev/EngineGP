@@ -45,7 +45,7 @@ if (isset($url['type'])) {
         exit(file_get_contents(TEMP . (md5($key . $style . $type)) . '.png'));
     }
 
-    $sql->query('SELECT `address`, `game`, `slots_start`, `online`, `status`, `name`, `map` FROM `servers` WHERE `id`="' . $graph['server'] . '" LIMIT 1');
+    $sql->query('SELECT `address`, `port`, `game`, `slots_start`, `online`, `status`, `name`, `map` FROM `servers` WHERE `id`="' . $graph['server'] . '" LIMIT 1');
     if (!$sql->num())
         exit;
 

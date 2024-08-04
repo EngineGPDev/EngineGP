@@ -15,7 +15,7 @@ if (!defined('EGP'))
 $sql->query('SELECT `unit`, `tarif`, `slots_start`, `online`, `players`, `name`, `pack`, `map`, `time`, `date`, `overdue`, `ram` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
-$html->nav($server['address']);
+$html->nav($server['address'] . ':' . $server['port']);
 
 $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $unit = $sql->get();
@@ -36,7 +36,7 @@ $html->set('tarif', $tarif['name'] . ' / ' . $server['ram'] . ' RAM');
 $tarif['packs'] = sys::b64djs($tarif['packs']);
 
 $html->set('pack', $tarif['packs'][$server['pack']]);
-$html->set('address', $server['address']);
+$html->set('address', $server['address'] . ':' . $server['port']);
 $html->set('game', $aGname[$server['game']]);
 $html->set('slots', $server['slots_start']);
 $html->set('online', $server['online']);

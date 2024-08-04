@@ -96,7 +96,8 @@ if ($go and $url['save']) {
                 // Временый файл
                 $temp = sys::temp($fastdl);
 
-                $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg', 0644);
+                $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg');
+                $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg');
 
                 $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/cstrike/cfg/fastdl.cfg;'
                     . 'ln -s ' . $tarif['install'] . $server['uid'] . '/cstrike /var/nginx/fast_' . $server['uid'] . ';'

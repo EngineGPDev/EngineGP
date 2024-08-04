@@ -49,19 +49,27 @@
             <td><input name="fps" value="500:1000" type="text"></td>
             <td class="text-right">TickRate:</td>
             <td><input name="tickrate" value="66:100" type="text"></td>
+            <td class="text-right">Карта:</td>
+            <td><input name="map" value="de_dust2" type="text"></td>
+        </tr>
+        <tr>
+            <td class="text-right">CPU:</td>
+            <td><input name="cpu" placeholder="Укажите максимальную нагрузку на CPU" type="text"></td>
             <td class="text-right">RAM:</td>
             <td><input name="ram" type="text"></td>
+            <td class="text-right">Диск:</td>
+            <td><input name="hdd" placeholder="Введите дисковую квоту" type="text"></td>
         </tr>
         <tr>
             <td class="text-right">Аренда:</td>
             <td><input name="time" value="15:30:90:180" type="text"></td>
             <td class="text-right">Продление:</td>
             <td><input name="timext" value="7:30:90:180" type="text"></td>
-            <td class="text-right">Фиксация:</td>
+            <td class="text-right">Скидки:</td>
             <td>
-                <select name="param_fix">
-                    <option value="0">Не фиксированные параметры</option>
-                    <option value="1">Фиксированные параметры</option>
+                <select name="discount">
+                    <option value="1">Включены</option>
+                    <option value="0">Без скидок</option>
                 </select>
             </td>
         </tr>
@@ -75,19 +83,6 @@
             </td>
             <td class="text-right">Тестов:</td>
             <td><input name="tests" placeholder="Введите число тестов" type="text"></td>
-            <td class="text-right">Скидки:</td>
-            <td>
-                <select name="discount">
-                    <option value="1">Включены</option>
-                    <option value="0">Без скидок</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">Диск:</td>
-            <td><input name="hdd" placeholder="Введите дисковую квоту" type="text"></td>
-            <td class="text-right">Карта:</td>
-            <td><input name="map" value="de_dust2" type="text"></td>
             <td class="text-right">Выключение:</td>
             <td>
                 <select name="autostop">
@@ -108,10 +103,6 @@
                     <option value="0">Недоступна</option>
                 </select>
             </td>
-        </tr>
-        <tr>
-            <td class="text-right">Ядра:</td>
-            <td colspan="5"><input name="core_fix" placeholder="Введите через запятую ядра/потоки" type="text"></td>
         </tr>
         <tr>
             <td class="text-right">Сборки:</td>
@@ -205,16 +196,15 @@
     <tbody>
     <tr>
         <td>
-            <p><i class="fa fa-info-circle"></i> Фиксация - если установлено "<i>фиксированные праметры</i>", то
-                например, указав 4000 Mb RAM - будут выделяться на 1 сервер</p>
+            <p><i class="fa fa-info-circle"></i> CPU - Максимальная нагрузка на ядро. Рассчитывается: 100 * количество ядер на сервере. Если укажете 150 - серверу будет выделено 1,5 ядра.</p>
+            <p><i class="fa fa-info-circle"></i> RAM - Максимальное потребление RAM сервером. Указывается в мегабайтах.</p>
+            <p><i class="fa fa-info-circle"></i> Диск - Максимальное выделение памяти на диске. Указывается в мегабайтах.</p>
             <p><i class="fa fa-info-circle"></i> Скидки - если включено, то аренда / продление будут со скидками и
                 наценками установленными в настройках</p>
             <p><i class="fa fa-info-circle"></i> Выключение - если включено, то сервер будет выключаться автоматически
                 (например для тарифа ClanWar)</p>
             <p><i class="fa fa-info-circle"></i> Сборки - указывать в специальном формате перечисляя через запятую,
                 пример: <u>"name":"Название","name":"Название"</u></p>
-            <p><i class="fa fa-info-circle"></i> Ядра - если указаны ядра, то каждому серверу будет выдаваться
-                выделенное ядро из списка</p>
             <p><i class="fa fa-info-circle"></i> Адреса - если указаны адреса, то каждому серверу будет выдаваться
                 выделенный адрес с стандартным портом игры</p>
             <p><i class="fa fa-info-circle"></i> Плагины - плагины, которые установлены в сборке, указывать в

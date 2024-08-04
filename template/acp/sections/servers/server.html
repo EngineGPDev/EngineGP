@@ -14,45 +14,34 @@
             <td class="w15p"><input name="port" placeholder="Введите порт" type="text" value="[port]"></td>
         </tr>
         <tr>
+            <td class="w5p text-right">CPU:</td>
+            <td class="w15p"><input name="cpu" value="[cpu]" type="text"></td>
+            <td class="w5p text-right">RAM:</td>
+            <td class="w15p"><input name="ram" value="[ram]" type="text"></td>
             <td class="w5p text-right">Диск:</td>
             <td class="w15p"><input name="hdd" value="[hdd]" type="text"></td>
-            <td class="w5p text-right">Слоты:</td>
-            <td class="w15p"><input name="slots" placeholder="Введите слоты" type="text" value="[slots]:[slots_start]">
-            </td>
-            <td class="w5p text-right">Сборка:</td>
-            <td class="w15p"><select name="pack">[packs]</select></td>
         </tr>
         <tr>
             <td class="w5p text-right">FPS:</td>
             <td class="w15p"><input name="fps" value="[fps]" type="text"></td>
             <td class="w5p text-right">TickRate:</td>
             <td class="w15p"><input name="tickrate" value="[tickrate]" type="text"></td>
-            <td class="w5p text-right">RAM:</td>
-            <td class="w15p"><input name="ram" value="[ram]" type="text"></td>
-        </tr>
-        <tr>
-            <td class="w5p text-right">Ядро:</td>
-            <td class="w15p"><select name="core_fix_one">[core_fix_one]</select></td>
-            <td class="w5p text-right">Ядро:</td>
-            <td class="w15p"><input name="core_fix" value="[core_fix]" type="text"></td>
             <td class="w5p text-right">PingBoost:</td>
             <td class="w15p"><select name="pingboost">[pingboost]</select></td>
         </tr>
         <tr>
+            <td class="w5p text-right">Слоты:</td>
+            <td class="w15p"><input name="slots" placeholder="Введите слоты" type="text" value="[slots]:[slots_start]"></td>
+            <td class="w5p text-right">Сборка:</td>
+            <td class="w15p"><select name="pack">[packs]</select></td>
             <td class="w5p text-right">FileTP:</td>
             <td class="w15p"><select name="ftp_root">[ftp_root]</select></td>
-            <td class="w5p text-right">Нагрузка:</td>
-            <td class="w15p"><input name="cpu_use_max" value="[cpu_use_max]" type="text"></td>
-            <td colspan="2">0 - лимит по умолчанию ([cpu_limi]%)</td>
         </tr>
         <tr>
             <td class="w5p text-right">Аренда:</td>
-            <td class="w15p">
-                <input type="text" id="datetimepicker" name="time">
-            </td>
+            <td class="w15p"><input type="text" id="datetimepicker" name="time"></td>
             <td class="w5p text-right">Удаление:</td>
-            <td class="w15p"><a href="#" onclick="return servers_overdue('[id]', '[overdue]')"
-                                id="overdue">[overdue]</a></td>
+            <td class="w15p"><a href="#" onclick="return servers_overdue('[id]', '[overdue]')" id="overdue">[overdue]</a></td>
             <td class="w5p text-right">Блокировка:</td>
             <td class="w15p"><a href="#" onclick="return servers_block('[id]', '[block]')" id="block">[block]</a></td>
         </tr>

@@ -28,7 +28,6 @@ if ($go) {
     $aData['fps'] = isset($_POST['fps']) ? trim($_POST['fps']) : '';
     $aData['tickrate'] = isset($_POST['tickrate']) ? trim($_POST['tickrate']) : '';
     $aData['ram'] = isset($_POST['ram']) ? trim($_POST['ram']) : '';
-    $aData['param_fix'] = isset($_POST['param_fix']) ? trim($_POST['param_fix']) : '';
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : '';
     $aData['timext'] = isset($_POST['timext']) ? trim($_POST['timext']) : '';
     $aData['test'] = isset($_POST['test']) ? sys::int($_POST['test']) : '';
@@ -45,7 +44,7 @@ if ($go) {
     $aData['hdd'] = isset($_POST['hdd']) ? sys::int($_POST['hdd']) : '';
     $aData['autostop'] = isset($_POST['autostop']) ? sys::int($_POST['autostop']) : '';
     $aData['price'] = isset($_POST['price']) ? trim($_POST['price']) : '';
-    $aData['core_fix'] = isset($_POST['core_fix']) ? trim($_POST['core_fix']) : '';
+    $aData['cpu'] = isset($_POST['cpu']) ? trim($_POST['cpu']) : '';
     $aData['ip'] = isset($_POST['ip']) ? trim($_POST['ip']) : '';
     $aData['show'] = isset($_POST['show']) ? sys::int($_POST['show']) : '';
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : '';
@@ -183,26 +182,6 @@ if ($go) {
     }
 
     $aData['plugins_install'] = count($plugins) ? sys::b64js($plugins) : '';
-
-    $aCores = explode(',', $aData['core_fix']);
-
-    $cores = '';
-
-    foreach ($aCores as $core) {
-        $core = trim($core);
-
-        if (!is_numeric($core))
-            continue;
-
-        if ($core < 1)
-            continue;
-
-        $cores .= intval($core) . ',';
-    }
-
-    $cores = isset($cores[0]) ? substr($cores, 0, -1) : '';
-
-    $aData['core_fix'] = $cores;
 
     $aTime = explode(':', $aData['time']);
 
@@ -372,7 +351,6 @@ if ($go) {
         . '`fps`="' . $aData['fps'] . '",'
         . '`tickrate`="' . $aData['tickrate'] . '",'
         . '`ram`="' . $aData['ram'] . '",'
-        . '`param_fix`="' . $aData['param_fix'] . '",'
         . '`time`="' . $aData['time'] . '",'
         . '`timext`="' . $aData['timext'] . '",'
         . '`test`="' . $aData['test'] . '",'
@@ -389,7 +367,7 @@ if ($go) {
         . '`hdd`="' . $aData['hdd'] . '",'
         . '`autostop`="' . $aData['autostop'] . '",'
         . '`price`="' . $aData['price'] . '",'
-        . '`core_fix`="' . $aData['core_fix'] . '",'
+        . '`cpu`="' . $aData['cpu'] . '",'
         . '`ip`="' . $aData['ip'] . '",'
         . '`show`="' . $aData['show'] . '",'
         . '`sort`="' . $aData['sort'] . '"');

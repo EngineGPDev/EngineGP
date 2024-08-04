@@ -18,12 +18,14 @@ class notice_server_overdue extends cron
     {
         global $cfg, $sql, $start_point;
 
-        $servers = $sql->query('SELECT `id`, `user`, `address` FROM `servers` WHERE `time`<"' . $start_point . '" AND `mail`="0"');
+        $servers = $sql->query('SELECT `id`, `user`, `address`, `port` FROM `servers` WHERE `time`<"' . $start_point . '" AND `mail`="0"');
         while ($server = $sql->get($servers)) {
             $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . $server['user'] . '" LIMIT 1');
             $user = $sql->get();
 
-            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), array('site' => $cfg['name'], 'id' => $server['id'], 'address' => $server['address'])), $user['mail']))
+            $server_address = $server['address'] . ':' . $server['port'];
+
+            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), array('site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address)), $user['mail']))
                 continue;
 
             $sql->query('UPDATE `servers` set `mail`="1" WHERE `id`="' . $server['id'] . '" LIMIT 1');

@@ -31,7 +31,6 @@ if ($go) {
     $aData['fps'] = isset($_POST['fps']) ? trim($_POST['fps']) : $tarif['fps'];
     $aData['tickrate'] = isset($_POST['tickrate']) ? trim($_POST['tickrate']) : $tarif['tickrate'];
     $aData['ram'] = isset($_POST['ram']) ? trim($_POST['ram']) : $tarif['ram'];
-    $aData['param_fix'] = isset($_POST['param_fix']) ? trim($_POST['param_fix']) : $tarif['param_fix'];
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : $tarif['time'];
     $aData['timext'] = isset($_POST['timext']) ? trim($_POST['timext']) : $tarif['timext'];
     $aData['test'] = isset($_POST['test']) ? sys::int($_POST['test']) : $tarif['test'];
@@ -48,7 +47,7 @@ if ($go) {
     $aData['hdd'] = isset($_POST['hdd']) ? sys::int($_POST['hdd']) : $tarif['hdd'];
     $aData['autostop'] = isset($_POST['autostop']) ? sys::int($_POST['autostop']) : $tarif['autostop'];
     $aData['price'] = isset($_POST['price']) ? trim($_POST['price']) : $tarif['price'];
-    $aData['core_fix'] = isset($_POST['core_fix']) ? trim($_POST['core_fix']) : $tarif['core_fix'];
+    $aData['cpu'] = isset($_POST['cpu']) ? trim($_POST['cpu']) : $tarif['cpu'];
     $aData['ip'] = isset($_POST['ip']) ? trim($_POST['ip']) : $tarif['ip'];
     $aData['show'] = isset($_POST['show']) ? sys::int($_POST['show']) : $tarif['show'];
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $tarif['sort'];
@@ -186,26 +185,6 @@ if ($go) {
     }
 
     $aData['plugins_install'] = count($plugins) ? sys::b64js($plugins) : '';
-
-    $aCores = explode(',', $aData['core_fix']);
-
-    $cores = '';
-
-    foreach ($aCores as $core) {
-        $core = trim($core);
-
-        if (!is_numeric($core))
-            continue;
-
-        if ($core < 1)
-            continue;
-
-        $cores .= intval($core) . ',';
-    }
-
-    $cores = isset($cores[0]) ? substr($cores, 0, -1) : '';
-
-    $aData['core_fix'] = $cores;
 
     $aTime = explode(':', $aData['time']);
 
@@ -375,7 +354,6 @@ if ($go) {
         . '`fps`="' . $aData['fps'] . '",'
         . '`tickrate`="' . $aData['tickrate'] . '",'
         . '`ram`="' . $aData['ram'] . '",'
-        . '`param_fix`="' . $aData['param_fix'] . '",'
         . '`time`="' . $aData['time'] . '",'
         . '`timext`="' . $aData['timext'] . '",'
         . '`test`="' . $aData['test'] . '",'
@@ -392,7 +370,7 @@ if ($go) {
         . '`hdd`="' . $aData['hdd'] . '",'
         . '`autostop`="' . $aData['autostop'] . '",'
         . '`price`="' . $aData['price'] . '",'
-        . '`core_fix`="' . $aData['core_fix'] . '",'
+        . '`cpu`="' . $aData['cpu'] . '",'
         . '`ip`="' . $aData['ip'] . '",'
         . '`show`="' . $aData['show'] . '",'
         . '`sort`="' . $aData['sort'] . '" WHERE `id`="' . $id . '" LIMIT 1');
@@ -404,7 +382,6 @@ $games = '<option value="cs">Counter-Strike: 1.6</option><option value="cssold">
     . '<option value="csgo">Counter-Strike: Global Offensive</option><option value="cs2">Counter-Strike: 2</option><option value="rust">RUST</option><option value="samp">San Andreas Multiplayer</option><option value="crmp">GTA: Criminal Russia</option>'
     . '<option value="mta">Multi Theft Auto</option><option value="mc">Minecraft</option>';
 
-$fix = $tarif['param_fix'] ? '<option value="1">Фиксированные параметры</option><option value="0">Не фиксированные параметры</option>' : '<option value="0">Не фиксированные параметры</option><option value="1">Фиксированные параметры</option>';
 $test = $tarif['test'] ? '<option value="1">Доступно</option><option value="0">Недоступно</option>' : '<option value="0">Недоступно</option><option value="1">Доступно</option>';
 $discount = $tarif['discount'] ? '<option value="1">Включены</option><option value="0">Без скидок</option>' : '<option value="0">Без скидок</option><option value="1">Включены</option>';
 $autostop = $tarif['autostop'] ? '<option value="1">Включено</option><option value="0">Выключено</option>' : '<option value="0">Выключено</option><option value="1">Включено</option>';
@@ -439,7 +416,6 @@ foreach ($tarif as $field => $val)
 
 $html->set('units', $units);
 $html->set('games', $games);
-$html->set('param_fix', $fix);
 $html->set('test', $test);
 $html->set('discount', $discount);
 $html->set('autostop', $autostop);

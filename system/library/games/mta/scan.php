@@ -20,10 +20,11 @@ class scan extends scans
     {
         global $cfg, $sql, $html, $mcache;
 
-        $sql->query('SELECT `address`, `game`, `name`, `map`, `online`, `players`, `status`, `time`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `address`, `port_query`, `game`, `name`, `map`, `online`, `players`, `status`, `time`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        list($ip, $port) = explode(':', $server['address']);
+        $ip = $server['address'];
+        $port = $server['port_query'];
 
         include(LIB . 'games/query/MtaQuery.php');
 

@@ -23,7 +23,7 @@ if ($go) {
     if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true)))
         sys::outjs(array('e' => 'Сборка не найдена.'));
 
-    $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `core_fix`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
+    $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
     $tarif = array_merge(array('pack' => $pack), $sql->get());
 
     $sql->query('SELECT `name`, `address`, `passwd` FROM `units` WHERE `id`="' . $tarif['unit'] . '" LIMIT 1');
@@ -62,25 +62,7 @@ if ($go) {
         }
     }
 
-    $core = 0;
-
-    if ($tarif['core_fix'] != '') {
-        $aCore = explode(',', $tarif['core_fix']);
-
-        foreach ($aCore as $cpu) {
-            $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $tarif['unit'] . '" AND `tarif`="' . $tarif['id'] . '" AND `core_fix`="' . $cpu . '" AND `core_fix_one`="1" LIMIT 1');
-
-            if ($sql->num())
-                continue;
-
-            $core = $cpu;
-            $tarif['core_fix'] = $cpu;
-
-            break;
-        }
-    }
-
-    if (!$ip || !$port || !$core)
+    if (!$ip || !$port)
         sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
 
     $server['id'] = $id;

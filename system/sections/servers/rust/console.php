@@ -24,33 +24,17 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    $command = isset($_POST['command']) ? sys::cmd($_POST['command']) : '';
-
     if (isset($server['status']) && $server['status'] == 'off') {
-        if ($command)
-            sys::outjs(array('e' => sys::text('servers', 'off')));
-
         sys::out(sys::text('servers', 'off'));
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        if ($command)
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
-
         sys::out(sys::text('error', 'ssh'));
     }
 
-    $dir = $tarif['install'] . $server['uid'] . '/game/csgo/';
+    $dir = $tarif['install'] . $server['uid'] . '/';
 
     $filecmd = $dir . 'egpconsole.log';
-
-    if ($command) {
-        // Команда для отправки команды в screen
-        $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . $command . '"\015\';'
-            . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
-
-        sys::outjs(array('s' => 'ok'));
-    }
 
     $command = 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X hardcopy -h ' . $filecmd . ' && cat ' . $filecmd;
 

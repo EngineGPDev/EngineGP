@@ -106,9 +106,9 @@ if ($sql->num()) {
 
     // Генерация сборок/слот/периодов
     if (isset($url['get']) and $url['get'] == 'data')
-        $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `param_fix`, `time`, `test`, `discount` FROM `tarifs` WHERE `id`="' . sys::int($url['tarif']) . '" LIMIT 1');
+        $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `id`="' . sys::int($url['tarif']) . '" LIMIT 1');
     else
-        $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `param_fix`, `time`, `test`, `discount` FROM `tarifs` WHERE `game`="' . $section . '" AND `unit`="' . $select_unit['id'] . '" AND `show`="1" ORDER BY `sort` ASC LIMIT 1');
+        $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `game`="' . $section . '" AND `unit`="' . $select_unit['id'] . '" AND `show`="1" ORDER BY `sort` ASC LIMIT 1');
 
     if ($sql->num()) {
         $select_tarif = $sql->get();

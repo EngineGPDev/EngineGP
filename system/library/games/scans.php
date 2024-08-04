@@ -20,6 +20,7 @@ class scans
         'css' => 'srcds_',
         'csgo' => 'srcds_',
         'cs2' => 'cs2',
+        'rust' => 'Rust',
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
@@ -35,7 +36,7 @@ class scans
         if (is_array($mcache->get($nmch)))
             return $mcache->get($nmch);
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `slots`, `slots_start`, `status`, `online`, `ram`, `hdd`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `slots`, `slots_start`, `status`, `online`, `ram`, `cpu`, `hdd`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 
         if (!$sql->num())
             return NULL;
@@ -71,15 +72,11 @@ class scans
         if (isset($cr[0]))
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
 
+        $resources['cpu'] = $resources['cpu'] / $server['cpu'] * 100;
         $resources['cpu'] = $resources['cpu'] > 100 ? 100 : round($resources['cpu']);
 
         if (isset($cr[1]))
             $resources['ram'] = str_replace(',', '.', $cr[1]);
-
-        // ram на сервер
-        $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$server['game']];
-
-        $resources['ram'] = floatval($unit['ram']) / 100 * floatval($resources['ram']) / (floatval($ram) / 100);
 
         $resources['ram'] = $resources['ram'] > 100 ? 100 : round($resources['ram']);
 
@@ -104,7 +101,7 @@ class scans
 
         $mcache->set($nmch, true, false, $cfg['mcache_server_status']);
 
-        $sql->query('SELECT `uid`, `unit`, `game`, `address`, `status`, `name`, `online`, `players`, `time`, `overdue`, `ftp`, `block` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `game`, `address`, `port`, `status`, `name`, `online`, `players`, `time`, `overdue`, `ftp`, `block` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         // Если аренда не закончилась, а сервер просрочен
@@ -134,9 +131,11 @@ class scans
 
         // Если аренда закончилась, а сервер не просрочен
         if ($server['time'] < $start_point && !in_array($server['status'], array('overdue', 'blocked'))) {
+            $server_address = $server['address'] . ':' . $server['port'];
+
             // Убить процессы
             $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-                . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+                . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
             if ($server['ftp'])
                 $ssh->set("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");
