@@ -24,13 +24,11 @@ $slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(array('e' =
 $aPrice = explode(':', $tarif['price']);
 $aRAM = explode(':', $tarif['ram']);
 
-$ram = $server['ram_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
-
 $overdue = $server['time'] < $start_point;
 
 if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     // Цена за 1 день
-    $price = $aPrice[array_search($ram, $aRAM)] / 30;
+    $price = $aPrice[array_search($server['ram'], $aRAM)] / 30;
 
     // Цена аренды за остаток дней (с текущим кол-вом слот)
     $price_old = ($server['time'] - $start_point) / 86400 * $price * $server['slots'];
@@ -39,12 +37,10 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
 $max = $tarif['slots_max'] - $server['slots'];
 
 // Сумма за добавляемые слоты
-$sum = round(($server['time'] - $start_point) / 86400 * ($aPrice[array_search($ram, $aRAM)] / 30) * $slots, 2);
+$sum = round(($server['time'] - $start_point) / 86400 * ($aPrice[array_search($server['ram'], $aRAM)] / 30) * $slots, 2);
 
 // Изменение кол-ва слот за счет пересчета дней аренды или закончился срок аренды (иначе аренда дополнительных слот)
 if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
-    $ram = $server['ram_fix'] ? $server['ram'] : $server['ram'] / $server['slots'] * $slots;
-
     // Если просрочен
     if ($overdue) {
         sys::outjs(array('i' => ''));
@@ -52,7 +48,7 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
         if ($go) {
             $start = $server['slots_start'] > $slots ? ', `slots_start`="' . $slots . '"' : '';
 
-            $sql->query('UPDATE `servers` set `slots`="' . $slots . '" ' . $start . ', `ram`=' . $ram . ' WHERE `id`="' . $id . '" LIMIT 1');
+            $sql->query('UPDATE `servers` set `slots`="' . $slots . '" ' . $start . ', `ram`=' . $server['ram'] . ' WHERE `id`="' . $id . '" LIMIT 1');
 
             // Запись логов
             $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_slots') . '", `time`="' . $start_point . '"');
@@ -100,7 +96,7 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
 
         $start = $server['slots_start'] > $slots ? ', `slots_start`="' . $slots . '"' : '';
 
-        $sql->query('UPDATE `servers` set `time`="' . $time . '", `slots`="' . $slots . '" ' . $start . ', `ram`=' . $ram . ' WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('UPDATE `servers` set `time`="' . $time . '", `slots`="' . $slots . '" ' . $start . ', `ram`=' . $server['ram'] . ' WHERE `id`="' . $id . '" LIMIT 1');
 
         if (in_array($server['status'], array('working', 'start', 'restart')) and $slots < $server['slots_start']) {
             include(LIB . 'games/' . $server['game'] . '/action.php');
@@ -139,10 +135,8 @@ if ($go) {
 
     $start = $server['slots_start'] == $server['slots'] ? ', `slots_start`="' . $slots_new . '"' : '';
 
-    $ram = $server['ram_fix'] ? $server['ram'] : $server['ram'] / $server['slots'] * $slots_new;
-
     // Обновление информации
-    $sql->query('UPDATE `servers` set `slots`="' . $slots_new . '" ' . $start . ', `ram`=' . $ram . ' WHERE `id`="' . $id . '" LIMIT 1');
+    $sql->query('UPDATE `servers` set `slots`="' . $slots_new . '" ' . $start . ', `ram`=' . $server['ram'] . ' WHERE `id`="' . $id . '" LIMIT 1');
 
     if (in_array($server['status'], array('working', 'start', 'restart')) and $slots_new != $server['slots_start']) {
         include(LIB . 'games/' . $server['game'] . '/action.php');
