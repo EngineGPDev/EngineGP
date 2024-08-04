@@ -1127,7 +1127,7 @@ class sys
         if (isset($html->arr['buttons']))
             unset($html->arr['buttons']);
 
-        $other = in_array($game, array('samp', 'crmp', 'mta', 'mc'));
+        $other = in_array($game, array('samp', 'crmp', 'mta', 'mc', 'rust'));
 
         $dir = $ctrl ? 'control/servers' : 'servers';
 

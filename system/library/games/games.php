@@ -530,7 +530,7 @@ class games
         if ($game == 'cssold')
             return $tarif . ' / ' . $param['fps'] . ' FPS / ' . $param['tickrate'] . ' TickRate';
 
-        if (in_array($game, array('css', 'csgo')))
+        if (in_array($game, array('css', 'csgo', 'cs2', 'rust')))
             return $tarif . ' / ' . $param['tickrate'] . ' TickRate';
 
         return $tarif;

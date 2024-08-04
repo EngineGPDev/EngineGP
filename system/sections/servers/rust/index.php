@@ -23,7 +23,7 @@ $unit = $sql->get();
 $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-$btn = sys::buttons($id, $server['status']);
+$btn = sys::buttons($id, $server['status'], $server['game']);
 
 $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server['time']);
 

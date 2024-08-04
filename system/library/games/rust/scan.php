@@ -51,7 +51,7 @@ class scan extends scans
             $out['status'] = sys::status($server['status'], $server['game'], $server['map']);
             $out['online'] = $server['online'];
             $out['image'] = '<img src="' . sys::status($server['status'], $server['game'], $server['map'], 'img') . '">';
-            $out['buttons'] = sys::buttons($id, $server['status']);
+            $out['buttons'] = sys::buttons($id, $server['status'], $server['game']);
 
             if ($players_get)
                 $out['players'] = base64_decode($server['players'] ?? '');
@@ -68,7 +68,7 @@ class scan extends scans
         $out['status'] = sys::status('working', $server['game'], $info['map']);
         $out['online'] = $info['online'];
         $out['image'] = '<img src="' . sys::status('working', $server['game'], $info['map'], 'img') . '">';
-        $out['buttons'] = sys::buttons($id, 'working');
+        $out['buttons'] = sys::buttons($id, 'working', $server['game']);
         $out['players'] = '';
 
         if ($players_get) {
