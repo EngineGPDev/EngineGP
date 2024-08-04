@@ -225,14 +225,8 @@ class games
 
         $ram = '';
 
-        if (isset($aRAM)) {
-            if ($aTarif['param_fix'])
-                foreach ($aRAM as $value)
-                    $ram .= '<option value="' . $value . '">' . $value . ' Ram</option>';
-            else
-                foreach ($aRAM as $value)
-                    $ram .= '<option value="' . $value . '">' . $value . ' Ram/Слот</option>';
-        }
+        foreach ($aRAM as $value)
+            $ram .= '<option value="' . $value . '">' . $value . ' RAM</option>';
 
         $packs = '';
         $aPack = sys::b64djs($aTarif['packs'], true);

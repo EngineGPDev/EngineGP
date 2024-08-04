@@ -197,7 +197,6 @@ class service
         $aSDATA = array(
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
-            'param_fix' => $tarif['param_fix'], // фиксированные параметры
             'pack' => $aData['pack'], // Выбранная сборка для установки
             'time' => $aData['time'], // Время аренды
             'days' => $days, // Число дней
