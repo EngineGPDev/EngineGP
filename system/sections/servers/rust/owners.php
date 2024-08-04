@@ -16,7 +16,6 @@ $aAccessI = array(
     'start' => 'Включение',
     'stop' => 'Выключение',
     'restart' => 'Перезагрузка',
-    'change' => 'Смена карты',
     'reinstall' => 'Переустановка',
     'update' => 'Обновление',
     'console' => 'Раздел "Консоль"',
@@ -24,7 +23,7 @@ $aAccessI = array(
     'plugins' => 'Раздел "Плагины"'
 );
 
-$aAccess = array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins');
+$aAccess = array('start', 'stop', 'restart', 'reinstall', 'update', 'console', 'settings', 'plugins');
 
 // Проверка прав
 if (isset($url['rights']) and $url['rights'] > 0) {
@@ -126,7 +125,7 @@ if ($go) {
     sys::outjs(array('s' => 'ok'), $nmch);
 }
 
-$html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
+$html->nav($server['address'] . ':' . $server['port'], $cfg['http'] . 'servers/id/' . $id);
 
 $html->nav('Друзья');
 
