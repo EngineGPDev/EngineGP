@@ -242,7 +242,6 @@ class service
         $aSDATA = array(
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
-            'param_fix' => isset($tarif['param_fix']), // фиксированные параметры
             'tickrate' => $aData['tickrate'], // значение tickrate
             'pack' => $aData['pack'], // Выбранная сборка для установки
             'time' => $aData['time'], // Время аренды
