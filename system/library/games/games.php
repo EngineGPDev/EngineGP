@@ -225,8 +225,9 @@ class games
 
         $ram = '';
 
-        foreach ($aRAM as $value)
-            $ram .= '<option value="' . $value . '">' . $value . ' RAM</option>';
+        if (isset($aRAM))
+            foreach ($aRAM as $value)
+                $ram .= '<option value="' . $value . '">' . $value . ' RAM</option>';
 
         $packs = '';
         $aPack = sys::b64djs($aTarif['packs'], true);
