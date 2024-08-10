@@ -84,7 +84,7 @@ class action extends actions
             . 'mv console.log oldstart.log;' // Перемещение лога предыдущего запуска в файл oldstart.log
             . 'sudo -u server' . $server['uid'] . ' mkdir -p cstrike/oldstart;' // Создание папки логов
             . 'cat cstrike/console.log >> cstrike/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm cstrike/console.log; rm cstrike/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
-            . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
+            . 'chown server' . $server['uid'] . ':servers start.sh;' // Обновление владельца файла start.sh
             . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе

@@ -157,7 +157,7 @@ class actions
 
         $ssh->set('rm -r ' . $install . ';' // Удаление директории игрового сервера
             . 'mkdir ' . $install . ';' // Создание директории
-            . 'chown server' . $server['uid'] . ':1000 ' . $install . ';' // Изменение владельца и группы директории
+            . 'chown server' . $server['uid'] . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS r_' . $server['uid'] . ' sh -c "'
             . 'cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'

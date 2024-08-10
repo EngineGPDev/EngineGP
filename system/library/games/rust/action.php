@@ -67,7 +67,7 @@ class action extends actions
 
         // Строка запуска
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
-            . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
+            . 'chown server' . $server['uid'] . ':servers start.sh;' // Обновление владельца файла start.sh
             . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игрового сервера
 
         // Обновление информации в базе

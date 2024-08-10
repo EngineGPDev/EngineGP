@@ -111,7 +111,7 @@ class action extends actions
             . 'rm *.pid;' // Удаление *.pid файлов
             . 'sudo -u server' . $server['uid'] . ' mkdir -p game/csgo/oldstart;' // Создание папки логов
             . 'cat game/csgo/console.log >> game/csgo/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm game/csgo/console.log; rm game/csgo/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
-            . 'chown server' . $server['uid'] . ':1000 start.sh;' // Обновление владельца файла start.sh
+            . 'chown server' . $server['uid'] . ':servers start.sh;' // Обновление владельца файла start.sh
             . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе
