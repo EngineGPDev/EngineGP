@@ -184,7 +184,7 @@ class tarif extends tarifs
 
         $ssh->set('mkdir ' . $install . ';' // Создание директории
             . 'useradd -d ' . $install . ' -g servers -u ' . $server['uid'] . ' ' . $uS . ';' // Создание пользователя сервера на локации
-            . 'chown ' . $uS . ':1000 ' . $install . ';' // Изменение владельца и группы директории
+            . 'chown ' . $uS . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' screen -dmS i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
 
         // Обновление данных нового сервера

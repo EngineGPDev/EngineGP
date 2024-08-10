@@ -74,7 +74,7 @@ class action extends actions
             . 'rm *.pid;' // Удаление *.pid файлов
             . 'sudo -u server' . $server['uid'] . ' mkdir -p mods/deathmatch/oldstart;' // Создание папки логов
             . 'cat mods/deathmatch/logs/server.log >> mods/deathmatch/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm mods/deathmatch/logs/server.log; rm mods/deathmatch/logs/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
-            . 'chown server' . $server['uid'] . ':1000 mods/deathmatch/mtaserver.conf start.sh;' // Обновление владельца файлов
+            . 'chown server' . $server['uid'] . ':servers mods/deathmatch/mtaserver.conf start.sh;' // Обновление владельца файлов
             . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе

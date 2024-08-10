@@ -74,7 +74,7 @@ class action extends actions
             . 'rm *.pid;' // Удаление *.pid файлов
             . 'sudo -u server' . $server['uid'] . ' mkdir -p oldstart;' // Создание папки логов
             . 'cat server_log.txt >> oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm server_log.txt; rm oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
-            . 'chown server' . $server['uid'] . ':1000 server.cfg start.sh;' // Обновление владельца файлов server.cfg start.sh
+            . 'chown server' . $server['uid'] . ':servers server.cfg start.sh;' // Обновление владельца файлов server.cfg start.sh
             . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе

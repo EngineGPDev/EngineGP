@@ -68,7 +68,7 @@ class scan_servers_admins extends cron
             }
 
             $cmd .= 'sed -i ' . "'/./!d'" . ' ' . cron::$admins_file[$game] . '; echo -e "\n" >> ' . cron::$admins_file[$game] . ';';
-            $cmd .= 'chown server' . $server['uid'] . ':1000 ' . cron::$admins_file[$game];
+            $cmd .= 'chown server' . $server['uid'] . ':servers ' . cron::$admins_file[$game];
 
             $ssh->set($cmd);
         }
