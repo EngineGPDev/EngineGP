@@ -29,7 +29,7 @@ class mysql
             $this->out_error(mysqli_connect_error());
         }
 
-        mysqli_query($this->sql_id, "/*!40101 SET NAMES 'utf8' */");
+        mysqli_query($this->sql_id, "/*!40101 SET NAMES 'utf8mb4' */");
 
         $this->sql_connect = true;
 
