@@ -20,7 +20,7 @@ CREATE TABLE `address` (
   `ip` char(16) NOT NULL,
   `price` int(11) NOT NULL,
   `buy` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -33,7 +33,7 @@ CREATE TABLE `address_buy` (
   `aid` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -44,7 +44,7 @@ CREATE TABLE `address_buy` (
 CREATE TABLE `admins_crmp` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,7 @@ CREATE TABLE `admins_cs` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -82,7 +82,7 @@ CREATE TABLE `admins_cs2` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ CREATE TABLE `admins_csgo` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -120,7 +120,7 @@ CREATE TABLE `admins_css` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -139,7 +139,7 @@ CREATE TABLE `admins_cssold` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -150,7 +150,7 @@ CREATE TABLE `admins_cssold` (
 CREATE TABLE `admins_mc` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -161,7 +161,7 @@ CREATE TABLE `admins_mc` (
 CREATE TABLE `admins_mta` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -180,7 +180,7 @@ CREATE TABLE `admins_rust` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -191,7 +191,7 @@ CREATE TABLE `admins_rust` (
 CREATE TABLE `admins_samp` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -203,7 +203,7 @@ CREATE TABLE `api` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `key` varchar(32) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -217,7 +217,7 @@ CREATE TABLE `auth` (
   `ip` char(15) NOT NULL,
   `date` int(11) NOT NULL,
   `browser` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -233,7 +233,7 @@ CREATE TABLE `boost` (
   `circles` int(11) NOT NULL,
   `money` float NOT NULL,
   `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -246,7 +246,7 @@ CREATE TABLE `boost_rating` (
   `boost` varchar(15) NOT NULL,
   `rating` int(11) NOT NULL,
   `user` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -261,7 +261,7 @@ CREATE TABLE `cashback` (
   `money` float NOT NULL,
   `date` int(11) NOT NULL,
   `status` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -289,7 +289,7 @@ CREATE TABLE `control` (
   `price` float NOT NULL DEFAULT 0,
   `ram` int(11) NOT NULL DEFAULT 0,
   `hdd` int(11) NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -308,7 +308,7 @@ CREATE TABLE `control_admins_cs` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -327,7 +327,7 @@ CREATE TABLE `control_admins_cs2` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -346,7 +346,7 @@ CREATE TABLE `control_admins_csgo` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -365,7 +365,7 @@ CREATE TABLE `control_admins_css` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -384,7 +384,7 @@ CREATE TABLE `control_admins_cssold` (
   `time` int(11) NOT NULL,
   `text` varchar(100) NOT NULL,
   `info` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -400,7 +400,7 @@ CREATE TABLE `control_boost` (
   `circles` int(11) NOT NULL,
   `money` float NOT NULL,
   `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -419,7 +419,7 @@ CREATE TABLE `control_copy` (
   `plugins` text NOT NULL,
   `date` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -435,7 +435,7 @@ CREATE TABLE `control_crontab` (
   `week` text DEFAULT NULL,
   `time` char(20) NOT NULL DEFAULT '',
   `commands` text DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -449,7 +449,7 @@ CREATE TABLE `control_firewall` (
   `sip` char(20) NOT NULL,
   `dest` char(27) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -464,7 +464,7 @@ CREATE TABLE `control_plugins_buy` (
   `server` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -478,7 +478,7 @@ CREATE TABLE `control_plugins_install` (
   `plugin` int(11) NOT NULL,
   `upd` int(11) NOT NULL DEFAULT 0,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -515,7 +515,7 @@ CREATE TABLE `control_servers` (
   `stop` tinyint(1) NOT NULL DEFAULT 0,
   `ftp` int(11) NOT NULL DEFAULT 0,
   `ftp_passwd` char(20) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -534,7 +534,7 @@ CREATE TABLE `copy` (
   `plugins` text NOT NULL,
   `date` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -550,7 +550,7 @@ CREATE TABLE `crontab` (
   `week` text DEFAULT NULL,
   `time` char(20) NOT NULL DEFAULT '',
   `commands` text DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -564,7 +564,7 @@ CREATE TABLE `firewall` (
   `sip` char(20) NOT NULL,
   `dest` char(27) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -577,7 +577,7 @@ CREATE TABLE `graph` (
   `server` int(11) NOT NULL,
   `key` char(32) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -593,7 +593,7 @@ CREATE TABLE `graph_day` (
   `ram` int(11) NOT NULL,
   `hdd` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -609,7 +609,7 @@ CREATE TABLE `graph_hour` (
   `ram` int(11) NOT NULL,
   `hdd` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -629,7 +629,7 @@ CREATE TABLE `help` (
   `close` int(11) NOT NULL,
   `notice` tinyint(1) NOT NULL DEFAULT 0,
   `notice_admin` int(11) NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -644,7 +644,7 @@ CREATE TABLE `help_dialogs` (
   `text` varchar(1000) NOT NULL,
   `img` varchar(1000) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -658,7 +658,7 @@ CREATE TABLE `help_upload` (
   `name` varchar(36) NOT NULL,
   `time` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -673,7 +673,7 @@ CREATE TABLE `logs` (
   `date` int(11) NOT NULL,
   `type` char(10) NOT NULL,
   `money` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -688,7 +688,7 @@ CREATE TABLE `logs_sys` (
   `control` int(11) NOT NULL DEFAULT 0,
   `text` text NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -701,7 +701,7 @@ CREATE TABLE `maps` (
   `unit` int(11) NOT NULL,
   `game` char(10) NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -717,14 +717,14 @@ CREATE TABLE `news` (
   `tags` varchar(100) NOT NULL,
   `views` int(11) NOT NULL,
   `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `news`
 --
 
 INSERT INTO `news` (`id`, `name`, `text`, `full_text`, `tags`, `views`, `date`) VALUES
-(1, 'Мы открылись!', 'Мы с удовольствием сообщаем, что сегодня всем поклонникам он-лайн игр стал доступен наш мультифункциональный сервис по аренде игровых серверов.\r\n\r\nВ результате профессиональной работы и тщательной технической подготовки был получен производительный и удобный для пользователей IT-продукт, который в самое ближайшее время составит серьёзную конкуренцию всем существующим в этой рыночной нише проектам.\r\n\r\nНаша команда в процессе разработки сервиса старалась учитывать все слабые и сильные стороны аналогичных предложений. Во главе угла ставились надёжное быстродействие хостинга и максимально доступные цены для пользователей. Предлагая вам лучшие условия аренды игровых серверов нового поколения, мы рассчитываем на долгосрочное сотрудничество и каждого заказчика рассматриваем как перспективного партнёра.\r\n\r\nС сегодняшнего дня великолепный мир захватывающих интерактивных игр стал более доступным и технически совершенным, обеспечивая новый уровень эмоциональной насыщенности не прерывающимся ни на минуту компьютерным баталиям.\r\n', 'Мы с удовольствием сообщаем, что сегодня всем поклонникам он-лайн игр стал доступен наш мультифункциональный сервис по аренде игровых серверов.\r\n\r\nВ результате профессиональной работы и тщательной технической подготовки был получен производительный и удобный для пользователей IT-продукт, который в самое ближайшее время составит серьёзную конкуренцию всем существующим в этой рыночной нише проектам.\r\n\r\nНаша команда в процессе разработки сервиса старалась учитывать все слабые и сильные стороны аналогичных предложений. Во главе угла ставились надёжное быстродействие хостинга и максимально доступные цены для пользователей. Предлагая вам лучшие условия аренды игровых серверов нового поколения, мы рассчитываем на долгосрочное сотрудничество и каждого заказчика рассматриваем как перспективного партнёра.\r\n\r\nС сегодняшнего дня великолепный мир захватывающих интерактивных игр стал более доступным и технически совершенным, обеспечивая новый уровень эмоциональной насыщенности не прерывающимся ни на минуту компьютерным баталиям.\r\n', '', 0, UNIX_TIMESTAMP());
+(1, 'Мы открылись!', 'Мы с удовольствием сообщаем, что сегодня всем поклонникам он-лайн игр стал доступен наш мультифункциональный сервис по аренде игровых серверов.\r\n\r\nВ результате профессиональной работы и тщательной технической подготовки был получен производительный и удобный для пользователей IT-продукт, который в самое ближайшее время составит серьёзную конкуренцию всем существующим в этой рыночной нише проектам.\r\n\r\nНаша команда в процессе разработки сервиса старалась учитывать все слабые и сильные стороны аналогичных предложений. Во главе угла ставились надёжное быстродействие хостинга и максимально доступные цены для пользователей. Предлагая вам лучшие условия аренды игровых серверов нового поколения, мы рассчитываем на долгосрочное сотрудничество и каждого заказчика рассматриваем как перспективного партнёра.\r\n\r\nС сегодняшнего дня великолепный мир захватывающих интерактивных игр стал более доступным и технически совершенным, обеспечивая новый уровень эмоциональной насыщенности не прерывающимся ни на минуту компьютерным баталиям.\r\n', 'Мы с удовольствием сообщаем, что сегодня всем поклонникам он-лайн игр стал доступен наш мультифункциональный сервис по аренде игровых серверов.\r\n\r\nВ результате профессиональной работы и тщательной технической подготовки был получен производительный и удобный для пользователей IT-продукт, который в самое ближайшее время составит серьёзную конкуренцию всем существующим в этой рыночной нише проектам.\r\n\r\nНаша команда в процессе разработки сервиса старалась учитывать все слабые и сильные стороны аналогичных предложений. Во главе угла ставились надёжное быстродействие хостинга и максимально доступные цены для пользователей. Предлагая вам лучшие условия аренды игровых серверов нового поколения, мы рассчитываем на долгосрочное сотрудничество и каждого заказчика рассматриваем как перспективного партнёра.\r\n\r\nС сегодняшнего дня великолепный мир захватывающих интерактивных игр стал более доступным и технически совершенным, обеспечивая новый уровень эмоциональной насыщенности не прерывающимся ни на минуту компьютерным баталиям.\r\n', 'EngineGP', 0, UNIX_TIMESTAMP());
 
 -- --------------------------------------------------------
 
@@ -739,7 +739,7 @@ CREATE TABLE `notice` (
   `text` text NOT NULL,
   `color` char(10) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -753,7 +753,7 @@ CREATE TABLE `owners` (
   `user` int(11) NOT NULL,
   `rights` text NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -765,7 +765,7 @@ CREATE TABLE `pages` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `file` varchar(32) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -777,7 +777,7 @@ CREATE TABLE `panel` (
   `address` char(21) NOT NULL,
   `passwd` char(32) NOT NULL,
   `path` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `panel`
@@ -809,7 +809,7 @@ CREATE TABLE `plugins` (
   `required` varchar(100) NOT NULL DEFAULT '',
   `packs` varchar(100) NOT NULL DEFAULT 'all',
   `price` float NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -824,7 +824,7 @@ CREATE TABLE `plugins_buy` (
   `server` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -837,7 +837,7 @@ CREATE TABLE `plugins_category` (
   `game` char(6) NOT NULL,
   `name` varchar(50) NOT NULL,
   `sort` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -852,7 +852,7 @@ CREATE TABLE `plugins_clear` (
   `text` varchar(200) NOT NULL,
   `file` varchar(100) NOT NULL,
   `regex` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -866,7 +866,7 @@ CREATE TABLE `plugins_config` (
   `update` int(11) NOT NULL,
   `file` varchar(100) NOT NULL,
   `sort` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -879,7 +879,7 @@ CREATE TABLE `plugins_delete` (
   `plugin` int(11) NOT NULL,
   `update` int(11) NOT NULL,
   `file` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -892,7 +892,7 @@ CREATE TABLE `plugins_delete_ins` (
   `plugin` int(11) NOT NULL,
   `update` int(11) NOT NULL,
   `install` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -906,7 +906,7 @@ CREATE TABLE `plugins_install` (
   `plugin` int(11) NOT NULL,
   `upd` int(11) NOT NULL DEFAULT 0,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -929,7 +929,7 @@ CREATE TABLE `plugins_update` (
   `required` varchar(100) NOT NULL DEFAULT '',
   `packs` varchar(100) NOT NULL DEFAULT '',
   `price` float NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -944,7 +944,7 @@ CREATE TABLE `plugins_write` (
   `text` varchar(100) NOT NULL,
   `file` varchar(100) NOT NULL,
   `top` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -959,7 +959,7 @@ CREATE TABLE `plugins_write_del` (
   `text` varchar(100) NOT NULL,
   `file` varchar(100) NOT NULL,
   `top` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -971,7 +971,7 @@ CREATE TABLE `privileges` (
   `id` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -989,7 +989,7 @@ CREATE TABLE `privileges_buy` (
   `date` int(11) NOT NULL,
   `mail` varchar(50) NOT NULL,
   `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1004,7 +1004,7 @@ CREATE TABLE `privileges_list` (
   `flags` varchar(50) NOT NULL,
   `immunity` int(11) NOT NULL DEFAULT 0,
   `data` varchar(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1025,7 +1025,7 @@ CREATE TABLE `promo` (
   `user` int(11) NOT NULL,
   `server` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1038,7 +1038,7 @@ CREATE TABLE `promo_use` (
   `promo` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1052,7 +1052,7 @@ CREATE TABLE `recovery` (
   `mail` char(50) NOT NULL,
   `key` char(32) NOT NULL,
   `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1065,7 +1065,7 @@ CREATE TABLE `security` (
   `user` int(11) NOT NULL,
   `address` char(20) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1129,7 +1129,7 @@ CREATE TABLE `servers` (
   `sms` tinyint(1) NOT NULL DEFAULT 0,
   `mail` tinyint(1) NOT NULL DEFAULT 0,
   `ddos` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1143,7 +1143,7 @@ CREATE TABLE `signup` (
   `key` char(32) NOT NULL,
   `data` text NOT NULL,
   `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1188,7 +1188,7 @@ CREATE TABLE `tarifs` (
   `ip` text DEFAULT NULL,
   `show` tinyint(1) NOT NULL,
   `sort` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1199,7 +1199,7 @@ CREATE TABLE `tarifs` (
 CREATE TABLE `test` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1214,7 +1214,7 @@ CREATE TABLE `tests` (
   `game` char(6) NOT NULL,
   `user` int(11) NOT NULL,
   `time` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1247,7 +1247,7 @@ CREATE TABLE `units` (
   `sort` int(11) NOT NULL,
   `domain` varchar(40) NOT NULL DEFAULT '',
   `ddos` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1286,7 +1286,7 @@ CREATE TABLE `users` (
   `help` tinyint(1) NOT NULL DEFAULT 0,
   `rental` varchar(4) NOT NULL DEFAULT '0',
   `extend` varchar(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `users`
@@ -1315,7 +1315,7 @@ CREATE TABLE `web` (
   `login` varchar(32) NOT NULL DEFAULT '',
   `update` int(11) NOT NULL DEFAULT 0,
   `date` int(11) NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1329,7 +1329,7 @@ CREATE TABLE `wiki` (
   `cat` int(11) NOT NULL,
   `tags` varchar(100) NOT NULL,
   `date` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1341,7 +1341,7 @@ CREATE TABLE `wiki_answer` (
   `wiki` int(11) NOT NULL,
   `cat` int(11) NOT NULL,
   `text` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1353,7 +1353,7 @@ CREATE TABLE `wiki_category` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `sort` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Индексы сохранённых таблиц
