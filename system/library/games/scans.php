@@ -71,7 +71,6 @@ class scans
 
         if (isset($cr[0])){
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
-            $resources['cpu'] = floatval($resources['cpu']);
         }
 
         $resources['cpu'] = $resources['cpu'] / $server['cpu'] * 100;

@@ -551,10 +551,10 @@ class games
         }
 
         // Генерация списка карт
-        $aMaps = array_diff(explode("\n", $ssh->get('cd ' . $folder . ' && du -ah | grep -e "\.bsp$" | awk \'{print $2}\'')), array(''));
+        $aMaps = array_diff(explode("\n", $ssh->get('cd ' . $folder . ' && du -ah | grep -e "\.bsp$" -e "\.vpk$" | awk \'{print $2}\'')), array(''));
 
-        // Удаление ".bsp"
-        $aMaps = str_ireplace(array('./', '.bsp'), '', $aMaps);
+        // Удаление ".bsp" или ".vpk"
+        $aMaps = str_ireplace(array('./', '.bsp', '.vpk'), '', $aMaps);
 
         if ($go) {
             $map = str_replace('|', '/', urldecode($map));
@@ -627,18 +627,7 @@ class games
     public static function map($map, $aMaps)
     {
         if (!is_array($aMaps))
-            $aMaps = explode("\n", str_ireplace(array('./', '.bsp'), '', $aMaps));
-
-        if (in_array($map, $aMaps))
-            return false;
-
-        return true;
-    }
-
-    public static function map2($map, $aMaps)
-    {
-        if (!is_array($aMaps))
-            $aMaps = explode("\n", str_ireplace(array('./', '.vpk'), '', $aMaps));
+            $aMaps = explode("\n", str_ireplace(array('./', '.bsp', '.vpk'), '', $aMaps));
 
         if (in_array($map, $aMaps))
             return false;

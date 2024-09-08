@@ -70,7 +70,7 @@ class action extends actions
 
         include_once(LIB . 'games/games.php');
 
-        if (games::map2($server['map_start'], $ssh->get()))
+        if (games::map($server['map_start'], $ssh->get()))
             return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.vpk')));
 
         // Античит VAC
