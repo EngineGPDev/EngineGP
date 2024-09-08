@@ -16,7 +16,7 @@ class scans
 {
     private static $process = array(
         'cs' => 'hlds_',
-        'cssold' => 'srcds_i686',
+        'cssold' => 'srcds_i',
         'css' => 'srcds_',
         'csgo' => 'srcds_',
         'cs2' => 'cs2',
@@ -69,8 +69,10 @@ class scans
 
         $cr = explode('|', $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\''));
 
-        if (isset($cr[0]))
+        if (isset($cr[0])){
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
+            $resources['cpu'] = floatval($resources['cpu']);
+        }
 
         $resources['cpu'] = $resources['cpu'] / $server['cpu'] * 100;
         $resources['cpu'] = $resources['cpu'] > 100 ? 100 : round($resources['cpu']);
