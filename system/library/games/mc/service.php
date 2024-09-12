@@ -37,7 +37,6 @@ class service
             . '`port_max`,'
             . '`hostname`,'
             . '`packs`,'
-            . '`ram`,'
             . '`time`,'
             . '`test`,'
             . '`tests`,'
@@ -50,6 +49,8 @@ class service
             . '`copy`,'
             . '`web`,'
             . '`plugins_install`,'
+            . '`cpu`,'
+            . '`ram`,'
             . '`hdd`,'
             . '`autostop`,'
             . '`ip`,'
@@ -202,11 +203,10 @@ class service
         else
             $aData['time'] = games::time($start_point, $days);
 
-        // Массив данных
+        // Массив данных 
         $aSDATA = array(
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
-            'ram' => $aData['ram'], // значение ram
             'pack' => $aData['pack'], // Выбранная сборка для установки
             'time' => $aData['time'], // Время аренды
             'days' => $days, // Число дней
@@ -226,6 +226,8 @@ class service
             'copy' => $tarif['copy'], // Использование резервных копий
             'web' => $tarif['web'], // Использование доп услуг
             'plugins_install' => $tarif['plugins_install'], // Список установленных плагинов
+            'cpu' => $tarif['cpu'], // значение cpu
+            'ram' => $tarif['ram'], // значение ram
             'hdd' => $tarif['hdd'], // Дисковое пространство
             'promo' => $promo // Использование промо-кода
         );
@@ -292,9 +294,10 @@ class service
 				`stats_use`="' . $aSDATA['stats'] . '",
 				`copy_use`="' . $aSDATA['copy'] . '",
 				`web_use`="' . $aSDATA['web'] . '",
-				`ram`="' . $aSDATA['ram'] . '",
 				`map_start`="' . $aSDATA['map'] . '",
 				`vac`="1",
+                `cpu`="' . $aSDATA['cpu'] . '",
+				`ram`="' . $aSDATA['ram'] . '",
 				`hdd`="' . $aSDATA['hdd'] . '",
 				`time`="' . $aSDATA['time'] . '",
 				`date`="' . $start_point . '",
