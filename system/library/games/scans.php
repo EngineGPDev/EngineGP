@@ -16,7 +16,7 @@ class scans
 {
     private static $process = array(
         'cs' => 'hlds_',
-        'cssold' => 'srcds_i',
+        'cssold' => 'srcds_',
         'css' => 'srcds_',
         'csgo' => 'srcds_',
         'cs2' => 'cs2',
