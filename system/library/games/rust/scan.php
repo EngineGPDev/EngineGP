@@ -14,7 +14,7 @@ if (!defined('EGP'))
 
 include(LIB . 'games/scans.php');
 
-use xPaw\SourceQuery\SourceQuery;
+use GameQ\GameQ;
 
 class scan extends scans
 {
@@ -22,7 +22,21 @@ class scan extends scans
     {
         global $cfg, $sql, $html, $mcache;
 
-        $sq = new SourceQuery();
+        $sql->query('SELECT `address`, `port_query`, `game`, `name`, `map`, `online`, `players`, `status`, `time`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $server = $sql->get();
+
+        $ip = $server['address'];
+        $port = $server['port_query'];
+
+        // Инициализация GameQ
+        $gameQ = new GameQ();
+        $gameQ->addServer([
+            'type' => 'rust',
+            'host' => $ip . ':' . $port,
+        ]);
+
+        $results = $gameQ->process();
+        $info = $results[$ip . ':' . $port] ?? null;
 
         if ($players_get)
             $nmch = 'server_scan_mon_pl_' . $id;
@@ -34,11 +48,6 @@ class scan extends scans
 
         $out = array();
 
-        $info = scan::info($sq, $id);
-
-        $sql->query('SELECT `game`, `name`, `map`, `online`, `players`, `status`, `time`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-        $server = $sql->get();
-
         $out['time'] = 'Арендован до: ' . date('d.m.Y - H:i', $server['time']);
 
         if ($server['status'] == 'overdue')
@@ -46,7 +55,7 @@ class scan extends scans
         else
             $out['time_end'] = 'Осталось: ' . sys::date('min', $server['time']);
 
-        if (!$info['status']) {
+        if (!$info || $info['gq_online'] === false) {
             $out['name'] = $server['name'];
             $out['status'] = sys::status($server['status'], $server['game'], $server['map']);
             $out['online'] = $server['online'];
@@ -62,11 +71,12 @@ class scan extends scans
         }
 
         if ($players_get)
-            $players = scan::info($sq, $id, true);
+            $players = scan::players($info['players'] ?? []);
 
-        $out['name'] = htmlspecialchars($info['name']);
+        $info['map'] = htmlspecialchars($info['gq_mapname']);
+        $out['name'] = htmlspecialchars($info['gq_hostname']);
         $out['status'] = sys::status('working', $server['game'], $info['map']);
-        $out['online'] = $info['online'];
+        $out['online'] = sys::int($info['gq_numplayers']);
         $out['image'] = '<img src="' . sys::status('working', $server['game'], $info['map'], 'img') . '">';
         $out['buttons'] = sys::buttons($id, 'working', $server['game']);
         $out['players'] = '';
@@ -100,52 +110,31 @@ class scan extends scans
         return $out;
     }
 
-    public static function info($sq, $id, $pl = false)
+    public static function players($aPlayrs)
     {
-        global $sql;
+        $i = 1;
+        $aData = array();
 
-        $sql->query('SELECT `address`, `port_query` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-        $server = $sql->get();
+        foreach ($aPlayrs as $n => $player) {
+            $aData[$i]['i'] = $i;
+            $aData[$i]['name'] = $player['gq_name'] == '' ? 'Подключается' : htmlspecialchars($player['gq_name']);
+            $aData[$i]['score'] = sys::int($player['gq_score']);
+            $aData[$i]['time'] = scan::formatTime($player['gq_time']);
 
-        $ip = $server['address'];
-        $port = $server['port_query'];
-
-        $sq->Connect($ip, $port, 1, SourceQuery::SOURCE);
-
-        if ($pl) {
-            $players = $sq->GetPlayers();
-
-            $i = 1;
-            $data = array();
-
-            foreach ($players as $n => $player) {
-                $data[$i]['i'] = $i;
-                $data[$i]['name'] = $player['Name'] == '' ? 'Подключается' : $player['Name'];
-                $data[$i]['score'] = $player['Frags'];
-                $data[$i]['time'] = $player['TimeF'];
-
-                $i += 1;
-            }
-
-            return $data;
+            $i += 1;
         }
 
-        try {
-            $data = $sq->GetInfo();
+        return $aData;
+    }
 
-            $map = explode('/', $data['Map']);
+    public static function formatTime($seconds)
+    {
+        $seconds = intval($seconds);
 
-            $server['name'] = $data['HostName'];
-            $server['map'] = end($map);
-            $server['online'] = $data['Players'];
-            $server['status'] = strlen($server['map']) > 3;
-        } catch (Exception $e) {
-            $server['name'] = isset($server['name']);
-            $server['map'] = isset($server['map']);
-            $server['online'] = isset($server['online']);
-            $server['status'] = strlen($server['map']) > 3;
-        }
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        $seconds = $seconds % 60;
 
-        return $server;
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 }
