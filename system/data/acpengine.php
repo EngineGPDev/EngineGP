@@ -58,5 +58,6 @@ $aGname = array(
     'rust' => 'RUST',
     'mc' => 'Minecraft',
     'mta' => 'GTA: MTA',
-    'samp' => 'GTA: SAMP'
+    'samp' => 'GTA: SAMP',
+    'crmp' => 'GTA: CRMP'
 );
