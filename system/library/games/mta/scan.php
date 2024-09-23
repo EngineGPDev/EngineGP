@@ -87,6 +87,7 @@ class scan extends scans
 
                 $html->set('i', $player['i']);
                 $html->set('name', $player['name']);
+                $html->set('score', $player['score']);
                 $html->set('ping', $player['ping']);
 
                 $html->pack('list');
@@ -117,6 +118,7 @@ class scan extends scans
         foreach ($aPlayrs as $n => $player) {
             $aData[$i]['i'] = $i;
             $aData[$i]['name'] = $player['gq_name'] == '' ? 'Подключается' : htmlspecialchars($player['gq_name']);
+            $aData[$i]['score'] = sys::int($player['gq_score']);
             $aData[$i]['ping'] = sys::int($player['gq_ping'] ?? 0);
 
             $i += 1;
