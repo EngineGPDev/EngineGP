@@ -14,6 +14,8 @@ if (!defined('EGP'))
 
 include(LIB . 'games/scans.php');
 
+use GameQ\GameQ;
+
 class scan extends scans
 {
     public static function mon($id, $players_get = false)
@@ -26,9 +28,15 @@ class scan extends scans
         $ip = $server['address'];
         $port = $server['port_query'];
 
-        include(LIB . 'games/query/SampQuery.php');
+        // Инициализация GameQ
+        $gameQ = new GameQ();
+        $gameQ->addServer([
+            'type' => 'samp',
+            'host' => $ip . ':' . $port,
+        ]);
 
-        $sq = new SampQuery($ip, $port);
+        $results = $gameQ->process();
+        $info = $results[$ip . ':' . $port] ?? null;
 
         if ($players_get)
             $nmch = 'server_scan_mon_pl_' . $id;
@@ -47,7 +55,7 @@ class scan extends scans
         else
             $out['time_end'] = 'Осталось: ' . sys::date('min', $server['time']);
 
-        if (!$sq->connect()) {
+        if (!$info || $info['gq_online'] === false) {
             $out['name'] = $server['name'];
             $out['status'] = sys::status($server['status'], $server['game'], $server['map']);
             $out['online'] = $server['online'];
@@ -62,15 +70,13 @@ class scan extends scans
             return $out;
         }
 
-        $info = $sq->getInfo();
-
         if ($players_get)
-            $players = scan::players($sq->getDetailedPlayers());
+            $players = scan::players($info['players'] ?? []);
 
-        $info['map'] = htmlspecialchars(mb_convert_encoding($info['map'], 'UTF-8', 'WINDOWS-1251'));
-        $out['name'] = htmlspecialchars(mb_convert_encoding($info['hostname'], 'UTF-8', 'WINDOWS-1251'));
+        $info['map'] = htmlspecialchars($info['gq_mapname']);
+        $out['name'] = htmlspecialchars($info['gq_hostname']);
         $out['status'] = sys::status('working', $server['game'], $info['map']);
-        $out['online'] = sys::int($info['players']);
+        $out['online'] = sys::int($info['gq_numplayers']);
         $out['image'] = '<img src="' . sys::status('working', $server['game'], 'crmp', 'img') . '">';
         $out['buttons'] = sys::buttons($id, 'working', $server['game']);
         $out['players'] = '';
@@ -81,7 +87,8 @@ class scan extends scans
 
                 $html->set('i', $player['i']);
                 $html->set('name', htmlspecialchars($player['name']));
-                $html->set('ping', sys::int($player['ping']));
+                $html->set('ping', $player['ping']);
+                $html->set('score', $player['score']);
 
                 $html->pack('list');
             }
@@ -110,8 +117,9 @@ class scan extends scans
 
         foreach ($aPlayrs as $n => $player) {
             $aData[$i]['i'] = $i;
-            $aData[$i]['name'] = $player['nickname'] == '' ? 'Подключается' : htmlspecialchars($player['nickname']);
-            $aData[$i]['ping'] = sys::int($player['ping']);
+            $aData[$i]['name'] = $player['gq_name'] == '' ? 'Подключается' : htmlspecialchars($player['gq_name']);
+            $aData[$i]['ping'] = sys::int($player['gq_ping'] ?? 0);
+            $aData[$i]['score'] = sys::int($player['gq_score']);
 
             $i += 1;
         }
