@@ -9,44 +9,49 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class threads extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $sql, $cfg, $argv;
 
         $aUnit = array();
         $sql->query('SELECT `id` FROM `units` ORDER BY `id` ASC');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
-        while ($unit = $sql->get())
+        while ($unit = $sql->get()) {
             $aUnit[$unit['id']] = [];
+        }
 
         $sql->query('SELECT `id` FROM `servers` LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $sql->query('SELECT `id`, `unit`, `game` FROM `servers` ORDER BY `unit` DESC');
 
         $all = $sql->num();
 
-        while($server = $sql->get()) {
+        while ($server = $sql->get()) {
             $aUnit[$server['unit']][$server['game']] ??= [];
             $aUnit[$server['unit']][$server['game']][] = $server['id'];
         }
 
-        if ($argv[3] == 'scan_servers_route')
+        if ($argv[3] == 'scan_servers_route') {
             cron::$seping = 50;
+        }
 
         foreach ($aUnit as $unit => $aGame) {
             foreach ($aGame as $game => $servers) {
-                if(is_array($servers)) {
+                if (is_array($servers)) {
                     $servers = implode(' ', $servers);
                 }
                 $aData = explode(' ', $servers);
@@ -63,13 +68,14 @@ class threads extends cron
         $cmd = '';
 
         foreach ($threads as $thread) {
-            foreach ($thread as $screen => $servers)
+            foreach ($thread as $screen => $servers) {
                 $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+            }
         }
 
         $start_point = $_SERVER['REQUEST_TIME'];
         exec('screen -dmS threads_' . date('His', $start_point) . ' sh -c "' . $cmd . '"');
 
-        return NULL;
+        return null;
     }
 }

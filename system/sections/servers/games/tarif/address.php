@@ -9,31 +9,36 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 // Проверка наличия арендованного выделенного адреса
 $sql->query('SELECT `id` FROM `address_buy` WHERE `server`="' . $id . '" LIMIT 1');
-if ($sql->num() and $go)
+if ($sql->num() and $go) {
     sys::outjs(array('s' => 'ok'), $nmch);
+}
 
 $aid = isset($url['aid']) ? sys::int($url['aid']) : sys::outjs(array('e' => 'Переданы не все данные'), $nmch);
 
 $sql->query('SELECT `ip`, `price` FROM `address` WHERE `id`="' . $aid . '" AND `unit`="' . $server['unit'] . '" AND `buy`="0" LIMIT 1');
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Выделенный адрес не найден.'), $nmch);
+}
 
 $add = $sql->get();
 
 // Выполнение операции
 if ($go) {
     // Проверка баланса
-    if ($user['balance'] < $add['price'])
+    if ($user['balance'] < $add['price']) {
         sys::outjs(array('e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
+    }
 
     include(LIB . 'ssh.php');
 
@@ -41,8 +46,9 @@ if ($go) {
     $unit = $sql->get();
 
     // Проверка ssh соединения с локацией
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $add['price']) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
@@ -60,11 +66,13 @@ if ($go) {
     $port = explode(':', $server['address']);
 
     // Очистка правил FireWall
-    games::iptables($server['id'], 'remove', NULL, NULL, NULL, false, $ssh);
+    games::iptables($server['id'], 'remove', null, null, null, false, $ssh);
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_address'),
-            array('money' => $add['price'], 'id' => $id)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $add['price'] . '"');
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+        sys::text('logs', 'buy_address'),
+        array('money' => $add['price'], 'id' => $id)
+    ) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $add['price'] . '"');
 
     sys::outjs(array('s' => 'ok'), $nmch);
 }

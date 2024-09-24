@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Проверка на авторизацию
 sys::noauth();
@@ -23,8 +24,9 @@ $name = isset($_POST['name']) ? $_POST['name'] : exit;
 $pname = explode('.', $name);
 $type = strtolower(end($pname));
 
-if (!in_array($type, array('png', 'gif', 'jpg', 'jpeg', 'bmp')))
+if (!in_array($type, array('png', 'gif', 'jpg', 'jpeg', 'bmp'))) {
     exit('Допустимый формат изображений: png, gif, jpg, jpeg, bmp.');
+}
 
 $aData = explode(',', $file);
 

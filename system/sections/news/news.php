@@ -9,15 +9,17 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Список новостей', $cfg['http'] . 'news');
 
 $sql->query('SELECT `id`, `name`, `full_text`, `views`, `tags`, `date` FROM `news` WHERE `id`="' . $id . '" LIMIT 1');
 
-if (!$sql->num())
+if (!$sql->num()) {
     include(ENG . '404.php');
+}
 
 $news = $sql->get();
 

@@ -115,11 +115,13 @@ foreach ($games as $game) {
 
 // Подготовка страницы
 $html->get('all', 'sections/monitoring');
-foreach ($games as $game)
-    if (!empty($online[$game]))
+foreach ($games as $game) {
+    if (!empty($online[$game])) {
         $html->set('o_' . $game, $online[$game]);
-    else
+    } else {
         $html->set('o_' . $game, '0');
+    }
+}
 $html->set('list', isset($html->arr['monitoring_list']) ? $html->arr['monitoring_list'] : '');
 $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
 $html->pack('main');

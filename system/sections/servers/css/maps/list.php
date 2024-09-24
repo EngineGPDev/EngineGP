@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Установка карт');
 
@@ -23,12 +24,13 @@ $html->pack('types');
 
 $type = false;
 
-if (isset($url['type']) and in_array($url['type'], array('de', 'cs', 'aim', 'awp', 'bhop', 'csde', 'deathrun', 'jail')))
+if (isset($url['type']) and in_array($url['type'], array('de', 'cs', 'aim', 'awp', 'bhop', 'csde', 'deathrun', 'jail'))) {
     $type = '^' . $url['type'] . '\_';
+}
 
-if ($type)
+if ($type) {
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` REGEXP FROM_BASE64(\'' . base64_encode($type) . '\') ORDER BY `name` ASC LIMIT 72');
-else {
+} else {
     $sql->query('SELECT `id` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '"');
 
     // Массив для построения страниц

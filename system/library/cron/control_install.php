@@ -9,27 +9,30 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_install extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv;
 
         $sql->query('SELECT `id`, `address`, `passwd` FROM `control` WHERE `status`="install" AND `install`="0" LIMIT 1');
 
-        if (!$sql->num())
+        if (!$sql->num()) {
             exit('not found');
+        }
 
         $unit = $sql->get();
 
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             exit('error connect');
+        }
 
         $ssh->set('apt-get update; apt-get install -y wget screen');
 

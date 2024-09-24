@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     include(LIB . 'games/' . $server['game'] . '/rcon.php');
@@ -18,10 +19,11 @@ if ($go) {
     if (isset($url['action']) and in_array($url['action'], array('kick', 'kill'))) {
         $player = isset($_POST['player']) ? $_POST['player'] : sys::outjs(array('e' => 'Необходимо выбрать игрока.'));
 
-        if ($url['action'] == 'kick')
+        if ($url['action'] == 'kick') {
             rcon::cmd(array_merge($server, array('id' => $id)), 'amx_kick "' . $player . '" "EGP Panel"');
-        else
+        } else {
             rcon::cmd(array_merge($server, array('id' => $id)), 'amx_slay "' . $player . '"');
+        }
 
         sys::outjs(array('s' => 'ok'));
     }

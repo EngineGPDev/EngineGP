@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Редактируемый файл
 $file = isset($url['file']) ? $url['file'] : sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
@@ -18,8 +19,9 @@ $file = isset($url['file']) ? $url['file'] : sys::back($cfg['http'] . 'control/i
 include(DATA . 'filedits.php');
 
 // Проверка наличия в конфиге
-if (!in_array($file, $aEdits[$server['game']]['all']['files']))
+if (!in_array($file, $aEdits[$server['game']]['all']['files'])) {
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
+}
 
 $html->nav('Редактирование файла: ' . $file);
 
@@ -29,8 +31,9 @@ $unit = $sql->get();
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 }

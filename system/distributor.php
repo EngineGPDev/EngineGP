@@ -9,11 +9,12 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Подключение filp/whoops
-$whoops = new \Whoops\Run;
+$whoops = new \Whoops\Run();
 $prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
 foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
     foreach ($secrets as $secret) {
@@ -46,8 +47,9 @@ $route = $route == '' ? 'index' : $route;
 session_start();
 
 // Реферал
-if (isset($_GET['account']))
+if (isset($_GET['account'])) {
     $_SESSION['referrer'] = sys::int($_GET['account']);
+}
 
 $auth = false;
 $user = [];
@@ -61,8 +63,9 @@ if (isset($_SESSION['user_id'])) {
         $user = $sql->get();
 
         // Обновление активности
-        if ($user['time'] + 10 < $start_point)
+        if ($user['time'] + 10 < $start_point) {
             $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
+        }
 
         $auth = true;
     }
@@ -79,10 +82,11 @@ $html->nav($cfg['name'], $cfg['http']);
 include(DATA . 'header.php');
 
 // Подключение файла
-if (in_array($route, $aRoute))
+if (in_array($route, $aRoute)) {
     include(ENG . $route . '.php');
-else
+} else {
     include(ENG . '404.php');
+}
 
 // Обновление ссылок
 if (isset($html->arr['main'])) {
@@ -104,7 +108,7 @@ if (isset($html->arr['main'])) {
 }
 
 // Онлайн игроков (общее количество всех игроков)
-$aop='';
+$aop = '';
 //$aop = $mcache->get('all_online_players'); //Если ваш хостинг чувствует себя плохо из за чрезмерной нагрузки от данного модуля, то включите кеширование, раскомментировав этот кусочек кода
 if ($aop == '') {
     $sql->query('SELECT SUM(`online`) FROM `servers` WHERE `status`="working" OR `status`="change"');

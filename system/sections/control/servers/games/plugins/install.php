@@ -9,25 +9,29 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!$go)
+if (!$go) {
     exit;
+}
 
 $pid = isset($url['plugin']) ? sys::int($url['plugin']) : exit;
 
 $sql->query('SELECT `name`, `cfg`, `upd`, `incompatible`, `required`, `packs`, `price` FROM `plugins` WHERE `id`="' . $pid . '" AND `game`="' . $server['game'] . '" LIMIT 1');
 
-if (!$sql->num())
+if (!$sql->num()) {
     exit;
+}
 
 $plugin = $sql->get();
 
 // Проверка установки плагина
 $sql->query('SELECT `id` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $pid . '" LIMIT 1');
-if ($sql->num())
+if ($sql->num()) {
     sys::outjs(array('e' => 'Данный плагин уже установлен'));
+}
 
 $upd = false;
 
@@ -47,19 +51,21 @@ $buy = false;
 if ($plugin['price']) {
     // Проверка покупки
     $sql->query('SELECT `id` FROM `control_plugins_buy` WHERE `plugin`="' . $pid . '" AND `server`="' . $sid . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         $buy = true;
-    else {
+    } else {
         // Проверка баланса
-        if ($user['balance'] < $plugin['price'])
+        if ($user['balance'] < $plugin['price']) {
             sys::outjs(array('e' => 'У вас не хватает ' . (round($plugin['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']), $name_mcache);
+        }
     }
 }
 
 // Проверка на доступность плагина к установленной на сервере сборке
 $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
-if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
+if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all') {
     exit;
+}
 
 include(LIB . 'control/plugins.php');
 
@@ -72,11 +78,13 @@ plugins::required($sid, $plugin['required'], $nmch);
 $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $unit = $sql->get();
 
-if (!isset($ssh))
+if (!isset($ssh)) {
     include(LIB . 'ssh.php');
+}
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+}
 
 if ($upd) {
     $qsql = 'WHERE `update`="' . $plugin['id'] . '" ORDER BY `id` ASC';
@@ -100,18 +108,21 @@ $ssh->set('cd ' . $dir . ' && screen -dmS install_' . $start_point . ' sudo -u s
 
 // Удаление файлов
 $sql->query('SELECT `file` FROM `plugins_delete` ' . $qsql);
-while ($delete = $sql->get())
+while ($delete = $sql->get()) {
     $ssh->set('sudo -u server' . $server['uid'] . ' rm ' . $dir . $delete['file']);
+}
 
 // Удаление текста из файлов
 $sql->query('SELECT `text`, `file`, `regex` FROM `plugins_clear` ' . $qsql);
-while ($clear = $sql->get())
+while ($clear = $sql->get()) {
     plugins::clear($clear, $server['uid'], $dir);
+}
 
 // Добавление текста в файлы
 $sql->query('SELECT `text`, `file`, `top` FROM `plugins_write` ' . $qsql);
-while ($write = $sql->get())
+while ($write = $sql->get()) {
     plugins::write($write, $server['uid'], $dir);
+}
 
 // Если платный плагин
 if (!$buy and $plugin['price']) {
@@ -120,8 +131,10 @@ if (!$buy and $plugin['price']) {
     $sql->query('INSERT INTO `control_plugins_buy` set `plugin`="' . $pid . '", `key`="' . md5(strip_tags($plugin['name'])) . '", `server`="' . $sid . '", `price`="' . $plugin['price'] . '", `time`="' . $start_point . '"');
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'ctrl_buy_plugin'),
-            array('plugin' => strip_tags($plugin['name']), 'money' => $plugin['price'], 'id' => $sid)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $plugin['price'] . '"');
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+        sys::text('logs', 'ctrl_buy_plugin'),
+        array('plugin' => strip_tags($plugin['name']), 'money' => $plugin['price'], 'id' => $sid)
+    ) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $plugin['price'] . '"');
 }
 
 // Запись данных в базу
@@ -130,7 +143,8 @@ $sql->query('INSERT INTO `control_plugins_install` set `server`="' . $sid . '", 
 // Очистка кеша
 $mcache->delete('ctrl_server_plugins_' . $sid);
 
-if ($plugin['cfg'])
+if ($plugin['cfg']) {
     sys::outjs(array('s' => 'cfg'), $nmch);
+}
 
 sys::outjs(array('s' => 'ok'), $nmch);

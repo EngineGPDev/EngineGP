@@ -9,19 +9,22 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if ($ctrl['status'] != 'working')
+if ($ctrl['status'] != 'working') {
     sys::outjs(array('e' => 'Сервер должен быть в рабочем состоянии'));
+}
 
 $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
 include(LIB . 'ssh.php');
 
-if (!$ssh->auth($ctrl['passwd'], $ctrl['address']))
+if (!$ssh->auth($ctrl['passwd'], $ctrl['address'])) {
     sys::outjs(array('e' => 'Неудалось создать связь с физическим сервером'));
+}
 
 $ssh->set('screen -dmS reboot reboot');
 

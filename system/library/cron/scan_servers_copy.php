@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class scan_servers_copy extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $sql, $argv, $start_point;
 
@@ -23,8 +24,9 @@ class scan_servers_copy extends cron
         unset($servers[0], $servers[1], $servers[2]);
 
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -41,8 +43,9 @@ class scan_servers_copy extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         foreach ($servers as $id) {
             $copys = $sql->query('SELECT `id` FROM `copy` WHERE `status`="0"');
@@ -50,11 +53,12 @@ class scan_servers_copy extends cron
                 $sql->query('SELECT `uid` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
                 $server = $sql->get();
 
-                if (!sys::int($ssh->get('ps aux | grep copy_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                if (!sys::int($ssh->get('ps aux | grep copy_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `copy` set `status`="1" WHERE `id`="' . $copy['id'] . '" LIMIT 1');
+                }
             }
         }
 
-        return NULL;
+        return null;
     }
 }

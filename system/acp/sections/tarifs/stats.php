@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $list = '';
 
@@ -29,20 +30,23 @@ while ($tarif = $sql->get($tarifs)) {
 
     while ($server = $sql->get($servers)) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $server['user'] . '" AND `group`="user" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             continue;
+        }
 
         $sql->query('SELECT `money`, `date` FROM `logs` WHERE `user`="' . $server['user'] . '" AND (`type`="buy" OR `type`="extend") AND `text` LIKE \'%(сервер: #' . $server['id'] . ')%\'');
         while ($logs = $sql->get()) {
             $money_all += $logs['money'];
 
-            if ($logs['date'] >= ($start_point - $time))
+            if ($logs['date'] >= ($start_point - $time)) {
                 $money_month += $logs['money'];
+            }
         }
     }
 
-    if ($money_all < 1)
+    if ($money_all < 1) {
         continue;
+    }
 
     $all_money += $money_all;
     $all_money_month += $money_month;

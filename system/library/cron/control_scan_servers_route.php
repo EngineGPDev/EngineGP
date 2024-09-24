@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_scan_servers_route extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv, $start_point;
 
@@ -23,8 +24,9 @@ class control_scan_servers_route extends cron
         unset($servers[0], $servers[1], $servers[2]);
 
         $sql->query('SELECT `address` FROM `control` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -41,8 +43,9 @@ class control_scan_servers_route extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         $first = $ssh->get('cat /proc/stat');
 
@@ -65,18 +68,21 @@ class control_scan_servers_route extends cron
                 continue;
             }
 
-            if ($data['idle'] > 50)
+            if ($data['idle'] > 50) {
                 $idle[$core] = $data['idle'];
-            else
+            } else {
                 $uses[$core] = 100 - $data['idle'];
+            }
         }
 
-        if (!count($idle))
-            return NULL;
+        if (!count($idle)) {
+            return null;
+        }
 
         foreach ($uses as $use_core => $use) {
-            if (!count($idle))
+            if (!count($idle)) {
                 break;
+            }
 
             $sql->query('SELECT `id`, `uid` FROM `control_servers` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $game . '" AND `core_use`="' . $use_core . '" AND `status`="working" AND `core_fix`="0" ORDER BY `slots_start` DESC, `online` DESC LIMIT 3');
             if ($sql->num() > 1) {
@@ -86,15 +92,17 @@ class control_scan_servers_route extends cron
 
                 $aPid = explode("\n", $ssh->get('ps aux | grep -v grep | grep ' . $server['uid'] . ' | awk \'{print $2}\''));
 
-                if (count($aPid) < 2)
+                if (count($aPid) < 2) {
                     continue;
+                }
 
                 array_pop($aPid);
 
                 $taskset = '';
 
-                foreach ($aPid as $pid)
+                foreach ($aPid as $pid) {
                     $taskset .= 'taskset -cp ' . ($core - 1) . ' ' . $pid . ';';
+                }
 
                 $ssh->set($taskset);
 
@@ -104,6 +112,6 @@ class control_scan_servers_route extends cron
             }
         }
 
-        return NULL;
+        return null;
     }
 }

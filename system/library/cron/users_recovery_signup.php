@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class users_recovery_signup extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $sql, $start_point;
 
@@ -23,6 +24,6 @@ class users_recovery_signup extends cron
         $sql->query('DELETE FROM `signup` WHERE `date`<"' . $time . '"');
         $sql->query('DELETE FROM `recovery` WHERE `date`<"' . $time . '"');
 
-        return NULL;
+        return null;
     }
 }

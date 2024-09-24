@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 
@@ -18,27 +19,30 @@ include(DATA . 'web.php');
 
 // Если выбран подраздел
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_array($url['action'], array_merge($aAction[$url['subsection']], array('install', 'manage')))) {
-    if ($go)
+    if ($go) {
         $nmch = sys::rep_act('server_web_go_' . $id, 10);
-    else
+    } else {
         $html->nav('Web', $cfg['http'] . 'servers/id/' . $id . '/section/web');
+    }
 
     include(SEC . 'web/' . $url['subsection'] . '/free/' . $url['action'] . '.php');
 } else {
     $html->nav('Web');
 
-    if ($mcache->get('server_web_' . $id) != '')
+    if ($mcache->get('server_web_' . $id) != '') {
         $html->arr['main'] = $mcache->get('server_web_' . $id);
-    else {
+    } else {
         // Услуги
         foreach ($aWeb[$server['game']] as $service => $active) {
             if ($active) {
                 if ($service == 'hosting') {
-                    if (!$aWebVHTtype && !in_array($server['tarif'], $aWebVHT))
+                    if (!$aWebVHTtype && !in_array($server['tarif'], $aWebVHT)) {
                         continue;
+                    }
 
-                    if ($aWebVHTtype && in_array($server['tarif'], $aWebVHT))
+                    if ($aWebVHTtype && in_array($server['tarif'], $aWebVHT)) {
                         continue;
+                    }
                 }
 
                 // Проверка на установку
@@ -55,10 +59,11 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_arr
                         $sql->query('SELECT `id` FROM `web` WHERE `type`="' . $service . '" AND `user`="' . $server['user'] . '" AND `unit`="' . $server['unit'] . '" LIMIT 1');
                 }
 
-                if ($sql->num())
+                if ($sql->num()) {
                     $html->get('list_install', 'sections/servers/games/web');
-                else
+                } else {
                     $html->get('list', 'sections/servers/games/web');
+                }
 
                 $html->set('id', $id);
                 $html->set('service', $service);
@@ -70,8 +75,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_arr
 
         // Блоки услуг
         foreach ($aWebTypeInfo[$server['game']] as $type => $name) {
-            if (!isset($html->arr[$type]))
+            if (!isset($html->arr[$type])) {
                 continue;
+            }
 
             $html->get('block', 'sections/servers/games/web');
             $html->set('name', $name);

@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/actions.php');
 
@@ -32,8 +33,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $ip = $ssh->getInternalIp();
         $port = $server['port'];
@@ -56,7 +58,7 @@ class action extends actions
 
         // Если .steam отсуствует, создаём каталог и символическую ссылку на steamclient.so
         if (strpos($checkLinkOutput, '.steam') === false) {
-            $createLinkCommand ='mkdir -p ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
+            $createLinkCommand = 'mkdir -p ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
                 . 'ln -s ' . $cfg['steamcmd'] . '/linux64/steamclient.so ' . $tarif['install'] . $server['uid'] . '/.steam/sdk64/' . ';'
                 . 'chown -R server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/.steam' . ';'
                 . 'find ' . $tarif['install'] . $server['uid'] . '/.steam' . ' -type d -exec chmod 700 {} \;';
@@ -70,8 +72,9 @@ class action extends actions
 
         include_once(LIB . 'games/games.php');
 
-        if (games::map($server['map_start'], $ssh->get()))
+        if (games::map($server['map_start'], $ssh->get())) {
             return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.vpk')));
+        }
 
         // Античит VAC
         $vac = $server['vac'] == 0 ? '-insecure' : '-secure';
@@ -135,8 +138,9 @@ class action extends actions
         global $cfg, $sql, $html, $user, $mcache;
 
         // Если в кеше есть карты
-        if ($mcache->get('server_maps_change_' . $id) != '' and !$map)
+        if ($mcache->get('server_maps_change_' . $id) != '' and !$map) {
             return array('maps' => $mcache->get('server_maps_change_' . $id));
+        }
 
         include(LIB . 'ssh.php');
 
@@ -152,8 +156,9 @@ class action extends actions
         $tarif = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Массив карт игрового сервера (папка "maps")
         $aMaps = explode("\n", $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/game/csgo/maps/ && du -ah | grep -e "\.vpk$" | awk \'{print $2}\''));
@@ -169,8 +174,9 @@ class action extends actions
             $map = str_replace('|', '/', $map);
 
             // Проверка наличия выбранной карты
-            if (games::map($map, $aMaps))
+            if (games::map($map, $aMaps)) {
                 return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.vpk')));
+            }
 
             // Отправка команды changelevel
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
@@ -203,10 +209,11 @@ class action extends actions
             $html->set('name', $name);
             $html->set('id', $id);
 
-            if (count($aName) > 1)
+            if (count($aName) > 1) {
                 $html->unit('workshop', true);
-            else
+            } else {
                 $html->unit('workshop');
+            }
 
             $html->pack('maps');
         }
@@ -229,8 +236,9 @@ class action extends actions
         // Проверка времени обновления
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
-        if ($update > $start_point and $user['group'] != 'admin')
+        if ($update > $start_point and $user['group'] != 'admin') {
             return array('e' => sys::updtext(sys::text('servers', 'update'), array('time' => sys::date('max', $update))));
+        }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -239,8 +247,9 @@ class action extends actions
         $tarif = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];

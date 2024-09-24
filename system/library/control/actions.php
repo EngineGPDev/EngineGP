@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class actions
 {
@@ -27,8 +28,9 @@ class actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -50,8 +52,9 @@ class actions
         global $cfg, $sql, $html, $user, $mcache;
 
         // Если в кеше есть карты
-        if ($mcache->get('ctrl_server_maps_change_' . $id) != '' && !$map)
+        if ($mcache->get('ctrl_server_maps_change_' . $id) != '' && !$map) {
             return array('maps' => $mcache->get('ctrl_server_maps_change_' . $id));
+        }
 
         include(LIB . 'ssh.php');
 
@@ -62,8 +65,9 @@ class actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Массив карт игрового сервера (папка "maps")
         $aMaps = explode("\n", $ssh->get('cd /servers/' . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.'));
@@ -77,8 +81,9 @@ class actions
         // Если выбрана карта
         if ($map) {
             // Проверка наличия выбранной карты
-            if (!in_array($map, $aMaps))
+            if (!in_array($map, $aMaps)) {
                 return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.bsp')));
+            }
 
             // Отправка команды changelevel
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
@@ -128,8 +133,9 @@ class actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -145,8 +151,9 @@ class actions
 
         $path = 'rm ' . $server['pack'] . '.zip; wget ' . $cfg['control_server'] . '/' . $server['pack'] . '.zip; unzip ' . $server['pack'] . '.zip; rm ' . $server['pack'] . '.zip;';
 
-        if (in_array($server['game'], array('css', 'csgo')))
+        if (in_array($server['game'], array('css', 'csgo'))) {
             $path = 'cd ' . $cfg['steamcmd'] . '; ./steamcmd.sh +login anonymous +force_install_dir "/servers/' . $uid . '" +app_update ' . $cfg['control_steamcmd'][$game] . ' +quit;';
+        }
 
         // Директория игрового сервера
         $install = '/servers/' . $server['uid'];
@@ -158,8 +165,9 @@ class actions
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
-            if (!is_numeric($core))
+            if (!is_numeric($core)) {
                 return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+            }
 
             $taskset = 'taskset -c ' . $core;
         }
@@ -209,8 +217,9 @@ class actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
@@ -236,8 +245,9 @@ class actions
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
-            if (!is_numeric($core))
+            if (!is_numeric($core)) {
                 return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+            }
 
             $taskset = 'taskset -c ' . $core;
         }
@@ -275,15 +285,17 @@ class actions
         $sql->query('SELECT `uid`, `unit`, `game`, `slots`, `address` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        if (!$server['uid'])
+        if (!$server['uid']) {
             return array('e' => 'uid 404');
+        }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -313,14 +325,15 @@ class actions
         $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
         // Очистка правил FireWall
-        ctrl::iptables($id, 'remove', NULL, NULL, $server['unit'], false, $ssh);
+        ctrl::iptables($id, 'remove', null, null, $server['unit'], false, $ssh);
 
         // Удаление заданий из crontab
         $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
         $panel = $sql->get();
 
-        if (!$ssh->auth($panel['passwd'], $panel['address']))
+        if (!$ssh->auth($panel['passwd'], $panel['address'])) {
             return array('e' => 'Неудалось создать связь с панелью');
+        }
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `control_crontab` WHERE `server`="' . $id . '"');
         while ($cron = $sql->get($crons)) {

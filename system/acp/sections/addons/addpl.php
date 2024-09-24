@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $aGames = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc');
 $types = array('cfg', 'txt', 'ini', 'js');
@@ -19,14 +20,16 @@ if (isset($url['get'])) {
     if ($url['get'] == 'cat') {
         $game = isset($url['game']) ? $url['game'] : sys::out();
 
-        if (!in_array($game, $aGames))
+        if (!in_array($game, $aGames)) {
             sys::out();
+        }
 
         $cats = '';
 
         $sql->query('SELECT `id`, `name` FROM `plugins_category` WHERE `game`="' . $game . '" ORDER BY `sort` ASC');
-        while ($cat = $sql->get())
+        while ($cat = $sql->get()) {
             $cats .= '<option value="' . $cat['id'] . '">' . $cat['name'] . '</option>';
+        }
 
         sys::out($cats);
     }
@@ -66,14 +69,17 @@ if ($go) {
 
     $aData['cfg'] = 0;
 
-    if ($aData['name'] == '')
+    if ($aData['name'] == '') {
         sys::outjs(array('e' => 'Необходимо указать название'));
+    }
 
-    if (sys::strlen($aData['name']) > 50)
+    if (sys::strlen($aData['name']) > 50) {
         sys::outjs(array('e' => 'Длина названия не должна превышать 50 символов.'));
+    }
 
-    if (!in_array($aData['game'], $aGames))
+    if (!in_array($aData['game'], $aGames)) {
         sys::outjs(array('e' => 'Необходимо выбрать игру'));
+    }
 
     include(LIB . 'zip.php');
 
@@ -99,9 +105,9 @@ if ($go) {
             sys::outjs(array('e' => 'Неудалось загрузить архив'));
         }
 
-        $zip = new ZipArchive;
+        $zip = new ZipArchive();
 
-        if ($zip->open(FILES . 'plugins/install/' . $id . '.zip') !== TRUE) {
+        if ($zip->open(FILES . 'plugins/install/' . $id . '.zip') !== true) {
             $sql->query('DELETE FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 
             unlink(FILES . 'plugins/install/' . $id . '.zip');
@@ -118,15 +124,17 @@ if ($go) {
 
             $check = count(explode('.', $stat['name']));
 
-            if ($check < 2)
+            if ($check < 2) {
                 continue;
+            }
 
             $rm .= 'rm ' . $stat['name'] . ';' . PHP_EOL;
 
             $type = explode('.', $stat['name']);
 
-            if ($aData['aecfg'] and in_array(end($type), $types))
+            if ($aData['aecfg'] and in_array(end($type), $types)) {
                 $edit[] = $stat['name'];
+            }
         }
 
         $file = fopen(FILES . 'plugins/delete/' . $id . '.rm', "w");
@@ -147,9 +155,9 @@ if ($go) {
             sys::outjs(array('e' => 'Неудалось загрузить архив обновления'));
         }
 
-        $zip = new ZipArchive;
+        $zip = new ZipArchive();
 
-        if ($zip->open(FILES . 'plugins/install/u' . $aData['update'] . '.zip') !== TRUE) {
+        if ($zip->open(FILES . 'plugins/install/u' . $aData['update'] . '.zip') !== true) {
             $sql->query('DELETE FROM `plugins_update` WHERE `id`="' . $aData['update'] . '" LIMIT 1');
 
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
@@ -167,15 +175,17 @@ if ($go) {
 
             $check = count(explode('.', $stat['name']));
 
-            if ($check < 2)
+            if ($check < 2) {
                 continue;
+            }
 
             $rm .= 'rm ' . $stat['name'] . ';' . PHP_EOL;
 
             $type = explode('.', $stat['name']);
 
-            if ($aData['aecfg'] and in_array(end($type), $types))
+            if ($aData['aecfg'] and in_array(end($type), $types)) {
                 $edit[] = $stat['name'];
+            }
         }
 
         $file = fopen(FILES . 'plugins/delete/u' . $aData['update'] . '.rm', "w");
@@ -187,8 +197,9 @@ if ($go) {
 
     $spacks = '';
 
-    foreach ($aPacks as $packs)
+    foreach ($aPacks as $packs) {
         $spacks .= trim($packs) . ':';
+    }
 
     $spacks = isset($spacks[0]) ? substr($spacks, 0, -1) : '';
 
@@ -201,8 +212,9 @@ if ($go) {
     foreach ($aIncom as $incom) {
         $incom = trim($incom);
 
-        if (!is_numeric($incom))
+        if (!is_numeric($incom)) {
             continue;
+        }
 
         $incoms .= intval($incom) . ':';
     }
@@ -221,8 +233,9 @@ if ($go) {
         foreach ($aChpl as $idchpl) {
             $idchpl = trim($idchpl);
 
-            if (!is_numeric($idchpl))
+            if (!is_numeric($idchpl)) {
                 continue;
+            }
 
             $choice .= intval($idchpl) . ':';
         }
@@ -241,8 +254,9 @@ if ($go) {
     foreach ($aRequi as $requi) {
         $requi = trim($requi);
 
-        if (!is_numeric($requi))
+        if (!is_numeric($requi)) {
             continue;
+        }
 
         $requis .= intval($requi) . ':';
     }
@@ -255,8 +269,9 @@ if ($go) {
         $n = 0;
 
         foreach ($aData['config_files_file'] as $i => $file) {
-            if ($file == '')
+            if ($file == '') {
                 continue;
+            }
 
             $n += 1;
 
@@ -265,8 +280,9 @@ if ($go) {
             $sql->query('INSERT INTO `plugins_config` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `file`="' . $file . '", `sort`="' . $n . '"');
         }
 
-        if ($n)
+        if ($n) {
             $aData['cfg'] = 1;
+        }
     } else {
         $n = 0;
 
@@ -276,13 +292,15 @@ if ($go) {
             $sql->query('INSERT INTO `plugins_config` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `file`="' . $file . '", `sort`="' . $n . '"');
         }
 
-        if ($n)
+        if ($n) {
             $aData['cfg'] = 1;
+        }
     }
 
     foreach ($aData['config_clear_file'] as $i => $file) {
-        if ($aData['config_clear_text'][$i] == '' || $file == '')
+        if ($aData['config_clear_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $regex = (string)$aData['config_clear_regex'] == 'on' ? 1 : 0;
 
@@ -292,8 +310,9 @@ if ($go) {
     }
 
     foreach ($aData['config_write_file'] as $i => $file) {
-        if ($aData['config_write_text'][$i] == '' || $file == '')
+        if ($aData['config_write_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $top = (string)$aData['config_write_top'][$i] == 'on' ? 1 : 0;
 
@@ -303,8 +322,9 @@ if ($go) {
     }
 
     foreach ($aData['config_write_del_file'] as $i => $file) {
-        if ($aData['config_write_del_text'][$i] == '' || $file == '')
+        if ($aData['config_write_del_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $top = (string)$aData['config_write_del_top'][$i] == 'on' ? 1 : 0;
 
@@ -314,14 +334,16 @@ if ($go) {
     }
 
     foreach ($aData['files_delete_file'] as $file) {
-        if ($file == '')
+        if ($file == '') {
             continue;
+        }
 
         $sql->query('INSERT INTO `plugins_delete` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `file`="' . $file . '"');
     }
 
-    if ($aData['delete'])
+    if ($aData['delete']) {
         $sql->query('INSERT INTO `plugins_delete_ins` set `plugin`="' . $id . '", `update`="' . $aData['update'] . '", `file`="' . $aData['delete'] . '"');
+    }
 
     if ($aData['update']) {
         $sql->query('UPDATE `plugins_update` set '
@@ -339,17 +361,18 @@ if ($go) {
         $sql->query('UPDATE `plugins` set `upd`="' . $aData['update'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         $sql->query('UPDATE `plugins_update` set `upd`="' . $aData['update'] . '" WHERE `id`!="' . $aData['update'] . '" AND `plugin`="' . $id . '" AND `upd`="0" ORDER BY `id` DESC LIMIT 1');
-    } else
+    } else {
         $sql->query('UPDATE `plugins` set'
-            . '`desc`="' . htmlspecialchars($aData['desc']) . '",'
-            . '`info`="' . htmlspecialchars($aData['info']) . '",'
-            . '`images`="' . htmlspecialchars($aData['images']) . '",'
-            . '`incompatible`="' . $aData['incompatible'] . '",'
-            . '`choice`="' . $aData['choice'] . '",'
-            . '`required`="' . $aData['required'] . '",'
-            . '`cfg`="' . $aData['cfg'] . '",'
-            . '`price`="' . $aData['price'] . '",'
-            . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
+                . '`desc`="' . htmlspecialchars($aData['desc']) . '",'
+                . '`info`="' . htmlspecialchars($aData['info']) . '",'
+                . '`images`="' . htmlspecialchars($aData['images']) . '",'
+                . '`incompatible`="' . $aData['incompatible'] . '",'
+                . '`choice`="' . $aData['choice'] . '",'
+                . '`required`="' . $aData['required'] . '",'
+                . '`cfg`="' . $aData['cfg'] . '",'
+                . '`price`="' . $aData['price'] . '",'
+                . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
+    }
 
     sys::outjs(array('s' => 'ok'));
 }

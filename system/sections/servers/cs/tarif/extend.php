@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 $aData = array();
 
@@ -22,8 +24,9 @@ if (!$cfg['settlement_period']) {
     $aData['time'] = isset($_POST['time']) ? sys::int($_POST['time']) : sys::outjs(array('e' => 'Переданы не все данные'), $nmch);
 
     // Проверка периода
-    if (!in_array($aData['time'], explode(':', $tarif['timext'])))
+    if (!in_array($aData['time'], explode(':', $tarif['timext']))) {
         sys::outjs(array('e' => 'Переданы неверные данные'), $nmch);
+    }
 
 }
 
@@ -45,15 +48,17 @@ $aFPS = explode(':', $tarif['fps']);
 $price = $aPrice[array_search($server['fps'], $aFPS)];
 
 // Если расчетный период
-if ($cfg['settlement_period'])
+if ($cfg['settlement_period']) {
     $aData['time'] = $server['time'];
+}
 
 // Цена аренды
 $sum = games::define_sum($tarif['discount'], $price, $server['slots'], $aData['time'], 'extend') + $add_sum;
 
 // Если расчетный период
-if ($cfg['settlement_period'])
+if ($cfg['settlement_period']) {
     $aData['time'] = games::define_period('extend', params::$aDayMonth, $server['time']);
+}
 
 $days = params::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : games::parse_day($aData['time'], true);
 

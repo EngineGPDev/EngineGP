@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Массив файлов для редактирования (раздел "настройки")
 $aEdits = array(
@@ -192,21 +193,23 @@ if (isset($aEditslist)) {
     $dir = isset($ctrlmod) ? 'control/' : '';
 
     // Генерация общего списка редактируемых файлов
-    if (isset($aEdits[$server['game']]['all']['files']))
+    if (isset($aEdits[$server['game']]['all']['files'])) {
         foreach ($aEdits[$server['game']]['all']['files'] as $file) {
             $html->get('edits_list', 'sections/' . $dir . 'servers/games/settings');
             $html->set('id', $id);
             $html->set('name', $file);
             $html->set('desc', $aEdits[$server['game']]['all']['desc'][$file]);
 
-            if (isset($ctrlmod))
+            if (isset($ctrlmod)) {
                 $html->set('server', $sid);
+            }
             $html->pack('edits');
         }
+    }
 
     if (!isset($ctrlmod)) {
         // Генерация списка редактируемых файлов по тарифу
-        if (isset($aEdits[$server['game']][$tarif['name']]['files']))
+        if (isset($aEdits[$server['game']][$tarif['name']]['files'])) {
             foreach ($aEdits[$server['game']][$tarif['name']]['files'] as $file) {
                 $html->get('edits_list', 'sections/servers/games/settings');
                 $html->set('id', $id);
@@ -214,5 +217,6 @@ if (isset($aEditslist)) {
                 $html->set('desc', $aEdits[$server['game']][$tarif['name']]['desc'][$file]);
                 $html->pack('edits');
             }
+        }
     }
 }

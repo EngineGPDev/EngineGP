@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Установка карт');
 
@@ -24,8 +25,9 @@ $type = false;
 include(DATA . 'maps.php');
 include(LIB . 'games/games.php');
 
-if (isset($url['type']) and array_key_exists($url['type'], $aFindMap[$server['game']]))
+if (isset($url['type']) and array_key_exists($url['type'], $aFindMap[$server['game']])) {
     $type = $url['type'];
+}
 
 if ($type) {
     $qsql = games::mapsql($aFindMap[$server['game']][$type]);

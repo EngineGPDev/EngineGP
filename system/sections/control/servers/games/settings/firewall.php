@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Блокировка на оборудовании');
 
@@ -18,8 +19,9 @@ if (isset($url['action'])) {
     include(LIB . 'games/games.php');
 
     // Получение информации адреса
-    if ($url['action'] == 'info')
+    if ($url['action'] == 'info') {
         games::iptables_whois($nmch);
+    }
 
     // Добавление / удаление правил
     if ($go && in_array($url['action'], array('block', 'unblock'))) {

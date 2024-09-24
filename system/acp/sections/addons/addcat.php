@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $aGames = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc');
@@ -29,15 +30,18 @@ if ($go) {
     $aData['mc'] = isset($_POST['mc']) ? $_POST['mc'] : 0;
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : 0;
 
-    foreach ($aGames as $game)
+    foreach ($aGames as $game) {
         $aData[$game] = (string)$aData[$game] == 'on' ? '1' : '0';
+    }
 
-    if (in_array('', $aData))
+    if (in_array('', $aData)) {
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    }
 
     foreach ($aGames as $game) {
-        if (!$aData[$game])
+        if (!$aData[$game]) {
             continue;
+        }
 
         $sql->query('INSERT INTO `plugins_category` set '
             . '`game`="' . $game . '",'

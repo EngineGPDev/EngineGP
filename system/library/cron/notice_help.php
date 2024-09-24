@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class notice_help extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $start_point;
 
@@ -24,17 +25,19 @@ class notice_help extends cron
         while ($help = $sql->get($helps)) {
             $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . $help['user'] . '" AND `time`<"' . $help['time'] . '" AND `notice_help`="1" LIMIT 1');
 
-            if (!$sql->num())
+            if (!$sql->num()) {
                 continue;
+            }
 
             $user = $sql->get();
 
-            if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help'), array('site' => $cfg['name'], 'url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id'])), $user['mail']))
+            if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help'), array('site' => $cfg['name'], 'url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id'])), $user['mail'])) {
                 continue;
+            }
 
             $sql->query('UPDATE `help` set `notice`="1" WHERE `id`="' . $help['id'] . '" LIMIT 1');
         }
 
-        return NULL;
+        return null;
     }
 }

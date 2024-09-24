@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($id) {
     $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
@@ -19,8 +20,9 @@ if ($id) {
     include(LIB . 'ssh.php');
 
     if (isset($url['service']) and in_array($url['service'], array('nginx', 'mysql', 'unit', 'geo', 'ungeo'))) {
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+        }
 
         switch ($url['service']) {
             case 'unit':
@@ -56,8 +58,9 @@ if ($id) {
         'ssh' => 'error'
     );
 
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs($aData);
+    }
 
     $aData['ssh'] = '<i class="fa fa-retweet pointer" id="units_restart(\'unit\')" onclick="return units_restart(\'' . $id . '\', \'unit\')"></i>';
 

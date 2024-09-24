@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'control/actions.php');
 
@@ -29,8 +30,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         list($ip, $port) = explode(':', $server['address']);
 
@@ -52,8 +54,9 @@ class action extends actions
 
         include_once(LIB . 'games/games.php');
 
-        if (games::map($server['map_start'], $ssh->get()))
+        if (games::map($server['map_start'], $ssh->get())) {
             return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.bsp')));
+        }
 
         // Если система автораспределения продолжить парсинг загрузки процессора
         if (isset($proc_stat)) {
@@ -62,8 +65,9 @@ class action extends actions
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
-            if (!is_numeric($core))
+            if (!is_numeric($core)) {
                 return array('e' => sys::text('error', 'cpu'));
+            }
 
             $taskset = 'taskset -c ' . $core;
         }
@@ -133,8 +137,9 @@ class action extends actions
         global $cfg, $sql, $html, $user, $mcache;
 
         // Если в кеше есть карты
-        if ($mcache->get('ctrl_server_maps_change_' . $id) != '' and !$map)
+        if ($mcache->get('ctrl_server_maps_change_' . $id) != '' and !$map) {
             return array('maps' => $mcache->get('ctrl_server_maps_change_' . $id));
+        }
 
         include(LIB . 'ssh.php');
 
@@ -147,8 +152,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Массив карт игрового сервера (папка "maps")
         $aMaps = explode("\n", $ssh->get('cd /servers/' . $server['uid'] . '/csgo/maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\''));
@@ -164,8 +170,9 @@ class action extends actions
             $map = str_replace('|', '/', $map);
 
             // Проверка наличия выбранной карты
-            if (games::map($map, $aMaps))
+            if (games::map($map, $aMaps)) {
                 return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.bsp')));
+            }
 
             // Отправка команды changelevel
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
@@ -199,10 +206,11 @@ class action extends actions
             $html->set('id', $server['unit']);
             $html->set('server', $id);
 
-            if (count($aName) > 1)
+            if (count($aName) > 1) {
                 $html->unit('workshop', true);
-            else
+            } else {
                 $html->unit('workshop');
+            }
 
             $html->pack('maps');
         }
@@ -226,8 +234,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $taskset = '';
 
@@ -248,8 +257,9 @@ class action extends actions
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
-            if (!is_numeric($core))
+            if (!is_numeric($core)) {
                 return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+            }
 
             $taskset = 'taskset -c ' . $core;
         }

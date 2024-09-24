@@ -9,13 +9,15 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Установка
 if ($go) {
-    if (!$aWeb[$server['game']][$url['subsection']])
+    if (!$aWeb[$server['game']][$url['subsection']]) {
         sys::outjs(array('e' => 'Дополнительная услуга недоступна для установки.'), $nmch);
+    }
 
     // Проверка на наличие уже установленной выбранной услуги
     switch ($aWebInstall[$server['game']][$url['subsection']]) {
@@ -32,8 +34,9 @@ if ($go) {
             break;
     }
 
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('s' => 'ok'), $nmch);
+    }
 
     include(LIB . 'ssh.php');
 
@@ -51,26 +54,30 @@ if ($go) {
         $pma = $aWebUnit['pma'];
     }
 
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs(array('e' => sys::text('ssh', 'error')), $nmch);
+    }
 
     if (isset($_POST['passwd'])) {
         // Если не указан пароль сгенерировать
-        if ($_POST['passwd'] == '')
+        if ($_POST['passwd'] == '') {
             $passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
-        else {
+        } else {
             // Проверка длинны пароля
-            if (!isset($_POST['passwd'][5]) || isset($_POST['passwd'][16]))
+            if (!isset($_POST['passwd'][5]) || isset($_POST['passwd'][16])) {
                 sys::outjs(array('e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'), $nmch);
+            }
 
             // Проверка валидности пароля
-            if (sys::valid($_POST['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/"))
+            if (sys::valid($_POST['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/")) {
                 sys::outjs(array('e' => 'Пароль должен состоять из букв a-z и цифр.'), $nmch);
+            }
 
             $passwd = $_POST['passwd'];
         }
-    } else
+    } else {
         $passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
+    }
 
     $sql->query('INSERT INTO `web` set `type`="' . $url['subsection'] . '", `server`="' . $id . '", `user`="' . $server['user'] . '", `unit`="' . $server['unit'] . '", `config`=""');
     $wid = $sql->id();

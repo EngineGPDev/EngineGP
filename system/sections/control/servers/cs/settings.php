@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `pack` FROM `control_servers` WHERE `id`="' . $sid . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -25,19 +26,21 @@ $aSub = array('start', 'server', 'admins', 'bans', 'firewall', 'crontab', 'start
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $html->nav('Настройки', $cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
 
-    if ($go)
+    if ($go) {
         $nmch = sys::rep_act('ctrl_server_settings_go_' . $id, 10);
+    }
 
-    if (in_array($url['subsection'], $aRouteSub['settings']))
+    if (in_array($url['subsection'], $aRouteSub['settings'])) {
         include(SEC . 'control/servers/games/settings/' . $url['subsection'] . '.php');
-    else
+    } else {
         include(SEC . 'control/servers/' . $server['game'] . '/settings/' . $url['subsection'] . '.php');
+    }
 } else {
     $html->nav('Настройки');
 
-    if ($mcache->get('ctrl_server_settings_' . $sid) != '')
+    if ($mcache->get('ctrl_server_settings_' . $sid) != '') {
         $html->arr['main'] = $mcache->get('ctrl_server_settings_' . $sid);
-    else {
+    } else {
         $aEditslist = 1;
         $ctrlmod = true;
         include(DATA . 'filedits.php');
@@ -48,8 +51,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $packs = '<option value="' . $server['pack'] . '">' . $aPacks[$server['pack']] . '</option>';
         unset($aPacks[$server['pack']]);
 
-        foreach ($aPacks as $pack => $desc)
+        foreach ($aPacks as $pack => $desc) {
             $packs .= '<option value="' . $pack . '">' . $desc . '</option>';
+        }
 
         include(SEC . 'control/servers/' . $server['game'] . '/settings/start.php');
 
@@ -61,8 +65,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         if (isset($html->arr['edits'])) {
             $html->set('edits', $html->arr['edits']);
             $html->unit('edits', 1);
-        } else
+        } else {
             $html->unit('edits');
+        }
         $html->pack('main');
 
         $mcache->set('ctrl_server_settings_' . $sid, $html->arr['main'], false, 20);

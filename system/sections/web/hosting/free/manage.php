@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $options = '';
 
@@ -24,8 +25,9 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 
     case 'user':
         $sql->query('SELECT `id`, `address`, `name` FROM `servers` WHERE `user`="' . $server['user'] . '" AND (`status`!="overdue" OR `status`!="block")');
-        while ($sers = $sql->get())
+        while ($sers = $sql->get()) {
             $options .= '<option value="' . $sers['id'] . '">#' . $sers['id'] . ' ' . $sers['name'] . ' (' . $sers['address'] . ')</option>';
+        }
 
         $sql->query('SELECT `domain`, `passwd`, `login`, `date` FROM `web` WHERE `type`="' . $url['subsection'] . '" AND `user`="' . $server['user'] . '" LIMIT 1');
 
@@ -33,16 +35,18 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 
     case 'unit':
         $sql->query('SELECT `id`, `address`, `name` FROM `servers` WHERE `unit`="' . $server['unit'] . '" AND `user`="' . $server['user'] . '" AND (`status`!="overdue" OR `status`!="block")');
-        while ($sers = $sql->get())
+        while ($sers = $sql->get()) {
             $options .= '<option value="' . $sers['id'] . '">#' . $sers['id'] . ' ' . $sers['name'] . ' (' . $sers['address'] . ')</option>';
+        }
 
         $sql->query('SELECT `domain`, `passwd`, `login`, `date` FROM `web` WHERE `type`="' . $url['subsection'] . '" AND `user`="' . $server['user'] . '" AND `unit`="' . $server['unit'] . '" LIMIT 1');
 
         break;
 }
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/web/subsection/' . $url['subsection'] . '/action/install');
+}
 
 $web = $sql->get();
 

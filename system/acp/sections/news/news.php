@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `name`, `text`, `full_text`, `tags` FROM `news` WHERE `id`="' . $id . '" LIMIT 1');
 $news = $sql->get();
@@ -23,14 +24,17 @@ if ($go) {
     $aData['full'] = isset($_POST['full']) ? sys::bbc(trim($_POST['full'])) : htmlspecialchars_decode($news['full_text']);
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : htmlspecialchars_decode($news['tags']);
 
-    if (in_array('', $aData))
+    if (in_array('', $aData)) {
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    }
 
-    if (sys::strlen($aData['name']) > 50)
+    if (sys::strlen($aData['name']) > 50) {
         sys::outjs(array('e' => 'Заголовок не должен превышать 50 символов.'));
+    }
 
-    if (sys::strlen($aData['tags']) > 100)
+    if (sys::strlen($aData['tags']) > 100) {
         sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+    }
 
     $sql->query('UPDATE `news` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'

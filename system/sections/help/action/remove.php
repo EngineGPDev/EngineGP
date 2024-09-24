@@ -9,18 +9,21 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if ($user['group'] != 'admin')
+if ($user['group'] != 'admin') {
     sys::outjs(array('e' => 'У вас нет доступа к данному действию.'));
+}
 
 if ($id) {
     $msg = isset($url['msg']) ? sys::int($url['msg']) : sys::outjs(array('s' => 'ok'));
 
     $sql->query('SELECT `img` FROM `help_dialogs` WHERE `id`="' . $msg . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('s' => 'ok'));
+    }
 
     $images = $sql->get();
 

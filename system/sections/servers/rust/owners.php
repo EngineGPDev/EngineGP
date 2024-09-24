@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $aAccessI = array(
     'start' => 'Включение',
@@ -29,8 +30,9 @@ $aAccess = array('start', 'stop', 'restart', 'reinstall', 'update', 'console', '
 if (isset($url['rights']) and $url['rights'] > 0) {
     $sql->query('SELECT `rights` FROM `owners` WHERE `id`="' . sys::int($url['rights']) . '" AND `server`="' . $id . '" LIMIT 1');
 
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => 'Совладелец не найден.'));
+    }
 
     $owner = $sql->get();
 
@@ -38,8 +40,11 @@ if (isset($url['rights']) and $url['rights'] > 0) {
 
     $rights = '';
 
-    foreach ($aAccess as $access)
-        if ($aRights[$access]) $rights .= $aAccessI[$access] . ', ';
+    foreach ($aAccess as $access) {
+        if ($aRights[$access]) {
+            $rights .= $aAccessI[$access] . ', ';
+        }
+    }
 
     sys::outjs(array('s' => substr($rights, 0, -2)));
 }
@@ -48,8 +53,9 @@ if (isset($url['rights']) and $url['rights'] > 0) {
 if (isset($url['delete']) and $url['delete'] > 0) {
     $sql->query('SELECT `rights` FROM `owners` WHERE `id`="' . sys::int($url['delete']) . '" AND `server`="' . $id . '" LIMIT 1');
 
-    if ($sql->num())
+    if ($sql->num()) {
         $sql->query('DELETE FROM `owners` WHERE `id`="' . sys::int($url['delete']) . '" AND `server`="' . $id . '" LIMIT 1');
+    }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/owners');
 }
@@ -63,29 +69,34 @@ if ($go) {
     $aDate = isset($aData['\'time\'']) ? explode('.', $aData['\'time\'']) : explode('.', date('d.m.Y', $start_point));
     $aTime = explode(':', date('H:i:s', $start_point));
 
-    if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2]))
+    if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2])) {
         sys::outjs(array('e' => 'Дата доступа указана неверно.'), $nmch);
+    }
 
     $time = mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2]) + 3600;
 
-    if ($time < $start_point)
+    if ($time < $start_point) {
         sys::outjs(array('e' => 'Время доступа не может быть меньше 60 минут.'), $nmch);
+    }
 
     // Проверка пользователя
-    if (!isset($aData['\'user\'']))
+    if (!isset($aData['\'user\''])) {
         sys::outjs(array('e' => 'Необходимо указать пользователя.'), $nmch);
+    }
 
-    if (is_numeric($aData['\'user\'']))
+    if (is_numeric($aData['\'user\''])) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['\'user\''] . '" LIMIT 1');
-    else {
-        if (sys::valid($aData['\'user\''], 'other', $aValid['login']))
+    } else {
+        if (sys::valid($aData['\'user\''], 'other', $aValid['login'])) {
             sys::outjs(array('e' => sys::text('input', 'login_valid')), $nmch);
+        }
 
         $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aData['\'user\''] . '" LIMIT 1');
     }
 
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => 'Пользователь не найден в базе.'), $nmch);
+    }
 
     $uowner = $sql->get();
 
@@ -95,13 +106,15 @@ if ($go) {
     if (!$sql->num($owner)) {
         $sql->query('SELECT `id` FROM `owners` WHERE `server`="' . $id . '" LIMIT 5');
 
-        if ($sql->num() == 5)
+        if ($sql->num() == 5) {
             sys::outjs(array('e' => 'Вы добавили максимально число совладельцев.'), $nmch);
+        }
     }
 
     $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" AND `user`="' . $uowner['id'] . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Владельца сервера нельзя добавить в совладельцы.'), $nmch);
+    }
 
     $aRights = array();
 
@@ -113,14 +126,16 @@ if ($go) {
         $check += $aRights[$access];
     }
 
-    if (!$check)
+    if (!$check) {
         sys::outjs(array('e' => 'Необходимо включить минимум одно разрешение.'), $nmch);
+    }
 
 
-    if ($sql->num($owner))
+    if ($sql->num($owner)) {
         $sql->query('UPDATE `owners` set `rights`="' . sys::b64js($aRights) . '", `time`="' . $time . '" WHERE `server`="' . $id . '" AND `user`="' . $uowner['id'] . '" LIMIT 1');
-    else
+    } else {
         $sql->query('INSERT INTO `owners` set `server`="' . $id . '", `user`="' . $uowner['id'] . '", `rights`="' . sys::b64js($aRights) . '", `time`="' . $time . '"');
+    }
 
     sys::outjs(array('s' => 'ok'), $nmch);
 }
@@ -131,18 +146,20 @@ $html->nav('Друзья');
 
 $cache = $mcache->get('server_owners_' . $id);
 
-if ($cache != '')
+if ($cache != '') {
     $html->arr['main'] = $cache;
-else {
+} else {
     $owners = $sql->query('SELECT `id`, `user`, `rights`, `time` FROM `owners` WHERE `server`="' . $id . '" AND `time`>"' . $start_point . '" ORDER BY `id` ASC LIMIT 5');
 
-    if ($sql->num())
+    if ($sql->num()) {
         include(LIB . 'games/games.php');
+    }
 
     while ($owner = $sql->get($owners)) {
         $sql->query('SELECT `login` FROM `users` WHERE `id`="' . $owner['user'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             continue;
+        }
 
         $uowner = $sql->get();
 

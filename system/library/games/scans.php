@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class scans
 {
@@ -33,13 +34,15 @@ class scans
 
         $nmch = 'server_resources_' . $id;
 
-        if (is_array($mcache->get($nmch)))
+        if (is_array($mcache->get($nmch))) {
             return $mcache->get($nmch);
+        }
 
         $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `slots`, `slots_start`, `status`, `online`, `ram`, `cpu`, `hdd`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $server = $sql->get();
 
@@ -58,26 +61,29 @@ class scans
 
         include(LIB . 'ssh.php');
 
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return $resources;
+        }
 
-        if (!in_array($server['status'], array('working', 'start', 'restart', 'change')))
+        if (!in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
             return $resources;
+        }
 
         $resources['usr'] = ceil(100 / $server['slots_start'] * $server['online']);
         $resources['usr'] = $resources['usr'] > 100 ? 100 : $resources['usr'];
 
         $cr = explode('|', $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\''));
 
-        if (isset($cr[0])){
+        if (isset($cr[0])) {
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
         }
 
         $resources['cpu'] = $resources['cpu'] / $server['cpu'] * 100;
         $resources['cpu'] = $resources['cpu'] > 100 ? 100 : round($resources['cpu']);
 
-        if (isset($cr[1]))
+        if (isset($cr[1])) {
             $resources['ram'] = str_replace(',', '.', $cr[1]);
+        }
 
         $resources['ram'] = $resources['ram'] > 100 ? 100 : round($resources['ram']);
 
@@ -97,8 +103,9 @@ class scans
 
         $nmch = 'server_status_' . $id;
 
-        if ($mcache->get($nmch))
+        if ($mcache->get($nmch)) {
             return 'mcache -> system_block_operation';
+        }
 
         $mcache->set($nmch, true, false, $cfg['mcache_server_status']);
 
@@ -127,8 +134,9 @@ class scans
 
         include(LIB . 'ssh.php');
 
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return 'unit error connect';
+        }
 
         // Если аренда закончилась, а сервер не просрочен
         if ($server['time'] < $start_point && !in_array($server['status'], array('overdue', 'blocked'))) {
@@ -138,8 +146,9 @@ class scans
             $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
                 . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
-            if ($server['ftp'])
+            if ($server['ftp']) {
                 $ssh->set("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");
+            }
 
             $sql->query('UPDATE `servers` set `status`="overdue", `online`="0", `players`="", `ftp`="0", `overdue`="' . $start_point . '", `mail`="1" WHERE `id`="' . $id . '" LIMIT 1');
 
@@ -226,8 +235,9 @@ class scans
                 break;
 
             case 'blocked':
-                if ($server['block'] > $start_point)
+                if ($server['block'] > $start_point) {
                     break;
+                }
 
                 $sql->query('UPDATE `servers` set `status`="off", `block`="0" WHERE `id`="' . $id . '" LIMIT 1');
 

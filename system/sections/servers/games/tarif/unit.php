@@ -9,19 +9,22 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Выполнение операции
 if ($go) {
-    if ($server['status'] != 'off')
+    if ($server['status'] != 'off') {
         sys::outjs(array('e' => 'Игровой сервер должен быть выключен'), $nmch);
+    }
 
     $pack = isset($url['pack']) ? $url['pack'] : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
 
     // Проверка сборки
-    if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true)))
+    if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true))) {
         sys::outjs(array('e' => 'Сборка не найдена.'));
+    }
 
     $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
     $tarif = array_merge(array('pack' => $pack), $sql->get());
@@ -62,8 +65,9 @@ if ($go) {
         }
     }
 
-    if (!$ip || !$port)
+    if (!$ip || !$port) {
         sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
+    }
 
     $server['id'] = $id;
 
@@ -94,9 +98,11 @@ if ($go) {
 $packs = '';
 $aPack = sys::b64djs($tarif['packs'], true);
 
-if (is_array($aPack))
-    foreach ($aPack as $index => $name)
+if (is_array($aPack)) {
+    foreach ($aPack as $index => $name) {
         $packs .= '<option value="' . $index . '">' . $name . '</option>';
+    }
+}
 
 // Выхлоп информации
 sys::outjs(array('s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')', 'p' => $packs));

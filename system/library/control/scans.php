@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class scans
 {
@@ -31,13 +32,15 @@ class scans
 
         $nmch = 'ctrl_server_resources_' . $id;
 
-        if (is_array($mcache->get($nmch)))
+        if (is_array($mcache->get($nmch))) {
             return $mcache->get($nmch);
+        }
 
         $sql->query('SELECT `uid`, `unit`, `game`, `slots`, `status`, `online`, `hdd_use` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $server = $sql->get();
 
@@ -53,24 +56,28 @@ class scans
 
         include(LIB . 'ssh.php');
 
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return $resources;
+        }
 
-        if (!in_array($server['status'], array('working', 'start', 'restart', 'change')))
+        if (!in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
             return $resources;
+        }
 
         $resources['usr'] = ceil(100 / $server['slots'] * $server['online']);
         $resources['usr'] = $resources['usr'] > 100 ? 100 : $resources['usr'];
 
         $cr = explode('|', $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\''));
 
-        if (isset($cr[0]))
+        if (isset($cr[0])) {
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
+        }
 
         $resources['cpu'] = $resources['cpu'] > 100 ? 100 : round($resources['cpu']);
 
-        if (isset($cr[1]))
+        if (isset($cr[1])) {
             $resources['ram'] = str_replace(',', '.', $cr[1]);
+        }
 
         // ram на сервер
         $ram = $server['ram'] ? $server['ram'] : $server['slots'] * $cfg['ram'][$server['game']];
@@ -95,8 +102,9 @@ class scans
 
         $nmch = 'ctrl_server_status_' . $id;
 
-        if ($mcache->get($nmch))
+        if ($mcache->get($nmch)) {
             return 'mcache -> system_block_operation';
+        }
 
         $mcache->set($nmch, true, false, $cfg['mcache_server_status']);
 
@@ -108,8 +116,9 @@ class scans
 
         include(LIB . 'ssh.php');
 
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return 'unit error connect';
+        }
 
         switch ($server['status']) {
             case 'working':

@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_scan_servers_admins extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $sql, $argv, $start_point;
 
@@ -24,12 +25,14 @@ class control_scan_servers_admins extends cron
 
         $game = $servers[3];
 
-        if (!array_key_exists($game, cron::$admins_file))
-            return NULL;
+        if (!array_key_exists($game, cron::$admins_file)) {
+            return null;
+        }
 
         $sql->query('SELECT `address` FROM `control` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -44,8 +47,9 @@ class control_scan_servers_admins extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         foreach ($servers as $id) {
             $sql->query('SELECT `uid` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
@@ -53,8 +57,9 @@ class control_scan_servers_admins extends cron
 
             $admins = $sql->query('SELECT `id`, `text` FROM `control_admins_' . $game . '` WHERE `server`="' . $id . '" AND `active`="1" AND `time`<"' . $start_point . '"');
 
-            if (!$sql->num($admins))
+            if (!$sql->num($admins)) {
                 continue;
+            }
 
             $cmd = 'cd /servers/' . $server['uid'] . ';';
 
@@ -70,6 +75,6 @@ class control_scan_servers_admins extends cron
             $ssh->set($cmd);
         }
 
-        return NULL;
+        return null;
     }
 }

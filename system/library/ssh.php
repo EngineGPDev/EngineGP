@@ -9,23 +9,25 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 use phpseclib3\Net\SSH2;
 use phpseclib3\Net\SFTP;
 
 class ssh
 {
-    var $conn;
-    var $sftp;
-    var $stream;
+    public $conn;
+    public $sftp;
+    public $stream;
     private $alternativeInterfaces = ['enp3s0', 'enp0s31f6', 'enp0s3', 'ens3', 'eth0'];
 
     public function auth($passwd, $address)
     {
-        if ($this->connect($address) and $this->auth_pwd('root', $passwd))
+        if ($this->connect($address) and $this->auth_pwd('root', $passwd)) {
             return true;
+        }
 
         return false;
     }
@@ -53,8 +55,9 @@ class ssh
     public function setfile($localFile, $remoteFile)
     {
         if ($this->sftp->isConnected() && $this->sftp->isAuthenticated()) {
-            if ($this->sftp->put($remoteFile, $localFile, SFTP::SOURCE_LOCAL_FILE))
+            if ($this->sftp->put($remoteFile, $localFile, SFTP::SOURCE_LOCAL_FILE)) {
                 return true;
+            }
         }
 
         return false;
@@ -63,8 +66,9 @@ class ssh
     public function getfile($remoteFile, $localFile)
     {
         if ($this->sftp->isConnected() && $this->sftp->isAuthenticated()) {
-            if ($this->sftp->get($remoteFile, $localFile))
+            if ($this->sftp->get($remoteFile, $localFile)) {
                 return true;
+            }
         }
 
         return false;
@@ -77,8 +81,9 @@ class ssh
 
     public function auth_pwd($u, $p)
     {
-        if ($this->conn->login($u, $p) && $this->sftp->login($u, $p))
+        if ($this->conn->login($u, $p) && $this->sftp->login($u, $p)) {
             return true;
+        }
 
         return false;
     }
@@ -109,4 +114,4 @@ class ssh
     }
 }
 
-$ssh = new ssh;
+$ssh = new ssh();

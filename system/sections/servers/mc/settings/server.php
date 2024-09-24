@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Параметры server.cfg');
 
@@ -23,8 +24,9 @@ $tarif = $sql->get();
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
@@ -37,9 +39,11 @@ if ($go) {
 
     $config = '';
 
-    foreach ($servercfg as $cvar => $val)
-        if ($val != '')
+    foreach ($servercfg as $cvar => $val) {
+        if ($val != '') {
             $config .= str_replace("'", '', $cvar) . '=' . $val . PHP_EOL;
+        }
+    }
 
     // Временый файл
     $temp = sys::temp($config);
@@ -68,8 +72,9 @@ foreach ($fScfg as $line) {
     // имя квара
     $cvar = sys::first(explode('=', $line));
 
-    if ($cvar == '')
+    if ($cvar == '') {
         continue;
+    }
 
     // убираем имя квара и оставляем только значение
     $value = str_replace($cvar . '=', '', $line);
@@ -78,25 +83,29 @@ foreach ($fScfg as $line) {
     preg_match_all('~([^"]+)~', $value, $cvar_value, PREG_SET_ORDER);
 
     // Исключаем комментарии
-    if ($cvar == '//')
+    if ($cvar == '//') {
         continue;
+    }
 
     $val = sys::first(explode(' //', $cvar_value[0][1]));
 
     // Добавляем данные в массив
-    if (array_key_exists($cvar, $aScfg))
+    if (array_key_exists($cvar, $aScfg)) {
         $servercfg[$cvar] = trim($val);
+    }
 }
 
 foreach ($aScfg as $name => $desc) {
-    if (!isset($servercfg[$name]))
+    if (!isset($servercfg[$name])) {
         $servercfg[$name] = '';
+    }
 
     // Формирование формы
-    if (strpos($aScfg_form[$name], 'select'))
+    if (strpos($aScfg_form[$name], 'select')) {
         $form = str_replace('value="' . $servercfg[$name] . '"', 'value="' . $servercfg[$name] . '" selected="select"', $aScfg_form[$name]);
-    else
+    } else {
         $form = str_replace('[' . $name . ']', $servercfg[$name], $aScfg_form[$name]);
+    }
 
     $html->get('servercfg_list', 'sections/servers/games/settings');
 

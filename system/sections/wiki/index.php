@@ -9,16 +9,18 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Категории вопросов');
 
 $cats = $sql->query('SELECT `id`, `name` FROM `wiki_category` ORDER BY `sort` ASC');
 while ($cat = $sql->get($cats)) {
     $sql->query('SELECT `id` FROM `wiki` WHERE `cat`="' . $cat['id'] . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         continue;
+    }
 
     $html->get('list', 'sections/wiki/category');
 

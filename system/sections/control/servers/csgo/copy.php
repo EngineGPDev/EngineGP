@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     // Подразделы
@@ -18,19 +19,22 @@ if ($go) {
 
     // Если выбран подраздел
     if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
-        if ($url['subsection'] != 'check')
+        if ($url['subsection'] != 'check') {
             $nmch = sys::rep_act('ctrl_server_copy_go_' . $sid, 10);
+        }
 
-        if ($server['status'] != 'off' and $url['subsection'] != 'remove')
+        if ($server['status'] != 'off' and $url['subsection'] != 'remove') {
             sys::outjs(array('e' => 'Игровой сервер должен быть выключен'), $nmch);
+        }
 
         $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
         $unit = $sql->get();
 
         include(LIB . 'ssh.php');
 
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        }
 
         include(SEC . 'control/servers/games/copy/' . $url['subsection'] . '.php');
     }
@@ -41,9 +45,9 @@ $html->nav('Список игровых серверов #' . $id, $cfg['http'] 
 $html->nav($server['address'], $cfg['http'] . 'control/id/' . $id . '/server/' . $sid);
 $html->nav('Резервные копии');
 
-if ($mcache->get('ctrl_server_copy_' . $sid) != '')
+if ($mcache->get('ctrl_server_copy_' . $sid) != '') {
     $html->arr['main'] = $mcache->get('ctrl_server_copy_' . $sid);
-else {
+} else {
     // Построение списка создания копии
     foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
         $html->get('list', 'sections/control/servers/games/copy');

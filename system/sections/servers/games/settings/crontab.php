@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Планировщик задач');
 
@@ -23,16 +24,18 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if (!$ssh->auth($panel['passwd'], $panel['address']))
+    if (!$ssh->auth($panel['passwd'], $panel['address'])) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     // Удаление задания
     if (isset($url['action']) and $url['action'] == 'delete') {
         $task = isset($_POST['task']) ? sys::int($_POST['task']) : sys::outjs(array('s' => 'ok'), $nmch);
 
         $sql->query('SELECT `cron` FROM `crontab` WHERE `id`="' . $task . '" AND `server`="' . $id . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('s' => 'ok'), $nmch);
+        }
 
         $cron = $sql->get();
 
@@ -47,8 +50,9 @@ if ($go) {
 
     // Добавление задания
     $sql->query('SELECT `id` FROM `crontab` WHERE `server`="' . $id . '" LIMIT 5');
-    if ($sql->num() == $cfg['crontabs'])
+    if ($sql->num() == $cfg['crontabs']) {
         sys::outjs(array('e' => sys::text('servers', 'crontab')), $nmch);
+    }
 
     $data = array();
 
@@ -56,8 +60,9 @@ if ($go) {
 
     $task = in_array($server['game'], array('samp', 'crmp')) ? array('start', 'restart', 'stop') : array('start', 'restart', 'stop', 'console');
 
-    if (!in_array($data['task'], $task))
+    if (!in_array($data['task'], $task)) {
         $data['task'] = 'start';
+    }
 
     $data['commands'] = isset($_POST['commands']) ? base64_encode(htmlspecialchars($_POST['commands'])) : '';
     $data['allhour'] = isset($_POST['allhour']) ? true : false;
@@ -103,10 +108,11 @@ $html->get('crontab', 'sections/servers/' . $server['game'] . '/settings');
 $html->set('id', $id);
 $html->set('time', date('H:i:s', $start_point));
 
-if ($server['autostop'])
+if ($server['autostop']) {
     $html->unit('!autostop');
-else
+} else {
     $html->unit('!autostop', 1);
+}
 
 $html->set('crontab', isset($html->arr['crontab']) ? $html->arr['crontab'] : '');
 $html->pack('main');

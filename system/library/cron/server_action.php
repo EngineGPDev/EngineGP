@@ -9,19 +9,21 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class server_action extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $argv, $mcache;
 
         $nmch = 'cron_server_action_' . $argv[5];
 
-        if ($mcache->get($nmch))
-            return NULL;
+        if ($mcache->get($nmch)) {
+            return null;
+        }
 
         $mcache->set($nmch, true, false, 10);
 
@@ -37,27 +39,30 @@ class server_action extends cron
             $unit = $sql->get();
 
             // Проверка ssh соедниения пу с локацией
-            if (!$ssh->auth($unit['passwd'], $unit['address']))
-                return NULL;
+            if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+                return null;
+            }
 
             $sql->query('SELECT `commands` FROM `crontab` WHERE `id`="' . $argv[6] . '" LIMIT 1');
             $cron = $sql->get();
 
             $aCmd = explode("\n", base64_decode($cron['commands']));
 
-            foreach ($aCmd as $cmd)
+            foreach ($aCmd as $cmd) {
                 $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . sys::cmd($cmd) . '"\015\'; sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
+            }
 
-            return NULL;
+            return null;
         }
 
         include(LIB . 'games/' . $argv[4] . '/action.php');
 
-        if ($argv[3] == 'restart')
+        if ($argv[3] == 'restart') {
             action::start($argv[5], 'restart');
-        else
+        } else {
             action::start($argv[5]);
+        }
 
-        return NULL;
+        return null;
     }
 }

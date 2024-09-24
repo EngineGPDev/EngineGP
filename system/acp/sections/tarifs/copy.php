@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT * FROM `tarifs` WHERE `id`="' . $id . '" LIMIT 1');
 $tarif = $sql->get();
@@ -27,8 +28,9 @@ $show = $tarif['show'] ? '<option value="1">Доступна</option><option val
 $units = '<option value="0">Выберите локацию</option>';
 
 $sql->query('SELECT `id`, `name` FROM `units` ORDER BY `id` ASC');
-while ($unit = $sql->get())
+while ($unit = $sql->get()) {
     $units .= '<option value="' . $unit['id'] . '">#' . $unit['id'] . ' ' . $unit['name'] . '</option>';
+}
 
 $games = str_replace('"' . $tarif['game'] . '"', '"' . $tarif['game'] . '" selected="select"', $games);
 
@@ -39,16 +41,18 @@ if ($tarif['game'] == 'cssold') {
 
     $aPrice = sys::b64djs($tarif['price']);
 
-    foreach ($aPrice as $price)
+    foreach ($aPrice as $price) {
         $sprice .= $price . ':';
+    }
 
     $sprice = isset($sprice[0]) ? substr($sprice, 0, -1) : '';
 
     $tarif['price'] = $sprice;
 }
 
-foreach ($tarif as $field => $val)
+foreach ($tarif as $field => $val) {
     $html->set($field, $val);
+}
 
 $html->set('units', $units);
 $html->set('games', $games);
@@ -58,18 +62,20 @@ $html->set('autostop', $autostop);
 $html->set('show', $show);
 
 foreach (array('ftp', 'plugins', 'console', 'stats', 'copy', 'web') as $section) {
-    if ($tarif[$section])
+    if ($tarif[$section]) {
         $html->unit($section, 1);
-    else
+    } else {
         $html->unit($section);
+    }
 }
 
 $packs = '';
 
 $aPacks = sys::b64djs($tarif['packs']);
 
-foreach ($aPacks as $name => $fullname)
+foreach ($aPacks as $name => $fullname) {
     $packs .= '"' . $name . '":"' . $fullname . '",';
+}
 
 $packs = isset($packs[0]) ? substr($packs, 0, -1) : '';
 
@@ -79,8 +85,9 @@ $plugins = '';
 
 $aPlugins = sys::b64djs($tarif['plugins_install']);
 
-foreach ($aPlugins as $pack => $list)
+foreach ($aPlugins as $pack => $list) {
     $plugins .= '"' . $pack . '":"' . $list . '",';
+}
 
 $plugins = isset($plugins[0]) ? substr($plugins, 0, -1) : '';
 

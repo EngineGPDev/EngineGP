@@ -9,20 +9,23 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Списки карт');
 
 $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $unit = $sql->get();
 
-if (!isset($ssh))
+if (!isset($ssh)) {
     include(LIB . 'ssh.php');
+}
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/maps');
 }
@@ -49,8 +52,9 @@ if ($go and isset($url['gen'])) {
     foreach ($aMaps as $index => $map) {
         $aMap = explode('/', $map);
         $name = end($aMap);
-        if (strlen($name) < 4)
+        if (strlen($name) < 4) {
             continue;
+        }
 
         $list .= $map . "\n";
     }
@@ -65,8 +69,9 @@ $aFiles = array(
 
 // Сохранение
 if ($go and isset($url['file'])) {
-    if (!array_key_exists($url['file'], $aFiles))
+    if (!array_key_exists($url['file'], $aFiles)) {
         exit;
+    }
 
     $data = isset($_POST['data']) ? $_POST['data'] : '';
 

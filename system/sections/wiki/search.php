@@ -9,21 +9,25 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 $text = isset($_POST['text']) ? $_POST['text'] : (isset($url['tag']) ? urldecode($url['tag']) : sys::outjs(array('none' => '')));
 
 $mkey = md5($text . 'wiki');
 
-if ($mcache->get($mkey) != '' and !isset($url['tag']))
+if ($mcache->get($mkey) != '' and !isset($url['tag'])) {
     sys::outjs(array('s' => $mcache->get($mkey)));
+}
 
-if (!isset($text[2]) and !isset($url['tag']))
+if (!isset($text[2]) and !isset($url['tag'])) {
     sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
+}
 
 $aWiki_q = array();
 $aNswer_q = array();
@@ -50,8 +54,9 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
     $sWord = false;
 
     foreach ($aText as $word) {
-        if ($word == '' || !isset($word[2]))
+        if ($word == '' || !isset($word[2])) {
             continue;
+        }
 
         // Поиск по вопросу
         $wiki_q = $sql->query('SELECT `id` FROM `wiki` WHERE `name` LIKE FROM_BASE64(\'' . base64_encode('%' . $word . '%') . '\') OR `tags` LIKE FROM_BASE64(\'' . base64_encode('%' . $word . '%') . '\') LIMIT 5');
@@ -59,11 +64,13 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
         // Поиск по тексту (ответу)
         $answer_q = $sql->query('SELECT `wiki` FROM `wiki_answer` WHERE `text` LIKE FROM_BASE64(\'' . base64_encode('%' . $word . '%') . '\') LIMIT 5');
 
-        if ($sql->num($wiki_q))
+        if ($sql->num($wiki_q)) {
             $aWiki_q[] = $wiki_q;
+        }
 
-        if ($sql->num($answer_q))
+        if ($sql->num($answer_q)) {
             $aNswer_q[] = $answer_q;
+        }
     }
 
 } else {
@@ -84,8 +91,9 @@ foreach ($aWiki_q as $index => $wiki_q) {
     // Генерация списка (совпадение по вопросу)
     while ($wiki = $sql->get($wiki_q)) {
         // Проверка дублирования
-        if (in_array($wiki['id'], $aResult))
+        if (in_array($wiki['id'], $aResult)) {
             continue;
+        }
 
         $sql->query('SELECT `id`, `name`, `tags`, `date` FROM `wiki` WHERE `id`="' . $wiki['id'] . '" LIMIT 1');
         $quest = $sql->get();
@@ -119,8 +127,9 @@ foreach ($aNswer_q as $index => $answer_q) {
     // Генерация списка (совпадение по ответу)
     while ($answer = $sql->get($answer_q)) {
         // Проверка дублирования
-        if (in_array($answer['wiki'], $aResult))
+        if (in_array($answer['wiki'], $aResult)) {
             continue;
+        }
 
         $sql->query('SELECT `id`, `name`, `tags`, `date` FROM `wiki` WHERE `id`="' . $answer['wiki'] . '" LIMIT 1');
         $quest = $sql->get();
@@ -152,8 +161,9 @@ $html->arr['question'] = isset($html->arr['question']) ? $html->arr['question'] 
 
 $mcache->set($mkey, $html->arr['question'], false, 15);
 
-if (!isset($url['tag']))
+if (!isset($url['tag'])) {
     sys::outjs(array('s' => $html->arr['question']), $nmch);
+}
 
 $html->nav('Категории вопросов', $cfg['http'] . 'wiki');
 $html->nav('Поиск по тегам');

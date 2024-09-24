@@ -9,21 +9,24 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $aAction = array('script', 'sqlpasswd', 'proftpd', 'proftpd_modules', 'proftpd_sql', 'proftpd_passwd', 'proftpd_sqldump', 'rclocal', 'nginx', 'mysqlaptconfig', 'endinstall');
 
-if (!isset($url['action']) || !in_array($url['action'], $aAction))
+if (!isset($url['action']) || !in_array($url['action'], $aAction)) {
     include(ENG . '404.php');
+}
 
 $del = true;
 
 switch ($url['action']) {
     case 'script':
         $sql->query('SELECT `id` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::out($uip);
+        }
 
         $del = false;
         $tmp = DATA . 'control/egpautounit.sh';
@@ -32,14 +35,15 @@ switch ($url['action']) {
 
     case 'sqlpasswd':
         $sql->query('SELECT `id`, `sql_passwd` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             include(ENG . '404.php');
+        }
 
         $unit = $sql->get();
 
-        if ($unit['sql_passwd'])
+        if ($unit['sql_passwd']) {
             $tmp = sys::temp($unit['sql_passwd']);
-        else {
+        } else {
             $passwd = sys::passwd();
             $tmp = sys::temp($passwd);
             $sql->query('UPDATE `control` set `sql_passwd`="' . $passwd . '" WHERE `id`="' . $unit['id'] . '" LIMIT 1');
@@ -49,8 +53,9 @@ switch ($url['action']) {
 
     case 'proftpd_sql':
         $sql->query('SELECT `id`, `sql_passwd` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             include(ENG . '404.php');
+        }
 
         $unit = $sql->get();
 
@@ -61,8 +66,9 @@ switch ($url['action']) {
 
     case 'proftpd_passwd':
         $sql->query('SELECT `id`, `sql_passwd` FROM `control` WHERE `address`="' . $uip . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             include(ENG . '404.php');
+        }
 
         $unit = $sql->get();
 
@@ -76,6 +82,7 @@ switch ($url['action']) {
 
         sys::out('ok:' . $uip);
 
+        // no break
     default:
         sys::outfile(DATA . 'control/' . $url['action'] . '.txt', $url['action']);
 }

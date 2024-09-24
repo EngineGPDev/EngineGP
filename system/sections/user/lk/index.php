@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `name`, `lastname`, `patronymic`, `mail`, `wmr`, `phone`, `contacts`, `date`, `part_money`, `rental`, `extend` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
 $user = array_merge($user, $sql->get());
@@ -18,24 +19,26 @@ $user = array_merge($user, $sql->get());
 // Подсчет рефералов
 $nmch = 'part_' . $user['id'];
 
-if ($mcache->get($nmch) != '')
+if ($mcache->get($nmch) != '') {
     $part_users = $mcache->get($nmch);
-else {
+} else {
     $sql->query('SELECT `id` FROM `users` WHERE `part`="' . $user['id'] . '"');
     $part_users = $sql->num();
 
     $mcache->set($nmch, $part_users, false, 300);
 }
 
-if ($user['rental'])
+if ($user['rental']) {
     $rental = strpos($user['rental'], '%') ? $user['rental'] : $user['rental'] . ' ' . $cfg['currency'];
-else
+} else {
     $rental = 'отсутствует';
+}
 
-if ($user['extend'])
+if ($user['extend']) {
     $extend = strpos($user['extend'], '%') ? $user['extend'] : $user['extend'] . ' ' . $cfg['currency'];
-else
+} else {
     $extend = 'отсутствует';
+}
 
 $i = 1;
 
@@ -75,15 +78,32 @@ $html->set('part_users', $part_users);
 $html->set('part_money', $user['part_money']);
 $html->set('part_user', $part_user);
 
-if ($user['name']) $html->unit('name', true); else $html->unit('name');
-if ($user['lastname']) $html->unit('lastname', true); else $html->unit('lastname');
-if ($user['patronymic']) $html->unit('patronymic', true); else $html->unit('patronymic');
+if ($user['name']) {
+    $html->unit('name', true);
+} else {
+    $html->unit('name');
+}
+if ($user['lastname']) {
+    $html->unit('lastname', true);
+} else {
+    $html->unit('lastname');
+}
+if ($user['patronymic']) {
+    $html->unit('patronymic', true);
+} else {
+    $html->unit('patronymic');
+}
 
-if ($user['name'] || $user['lastname'] || $user['patronymic']) $html->unit('nlp', true); else $html->unit('nlp');
+if ($user['name'] || $user['lastname'] || $user['patronymic']) {
+    $html->unit('nlp', true);
+} else {
+    $html->unit('nlp');
+}
 
-if (isset($user['wmr'][0]) and in_array($user['wmr'][0], array('R', 'Z', 'U')))
+if (isset($user['wmr'][0]) and in_array($user['wmr'][0], array('R', 'Z', 'U'))) {
     $html->unit('wmr', true, true);
-else
+} else {
     $html->unit('wmr', false, true);
+}
 
 $html->pack('main');

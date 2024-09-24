@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
 
@@ -21,15 +22,17 @@ $cache = $mcache->get($mkey);
 $nmch = null;
 
 if (is_array($cache)) {
-    if ($go)
+    if ($go) {
         sys::outjs($cache, $nmch);
+    }
 
     sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+    }
 
     sys::outjs(array('e' => ''));
 }
@@ -49,9 +52,9 @@ if (in_array($check[0], array('server', 'user'))) {
         case 'user':
             $sql->query('SELECT ' . $select . ' WHERE `user`="' . sys::int($val) . '" ORDER BY `id` DESC');
     }
-} elseif ($text[0] == 'i' and $text[1] == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd') {
     $sql->query('SELECT ' . $select . ' WHERE `id`="' . sys::int($text) . '" LIMIT 1');
-else {
+} else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`user` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`server` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -61,8 +64,9 @@ else {
 }
 
 if (!$sql->num()) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+    }
 
     sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
 }
@@ -74,10 +78,11 @@ while ($log = $sql->get()) {
     $list .= '<td>' . $log['id'] . '</td>';
     $list .= '<td>' . $log['text'] . '</td>';
 
-    if (!$log['user'])
+    if (!$log['user']) {
         $list .= '<td class="text-center">Система</td>';
-    else
+    } else {
         $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $log['user'] . '">USER_' . $log['user'] . '</a></td>';
+    }
 
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/server/id/' . $log['server'] . '">SERVER_' . $log['server'] . '</a></td>';
     $list .= '<td class="text-center">' . date('d.m.Y - H:i:s', $log['time']) . '</td>';

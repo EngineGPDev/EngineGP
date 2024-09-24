@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!$go)
+if (!$go) {
     exit;
+}
 
 $aData = array();
 
@@ -37,8 +39,9 @@ switch ($aWebInstall[$server['game']][$aData['type']]) {
         break;
 }
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Дополнительная услуга не установлена.'), $nmch);
+}
 
 $web = $sql->get();
 
@@ -50,23 +53,27 @@ include(LIB . 'web/free.php');
 
 foreach ($aData['server'] as $sid) {
     $sql->query('SELECT `id`, `uid`, `unit`, `user`, `address`, `port`, `game`, `ftp_use`, `ftp`, `ftp_root`, `ftp_passwd` FROM `servers` WHERE `id`="' . $sid . '" AND `user`="' . $server['user'] . '" AND `game`="cs" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         continue;
+    }
 
     $server = $sql->get();
 
     $address = $server['address'];
 
-    if (!$server['ftp_use'])
+    if (!$server['ftp_use']) {
         continue;
+    }
 
-    if (!$server['ftp'])
+    if (!$server['ftp']) {
         sys::outjs(array('r' => 'Для подключения игрового сервера необходимо включить FileTP.', 'url' => $cfg['http'] . 'servers/id/' . $sid . '/section/filetp'), $nmch);
+    }
 
     $stack = web::stack($aData, '`login`');
 
-    if (!$sql->num($stack))
+    if (!$sql->num($stack)) {
         continue;
+    }
 
     // Каталог логов сервера
     $dir = ($cfg['ftp']['root'][$server['game']] || $server['ftp_root']) ? '/cstrike/addons/amxmodx/data' : '/addons/amxmodx/data';
@@ -90,8 +97,9 @@ include(LIB . 'ssh.php');
 
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('ssh', 'error')), $nmch);
+}
 
 // Директория дополнительной услуги
 $install = $aWebUnit['install'][$aWebUnit['unit'][$aData['type']]][$aData['type']] . $web['domain'];

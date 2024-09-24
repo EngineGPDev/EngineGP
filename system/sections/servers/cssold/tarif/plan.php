@@ -9,31 +9,36 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 $plan = isset($url['plan']) ? $url['plan'] : sys::outjs(array('e' => 'Переданые не все данные'), $nmch);
 
 $aPrice = sys::b64djs($tarif['price']);
 
 // Проверка плана
-if (!array_key_exists($plan, $aPrice))
+if (!array_key_exists($plan, $aPrice)) {
     sys::outjs(array('e' => 'Переданы неверные данные'), $nmch);
+}
 
 list($tickrate, $fps) = explode('_', $plan);
 
-if ($tickrate == $server['tickrate'] and $fps == $server['fps'])
+if ($tickrate == $server['tickrate'] and $fps == $server['fps']) {
     sys::outjs(array('e' => 'Смысла в этой операции нет'), $nmch);
+}
 
-if (!tarif::price($tarif['price']))
+if (!tarif::price($tarif['price'])) {
     sys::outjs(array('e' => 'Чтобы изменить тариф, перейдите в настройки запуска'), $nmch);
+}
 
-if ($server['time'] < $start_point + 86400)
+if ($server['time'] < $start_point + 86400) {
     $time = $server['time'];
-else {
+} else {
     // Цена за 1 день (по новому тарифному плану)
     $price = $aPrice[$plan] / 30 * $server['slots'];
 

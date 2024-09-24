@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `unit`, `tarif`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -25,17 +26,19 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     $command = isset($_POST['command']) ? sys::cmd($_POST['command']) : '';
-    
+
     if (isset($server['status']) && $server['status'] == 'off') {
-        if ($command)
+        if ($command) {
             sys::outjs(array('e' => sys::text('servers', 'off')));
+        }
 
         sys::out(sys::text('servers', 'off'));
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        if ($command)
+        if ($command) {
             sys::outjs(array('e' => sys::text('error', 'ssh')));
+        }
 
         sys::out(sys::text('error', 'ssh'));
     }

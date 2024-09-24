@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `unit`, `tarif`, `pack`, `ddos` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -23,19 +24,21 @@ $aSub = array('start', 'server', 'admins', 'bans', 'firewall', 'crontab', 'start
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $html->nav('Настройки', $cfg['http'] . 'servers/id/' . $id . '/section/settings');
 
-    if ($go)
+    if ($go) {
         $nmch = sys::rep_act('server_settings_go_' . $id, 10);
+    }
 
-    if (in_array($url['subsection'], $aRouteSub['settings']))
+    if (in_array($url['subsection'], $aRouteSub['settings'])) {
         include(SEC . 'servers/games/settings/' . $url['subsection'] . '.php');
-    else
+    } else {
         include(SEC . 'servers/' . $server['game'] . '/settings/' . $url['subsection'] . '.php');
+    }
 } else {
     $html->nav('Настройки');
 
-    if ($mcache->get('server_settings_' . $id) != '')
+    if ($mcache->get('server_settings_' . $id) != '') {
         $html->arr['main'] = $mcache->get('server_settings_' . $id);
-    else {
+    } else {
         $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
@@ -48,8 +51,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $packs = '<option value="' . $server['pack'] . '">' . $aPacks[$server['pack']] . '</option>';
         unset($aPacks[$server['pack']]);
 
-        foreach ($aPacks as $pack => $desc)
+        foreach ($aPacks as $pack => $desc) {
             $packs .= '<option value="' . $pack . '">' . $desc . '</option>';
+        }
 
         $antiddos = '<option value="0">Индивидуальная защита отключена</option>'
             . '<option value="1">Индивидуальная защита (Заблокировать всех кроме: RU, UA)</option>'
@@ -65,8 +69,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         if (isset($html->arr['edits'])) {
             $html->set('edits', $html->arr['edits']);
             $html->unit('edits', 1);
-        } else
+        } else {
             $html->unit('edits');
+        }
 
         $sql->query('SELECT `key` FROM `api` WHERE `server`="' . $id . '" LIMIT 1');
         if ($sql->num()) {
@@ -74,8 +79,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
             $html->set('api', $api['key']);
             $html->unit('api', 1, 1);
-        } else
+        } else {
             $html->unit('api', 0, 1);
+        }
         $html->pack('main');
 
         $mcache->set('server_settings_' . $id, $html->arr['main'], false, 60);

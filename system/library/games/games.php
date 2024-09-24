@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class games
 {
@@ -18,8 +19,9 @@ class games
     {
         $aText = array('День', 'Дня', 'Дней');
 
-        if ($lower)
+        if ($lower) {
             $aText = array('день', 'дня', 'дней');
+        }
 
         return sys::date_decl($days, $aText);
     }
@@ -33,8 +35,9 @@ class games
     {
         global $cfg;
 
-        if (file_exists(TPL . '/images/country/' . $name . '.png'))
+        if (file_exists(TPL . '/images/country/' . $name . '.png')) {
             return $cfg['url'] . 'template/images/country/' . $name . '.png';
+        }
 
         return $cfg['url'] . 'template/images/country/none.png';
     }
@@ -43,8 +46,9 @@ class games
     {
         global $html, $text;
 
-        if (!in_array($status, array('install', 'reinstall', 'update', 'recovery', 'overdue', 'blocked')))
+        if (!in_array($status, array('install', 'reinstall', 'update', 'recovery', 'overdue', 'blocked'))) {
             return true;
+        }
 
         $aText = array(
             'install' => 'устанавливается',
@@ -57,8 +61,9 @@ class games
 
         $msg = sys::updtext(sys::text('servers', 'determine'), array('status' => $aText[$status]));
 
-        if ($go)
+        if ($go) {
             sys::out($msg);
+        }
 
         $html->get('informer');
 
@@ -84,24 +89,27 @@ class games
         $days = '';
 
         foreach ($aWeek as $index => $val) {
-            if ($val == '')
+            if ($val == '') {
                 continue;
+            }
 
             $days .= $val;
         }
 
         $days = substr($days, 0, -2);
 
-        if ($days == '')
+        if ($days == '') {
             $days = 'Пн., Вт., Ср., Чт., Пт., Сб., Вс.';
+        }
 
         return $days;
     }
 
     public static function crontab_time($allhour, $hour, $minute)
     {
-        if ($allhour)
+        if ($allhour) {
             return 'Каждый час';
+        }
 
         $aHour = array(
             '00', '01', '02',
@@ -121,11 +129,13 @@ class games
             '45', '50', '55'
         );
 
-        if (!in_array($hour, $aHour))
+        if (!in_array($hour, $aHour)) {
             $hour = '00';
+        }
 
-        if (!in_array($minute, $aMinute))
+        if (!in_array($minute, $aMinute)) {
             $minute = '00';
+        }
 
         return $hour . ':' . $minute;
     }
@@ -134,9 +144,9 @@ class games
     {
         global $cfg;
 
-        if ($data['allhour'])
+        if ($data['allhour']) {
             $time = '0 * * * ';
-        else {
+        } else {
             $hour = array(
                 '00', '01', '02',
                 '03', '04', '05',
@@ -155,11 +165,13 @@ class games
                 '45', '50', '55'
             );
 
-            if (!in_array($data['hour'], $hour))
+            if (!in_array($data['hour'], $hour)) {
                 $data['hour'] = '00';
+            }
 
-            if (!in_array($data['minute'], $minute))
+            if (!in_array($data['minute'], $minute)) {
                 $data['minute'] = '00';
+            }
 
             $time = $data['minute'] . ' ' . $data['hour'] . ' * * ';
         }
@@ -175,12 +187,13 @@ class games
 
         $check = 0;
 
-        foreach ($week as $index => $val)
+        foreach ($week as $index => $val) {
             $check += $val;
+        }
 
-        if ($check == 28 || !$check)
+        if ($check == 28 || !$check) {
             $week = '*';
-        else {
+        } else {
             $weeks = $week[1] . ',' . $week[2] . ',' . $week[3] . ',' . $week[4] . ',' . $week[5] . ',' . $week[6] . ',' . $week[7];
             $weeks = str_replace(array(',0', '0'), '', $weeks);
             $week = $weeks[0] == ',' ? substr($weeks, 1) : $weeks;
@@ -199,54 +212,68 @@ class games
 
         $cache = $mcache->get($nmch);
 
-        if (is_array($cache))
+        if (is_array($cache)) {
             return $cache;
+        }
 
-        if (isset($aTarif['fps']))
+        if (isset($aTarif['fps'])) {
             $aFPS = explode(':', $aTarif['fps']);
+        }
 
-        if (isset($aTarif['tickrate']))
+        if (isset($aTarif['tickrate'])) {
             $aTICKRATE = explode(':', $aTarif['tickrate']);
+        }
 
-        if (isset($aTarif['ram']))
+        if (isset($aTarif['ram'])) {
             $aRAM = explode(':', $aTarif['ram']);
+        }
 
         $fps = '';
 
-        if (isset($aFPS))
-            foreach ($aFPS as $value)
+        if (isset($aFPS)) {
+            foreach ($aFPS as $value) {
                 $fps .= '<option value="' . $value . '">' . $value . ' FPS</option>';
+            }
+        }
 
         $tickrate = '';
 
-        if (isset($aTICKRATE))
-            foreach ($aTICKRATE as $value)
+        if (isset($aTICKRATE)) {
+            foreach ($aTICKRATE as $value) {
                 $tickrate .= '<option value="' . $value . '">' . $value . ' TickRate</option>';
+            }
+        }
 
         $ram = '';
 
-        if (isset($aRAM))
-            foreach ($aRAM as $value)
+        if (isset($aRAM)) {
+            foreach ($aRAM as $value) {
                 $ram .= '<option value="' . $value . '">' . $value . ' RAM</option>';
+            }
+        }
 
         $packs = '';
         $aPack = sys::b64djs($aTarif['packs'], true);
 
-        if (is_array($aPack))
-            foreach ($aPack as $index => $name)
+        if (is_array($aPack)) {
+            foreach ($aPack as $index => $name) {
                 $packs .= '<option value="' . $index . '">' . $name . '</option>';
+            }
+        }
 
         $slots = '';
 
-        for ($i = $aTarif['slots_min']; $i <= $aTarif['slots_max']; $i += 1)
+        for ($i = $aTarif['slots_min']; $i <= $aTarif['slots_max']; $i += 1) {
             $slots .= '<option value="' . $i . '">' . $i . ' шт.</option>';
+        }
 
         $aTime = explode(':', $aTarif['time']);
 
         $time = games::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
 
-        if ($aTarif['test'] and $aUnit['test'])
+        if ($aTarif['test'] and $aUnit['test']) {
             $time .= '<option value="test">Тестовый период ' . games::parse_day($aTarif['test']) . '</option>';
+        }
 
         $data = array(
             'packs' => $packs,
@@ -277,19 +304,22 @@ class games
                 // Если наценка
                 if ($data[0] == '+') {
                     // Если значение в процентах
-                    if (substr($data[1], -1) == '%')
+                    if (substr($data[1], -1) == '%') {
                         $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Наценка ' . $data[1] . ')</option>';
-                    else
+                    } else {
                         $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Наценка ' . sys::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
+                    }
                 } else {
                     // Если значение в процентах
-                    if (substr($data[1], -1) == '%')
+                    if (substr($data[1], -1) == '%') {
                         $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Скидка ' . $data[1] . ')</option>';
-                    else
+                    } else {
                         $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Скидка ' . sys::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
+                    }
                 }
-            } else
+            } else {
                 $time .= '<option value="' . $value . '">' . games::parse_day($value) . '</option>';
+            }
         }
 
         return $time;
@@ -299,16 +329,18 @@ class games
     {
         global $start_point;
 
-        if ($time < $start_point)
+        if ($time < $start_point) {
             $time = $start_point;
+        }
 
         $day = $type == 'extend' ? date('d', $time) : date('d', $start_point);
         $month = $type == 'extend' ? date('n', $time) : date('n', $start_point);
 
         $period = $aD_M[$month] - $day;
 
-        if ($day > 15)
+        if ($day > 15) {
             $period += $month != 12 ? $aD_M[$month + 1] : $aD_M[1];
+        }
 
         return $period + 1;
     }
@@ -318,8 +350,9 @@ class games
         global $sql, $user, $cfg, $start_point;
 
         if ($cfg['settlement_period']) {
-            if ($time < $start_point)
+            if ($time < $start_point) {
                 $time = $start_point;
+            }
 
             $day = $type == 'extend' ? date('d', $time) : date('d', $start_point);
             $month = $type == 'extend' ? date('n', $time) : date('n', $start_point);
@@ -328,8 +361,9 @@ class games
 
             $new_month_sum = 0;
 
-            if ($day > 15)
+            if ($day > 15) {
                 $new_month_sum = ceil($price * $slots);
+            }
 
             $sum = params::$aDayMonth[$month] == $period ? $price * $slots : floor($price * $slots / 30 * $period) + $new_month_sum;
         } else {
@@ -341,16 +375,18 @@ class games
                 // Если наценка
                 if ($data[0] == '+') {
                     // Если значение в процентах
-                    if (substr($data[1], -1) == '%')
+                    if (substr($data[1], -1) == '%') {
                         $sum = ceil($sum + $sum / 100 * intval($data[1]));
-                    else
+                    } else {
                         $sum = $sum + intval($data[1]);
+                    }
                 } else {
                     // Если значение в процентах
-                    if (substr($data[1], -1) == '%')
+                    if (substr($data[1], -1) == '%') {
                         $sum = ceil($sum - $sum / 100 * intval($data[1]));
-                    else
+                    } else {
                         $sum = $sum - intval($data[1]);
+                    }
                 }
             }
         }
@@ -365,8 +401,9 @@ class games
             $sum = strpos($user[$sel], '%') ? $sum - $sum / 100 * floatval($user[$sel]) : $sum - floatval($user[$sel]);
         }
 
-        if ($sum < 0)
+        if ($sum < 0) {
             sys::outjs(array('e' => 'Ошибка: сумма за услугу неверна'));
+        }
 
         return $sum;
     }
@@ -377,54 +414,60 @@ class games
 
         // Проверка формата кода
         if (sys::valid($cod, 'promo')) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код имеет неверный формат.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         $sql->query('SELECT `id`, `value`, `discount`, `data`, `hits`, `use`, `extend`, `user`, `server` FROM `promo` WHERE `cod`="' . $cod . '" AND `tarif`="' . $data['tarif'] . '" AND `time`>"' . $start_point . '" LIMIT 1');
 
         // Проверка наличия промо-кода
         if (!$sql->num()) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код не найден.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         $promo = $sql->get();
 
         // Проверка типа при аренде
         if ($type == 'buy' and $promo['extend']) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код для продления игрового сервера.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         // Проверка типа при продлении
         if ($type != 'buy' and !$promo['extend']) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код для аренды нового игрового сервера.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         // Проверка доступности на пользователя
         if ($promo['user'] and $data['user'] != $promo['user']) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код не найден.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         // Проверка доступности на сервер
         if ($promo['server'] and $data['server'] != $promo['server']) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код не найден.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         $use = $promo['use'] < 1 ? '1' : $promo['use'];
@@ -432,10 +475,11 @@ class games
         // Проверка доступности
         $sql->query('SELECT `id` FROM `promo_use` WHERE `promo`="' . $promo['id'] . '" LIMIT ' . $use);
         if ($sql->num() >= $promo['use']) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Промо-код использован максимальное количество раз.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         // Данные для сравнения
@@ -444,40 +488,46 @@ class games
         $check = 0;
 
         // Проверка периода
-        if (isset($data['time']) && isset($data_promo['time']) && in_array($data['time'], explode(':', $data_promo['time'])))
+        if (isset($data['time']) && isset($data_promo['time']) && in_array($data['time'], explode(':', $data_promo['time']))) {
             $check = 1;
+        }
 
         // Проверка значения FPS
-        if ((isset($data['fps']) and isset($data_promo['fps'])) and in_array($data['fps'], explode(':', $data_promo['fps'])))
+        if ((isset($data['fps']) and isset($data_promo['fps'])) and in_array($data['fps'], explode(':', $data_promo['fps']))) {
             $check += 1;
+        }
 
         // Проверка значения TICKRATE
-        if ((isset($data['tickrate']) and isset($data_promo['tickrate'])) and in_array($data['tickrate'], explode(':', $data_promo['tickrate'])))
+        if ((isset($data['tickrate']) and isset($data_promo['tickrate'])) and in_array($data['tickrate'], explode(':', $data_promo['tickrate']))) {
             $check += 1;
+        }
 
         // Проверка значения RAM
-        if ((isset($data['ram']) and isset($data_promo['ram'])) and in_array($data['ram'], explode(':', $data_promo['ram'])))
+        if ((isset($data['ram']) and isset($data_promo['ram'])) and in_array($data['ram'], explode(':', $data_promo['ram']))) {
             $check += 1;
+        }
 
         //	Проверка кол-ва слот
         if (isset($data_promo['slots'])) {
             // Если совпало по перечислению слот (через число:число:число ...)
-            if (in_array($data['slots'], explode(':', $data_promo['slots'])))
+            if (in_array($data['slots'], explode(':', $data_promo['slots']))) {
                 $check += 1;
-            else {
+            } else {
                 // Если указан диапозон слот
                 $aSl = explode('-', $data_promo['slots']);
-                if (count($aSl) == 2 and ($data['slots'] >= $aSl[0] and $data['slots'] <= $aSl[1]))
+                if (count($aSl) == 2 and ($data['slots'] >= $aSl[0] and $data['slots'] <= $aSl[1])) {
                     $check += 1;
+                }
             }
         }
 
         // Проверка совпадений
         if ($check < $promo['hits']) {
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('e' => 'Условия для данного промо-кода не выполнены.'));
+            }
 
-            return NULL;
+            return null;
         }
 
         // Если скидка
@@ -490,22 +540,25 @@ class games
                     // Если скидка
                     if ($data[0] == '-') {
                         // Если значение в процентах
-                        if (substr($data[1], -1) == '%')
+                        if (substr($data[1], -1) == '%') {
                             $sum = ceil($sum + $sum / 100 * intval($data[1]));
-                        else
+                        } else {
                             $sum = $sum + intval($data[1]);
+                        }
                     }
                 }
             }
 
             // Пересчет суммы
-            if (substr($promo['value'], -1) == '%')
+            if (substr($promo['value'], -1) == '%') {
                 $sum = $sum - ceil($sum / 100 * intval($promo['value']));
-            else
+            } else {
                 $sum = $sum - intval($promo['value']);
+            }
 
-            if (!$go)
+            if (!$go) {
                 sys::outjs(array('sum' => $sum, 'discount' => 1, 'cur' => $cfg['currency']));
+            }
 
             return array('id' => $promo['id'], 'cod' => $cod, 'sum' => $sum);
 
@@ -514,25 +567,30 @@ class games
         // Подарочные дни
         $days = intval($promo['value']);
 
-        if (!$go)
+        if (!$go) {
             sys::outjs(array('days' => games::parse_day($days)));
+        }
 
         return array('id' => $promo['id'], 'cod' => $cod, 'days' => $days);
     }
 
     public static function info_tarif($game, $tarif, $param)
     {
-        if ($game == 'cs')
+        if ($game == 'cs') {
             return $tarif . ' / ' . $param['fps'] . ' FPS';
+        }
 
-        if ($game == 'mc')
+        if ($game == 'mc') {
             return $tarif . ' / ' . $param['ram'] . ' RAM';
+        }
 
-        if ($game == 'cssold')
+        if ($game == 'cssold') {
             return $tarif . ' / ' . $param['fps'] . ' FPS / ' . $param['tickrate'] . ' TickRate';
+        }
 
-        if (in_array($game, array('css', 'csgo', 'cs2', 'rust')))
+        if (in_array($game, array('css', 'csgo', 'cs2', 'rust'))) {
             return $tarif . ' / ' . $param['tickrate'] . ' TickRate';
+        }
 
         return $tarif;
     }
@@ -544,8 +602,9 @@ class games
         include(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            if ($go)
+            if ($go) {
                 sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+            }
 
             sys::outjs(array('maps', '<option value="0">unknown</option>'));
         }
@@ -562,8 +621,9 @@ class games
             $sqlq = $ctrl ? 'control_' : '';
 
             // Проверка наличия выбранной карты
-            if (in_array($map, $aMaps))
+            if (in_array($map, $aMaps)) {
                 $sql->query('UPDATE `' . $sqlq . 'servers` set `map_start`="' . $map . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             sys::outjs(array('s' => 'ok'), $mcache);
         }
@@ -575,19 +635,22 @@ class games
         $maps = $ismap ? '<option value="' . str_replace('/', '|', $map) . '">' . $map . '</option>' : '<option value="">Указанная ранее карта "' . $map . '" не найдена</option>';
 
         // Удаление стартовой карты
-        if ($ismap)
+        if ($ismap) {
             unset($aMaps[array_search($map, $aMaps)]);
+        }
 
-        foreach ($aMaps as $map)
+        foreach ($aMaps as $map) {
             $maps .= '<option value="' . str_replace('/', '|', $map) . '">' . $map . '</option>';
+        }
 
         sys::outjs(array('maps' => $maps));
     }
 
     public static function owners($aRights)
     {
-        if (array_search(0, $aRights))
+        if (array_search(0, $aRights)) {
             return 'Есть ограничения в доступе.';
+        }
 
         return 'Выданы все права.';
     }
@@ -596,41 +659,49 @@ class games
     {
         global $cfg, $sql, $start_point;
 
-        if ($cfg['part'])
-            return NULL;
+        if ($cfg['part']) {
+            return null;
+        }
 
         $sql->query('SELECT `part` FROM `users` WHERE `id`="' . $uid . '" LIMIT 1');
         $user = $sql->get();
 
-        if (!$user['part'])
-            return NULL;
+        if (!$user['part']) {
+            return null;
+        }
 
         $sql->query('SELECT `balance`, `part_money` FROM `users` WHERE `id`="' . $user['part'] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $user = array_merge($user, $sql->get());
 
         $sum = round($money / 100 * $cfg['part_proc'], 2);
 
-        if ($cfg['part_money'])
+        if ($cfg['part_money']) {
             $sql->query('UPDATE `users` set `part_money`="' . ($user['part_money'] + $sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
-        else
+        } else {
             $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] + $sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
+        }
 
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(sys::text('logs', 'part'),
-                array('part' => $uid, 'money' => $sum)) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $sum . '"');
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
+            sys::text('logs', 'part'),
+            array('part' => $uid, 'money' => $sum)
+        ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $sum . '"');
 
-        return NULL;
+        return null;
     }
 
     public static function map($map, $aMaps)
     {
-        if (!is_array($aMaps))
+        if (!is_array($aMaps)) {
             $aMaps = explode("\n", str_ireplace(array('./', '.bsp', '.vpk'), '', $aMaps));
+        }
 
-        if (in_array($map, $aMaps))
+        if (in_array($map, $aMaps)) {
             return false;
+        }
 
         return true;
     }
@@ -639,8 +710,9 @@ class games
     {
         $sql = 'AND (';
 
-        foreach ($arr as $map)
+        foreach ($arr as $map) {
             $sql .= ' `name` LIKE "' . $map . '_%" OR';
+        }
 
         return $sql == 'AND (' ? '' : substr($sql, 0, -3) . ')';
     }
@@ -649,8 +721,9 @@ class games
     {
         $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(array('info' => 'Не удалось получить информацию.'), $mcache);
 
-        if (sys::valid($address, 'ip'))
+        if (sys::valid($address, 'ip')) {
             sys::outjs(array('e' => sys::text('servers', 'firewall')), $mcache);
+        }
 
         include(LIB . 'geo.php');
 
@@ -663,13 +736,15 @@ class games
         if ($data['country']['name_ru'] != '') {
             $info .= '<p>Страна: ' . $data['country']['name_ru'];
 
-            if ($data['city']['name_ru'] != '')
+            if ($data['city']['name_ru'] != '') {
                 $info .= '<p>Город: ' . $data['city']['name_ru'];
+            }
 
             $info .= '<p>Подсеть: ' . sys::whois($address);
 
-        } else
+        } else {
             $info = 'Не удалось получить информацию.';
+        }
 
         sys::outjs(array('info' => $info), $mcache);
     }
@@ -684,28 +759,32 @@ class games
 
             include(LIB . 'ssh.php');
 
-            if (!$ssh->auth($unit['passwd'], $unit['address']))
+            if (!$ssh->auth($unit['passwd'], $unit['address'])) {
                 return array('e' => sys::text('all', 'ssh'));
+            }
         }
 
         switch ($action) {
             case 'block':
-                if (sys::valid($source, 'ip'))
+                if (sys::valid($source, 'ip')) {
                     return array('e' => sys::text('servers', 'firewall'));
+                }
 
                 // Если подсеть
                 if ($snw) {
                     $source = sys::whois($source);
 
-                    if ($source == 'не определена')
+                    if ($source == 'не определена') {
                         return array('e' => 'Не удалось определить подсеть для указанного адреса.');
+                    }
                 }
 
                 $sql->query('SELECT `id` FROM `firewall` WHERE `sip`="' . $source . '" AND `server`="' . $id . '" LIMIT 1');
 
                 // Если такое правило уже добавлено или указан адрес сайта (ПУ)
-                if ($sql->num() || ($source == $cfg['ip'] || $source == $cfg['subnet']))
+                if ($sql->num() || ($source == $cfg['ip'] || $source == $cfg['subnet'])) {
                     return array('s' => 'ok');
+                }
 
                 $sql->query('INSERT INTO `firewall` set `sip`="' . $source . '", `dest`="' . $dest[0] . ':' . $dest[1] . '", `server`="' . $id . '", `time`="' . $start_point . '"');
 
@@ -718,15 +797,17 @@ class games
                 return array('s' => 'ok');
 
             case 'unblock':
-                if (!is_numeric($source) and sys::valid($source, 'ip'))
+                if (!is_numeric($source) and sys::valid($source, 'ip')) {
                     return array('e' => sys::text('servers', 'firewall'));
+                }
 
                 if (is_numeric($source)) {
                     $sql->query('SELECT `id`, `sip` FROM `firewall` WHERE `id`="' . $source . '" AND `server`="' . $id . '" LIMIT 1');
 
                     // Если такое правило отсутствует
-                    if (!$sql->num())
+                    if (!$sql->num()) {
                         return array('s' => 'ok');
+                    }
                 } else {
                     $sql->query('SELECT `id`, `sip` FROM `firewall` WHERE `sip`="' . $source . '" AND `server`="' . $id . '" LIMIT 1');
 
@@ -768,13 +849,15 @@ class games
 
                 $nRule = count($aRule);
 
-                if (!$nRule)
-                    return NULL;
+                if (!$nRule) {
+                    return null;
+                }
 
                 $cmd = '';
 
-                foreach ($aRule as $line => $rule)
+                foreach ($aRule as $line => $rule) {
                     $cmd .= $rule . 'sed "`nl ' . $cfg['iptables'] . ' | grep "#' . $line . '" | awk \'{print $1","$1+1}\'`d" ' . $cfg['iptables'] . ' > ' . $cfg['iptables'] . '_temp; cat ' . $cfg['iptables'] . '_temp > ' . $cfg['iptables'] . '; rm ' . $cfg['iptables'] . '_temp';
+                }
 
                 $ssh->set($cmd);
 

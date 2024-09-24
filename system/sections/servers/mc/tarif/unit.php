@@ -9,20 +9,24 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 $uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
 
-if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86400 || $server['test'])
+if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86400 || $server['test']) {
     exit;
+}
 
 $sql->query('SELECT `id`, `unit`, `packs`, `ram`, `price` FROM `tarifs` WHERE `unit`="' . $uid . '" AND `game`="' . $server['game'] . '" AND `name`="' . $tarif['name'] . '" AND `id`!="' . $server['tarif'] . '" AND `show`="1" ORDER BY `unit`');
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Не найден подходящий тариф.'), $nmch);
+}
 
 $oldTarif = $tarif;
 
@@ -35,16 +39,18 @@ $aPriceold = explode(':', $oldTarif['price']);
 $aRAMold = explode(':', $oldTarif['ram']);
 
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Выбранная локация не доступна.'), $nmch);
+}
 
 $aPrice = explode(':', $tarif['price']);
 $aRAM = explode(':', $tarif['ram']);
 
 $ram = $server['slots_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
 
-if (!in_array($ram, $aRAM))
+if (!in_array($ram, $aRAM)) {
     sys::outjs(array('e' => 'Не найден подходящий тарифный план.'), $nmch);
+}
 
 // Цена за 1 день (при новом тарифном плане)
 $price = $aPrice[array_search($ram, $aRAM)] / 30 * $server['slots'];

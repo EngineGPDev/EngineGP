@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `slots`, `online`, `players`, `name`, `pack`, `map` FROM `control_servers` WHERE `id`="' . $sid . '" LIMIT 1');
 $server = array_merge($server, $sql->get());

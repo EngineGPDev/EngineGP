@@ -9,40 +9,46 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $fid = isset($url['file']) ? sys::int($url['file']) : sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 
 $sql->query('SELECT `plugin`, `update`, `file` FROM `plugins_config` WHERE `id`="' . $fid . '" LIMIT 1');
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+}
 
 $config = $sql->get();
 
 $sql->query('SELECT `id` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $config['plugin'] . '" LIMIT 1');
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+}
 
 // Если обновленный плагин
-if ($config['update'])
+if ($config['update']) {
     $sql->query('SELECT `name` FROM `plugins_update` WHERE `id`="' . $config['update'] . '" LIMIT 1');
-else
+} else {
     $sql->query('SELECT `name` FROM `plugins` WHERE `id`="' . $config['plugin'] . '" LIMIT 1');
+}
 
 $plugin = $sql->get();
 
 $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $unit = $sql->get();
 
-if (!isset($ssh))
+if (!isset($ssh)) {
     include(LIB . 'ssh.php');
+}
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }

@@ -9,23 +9,26 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (isset($url['subsection']) and $url['subsection'] == 'search')
+if (isset($url['subsection']) and $url['subsection'] == 'search') {
     include(SEC . 'tarifs/search.php');
+}
 
-if ($id)
+if ($id) {
     include(SEC . 'tarifs/tarif.php');
-else {
+} else {
     $sort_page = '';
     $sort_sql = 'ORDER BY `id` ASC';
 
     if (isset($url['sort']) and in_array($url['sort'], array('id', 'unit', 'game'))) {
         $sort = 'asc';
 
-        if (isset($url['sorting']))
+        if (isset($url['sorting'])) {
             $sort = $url['sorting'] == 'asc' ? 'asc' : 'desc';
+        }
 
         $sort_page = '/sort/' . $url['sort'] . '/sorting/' . $sort;
         $sort_sql = 'ORDER BY `' . $url['sort'] . '` ' . $sort;
@@ -68,8 +71,9 @@ else {
     $html->set('sort_unit', 'asc');
     $html->set('sort_game', 'asc');
 
-    if (isset($sort_icon))
+    if (isset($sort_icon)) {
         $html->set('sort_' . key($sort_icon), array_shift($sort_icon));
+    }
 
     $html->set('list', $list);
 

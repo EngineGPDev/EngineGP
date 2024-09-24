@@ -9,15 +9,18 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 // Если фикс. значение слот
-if ($tarif['slots_min'] == $tarif['slots_max'])
+if ($tarif['slots_min'] == $tarif['slots_max']) {
     sys::outjs(array('e' => 'На данном тарифе нельзя изменить количество слот.'), $nmch);
+}
 
 $slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
 

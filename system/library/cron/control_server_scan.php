@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_server_scan extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $argv;
 
@@ -23,6 +24,6 @@ class control_server_scan extends cron
         scan::mon($argv[4], true);
         scan::resources($argv[4]);
 
-        return NULL;
+        return null;
     }
 }

@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `name`, `file` FROM `pages` WHERE `id`="' . $id . '" LIMIT 1');
 $page = $sql->get();
@@ -21,8 +22,9 @@ if ($go) {
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : $page['name'];
     $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : file_get_contents(FILES . 'pages/' . $page['file']);
 
-    if (in_array('', $aData))
+    if (in_array('', $aData)) {
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    }
 
     $file = fopen(FILES . 'pages/' . $page['file'], "w");
 

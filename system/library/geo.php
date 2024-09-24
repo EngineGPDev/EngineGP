@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 define('SXGEO_FILE', 0);
 define('SXGEO_MEMORY', 1);
@@ -68,13 +69,15 @@ class SxGeo
         $this->fh = fopen($db_file, 'rb');
 
         $header = fread($this->fh, 40);
-        if (substr($header, 0, 3) != 'SxG')
+        if (substr($header, 0, 3) != 'SxG') {
             die("Can't open {$db_file}\n");
+        }
 
         $info = unpack('Cver/Ntime/Ctype/Ccharset/Cb_idx_len/nm_idx_len/nrange/Ndb_items/Cid_len/nmax_region/nmax_city/Nregion_size/Ncity_size/nmax_country/Ncountry_size/npack_size', substr($header, 3));
 
-        if ($info['b_idx_len'] * $info['m_idx_len'] * $info['range'] * $info['db_items'] * $info['time'] * $info['id_len'] == 0)
+        if ($info['b_idx_len'] * $info['m_idx_len'] * $info['range'] * $info['db_items'] * $info['time'] * $info['id_len'] == 0) {
             die("Wrong file format {$db_file}\n");
+        }
 
         $this->range = $info['range'];
         $this->b_idx_len = $info['b_idx_len'];
@@ -121,10 +124,11 @@ class SxGeo
             while ($max - $min > 8) {
                 $offset = ($min + $max) >> 1;
 
-                if ($ipn > $this->m_idx_arr[$offset])
+                if ($ipn > $this->m_idx_arr[$offset]) {
                     $min = $offset;
-                else
+                } else {
                     $max = $offset;
+                }
             }
 
             while ($ipn > $this->m_idx_arr[$min] && $min++ < $max) {
@@ -133,10 +137,11 @@ class SxGeo
             while ($max - $min > 8) {
                 $offset = ($min + $max) >> 1;
 
-                if ($ipn > substr($this->m_idx_str, $offset * 4, 4))
+                if ($ipn > substr($this->m_idx_str, $offset * 4, 4)) {
                     $min = $offset;
-                else
+                } else {
                     $max = $offset;
+                }
             }
 
             while ($ipn > substr($this->m_idx_str, $min * 4, 4) && $min++ < $max) {
@@ -153,16 +158,18 @@ class SxGeo
 
             while ($max - $min > 8) {
                 $offset = ($min + $max) >> 1;
-                if ($ipn > substr($str, $offset * $this->block_len, 3))
+                if ($ipn > substr($str, $offset * $this->block_len, 3)) {
                     $min = $offset;
-                else
+                } else {
                     $max = $offset;
+                }
             }
 
             while ($ipn >= substr($str, $min * $this->block_len, 3) && ++$min < $max) {
             };
-        } else
+        } else {
             $min++;
+        }
 
         return hexdec(bin2hex(substr($str, $min * $this->block_len - $this->id_len, $this->id_len)));
     }
@@ -171,16 +178,18 @@ class SxGeo
     {
         $ip1n = (int)$ip;
 
-        if ($ip1n == 0 || $ip1n == 10 || $ip1n == 127 || $ip1n >= $this->b_idx_len || false === ($ipn = ip2long($ip)))
+        if ($ip1n == 0 || $ip1n == 10 || $ip1n == 127 || $ip1n >= $this->b_idx_len || false === ($ipn = ip2long($ip))) {
             return false;
+        }
 
         $ipn = pack('N', $ipn);
         $this->ip1c = chr($ip1n);
 
-        if ($this->batch_mode)
+        if ($this->batch_mode) {
             $blocks = array('min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]);
-        else
+        } else {
             $blocks = unpack("Nmin/Nmax", substr($this->b_idx_str, ($ip1n - 1) * 4, 8));
+        }
 
         if ($blocks['max'] - $blocks['min'] > $this->range) {
             $part = $this->search_idx($ipn, floor($blocks['min'] / $this->range), floor($blocks['max'] / $this->range) - 1);
@@ -188,11 +197,13 @@ class SxGeo
             $min = $part > 0 ? $part * $this->range : 0;
             $max = $part > $this->m_idx_len ? $this->db_items : ($part + 1) * $this->range;
 
-            if ($min < $blocks['min'])
+            if ($min < $blocks['min']) {
                 $min = $blocks['min'];
+            }
 
-            if ($max > $blocks['max'])
+            if ($max > $blocks['max']) {
                 $max = $blocks['max'];
+            }
         } else {
             $min = $blocks['min'];
             $max = $blocks['max'];
@@ -200,10 +211,9 @@ class SxGeo
 
         $len = $max - $min;
 
-        if ($this->memory_mode)
+        if ($this->memory_mode) {
             return $this->search_db($this->db, $ipn, $min, $max);
-
-        else {
+        } else {
             fseek($this->fh, $this->db_begin + $min * $this->block_len);
 
             return $this->search_db(fread($this->fh, $len * $this->block_len), $ipn, 0, $len);
@@ -214,9 +224,9 @@ class SxGeo
     {
         $raw = '';
         if ($seek && $max) {
-            if ($this->memory_mode)
+            if ($this->memory_mode) {
                 $raw = substr($type == 1 ? $this->regions_db : $this->cities_db, $seek, $max);
-            else {
+            } else {
                 fseek($this->fh, $this->info[$type == 1 ? 'regions_begin' : 'cities_begin'] + $seek);
 
                 $raw = fread($this->fh, $max);
@@ -228,8 +238,9 @@ class SxGeo
 
     protected function parseCity($seek, $full = false)
     {
-        if (!$this->pack)
+        if (!$this->pack) {
             return false;
+        }
 
         $only_country = false;
 
@@ -248,8 +259,9 @@ class SxGeo
         if ($full) {
             $region = $this->readData($city['region_seek'], $this->max_region, 1);
 
-            if (!$only_country)
+            if (!$only_country) {
                 $country = $this->readData($region['country_seek'], $this->max_country, 0);
+            }
 
             unset($city['region_seek']);
             unset($region['country_seek']);
@@ -375,8 +387,9 @@ class SxGeo
             $tmp = $this->parseCity($this->get_num($ip));
 
             return $tmp['country']['iso'];
-        } else
+        } else {
             return $this->id2iso[$this->get_num($ip)];
+        }
     }
 
     public function getCountryId($ip)
@@ -385,8 +398,9 @@ class SxGeo
             $tmp = $this->parseCity($this->get_num($ip));
 
             return $tmp['country']['id'];
-        } else
+        } else {
             return $this->get_num($ip);
+        }
     }
 
     public function getCity($ip)

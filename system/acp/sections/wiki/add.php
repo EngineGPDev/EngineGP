@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $aData = array();
@@ -20,15 +21,18 @@ if ($go) {
     $aData['cat'] = isset($_POST['cat']) ? sys::int($_POST['cat']) : '';
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : '';
 
-    if (in_array('', $aData))
+    if (in_array('', $aData)) {
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    }
 
-    if (sys::strlen($aData['tags']) > 100)
+    if (sys::strlen($aData['tags']) > 100) {
         sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+    }
 
     $sql->query('SELECT `id` FROM `wiki_category` WHERE `id`="' . $aData['cat'] . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => 'Указанная категория не найдена'));
+    }
 
     $sql->query('INSERT INTO `wiki` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
@@ -49,8 +53,9 @@ if ($go) {
 $cats = '';
 
 $sql->query('SELECT `id`, `name` FROM `wiki_category` ORDER BY `id` ASC');
-while ($cat = $sql->get())
+while ($cat = $sql->get()) {
     $cats .= '<option value="' . $cat['id'] . '">' . $cat['name'] . '</option>';
+}
 
 $html->get('add', 'sections/wiki');
 

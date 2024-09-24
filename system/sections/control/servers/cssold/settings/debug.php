@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Отладочный лог');
 
@@ -19,8 +20,9 @@ $unit = $sql->get();
 
 include(LIB . 'ssh.php');
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
+}
 
 // Чтение файла - oldstart.log
 $file = '/servers/' . $server['uid'] . '/debug.log';
@@ -29,6 +31,6 @@ $ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep "CRASH: " | grep
 
 $html->get('debug', 'sections/control/servers/games/settings');
 
-$html->set('log', htmlspecialchars($ssh->get(), NULL, ''));
+$html->set('log', htmlspecialchars($ssh->get(), null, ''));
 
 $html->pack('main');

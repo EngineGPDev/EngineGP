@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class users
 {
@@ -21,14 +22,17 @@ class users
         $file = 'upload/avatars/' . $user . '.';
         $link = $cfg['http'] . 'upload/avatars/' . $user . '.';
 
-        if (file_exists(ROOT . $file . 'jpg'))
+        if (file_exists(ROOT . $file . 'jpg')) {
             return $link . 'jpg';
+        }
 
-        if (file_exists(ROOT . $file . 'png'))
+        if (file_exists(ROOT . $file . 'png')) {
             return $link . 'png';
+        }
 
-        if (file_exists(ROOT . $file . 'gif'))
+        if (file_exists(ROOT . $file . 'gif')) {
             return $link . 'gif';
+        }
 
         return $cfg['http'] . 'template/images/avatar.png';
     }
@@ -43,8 +47,13 @@ class users
 
         $html->set('home', $cfg['http']);
 
-        foreach ($aUnit as $unit)
-            if ($unit == $active) $html->unit($unit, 1); else $html->unit($unit);
+        foreach ($aUnit as $unit) {
+            if ($unit == $active) {
+                $html->unit($unit, 1);
+            } else {
+                $html->unit($unit);
+            }
+        }
 
         $html->pack('main');
 
@@ -52,11 +61,16 @@ class users
 
         $html->set('home', $cfg['http']);
 
-        foreach ($aUnit as $unit)
-            if ($unit == $active) $html->unit($unit, 1); else $html->unit($unit);
+        foreach ($aUnit as $unit) {
+            if ($unit == $active) {
+                $html->unit($unit, 1);
+            } else {
+                $html->unit($unit);
+            }
+        }
 
         $html->pack('vmenu');
 
-        return NULL;
+        return null;
     }
 }

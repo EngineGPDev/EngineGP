@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Список подключенных серверов', $cfg['http'] . 'control');
 $html->nav('Список игровых серверов #' . $id, $cfg['http'] . 'control/id/' . $id);
@@ -30,9 +31,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $html->nav('Плагины');
 
     // Если есть кеш
-    if ($mcache->get('ctrl_server_plugins_' . $sid) != '')
+    if ($mcache->get('ctrl_server_plugins_' . $sid) != '') {
         $html->arr['main'] = $mcache->get('ctrl_server_plugins_' . $sid);
-    else {
+    } else {
         include(LIB . 'games/plugins.php');
 
         // Категории
@@ -43,8 +44,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
             while ($plugin = $sql->get($plugins)) {
                 // Проверка, установлен ли плагин на сервер
                 $sql->query('SELECT `id` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $plugin['id'] . '" LIMIT 1');
-                if ($sql->num())
+                if ($sql->num()) {
                     continue;
+                }
 
                 // Проверка наличия обновленной версии плагина
                 if ($plugin['upd']) {
@@ -55,14 +57,16 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
                         $plugin = $sql->get();
 
                         $plugin['id'] = $idp;
-                    } else
+                    } else {
                         $plugin['upd'] = 0;
+                    }
                 }
 
                 // Проверка на доступность плагина к установленной на сервере сборке
                 $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
-                if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
+                if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all') {
                     continue;
+                }
 
                 $images = plugins::images($plugin['images'], $plugin['id']);
 
@@ -86,14 +90,16 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
                 if (!empty($images)) {
                     $html->unit('images', 1);
                     $html->set('images', $images);
-                } else
+                } else {
                     $html->unit('images');
+                }
 
                 if (!$buy and $plugin['price']) {
                     $html->unit('price', true, true);
                     $html->set('price', $plugin['price']);
-                } else
+                } else {
                     $html->unit('price', false, true);
+                }
 
                 $html->pack('plugins');
             }
@@ -113,16 +119,18 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $pl_ins = $sql->query('SELECT `plugin`, `upd`, `time` FROM `control_plugins_install` WHERE `server`="' . $sid . '" ORDER BY `plugin`');
         while ($plugin = $sql->get($pl_ins)) {
             $sql->query('SELECT `id` FROM `plugins` WHERE `id`="' . $plugin['plugin'] . '" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 continue;
+            }
 
             $isUpd = $plugin['upd'];
 
             // Если установлен обновленный плагин
-            if ($isUpd)
+            if ($isUpd) {
                 $sql->query('SELECT `name`, `desc`, `status`, `cfg`, `upd` FROM `plugins_update` WHERE `id`="' . $isUpd . '" LIMIT 1');
-            else
+            } else {
                 $sql->query('SELECT `name`, `desc`, `status`, `cfg`, `upd` FROM `plugins` WHERE `id`="' . $plugin['plugin'] . '" LIMIT 1');
+            }
 
             $plugin = array_merge($plugin, $sql->get());
 
@@ -135,9 +143,17 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
             plugins::status($plugin['status']);
 
-            if ($plugin['cfg']) $html->unit('config', 1); else $html->unit('config');
+            if ($plugin['cfg']) {
+                $html->unit('config', 1);
+            } else {
+                $html->unit('config');
+            }
 
-            if ($plugin['upd']) $html->unit('update', 1); else $html->unit('update');
+            if ($plugin['upd']) {
+                $html->unit('update', 1);
+            } else {
+                $html->unit('update');
+            }
 
             $html->set('name', htmlspecialchars_decode($plugin['name']));
             $html->set('time', sys::today($plugin['time']));

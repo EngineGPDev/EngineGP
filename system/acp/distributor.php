@@ -9,11 +9,12 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Подключение filp/whoops
-$whoops = new \Whoops\Run;
+$whoops = new \Whoops\Run();
 $prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
 foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
     foreach ($secrets as $secret) {
@@ -56,22 +57,25 @@ if (isset($_SESSION['user_id'])) {
         $user = $sql->get();
 
         // Обновление активности
-        if ($user['time'] + 10 < $start_point)
+        if ($user['time'] + 10 < $start_point) {
             $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
+        }
 
         // Проверка принадлежности к группе admin
-        if ($user['group'] === "admin")
+        if ($user['group'] === "admin") {
             $auth = true;
+        }
     }
 }
 
-if (!$auth)
+if (!$auth) {
     exit(header('Refresh: 0; URL=http://' . $cfg['url'] . '/403'));
+}
 
 // Подключение файла
-if (in_array($route, $aRoute))
+if (in_array($route, $aRoute)) {
     include(ENG . $route . '.php');
-else {
+} else {
     $route = 'index';
     include(ENG . 'index.php');
 }
@@ -133,15 +137,17 @@ if (isset($html->arr['menu'])) {
     $html->unit('section', true);
     $html->set('info', $info);
     $html->set('menu', $html->arr['menu']);
-} else
+} else {
     $html->unit('section');
+}
 
 $html->unit('p_' . $route, true);
 
 unset($aRoute[array_search($route, $aRoute)]);
 
-foreach ($aRoute as $route)
+foreach ($aRoute as $route) {
     $html->unit('p_' . $route);
+}
 
 $html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
 

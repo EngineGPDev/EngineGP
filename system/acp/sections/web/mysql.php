@@ -9,17 +9,19 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(DATA . 'web.php');
 
-if (isset($url['subsection']) and $url['subsection'] == 'search')
+if (isset($url['subsection']) and $url['subsection'] == 'search') {
     include(SEC . 'web/search.php');
+}
 
-if ($id)
+if ($id) {
     include(SEC . 'web/web.php');
-else {
+} else {
     $list = '';
 
     $sql->query('SELECT `id` FROM `web`');
@@ -30,9 +32,9 @@ else {
 
     $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `type`="mysql" ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
     while ($web = $sql->get($webs)) {
-        if (!$web['unit'])
+        if (!$web['unit']) {
             $unit = array('name' => 'Веб хостинг');
-        else {
+        } else {
             $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $web['unit'] . '" LIMIT 1');
             $unit = $sql->get();
         }

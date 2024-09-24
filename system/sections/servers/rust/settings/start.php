@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `slots`, `slots_start`, `vac`, `fastdl`, `autorestart`, `fps`, `tickrate`, `pingboost` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -31,48 +32,59 @@ if ($go and $url['save']) {
 
     switch ($url['save']) {
         case 'vac':
-            if ($value != $server['vac'])
+            if ($value != $server['vac']) {
                 $sql->query('UPDATE `servers` set `vac`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
 
+            // no break
         case 'mod':
-            if (in_array($value, array(1, 2, 3, 4, 5)))
+            if (in_array($value, array(1, 2, 3, 4, 5))) {
                 $sql->query('UPDATE `servers` set `pingboost`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
 
+            // no break
         case 'slots':
             $slots = $value > $server['slots'] ? $server['slots'] : $value;
             $slots = $value < 2 ? 2 : $slots;
 
-            if ($slots != $server['slots_start'])
+            if ($slots != $server['slots_start']) {
                 $sql->query('UPDATE `servers` set `slots_start`="' . $slots . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
 
+            // no break
         case 'autorestart':
-            if ($value != $server['autorestart'])
+            if ($value != $server['autorestart']) {
                 $sql->query('UPDATE `servers` set `autorestart`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
 
+            // no break
         case 'tickrate':
-            if (!tarif::price($tarif['price']) and in_array($value, explode(':', $tarif['tickrate'])))
+            if (!tarif::price($tarif['price']) and in_array($value, explode(':', $tarif['tickrate']))) {
                 $sql->query('UPDATE `servers` set `tickrate`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
 
+            // no break
         case 'fastdl':
             include(LIB . 'ssh.php');
 
-            if (!$ssh->auth($unit['passwd'], $unit['address']))
+            if (!$ssh->auth($unit['passwd'], $unit['address'])) {
                 sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+            }
 
             if ($value) {
                 $fastdl = 'sv_downloadurl "http://' . sys::first(explode(':', $unit['address'])) . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
@@ -92,9 +104,10 @@ if ($go and $url['save']) {
                     . 'echo "exec fastdl.cfg" >> ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/server.cfg');
 
                 unlink($temp);
-            } else
+            } else {
                 $ssh->set('sed -i ' . "'s/exec fastdl.cfg//g'" . ' ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/server.cfg;'
-                    . 'rm ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/fastdl.cfg; rm /var/nginx/fast_' . $server['uid']);
+                        . 'rm ' . $tarif['install'] . $server['uid'] . '/game/csgo/cfg/fastdl.cfg; rm /var/nginx/fast_' . $server['uid']);
+            }
 
             $sql->query('UPDATE `servers` set `fastdl`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
@@ -106,8 +119,9 @@ if ($go and $url['save']) {
 // Генерация списка слот
 $slots = '';
 
-for ($slot = 2; $slot <= $server['slots']; $slot += 1)
+for ($slot = 2; $slot <= $server['slots']; $slot += 1) {
     $slots .= '<option value="' . $slot . '">' . $slot . ' шт.</option>';
+}
 
 // Античит VAC
 $vac = $server['vac'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
@@ -125,9 +139,11 @@ if (!tarif::price($tarif['price'])) {
 
     unset($aTick[array_search($server['tickrate'], $aTick)]);
 
-    if (count($aTick))
-        foreach ($aTick as $value)
+    if (count($aTick)) {
+        foreach ($aTick as $value) {
             $tickrate .= '<option value="' . $value . '">' . $value . ' TickRate</option>';
+        }
+    }
 }
 
 // Игровой режим
@@ -137,8 +153,9 @@ $mods = '<option value="1">Классический обычный</option>'
     . '<option value="4">Уничтожение объекта</option>'
     . '<option value="5">Бой насмерть</option>';
 
-if (!$server['pingboost'])
+if (!$server['pingboost']) {
     $server['pingboost'] = 2;
+}
 
 $mod = str_replace('value="' . $server['pingboost'], 'value="' . $server['pingboost'] . '" selected="select', $mods);
 
@@ -154,7 +171,8 @@ $html->set('slots', str_replace('"' . $server['slots_start'] . '"', '"' . $serve
 if (!tarif::price($tarif['price'])) {
     $html->unit('tickrate', true);
     $html->set('tickrate', $tickrate);
-} else
+} else {
     $html->unit('tickrate');
+}
 
 $html->pack('start');

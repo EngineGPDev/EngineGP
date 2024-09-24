@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class web_delete extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $argv, $sql;
 
@@ -26,8 +27,9 @@ class web_delete extends cron
 
             $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], array('login' => $web['login']))), true);
 
-            if (!isset($result['result']) || strtolower($result['result']) != 'ok')
+            if (!isset($result['result']) || strtolower($result['result']) != 'ok') {
                 continue;
+            }
 
             $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
         }

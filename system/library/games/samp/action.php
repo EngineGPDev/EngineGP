@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/actions.php');
 
@@ -32,8 +33,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $ip = $ssh->getInternalIp();
         $port = $server['port'];
@@ -100,8 +102,9 @@ class action extends actions
         foreach ($aLine as $line) {
             $param = explode(' ', trim($line));
 
-            if (in_array(trim($param[0]), array('bind', 'port', 'maxplayers', 'query')))
+            if (in_array(trim($param[0]), array('bind', 'port', 'maxplayers', 'query'))) {
                 continue;
+            }
 
             $eConfig .= $line . PHP_EOL;
         }

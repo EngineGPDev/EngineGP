@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/games.php');
 
@@ -19,8 +20,9 @@ if ($go) {
     // Проверка на авторизацию
     sys::noauth();
 
-    if ($mcache->get('buy_server'))
+    if ($mcache->get('buy_server')) {
         sleep(1.5);
+    }
 
     $mcache->set('buy_server', true, false, 3);
 
@@ -55,8 +57,9 @@ $check = false;
 $sql->query(services::unit($section));
 if ($sql->num()) {
     // Выбранная локация
-    if (isset($url['get']) and in_array($url['get'], array('tarifs', 'data')))
+    if (isset($url['get']) and in_array($url['get'], array('tarifs', 'data'))) {
         $sql->query('SELECT `id`, `test` FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
+    }
 
     $select_unit = $sql->get();
 
@@ -86,8 +89,9 @@ if ($sql->num()) {
         // Выхлоп цены за выбранные параметры
         if ($url['get'] == 'price') {
             // Если выбран тестовый период
-            if ($url['time'] == 'test')
+            if ($url['time'] == 'test') {
                 sys::outjs(array('sum' => 0));
+            }
 
             sys::outjs(array(
                 'sum' => games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time'])
@@ -95,20 +99,22 @@ if ($sql->num()) {
         }
 
         // Выхлоп цены с учетом промо-кода
-        if ($url['get'] == 'promo')
+        if ($url['get'] == 'promo') {
             games::define_promo(
                 $url['cod'],
                 $tarif['discount'],
                 games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time']),
                 $aGet
             );
+        }
     }
 
     // Генерация сборок/слот/периодов
-    if (isset($url['get']) and $url['get'] == 'data')
+    if (isset($url['get']) and $url['get'] == 'data') {
         $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `id`="' . sys::int($url['tarif']) . '" LIMIT 1');
-    else
+    } else {
         $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `game`="' . $section . '" AND `unit`="' . $select_unit['id'] . '" AND `show`="1" ORDER BY `sort` ASC LIMIT 1');
+    }
 
     if ($sql->num()) {
         $select_tarif = $sql->get();
@@ -117,12 +123,14 @@ if ($sql->num()) {
 
         if (isset($url['get'])) {
             // Выхлоп при выборе локации
-            if ($url['get'] == 'tarifs')
+            if ($url['get'] == 'tarifs') {
                 sys::outjs(array_merge(array('tarifs' => $tarifs), $aTarif));
+            }
 
             // Выхлоп при выборе тарифа
-            if ($url['get'] == 'data')
+            if ($url['get'] == 'data') {
                 sys::outjs($aTarif);
+            }
         }
 
         $html->get($section, 'sections/services/games');
@@ -135,10 +143,11 @@ if ($sql->num()) {
         $html->set('cur', $cfg['currency']);
         $html->set('date', date('d.m.Y', $start_point));
 
-        if ($cfg['settlement_period'])
+        if ($cfg['settlement_period']) {
             $html->unit('settlement_period', true, true);
-        else
+        } else {
             $html->unit('settlement_period', false, true);
+        }
 
         $html->unit('informer', false, true);
         $html->pack('main');

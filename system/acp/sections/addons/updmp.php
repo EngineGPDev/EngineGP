@@ -9,15 +9,17 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if (isset($url['get']) and $url['get'] == 'list') {
     $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::out();
     $game = isset($url['game']) ? $url['game'] : sys::out();
 
-    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2')))
+    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2'))) {
         sys::out();
+    }
 
     $maps = '';
 
@@ -25,8 +27,9 @@ if (isset($url['get']) and $url['get'] == 'list') {
 
     $all = 'Общее число карт: ' . $sql->num() . ' шт.' . PHP_EOL;
 
-    while ($map = $sql->get())
+    while ($map = $sql->get()) {
         $maps .= $map['name'] . PHP_EOL;
+    }
 
     $maps = $maps == '' ? 'В базе нет карт' : $all . $maps . $all;
 
@@ -37,22 +40,26 @@ if ($go) {
     $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::outjs(array('e' => 'Необходимо выбрать локацию'));
     $game = isset($url['game']) ? $url['game'] : sys::outjs(array('e' => 'Необходимо выбрать игру'));
 
-    if (!$unit)
+    if (!$unit) {
         sys::outjs(array('e' => 'Необходимо выбрать локацию'));
+    }
 
-    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2')))
+    if (!in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2'))) {
         sys::outjs(array('e' => 'Необходимо выбрать игру'));
+    }
 
     include(LIB . 'ssh.php');
 
     $sql->query('SELECT `id`, `passwd`, `address` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => 'Локация не найдена'));
+    }
 
     $unit = $sql->get();
 
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+    }
 
     $sql->query('DELETE FROM `maps` WHERE `unit`="' . $unit['id'] . '" AND `game`="' . $game . '"');
 
@@ -75,8 +82,9 @@ if ($go) {
 $units = '';
 
 $sql->query('SELECT `id`, `name` FROM `units` ORDER BY `id` ASC');
-while ($unit = $sql->get())
+while ($unit = $sql->get()) {
     $units .= '<option value="' . $unit['id'] . '">' . $unit['name'] . '</option>';
+}
 
 $html->get('updmp', 'sections/addons');
 

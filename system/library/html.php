@@ -9,26 +9,28 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class html
 {
-    var $dir = TPL;
-    var $template = null;
-    var $select_template = null;
-    var $arr = array();
-    var $data = array();
-    var $unitblock = array();
+    public $dir = TPL;
+    public $template = null;
+    public $select_template = null;
+    public $arr = array();
+    public $data = array();
+    public $unitblock = array();
 
     public function set($name, $var, $unset = false)
     {
         $this->data['[' . $name . ']'] = $var;
 
-        if ($unset)
+        if ($unset) {
             unset($this->arr[$name]);
+        }
 
-        return NULL;
+        return null;
     }
 
     public function unit($name, $var = false, $mirror = false)
@@ -47,7 +49,7 @@ class html
             $this->unitblock[$block] = $var;
         }
 
-        return NULL;
+        return null;
     }
 
     public function nav($name, $link = false)
@@ -56,20 +58,22 @@ class html
         if ($link) {
             $this->set('link', $link);
             $this->unit('link', 1, 1);
-        } else
+        } else {
             $this->unit('link', 0, 1);
+        }
         $this->set('name', $name);
         $this->pack('nav');
 
-        return NULL;
+        return null;
     }
 
     public function get($name, $path = '')
     {
         global $cfg;
 
-        if ($path != '')
+        if ($path != '') {
             $name = str_replace('//', '/', $path . '/' . $name);
+        }
 
         if (!file_exists($this->dir . '/' . $name . '.html')) {
             $route = explode('/', $name);
@@ -82,7 +86,7 @@ class html
         $this->template = file_get_contents($this->dir . '/' . $name . '.html');
         $this->select_template = $this->template;
 
-        return NULL;
+        return null;
     }
 
     private function delete()
@@ -92,7 +96,7 @@ class html
 
         $this->select_template = $this->template;
 
-        return NULL;
+        return null;
     }
 
     public function pack($compile)
@@ -121,21 +125,22 @@ class html
 
         $this->select_template = str_replace($find, $replace, $this->select_template);
 
-        if (isset($this->arr[$compile]))
+        if (isset($this->arr[$compile])) {
             $this->arr[$compile] .= $this->select_template;
-        else
+        } else {
             $this->arr[$compile] = $this->select_template;
+        }
 
         $this->delete();
 
-        return NULL;
+        return null;
     }
 
     public function upd($name, $old = array(), $new = array())
     {
         $this->arr[$name] = str_replace($old, $new, $this->arr[$name]);
 
-        return NULL;
+        return null;
     }
 
     public function unitall($name, $arr = array(), $var = false, $mirror = false)
@@ -163,8 +168,8 @@ class html
             $this->arr[$arr] = preg_replace($find_preg, $replace_preg, $this->arr[$arr]);
         }
 
-        return NULL;
+        return null;
     }
 }
 
-$html = new html;
+$html = new html();

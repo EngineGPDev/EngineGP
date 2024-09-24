@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $status = array(
     'working' => '<span class="text-green">Работает</span>',
@@ -29,8 +30,9 @@ $status = array(
 $sql->query('SELECT * FROM `users` WHERE `id`="' . $id . '" LIMIT 1');
 $us = $sql->get();
 
-if ($go)
+if ($go) {
     include(SEC . 'users/action.php');
+}
 
 $auth_list = '';
 
@@ -83,23 +85,27 @@ $money_buy = 0;
 $money_month = 0;
 
 $sql->query('SELECT `money` FROM `logs` WHERE `user`="' . $us['id'] . '" AND (`type`="buy" OR `type`="extend")');
-while ($logs = $sql->get())
+while ($logs = $sql->get()) {
     $money_all += $logs['money'];
+}
 
 $sql->query('SELECT `money` FROM `logs` WHERE `user`="' . $us['id'] . '" AND `type`="buy"');
-while ($logs = $sql->get())
+while ($logs = $sql->get()) {
     $money_buy += $logs['money'];
+}
 
 $time = (params::$aDayMonth[date('n', $start_point)] - date('j', $start_point)) * 86400;
 
 $sql->query('SELECT `money` FROM `logs` WHERE `user`="' . $us['id'] . '" AND (`type`="buy" OR `type`="extend") AND `date`>"' . ($start_point - $time) . '"');
-while ($logs = $sql->get())
+while ($logs = $sql->get()) {
     $money_month += $logs['money'];
+}
 
 $html->get('user', 'sections/users');
 
-foreach ($us as $i => $val)
+foreach ($us as $i => $val) {
     $html->set($i, $val);
+}
 
 $html->set('time', $us['time'] < $start_point - 600 ? sys::today($us['time']) : sys::ago($us['time']));
 $html->set('date', sys::today($us['date']));
@@ -121,8 +127,9 @@ $html->set('help', str_replace($us['help'], $us['help'] . '" selected="select', 
 if ($us['group'] == 'support') {
     $html->set('level', str_replace($us['level'] . '"', $us['level'] . '" selected="select"', '<option value="0">Уровень 0</option><option value="1">Уровень 1</option><option value="2">Уровень 2</option>'));
     $html->unit('support', true, true);
-} else
+} else {
     $html->unit('support', false, true);
+}
 
 $html->set('rental', $us['rental']);
 $html->set('extend', $us['extend']);

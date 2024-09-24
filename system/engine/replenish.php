@@ -9,13 +9,16 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($url['response']) and !in_array($url['response'], array('success', 'fail')))
+if (!isset($url['response']) and !in_array($url['response'], array('success', 'fail'))) {
     exit();
+}
 
-if ($url['response'] == 'success')
+if ($url['response'] == 'success') {
     sys::out(file_get_contents(ROOT . 'success.html'));
-else
+} else {
     sys::out(file_get_contents(ROOT . 'fail.html'));
+}

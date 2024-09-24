@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'control/actions.php');
 
@@ -29,8 +30,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         list($ip, $port) = explode(':', $server['address']);
 
@@ -50,8 +52,9 @@ class action extends actions
         // Проверка наличия стартовой карты
         $ssh->set('cd /servers/' . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.');
 
-        if ($server['map_start'] != '' and !in_array($server['map_start'], str_replace('.bsp', '', explode("\n", $ssh->get()))))
+        if ($server['map_start'] != '' and !in_array($server['map_start'], str_replace('.bsp', '', explode("\n", $ssh->get())))) {
             return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.bsp')));
+        }
 
         // Если система автораспределения продолжить парсинг загрузки процессора
         if (isset($proc_stat)) {
@@ -60,8 +63,9 @@ class action extends actions
             // Ядро/поток, на котором будет запущен игровой сервер (поток выбран с рассчетом наименьшей загруженности в момент запуска игрового сервера)
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
-            if (!is_numeric($core))
+            if (!is_numeric($core)) {
                 return array('e' => sys::text('error', 'cpu'));
+            }
 
             $taskset = 'taskset -c ' . $core;
         }

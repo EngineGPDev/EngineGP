@@ -9,23 +9,28 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Отправка сообщения / Удаление сообщения
-if (isset($url['action']) and in_array($url['action'], array('reply', 'remove', 'read', 'write')))
+if (isset($url['action']) and in_array($url['action'], array('reply', 'remove', 'read', 'write'))) {
     include(SEC . 'help/action/' . $url['action'] . '.php');
+}
 
-if (!$id)
+if (!$id) {
     sys::back($cfg['http'] . 'help/section/open');
+}
 
-if (in_array($user['group'], array('admin', 'support')))
+if (in_array($user['group'], array('admin', 'support'))) {
     $sql->query('SELECT `type`, `service`, `status`, `date`, `close` FROM `help` WHERE `id`="' . $id . '" LIMIT 1');
-else
+} else {
     $sql->query('SELECT `type`, `service`, `status`, `date`, `close` FROM `help` WHERE `id`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
+}
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::back($cfg['http'] . 'help/section/open');
+}
 
 $help = $sql->get();
 
@@ -52,7 +57,7 @@ while ($dialog = $sql->get($dialogs)) {
 
     $images = sys::b64djs($dialog['img']);
 
-    if (is_array($images))
+    if (is_array($images)) {
         foreach ($images as $img) {
             $html->get('attachment', 'sections/help/dialog');
 
@@ -61,62 +66,68 @@ while ($dialog = $sql->get($dialogs)) {
 
             $html->pack('attachment');
         }
+    }
 
     $html->get('msg', 'sections/help/dialog');
 
     if ($user['id'] != $dialog['user']) {
-        if (!$dialog['user'])
+        if (!$dialog['user']) {
             $html->set('sender', 'Автоматическое сообщение');
-        else {
-            if (isset($aSender[$dialog['user']]))
+        } else {
+            if (isset($aSender[$dialog['user']])) {
                 $html->set('sender', $aSender[$dialog['user']]);
-            else {
+            } else {
                 switch ($iHelp) {
                     case 1:
                         $sql->query('SELECT `name`, `group`, `support_info` FROM `users` WHERE `id`="' . $dialog['user'] . '" LIMIT 1');
                         $us = $sql->get();
 
-                        if ($us['support_info'] != '')
+                        if ($us['support_info'] != '') {
                             $aSender[$dialog['user']] = $us['name'] . ' (' . $us['support_info'] . ')';
-                        else
+                        } else {
                             $aSender[$dialog['user']] = $us['name'] . ' (' . $aGroup[$us['group']] . ')';
+                        }
 
                         break;
                     case 2:
                         $sql->query('SELECT `login`, `group`, `support_info` FROM `users` WHERE `id`="' . $dialog['user'] . '" LIMIT 1');
                         $us = $sql->get();
 
-                        if ($us['support_info'] != '')
+                        if ($us['support_info'] != '') {
                             $aSender[$dialog['user']] = $us['login'] . ' (' . $us['support_info'] . ')';
-                        else
+                        } else {
                             $aSender[$dialog['user']] = $us['login'] . ' (' . $aGroup[$us['group']] . ')';
+                        }
 
                         break;
                     case 3:
                         $sql->query('SELECT `mail`, `group`, `support_info` FROM `users` WHERE `id`="' . $dialog['user'] . '" LIMIT 1');
                         $us = $sql->get();
 
-                        if ($us['support_info'] != '')
+                        if ($us['support_info'] != '') {
                             $aSender[$dialog['user']] = $us['mail'] . ' (' . $us['support_info'] . ')';
-                        else
+                        } else {
                             $aSender[$dialog['user']] = $us['mail'] . ' (' . $aGroup[$us['group']] . ')';
+                        }
 
                         break;
                     default:
                         $sql->query('SELECT `name`, `patronymic`, `group`, `support_info` FROM `users` WHERE `id`="' . $dialog['user'] . '" LIMIT 1');
                         $us = $sql->get();
 
-                        if ($us['support_info'] != '')
+                        if ($us['support_info'] != '') {
                             $aSender[$dialog['user']] = $us['name'] . ' ' . $us['patronymic'] . ' (' . $us['support_info'] . ')';
-                        else
+                        } else {
                             $aSender[$dialog['user']] = $us['name'] . ' ' . $us['patronymic'] . ' (' . $aGroup[$us['group']] . ')';
+                        }
                 }
 
                 $html->set('sender', $aSender[$dialog['user']]);
             }
         }
-    } else
+    } else {
         $html->set('sender', 'Я');
+    }
 
     $html->set('id', $dialog['id']);
     $html->set('uid', $dialog['user']);
@@ -125,21 +136,24 @@ while ($dialog = $sql->get($dialogs)) {
     $html->set('ava', users::ava($dialog['user']));
     $html->set('text', $dialog['text']);
 
-    if ($tHelp)
+    if ($tHelp) {
         $html->set('time', $dialog['time'] < ($start_point - 600) ? sys::today($dialog['time']) : help::ago($dialog['time']));
-    else
+    } else {
         $html->set('time', sys::today($dialog['time']) . ' ' . help::ago($dialog['time'], true));
+    }
 
     if (isset($html->arr['attachment'])) {
         $html->set('img', $html->arr['attachment']);
         $html->unit('img', 1);
-    } else
+    } else {
         $html->unit('img');
+    }
 
-    if ($user['group'] == 'admin')
+    if ($user['group'] == 'admin') {
         $html->unit('admin', 1);
-    else
+    } else {
         $html->unit('admin');
+    }
 
     $html->pack('dialog');
 }
@@ -151,16 +165,17 @@ $status = array(
     2 => 'Прочитан'
 );
 
-if (isset($url['ajax']))
+if (isset($url['ajax'])) {
     sys::outjs(array('dialog' => (isset($html->arr['dialog']) ? $html->arr['dialog'] : ''), 'status' => ($help['close'] ? 'Вопрос решен' : $status[$help['status']])));
+}
 
 // Краткая информация вопроса
 switch ($help['type']) {
     case 'server':
         $sql->query('SELECT `address` FROM `servers` WHERE `id`="' . $help['service'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             $service = 'Игровой сервер: #' . $help['service'] . ' (не найден)';
-        else {
+        } else {
             $ser = $sql->get();
             $service = '<a href="' . $cfg['http'] . 'servers/id/' . $help['service'] . '" target="_blank"><u>Игровой сервер: #' . $help['service'] . ' ' . $ser['address'] . '</u></a>';
         }
