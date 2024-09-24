@@ -3,7 +3,7 @@
     "php": "^7.4 || ^8.0 || ^8.1 || ^8.2",
     "ext-memcache": "*",
     "symfony/dotenv": "5.4.35",
-    "symfony/mailer": "5.4.41",
+    "symfony/mailer": "7.1.5",
     "filp/whoops": "2.15.4",
     "monolog/monolog": "2.9.2",
     "phpseclib/phpseclib": "3.0.42",
