@@ -9,20 +9,22 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class graph_servers_day extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $sql, $start_point;
 
         $servers = $sql->query('SELECT `id`, `date` FROM `servers` ORDER BY `id` ASC');
 
         while ($server = $sql->get($servers)) {
-            if ($server['date'] + 86400 > $start_point)
+            if ($server['date'] + 86400 > $start_point) {
                 continue;
+            }
 
             $aGraph = array('online' => 0, 'cpu' => 0, 'ram' => 0, 'hdd' => 0, 'time' => 0);
 
@@ -30,8 +32,9 @@ class graph_servers_day extends cron
 
             $n = $sql->num();
 
-            if (!$n)
+            if (!$n) {
                 continue;
+            }
 
             while ($graph = $sql->get()) {
                 $aGraph['online'] += $graph['online'];
@@ -52,6 +55,6 @@ class graph_servers_day extends cron
                 . '`hdd`="' . $aGraph['hdd'] . '", `time`="' . $start_point . '"');
         }
 
-        return NULL;
+        return null;
     }
 }

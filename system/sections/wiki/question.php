@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Категории вопросов', $cfg['http'] . 'wiki');
 $html->nav('Часто задаваемые вопросы');
@@ -18,8 +19,9 @@ $html->nav('Часто задаваемые вопросы');
 $cat = isset($url['category']) ? sys::int($url['category']) : sys::back($cfg['http'] . 'wiki');
 
 $sql->query('SELECT `name` FROM `wiki_category` WHERE `id`="' . $cat . '" LIMIT 1');
-if (!$sql->num())
+if (!$sql->num()) {
     sys::back($cfg['http'] . 'wiki');
+}
 
 $category = $sql->get();
 

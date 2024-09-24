@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Загружаем .env
 $dotenv = new Symfony\Component\Dotenv\Dotenv();
@@ -18,13 +19,13 @@ $dotenv->load(ROOT . '/.env');
 
 if ($_ENV['RUN_MODE'] === 'dev') {
     // Включение отображения ошибок в режиме разработки
-    ini_set('display_errors', TRUE);
-    ini_set('html_errors', TRUE);
+    ini_set('display_errors', true);
+    ini_set('html_errors', true);
     ini_set('error_reporting', E_ALL);
 } else {
     // Отключение отображения ошибок в продакшене
-    ini_set('display_errors', FALSE);
-    ini_set('html_errors', FALSE);
+    ini_set('display_errors', false);
+    ini_set('html_errors', false);
     ini_set('error_reporting', 0);
 }
 
@@ -43,8 +44,9 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
         $sql->query('SELECT `id`, `domain` FROM `web` WHERE `type`="' . $url['subsection'] . '" AND `user`="' . $server['user'] . '" AND `unit`="' . $server['unit'] . '" LIMIT 1');
 }
 
-if (!$sql->num())
+if (!$sql->num()) {
     exit;
+}
 
 $web = $sql->get();
 
@@ -55,16 +57,18 @@ include(LIB . 'ssh.php');
 
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('error', 'ssh')), $name_mcache);
+}
 
 // Директория дополнительной услуги
 $install = $aWebUnit['install'][$aWebUnit['unit'][$url['subsection']]][$url['subsection']] . $web['domain'];
 
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('error', 'ssh')), $name_mcache);
+}
 
 $arSel = array('$adm_login', '$adm_pass', '$wmr_on', '$purse', '$secret_key', '$to', '$vk', '$skype');
 
@@ -84,8 +88,9 @@ if ($go) {
 
     $aData['bp_webmoney'] = $aData['bp_webmoney'] == 'on' ? '1' : '0';
 
-    foreach ($aData as $var => $val)
+    foreach ($aData as $var => $val) {
         $aData[$var] = str_replace('"', '', $val);
+    }
 
     $str_search = array(
         '#\$adm_login = ".*"#iu',
@@ -132,14 +137,16 @@ if ($go) {
 foreach ($conf as $str) {
     $aStr = explode('=', $str);
 
-    if (!isset($aStr[0]) || !isset($aStr[1]))
+    if (!isset($aStr[0]) || !isset($aStr[1])) {
         continue;
+    }
 
     $var = trim($aStr[0]);
     $val = str_replace(array('"', ';'), '', trim($aStr[1]));
 
-    if (!in_array($var, $arSel))
+    if (!in_array($var, $arSel)) {
         continue;
+    }
 
     $aData[$var] = isset($val[0]) ? $val : '';
 }

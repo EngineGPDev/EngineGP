@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!$go)
+if (!$go) {
     exit;
+}
 
 // Проверка на наличие установленной услуги
 switch ($aWebInstall[$server['game']][$url['subsection']]) {
@@ -30,8 +32,9 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
         break;
 }
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Дополнительная услуга не установлена.'), $nmch);
+}
 
 $web = $sql->get();
 
@@ -47,8 +50,9 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
     );
 }
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('ssh', 'error')), $nmch);
+}
 
 $passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
 

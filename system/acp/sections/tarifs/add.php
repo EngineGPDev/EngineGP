@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $aData = array();
@@ -49,20 +50,24 @@ if ($go) {
     $aData['show'] = isset($_POST['show']) ? sys::int($_POST['show']) : '';
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : '';
 
-    if ($aData['name'] == '')
+    if ($aData['name'] == '') {
         sys::outjs(array('e' => 'Необходимо указать название'));
+    }
 
     $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $aData['unit'] . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => 'Необходимо указать локацию'));
+    }
 
-    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc')))
+    if (!in_array($aData['game'], array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc'))) {
         sys::outjs(array('e' => 'Необходимо указать игру'));
+    }
 
     $aSlots = explode('-', $aData['slots']);
 
-    if (!isset($aSlots[0]) || !isset($aSlots[1]))
+    if (!isset($aSlots[0]) || !isset($aSlots[1])) {
         sys::outjs(array('e' => 'Необходимо указать слоты'));
+    }
 
     $aSlots[0] = trim($aSlots[0]);
     $aSlots[1] = trim($aSlots[1]);
@@ -72,8 +77,9 @@ if ($go) {
 
     $aPorts = explode('-', $aData['posts']);
 
-    if (!isset($aPorts[0]) || !isset($aPorts[1]))
+    if (!isset($aPorts[0]) || !isset($aPorts[1])) {
         sys::outjs(array('e' => 'Необходимо указать порты'));
+    }
 
     $aPorts[0] = trim($aPorts[0]);
     $aPorts[1] = trim($aPorts[1]);
@@ -81,20 +87,25 @@ if ($go) {
     $aData['port_min'] = $aPorts[0] > 1 ? $aPorts[0] : sys::outjs(array('e' => 'Неправильно указаны порты'));
     $aData['port_max'] = $aPorts[1] >= $aPorts[0] ? $aPorts[1] : sys::outjs(array('e' => 'Неправильно указаны порты'));
 
-    if ($aData['hostname'] == '')
+    if ($aData['hostname'] == '') {
         sys::outjs(array('e' => 'Необходимо указать название сервера'));
+    }
 
-    if ($aData['path'] == '')
+    if ($aData['path'] == '') {
         sys::outjs(array('e' => 'Необходимо указать путь до сборок'));
+    }
 
-    if ($aData['install'] == '')
+    if ($aData['install'] == '') {
         sys::outjs(array('e' => 'Необходимо указать путь для установки серверов'));
+    }
 
-    if ($aData['update'] == '')
+    if ($aData['update'] == '') {
         sys::outjs(array('e' => 'Необходимо указать путь до обновления сборки'));
+    }
 
-    if (substr($aData['path'], -1) != '/' || substr($aData['install'], -1) != '/' || substr($aData['update'], -1) != '/')
+    if (substr($aData['path'], -1) != '/' || substr($aData['install'], -1) != '/' || substr($aData['update'], -1) != '/') {
         sys::outjs(array('e' => 'Пути должны заканчиваться символом "/"'));
+    }
 
     $int = array(
         'Тестов' => 'tests',
@@ -103,8 +114,9 @@ if ($go) {
     );
 
     foreach ($int as $name => $input) {
-        if ($aData[$input] == '')
+        if ($aData[$input] == '') {
             sys::outjs(array('e' => 'Необходимо указать поле "' . $name . '"'));
+        }
     }
 
     $aPacks = explode(',', $aData['packs']);
@@ -114,8 +126,9 @@ if ($go) {
     foreach ($aPacks as $pack) {
         $aPack = explode(':', trim($pack));
 
-        if (!isset($aPack[0]) || !isset($aPack[1]))
+        if (!isset($aPack[0]) || !isset($aPack[1])) {
             continue;
+        }
 
         $name = str_replace('"', '', $aPack[0]);
         $fullname = str_replace('"', '', $aPack[1]);
@@ -123,8 +136,9 @@ if ($go) {
         $packs[trim($name)] = trim($fullname);
     }
 
-    if (!count($packs))
+    if (!count($packs)) {
         sys::outjs(array('e' => 'Необходимо указать минимум одну сборку'));
+    }
 
     $aData['packs'] = sys::b64js($packs);
 
@@ -135,8 +149,9 @@ if ($go) {
     foreach ($aIp as $ip) {
         $ip = trim($ip);
 
-        if (sys::valid($ip, 'ip'))
+        if (sys::valid($ip, 'ip')) {
             continue;
+        }
 
         $ips .= $ip . ':';
     }
@@ -152,13 +167,15 @@ if ($go) {
     foreach ($aPlugins as $plugin) {
         $aPlugin = explode(':', trim($plugin));
 
-        if (!isset($aPlugin[0]) || !isset($aPlugin[1]))
+        if (!isset($aPlugin[0]) || !isset($aPlugin[1])) {
             continue;
+        }
 
         $name = trim(str_replace('"', '', $aPlugin[0]));
 
-        if (!isset($packs[$name]))
+        if (!isset($packs[$name])) {
             continue;
+        }
 
         $aList = explode(',', str_replace('"', '', $aPlugin[1]));
 
@@ -167,16 +184,18 @@ if ($go) {
         foreach ($aList as $pid) {
             $pid = trim($pid);
 
-            if (!is_numeric($pid))
+            if (!is_numeric($pid)) {
                 continue;
+            }
 
             $list .= intval($pid) . ',';
         }
 
         $list = isset($list[0]) ? substr($list, 0, -1) : '';
 
-        if ($list == '')
+        if ($list == '') {
             continue;
+        }
 
         $plugins[$name] = $list;
     }
@@ -190,8 +209,9 @@ if ($go) {
     foreach ($aTime as $time) {
         $time = trim($time);
 
-        if (!is_numeric($time))
+        if (!is_numeric($time)) {
             continue;
+        }
 
         $times .= intval($time) . ':';
     }
@@ -207,8 +227,9 @@ if ($go) {
     foreach ($aTimext as $timext) {
         $timext = trim($timext);
 
-        if (!is_numeric($timext))
+        if (!is_numeric($timext)) {
             continue;
+        }
 
         $timexts .= intval($timext) . ':';
     }
@@ -224,8 +245,9 @@ if ($go) {
     foreach ($aFps as $fps) {
         $fps = trim($fps);
 
-        if (!is_numeric($fps))
+        if (!is_numeric($fps)) {
             continue;
+        }
 
         $sfps .= intval($fps) . ':';
     }
@@ -241,8 +263,9 @@ if ($go) {
     foreach ($aTick as $tick) {
         $tick = trim($tick);
 
-        if (!is_numeric($tick))
+        if (!is_numeric($tick)) {
             continue;
+        }
 
         $stick .= intval($tick) . ':';
     }
@@ -258,8 +281,9 @@ if ($go) {
     foreach ($aRam as $ram) {
         $ram = trim($ram);
 
-        if (!is_numeric($ram))
+        if (!is_numeric($ram)) {
             continue;
+        }
 
         $sram .= intval($ram) . ':';
     }
@@ -275,8 +299,9 @@ if ($go) {
     foreach ($aPrice as $price) {
         $price = trim($price);
 
-        if (!is_numeric($price))
+        if (!is_numeric($price)) {
             continue;
+        }
 
         $sprice .= $price . ':';
     }
@@ -287,8 +312,9 @@ if ($go) {
 
     switch ($aData['game']) {
         case 'cs':
-            if (count(explode(':', $aData['fps'])) != count(explode(':', $aData['price'])))
+            if (count(explode(':', $aData['fps'])) != count(explode(':', $aData['price']))) {
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));
+            }
 
             break;
 
@@ -297,8 +323,9 @@ if ($go) {
             $atick = explode(':', $aData['tickrate']);
             $aprice = explode(':', $aData['price']);
 
-            if ((count($afps) * count($atick)) != count($aprice))
+            if ((count($afps) * count($atick)) != count($aprice)) {
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));
+            }
 
             $price = array();
 
@@ -319,21 +346,24 @@ if ($go) {
         case 'css':
         case 'cs2':
         case 'csgo':
-            if (count(explode(':', $aData['tickrate'])) != count(explode(':', $aData['price'])))
+            if (count(explode(':', $aData['tickrate'])) != count(explode(':', $aData['price']))) {
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));
+            }
 
             break;
 
         case 'mc':
-            if (count(explode(':', $aData['ram'])) != count(explode(':', $aData['price'])))
+            if (count(explode(':', $aData['ram'])) != count(explode(':', $aData['price']))) {
                 sys::outjs(array('e' => 'Неправильно указано поле "Цена"'));
+            }
 
     }
 
     $access = array('ftp', 'plugins', 'console', 'stats', 'copy', 'web');
 
-    foreach ($access as $section)
+    foreach ($access as $section) {
         $aData[$section] = (string)$aData[$section] == 'on' ? '1' : '0';
+    }
 
     $sql->query('INSERT INTO `tarifs` set'
         . '`unit`="' . $aData['unit'] . '",'
@@ -378,8 +408,9 @@ if ($go) {
 $units = '';
 
 $sql->query('SELECT `id`, `name` FROM `units` ORDER BY `id` ASC');
-while ($unit = $sql->get())
+while ($unit = $sql->get()) {
     $units .= '<option value="' . $unit['id'] . '">#' . $unit['id'] . ' ' . $unit['name'] . '</option>';
+}
 
 $html->get('add', 'sections/tarifs');
 

@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class help
 {
@@ -23,16 +24,17 @@ class help
         foreach ($aStr as $line => $str) {
             $check = str_replace(' ', '', $str);
 
-            if (isset($aStr[$line + 1]) and ($check == '' and str_replace(' ', '', $aStr[$line + 1]) == ''))
+            if (isset($aStr[$line + 1]) and ($check == '' and str_replace(' ', '', $aStr[$line + 1]) == '')) {
                 continue;
-            else {
+            } else {
                 $etext .= rtrim(str_replace("\t", '    ', $str)) . "\n";
 
                 continue;
             }
 
-            if ($check != '')
+            if ($check != '') {
                 $etext .= rtrim(str_replace("\t", '    ', $str)) . "\n";
+            }
         }
 
         $str_search = array(
@@ -68,11 +70,13 @@ class help
 
         $diff = $start_point - $time;
 
-        if ($diff < 0)
+        if ($diff < 0) {
             return '';
+        }
 
-        if (!$diff)
+        if (!$diff) {
             $diff = 1;
+        }
 
         $seconds = array('секунду', 'секунды', 'секунд');
         $minutes = array('минуту', 'минуты', 'минут');
@@ -87,14 +91,16 @@ class help
 
         for ($i = 6; ($i >= 0) and (($no = $diff / $length[$i]) <= 1); $i -= 1) ;
 
-        if ($i < 0)
+        if ($i < 0) {
             $i = 0;
+        }
 
         $_time = $start_point - ($diff % $length[$i]);
         $no = ceil($no);
 
-        if ($brackets)
+        if ($brackets) {
             return '(' . $no . ' ' . help::parse_ago($no, $phrase[$i]) . ' назад)';
+        }
 
         return $no . ' ' . help::parse_ago($no, $phrase[$i]) . ' назад';
     }

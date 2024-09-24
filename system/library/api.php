@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class api
 {
@@ -19,20 +20,23 @@ class api
         global $sql, $cfg;
 
         $sql->query('SELECT `unit`, `tarif`, `address`, `port`, `game`, `slots_start`, `online`, `players`, `status`, `name`, `map`, `pack`, `fps`, `tickrate`, `ram`, `time`, `date`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             return array('e' => 'сервер не найден');
+        }
 
         $server = $sql->get();
 
         $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             return array('e' => 'локация не найдена');
+        }
 
         $unit = $sql->get();
 
         $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             return array('e' => 'тариф не найден');
+        }
 
         $tarif = $sql->get();
         $packs = sys::b64djs($tarif['packs']);
@@ -63,8 +67,9 @@ class api
         global $sql, $cfg;
 
         $sql->query('SELECT `online`, `slots_start`, `ram_use`, `cpu_use`, `hdd_use` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             return array('e' => 'сервер не найден');
+        }
 
         $server = $sql->get();
 
@@ -87,13 +92,15 @@ class api
         $aGames = array('cs', 'css', 'cssold', 'csgo', 'cs2', 'mc', 'mta');
 
         $sql->query('SELECT `game` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             return 'сервер не найден';
+        }
 
         $server = $sql->get();
 
-        if (!in_array($server['game'], $aGames))
+        if (!in_array($server['game'], $aGames)) {
             return 'Игра не поддерживает команды';
+        }
 
         $go = true;
 

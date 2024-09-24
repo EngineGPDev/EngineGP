@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT * FROM `plugins_update` WHERE `id`="' . $id . '" LIMIT 1');
 $plugin = $sql->get();
@@ -59,8 +60,9 @@ if ($go) {
 
     $aData['cfg'] = 0;
 
-    if ($aData['name'] == '')
+    if ($aData['name'] == '') {
         sys::outjs(array('e' => 'Необходимо указать название'));
+    }
 
     $aPacks = explode(':', $aData['packs']);
 
@@ -83,8 +85,9 @@ if ($go) {
     foreach ($aIncom as $incom) {
         $incom = trim($incom);
 
-        if (!is_numeric($incom))
+        if (!is_numeric($incom)) {
             continue;
+        }
 
         $incoms .= intval($incom) . ':';
     }
@@ -103,8 +106,9 @@ if ($go) {
         foreach ($aChpl as $idchpl) {
             $idchpl = trim($idchpl);
 
-            if (!is_numeric($idchpl))
+            if (!is_numeric($idchpl)) {
                 continue;
+            }
 
             $choice .= intval($idchpl) . ':';
         }
@@ -123,8 +127,9 @@ if ($go) {
     foreach ($aRequi as $requi) {
         $requi = trim($requi);
 
-        if (!is_numeric($requi))
+        if (!is_numeric($requi)) {
             continue;
+        }
 
         $requis .= intval($requi) . ':';
     }
@@ -138,8 +143,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_config` WHERE `update`="' . $id . '"');
 
     foreach ($aData['config_files_file'] as $i => $file) {
-        if ($file == '')
+        if ($file == '') {
             continue;
+        }
 
         $n += 1;
 
@@ -148,14 +154,16 @@ if ($go) {
         $sql->query('INSERT INTO `plugins_config` set `plugin`="' . $plugin['plugin'] . '", `update`="' . $id . '", `file`="' . $file . '", `sort`="' . $n . '"');
     }
 
-    if ($n)
+    if ($n) {
         $aData['cfg'] = 1;
+    }
 
     $sql->query('DELETE FROM `plugins_clear` WHERE `update`="' . $id . '"');
 
     foreach ($aData['config_clear_file'] as $i => $file) {
-        if ($aData['config_clear_text'][$i] == '' || $file == '')
+        if ($aData['config_clear_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $regex = (string)$aData['config_clear_regex'] == 'on' ? 1 : 0;
 
@@ -167,8 +175,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_write` WHERE `update`="' . $id . '"');
 
     foreach ($aData['config_write_file'] as $i => $file) {
-        if ($aData['config_write_text'][$i] == '' || $file == '')
+        if ($aData['config_write_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $top = (string)$aData['config_write_top'][$i] == 'on' ? 1 : 0;
 
@@ -180,8 +189,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_write_del` WHERE `update`="' . $id . '"');
 
     foreach ($aData['config_write_del_file'] as $i => $file) {
-        if ($aData['config_write_del_text'][$i] == '' || $file == '')
+        if ($aData['config_write_del_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $top = (string)$aData['config_write_del_top'][$i] == 'on' ? 1 : 0;
 
@@ -193,8 +203,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_delete` WHERE `update`="' . $id . '"');
 
     foreach ($aData['files_delete_file'] as $file) {
-        if ($file == '')
+        if ($file == '') {
             continue;
+        }
 
         $sql->query('INSERT INTO `plugins_delete` set `plugin`="' . $plugin['plugin'] . '", `update`="' . $id . '", `file`="' . $file . '"');
     }

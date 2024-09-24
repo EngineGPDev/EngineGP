@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!$go)
+if (!$go) {
     exit;
+}
 
 switch ($aWebInstall[$server['game']][$url['subsection']]) {
     case 'server':
@@ -32,8 +34,9 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
         break;
 }
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Дополнительная услуга не установлена.'), $nmch);
+}
 
 $web = $sql->get();
 
@@ -42,8 +45,9 @@ include(LIB . 'games/games.php');
 
 $upd = $web['update'] + 86400;
 
-if ($upd > $start_point)
+if ($upd > $start_point) {
     sys::outjs(array('e' => 'Для повторного обновления должно пройти: ' . games::date('max', $upd)));
+}
 
 include(LIB . 'ssh.php');
 
@@ -57,8 +61,9 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
     );
 }
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+}
 
 $install = $aWebUnit['install'][$aWebUnit['unit'][$url['subsection']]][$url['subsection']] . $web['domain'];
 

@@ -9,11 +9,12 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Подключение filp/whoops
-$whoops = new \Whoops\Run;
+$whoops = new \Whoops\Run();
 $prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
 foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
     foreach ($secrets as $secret) {
@@ -29,8 +30,9 @@ $whoops->pushHandler($loggingInFile);
 $whoops->register();
 
 // Подгрузка трейта
-if (!file_exists(CRON . $task . '.php'))
+if (!file_exists(CRON . $task . '.php')) {
     exit('Invalid cron method');
+}
 
 $user = array('id' => 0, 'group' => 'admin');
 
@@ -78,8 +80,9 @@ class cron
             $i = 0;
 
             foreach ($aData as $key => $val) {
-                if ($i == cron::$seping)
+                if ($i == cron::$seping) {
                     break;
+                }
 
                 $data .= $val . ' ';
 

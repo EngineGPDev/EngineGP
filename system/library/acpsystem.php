@@ -13,15 +13,17 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class sys
 {
     public static function url($all = true)
     {
-        if ($_SERVER['REQUEST_URI'] == '/acp/')
-            return $all ? NULL : 'index';
+        if ($_SERVER['REQUEST_URI'] == '/acp/') {
+            return $all ? null : 'index';
+        }
 
         $url = array();
 
@@ -30,24 +32,27 @@ class sys
 
         array_shift($aUrl);
 
-        if (!$all)
+        if (!$all) {
             return $aUrl[0];
+        }
 
         unset($aUrl[0]);
 
         $i = 1;
         $m = count($aUrl) + 1;
 
-        for ($i; $i < $m; $i += 1)
+        for ($i; $i < $m; $i += 1) {
             $url[$aUrl[$i]] = isset($aUrl[++$i]) ? $aUrl[$i] : true;
+        }
 
         return $url;
     }
 
     public static function int($data, $width = false)
     {
-        if ($width)
+        if ($width) {
             return preg_replace("([^0-9]{0, " . $width . "})", '', $data);
+        }
 
         return preg_replace("([^0-9])", '', $data);
     }
@@ -71,8 +76,9 @@ class sys
     {
         global $mcache;
 
-        if ($cache)
+        if ($cache) {
             $mcache->delete($cache);
+        }
 
         die(json_encode($val));
     }
@@ -81,8 +87,9 @@ class sys
     {
         global $mcache;
 
-        if ($cache)
+        if ($cache) {
             $mcache->delete($cache);
+        }
 
         die('' . $val . '');
     }
@@ -92,65 +99,75 @@ class sys
         if (!is_string($val)) {
             return true;
         }
-        
+
         switch ($type) {
             case 'promo':
-                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val))
+                if (!preg_match("/^[A-Za-z0-9]{2,20}$/", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'en':
-                if (!preg_match("/^[A-Za-z0-9]$/", $val))
+                if (!preg_match("/^[A-Za-z0-9]$/", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'ru':
-                if (!preg_match("/^[А-Яа-я]$/u", $val))
+                if (!preg_match("/^[А-Яа-я]$/u", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'wm':
-                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', $val))
+                if (!preg_match('/^R[0-9]{12,12}$|^Z[0-9]{12,12}$|^U[0-9]{12,12}$/m', $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'ip':
-                if (!preg_match("/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/", $val))
+                if (!preg_match("/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'steamid':
-                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", $val))
+                if (!preg_match("/^STEAM_[0-9]:[0-9]:[0-9]{6,12}$|^HLTV$|^STEAM_ID_LAN$|^STEAM_ID_PENDING$|^VALVE_ID_LAN$|^VALVE_ID_PENDING$|^STEAM_666:88:666$/", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'steamid3':
-                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", $val))
+                if (!preg_match("/^\[U:[01]:[0-9]{3,12}\]$/i", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'num':
-                if (!preg_match('/[^0-9]/', $val))
+                if (!preg_match('/[^0-9]/', $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'md5':
-                if (!preg_match("/^[a-z0-9]{32,32}$/", $val))
+                if (!preg_match("/^[a-z0-9]{32,32}$/", $val)) {
                     return true;
+                }
 
                 return false;
 
             case 'other':
-                if (!preg_match($preg, $val))
+                if (!preg_match($preg, $val)) {
                     return true;
+                }
 
                 return false;
         }
@@ -162,23 +179,28 @@ class sys
     {
         $ceil = ceil($nums / $num);
 
-        if ($page > $ceil)
+        if ($page > $ceil) {
             $page = $ceil;
+        }
 
         $next = $page * $num;
 
-        if ($next <= $nums)
+        if ($next <= $nums) {
             $next = $next - $num;
+        }
 
-        if ($next > $nums)
+        if ($next > $nums) {
             $next = $next - $num;
+        }
 
-        if ($next < 1)
+        if ($next < 1) {
             $next = 0;
+        }
 
         $num_go = $next;
-        if ($page == '')
+        if ($page == '') {
             $page = 1;
+        }
 
         $aPage = array(
             'page' => $page,
@@ -191,17 +213,20 @@ class sys
 
     public static function page_list($countnum, $actnum)
     {
-        if ($countnum == 0 || $countnum == 1)
+        if ($countnum == 0 || $countnum == 1) {
             return array();
+        }
 
         if ($countnum > 10) {
             if ($actnum <= 4 || $actnum + 3 >= $countnum) {
-                for ($i = 0; $i <= 4; $i++)
+                for ($i = 0; $i <= 4; $i++) {
                     $numlist[$i] = $i + 1;
+                }
 
                 $numlist[5] = '...';
-                for ($j = 6, $k = 4; $j <= 10; $j += 1, $k -= 1)
+                for ($j = 6, $k = 4; $j <= 10; $j += 1, $k -= 1) {
                     $numlist[$j] = $countnum - $k;
+                }
             } else {
                 $numlist[0] = 1;
                 $numlist[1] = 2;
@@ -215,9 +240,11 @@ class sys
                 $numlist[9] = $countnum - 1;
                 $numlist[10] = $countnum;
             }
-        } else
-            for ($n = 0; $n < $countnum; $n += 1)
+        } else {
+            for ($n = 0; $n < $countnum; $n += 1) {
                 $numlist[$n] = $n + 1;
+            }
+        }
 
         return $numlist;
     }
@@ -239,22 +266,26 @@ class sys
             }
 
             foreach ($aNum as $v) {
-                if ($v != $page && $v != '...')
+                if ($v != $page && $v != '...') {
                     $pages .= '<a href="' . $cfg['http'] . $section . '/page/' . $v . '">' . $v . '</a>';
+                }
 
-                if ($v == $page)
+                if ($v == $page) {
                     $pages .= '<a href="#" onclick="return false" class="active">' . $v . '</a>';
+                }
 
-                if ($v == '...')
+                if ($v == '...') {
                     $pages .= '<a href="#" onclick="return false">...</a>';
+                }
             }
 
             if ($ceil > $page) {
                 if ($page < $ceil) {
                     $next = $page + 1;
                     $pages .= '<a href="' . $cfg['http'] . $section . '/page/' . $next . '"><i class="fa fa-angle-double-right"></i></a>';
-                } else
+                } else {
                     $pages .= '<a href="#" onclick="return false;"><i class="fa fa-angle-double-right"></i></a>';
+                }
             }
         }
 
@@ -262,7 +293,7 @@ class sys
 
         $html->pack('pages');
 
-        return NULL;
+        return null;
     }
 
     public static function ago($time, $brackets = false)
@@ -271,11 +302,13 @@ class sys
 
         $diff = $start_point - $time;
 
-        if ($diff < 0)
+        if ($diff < 0) {
             return '';
+        }
 
-        if (!$diff)
+        if (!$diff) {
             $diff = 1;
+        }
 
         $seconds = array('секунду', 'секунды', 'секунд');
         $minutes = array('минуту', 'минуты', 'минут');
@@ -290,14 +323,16 @@ class sys
 
         for ($i = 6; ($i >= 0) and (($no = $diff / $length[$i]) <= 1); $i -= 1) ;
 
-        if ($i < 0)
+        if ($i < 0) {
             $i = 0;
+        }
 
         $_time = $start_point - ($diff % $length[$i]);
         $no = ceil($no);
 
-        if ($brackets)
+        if ($brackets) {
             return '(' . $no . ' ' . sys::parse_ago($no, $phrase[$i]) . ' назад)';
+        }
 
         return $no . ' ' . sys::parse_ago($no, $phrase[$i]) . ' назад';
     }
@@ -315,8 +350,9 @@ class sys
 
         $check_time = $date - $start_point;
 
-        if ($check_time < 1)
+        if ($check_time < 1) {
             return 'время истекло.';
+        }
 
         $days = floor($check_time / 86400);
         $hours = floor(($check_time % 86400) / 3600);
@@ -340,45 +376,54 @@ class sys
 
         $text = '';
 
-        if ($days > 0)
+        if ($days > 0) {
             $text .= sys::date_decl($days, $adata[$lenght]['days']);
+        }
 
-        if ($days < 1 and $hours > 0)
+        if ($days < 1 and $hours > 0) {
             $text .= ' ' . sys::date_decl($hours, $adata[$lenght]['hours']);
+        }
 
-        if ($days < 1 and $minutes > 0)
+        if ($days < 1 and $minutes > 0) {
             $text .= ' ' . sys::date_decl($minutes, $adata[$lenght]['minutes']);
+        }
 
-        if ($days < 1 and $seconds > 0)
+        if ($days < 1 and $seconds > 0) {
             $text .= ' ' . sys::date_decl($seconds, $adata[$lenght]['seconds']);
+        }
 
         return $text;
     }
 
     public static function date_decl($digit, $expr, $onlyword = false)
     {
-        if (!is_array($expr))
+        if (!is_array($expr)) {
             $expr = array_filter(explode(' ', $expr));
+        }
 
-        if (empty($expr[2]))
+        if (empty($expr[2])) {
             $expr[2] = $expr[1];
+        }
 
         $i = sys::int($digit) % 100;
 
-        if ($onlyword)
+        if ($onlyword) {
             $digit = '';
+        }
 
-        if ($i > 4 and $i < 21)
+        if ($i > 4 and $i < 21) {
             $res = $digit . ' ' . $expr[2];
-        else
+        } else {
             $i %= 10;
+        }
 
-        if ($i == 1)
+        if ($i == 1) {
             $res = $digit . ' ' . $expr[0];
-        elseif ($i > 1 and $i < 5)
+        } elseif ($i > 1 and $i < 5) {
             $res = $digit . ' ' . $expr[1];
-        else
+        } else {
             $res = $digit . ' ' . $expr[2];
+        }
 
         return trim($res);
     }
@@ -391,8 +436,9 @@ class sys
         $day = date('d.m.Y', $time);
 
         if ($day == $today) {
-            if ($cp)
+            if ($cp) {
                 return 'Сегодня ' . date('H:i', $time);
+            }
 
             return 'Сегодня ' . date('- H:i', $time);
         }
@@ -401,34 +447,41 @@ class sys
         $yesterday_full = date('m.Y', $time);
 
         if ($day == $yesterday_first . '.' . $yesterday_full and !$yesterday_first) {
-            if ($cp)
+            if ($cp) {
                 return 'Вчера ' . date('H:i', $time);
+            }
 
             return 'Вчера ' . date('- H:i', $time);
         }
 
-        if ($cp)
+        if ($cp) {
             return date('d.m.Y H:i', $time);
+        }
 
         return date('d.m.Y - H:i', $time);
     }
 
     public static function browser($agent)
     {
-        if (strpos($agent, 'Firefox') !== false)
+        if (strpos($agent, 'Firefox') !== false) {
             return 'Mozilla Firefox';
+        }
 
-        if (strpos($agent, 'Opera') !== false)
+        if (strpos($agent, 'Opera') !== false) {
             return 'Opera';
+        }
 
-        if (strpos($agent, 'Chrome') !== false)
+        if (strpos($agent, 'Chrome') !== false) {
             return 'Google Chrome';
+        }
 
-        if (strpos($agent, 'MSIE') !== false)
+        if (strpos($agent, 'MSIE') !== false) {
             return 'Internet Explorer';
+        }
 
-        if (strpos($agent, 'Safari') !== false)
+        if (strpos($agent, 'Safari') !== false) {
             return 'Safari';
+        }
 
         return 'Неизвестный';
     }
@@ -437,8 +490,9 @@ class sys
     {
         $stack = fsockopen('whois.ripe.net', 43, $errno, $errstr);
 
-        if (!$stack)
+        if (!$stack) {
             return 'не определена';
+        }
 
         fputs($stack, $ip . "\r\n");
 
@@ -447,7 +501,7 @@ class sys
         while (!feof($stack)) {
             $str = fgets($stack, 128);
 
-            if (strpos($str, 'route:') !== FALSE) {
+            if (strpos($str, 'route:') !== false) {
                 $subnetwork = trim(str_replace('route:', '', $str));
 
                 break;
@@ -464,20 +518,24 @@ class sys
         $uptime = null;
 
         $day = floor($time / 86400);
-        if ($day)
+        if ($day) {
             $uptime .= $day . 'д. ';
+        }
 
         $hour = floor(($time % 86400) / 3600);
-        if ($hour)
+        if ($hour) {
             $uptime .= $hour . 'ч. ';
+        }
 
         $min = floor(($time % 3600) / 60);
-        if ($min)
+        if ($min) {
             $uptime .= $min . 'м. ';
+        }
 
         $sec = $time % 60;
-        if ($sec)
+        if ($sec) {
             $uptime .= $sec . 'с. ';
+        }
 
         return $uptime;
     }
@@ -502,14 +560,16 @@ class sys
     {
         $time = explode(' ', $time);
 
-        if (count($time) != 2)
+        if (count($time) != 2) {
             sys::outjs(array('e' => 'Указанная дата неправильная.'));
+        }
 
         $aDate = explode('/', $time[0]);
         $aTime = explode(':', $time[1]);
 
-        if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2]))
+        if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2])) {
             sys::outjs(array('e' => 'Указанная дата неправильная.'));
+        }
 
         return mktime($aTime[0], $aTime[1], 0, $aDate[1], $aDate[0], $aDate[2]);
     }
@@ -553,8 +613,9 @@ class sys
     {
         global $SxGeo;
 
-        if (sys::valid($address, 'ip'))
+        if (sys::valid($address, 'ip')) {
             return 'не определена';
+        }
 
         $data = $SxGeo->getCityFull($address);
 
@@ -565,26 +626,29 @@ class sys
     {
         global $_SERVER;
 
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
             return $_SERVER['HTTP_CF_CONNECTING_IP'];
+        }
 
-        return NULL;
+        return null;
     }
 
     public static function ip()
     {
         $ip = sys::ipproxy();
 
-        if (sys::valid($ip, 'ip'))
+        if (sys::valid($ip, 'ip')) {
             return $_SERVER['REMOTE_ADDR'];
+        }
 
         return $ip;
     }
 
     public static function status($data)
     {
-        if (strpos($data, 'is running') || strpos($data, '(running)'))
+        if (strpos($data, 'is running') || strpos($data, '(running)')) {
             return true;
+        }
 
         return false;
     }
@@ -618,7 +682,7 @@ class sys
             "<b>\\1</b>",
             "<u>\\1</u>",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
-            function($matches) {
+            function ($matches) {
                 return '<code>' . htmlspecialchars($matches[1]) . '</code>';
             },
             "<blockquote><p>\\1</p></blockquote>",
@@ -648,8 +712,9 @@ class sys
 
         $group = isset($user['group']) ? $user['group'] : 'user';
 
-        if ($section != 'error' || !$cfg['text_group'])
+        if ($section != 'error' || !$cfg['text_group']) {
             $group = 'all';
+        }
 
         include(DATA . 'text/' . $section . '.php');
 
@@ -658,8 +723,9 @@ class sys
 
     public static function updtext($text, $data)
     {
-        foreach ($data as $name => $val)
+        foreach ($data as $name => $val) {
             $text = str_replace('[' . $name . ']', $val, $text);
+        }
 
         return $text;
     }

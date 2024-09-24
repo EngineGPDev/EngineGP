@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/games.php');
 include(LIB . 'games/tarifs.php');
@@ -20,10 +21,11 @@ include(LIB . 'games/' . $server['game'] . '/tarif.php');
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $nmch = sys::rep_act('server_tarif_go_' . $id, 10);
 
-    if (file_exists(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php'))
+    if (file_exists(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php')) {
         include(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php');
-    else
+    } else {
         include(SEC . 'servers/games/tarif/' . $url['subsection'] . '.php');
+    }
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
@@ -37,9 +39,9 @@ $html->set('id', $id);
 $html->pack('main');
 
 // Шаблон продления
-if ($cfg['settlement_period'])
+if ($cfg['settlement_period']) {
     tarif::extend_sp($server, $tarif, $id);
-else {
+} else {
     $options = games::parse_time($tarif['discount'], $server['tarif'], explode(':', $tarif['timext']), 'extend');
 
     tarif::extend($options, $server, $tarif['name'], $id);
@@ -51,18 +53,22 @@ if (!$server['test']) {
     $unit = $sql->get();
 
     // Шаблон смены тарифа (если аренда не менее 1 дня и цены планов различны)
-    if ($server['time'] > $start_point + 86400 and tarif::price($tarif['price']))
+    if ($server['time'] > $start_point + 86400 and tarif::price($tarif['price'])) {
         tarif::plan($server, $tarif['name'], $id);
+    }
 
     // Шаблон изменения кол-ва слот
-    if ($tarif['slots_min'] != $tarif['slots_max'])
+    if ($tarif['slots_min'] != $tarif['slots_max']) {
         tarif::slots($server, array('min' => $tarif['slots_min'], 'max' => $tarif['slots_max']), $id);
+    }
 
     // Шаблон изменения локации (если аренда не менее 1 дня)
-    if ($server['time'] > $start_point + 86400)
+    if ($server['time'] > $start_point + 86400) {
         tarif::unit($server, $unit['name'], $tarif['name'], $id);
+    }
 
     // Шаблон покупки/аренды выделенного адреса
-    if ($server['port'] != 27015)
+    if ($server['port'] != 27015) {
         tarif::address($server, $id);
+    }
 }

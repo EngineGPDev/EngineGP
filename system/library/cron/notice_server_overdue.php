@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class notice_server_overdue extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $start_point;
 
@@ -25,16 +26,18 @@ class notice_server_overdue extends cron
 
             $server_address = $server['address'] . ':' . $server['port'];
 
-            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), array('site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address)), $user['mail']))
+            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), array('site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address)), $user['mail'])) {
                 continue;
+            }
 
             $sql->query('UPDATE `servers` set `mail`="1" WHERE `id`="' . $server['id'] . '" LIMIT 1');
         }
 
         $servers = $sql->query('SELECT `id` FROM `servers` WHERE `time`>"' . $start_point . '" AND `mail`="1"');
-        while ($server = $sql->get($servers))
+        while ($server = $sql->get($servers)) {
             $sql->query('UPDATE `servers` set `mail`="0" WHERE `id`="' . $server['id'] . '" LIMIT 1');
+        }
 
-        return NULL;
+        return null;
     }
 }

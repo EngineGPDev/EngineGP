@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT * FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 $unit = $sql->get();
@@ -41,16 +42,19 @@ if ($go) {
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $unit['sort'];
     $aData['domain'] = isset($_POST['domain']) ? trim($_POST['domain']) : $unit['domain'];
 
-    foreach (array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc') as $game)
+    foreach (array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc') as $game) {
         $aData[$game] = (string)$aData[$game] == 'on' ? '1' : '0';
+    }
 
-    if (in_array('', $aData))
+    if (in_array('', $aData)) {
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    }
 
     include(LIB . 'ssh.php');
 
-    if (!$ssh->auth($aData['passwd'], $aData['address']))
+    if (!$ssh->auth($aData['passwd'], $aData['address'])) {
         sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+    }
 
     $sql->query('UPDATE `units` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
@@ -81,14 +85,16 @@ if ($go) {
 
 $html->get('unit', 'sections/units');
 
-foreach ($unit as $i => $val)
+foreach ($unit as $i => $val) {
     $html->set($i, $val);
+}
 
 foreach (array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc') as $game) {
-    if ($unit[$game])
+    if ($unit[$game]) {
         $html->unit('game_' . $game, 1);
-    else
+    } else {
         $html->unit('game_' . $game);
+    }
 }
 
 $html->set('show', $unit['show'] == 1 ? '<option value="1">Доступна</option><option value="0">Недоступна</option>' : '<option value="0">Недоступна</option><option value="1">Доступна</option>');

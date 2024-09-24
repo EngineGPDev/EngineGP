@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Проверка на авторизацию
 sys::noauth();
@@ -20,32 +21,36 @@ $title = 'Список подключенных серверов';
 include(LIB . 'control/control.php');
 
 if ($id) {
-    if ($user['group'] == 'admin')
+    if ($user['group'] == 'admin') {
         $sql->query('SELECT `id`, `user`, `status`, `time` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
-    else
+    } else {
         $sql->query('SELECT `id`, `user`, `status`, `time` FROM `control` WHERE `id`="' . $id . ' AND `user`="' . $user['id'] . '" LIMIT 1');
+    }
 
     if (!$sql->num()) {
-        if ($go)
+        if ($go) {
             sys::outjs(array('e' => 'Сервер #' . $id . ' не найден'));
+        }
 
         sys::back($cfg['http'] . 'control');
     }
 
     $ctrl = $sql->get();
 
-    if (in_array($ctrl['status'], array('install', 'overdue', 'blocked', 'reboot')) && !in_array($section, array('extend', 'scan')))
+    if (in_array($ctrl['status'], array('install', 'overdue', 'blocked', 'reboot')) && !in_array($section, array('extend', 'scan'))) {
         include(SEC . 'control/noaccess.php');
-    else {
-        if (!$section)
+    } else {
+        if (!$section) {
             $section = 'index';
+        }
 
         $sid = array_key_exists('server', $url) ? sys::int($url['server']) : false;
 
-        if ($sid)
+        if ($sid) {
             include(SEC . 'control/servers/' . $section . '.php');
-        else
+        } else {
             include(SEC . 'control/' . $section . '.php');
+        }
     }
 } else {
     $html->nav($title);

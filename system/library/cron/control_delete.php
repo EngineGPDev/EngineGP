@@ -9,19 +9,21 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_delete extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv;
 
         $sql->query('SELECT `id` FROM `control` WHERE `user`="-1" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -39,6 +41,6 @@ class control_delete extends cron
 
         $sql->query('INSERT INTO `logs_sys` set `user`="0", `control`="' . $unit['id'] . '", `text`="Удаление подключенного сервера #' . $unit['id'] . ' (' . $unit['address'] . ') passwd: #' . $unit['passwd'] . '", `time`="' . $start_point . '"');
 
-        return NULL;
+        return null;
     }
 }

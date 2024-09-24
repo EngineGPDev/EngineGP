@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class tarif extends tarifs
 {
@@ -25,8 +26,9 @@ class tarif extends tarifs
         if (isset($html->arr['extend_address'])) {
             $html->unit('extend_address', 1);
             $html->set('extend_address', $html->arr['extend_address']);
-        } else
+        } else {
             $html->unit('extend_address');
+        }
 
         $html->set('id', $sid);
         $html->set('time', sys::date('min', $server['time']));
@@ -38,7 +40,7 @@ class tarif extends tarifs
 
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function extend_sp($server, $tarif, $sid)
@@ -57,8 +59,9 @@ class tarif extends tarifs
         if (isset($html->arr['extend_address'])) {
             $html->unit('extend_address', 1);
             $html->set('extend_address', $html->arr['extend_address']);
-        } else
+        } else {
             $html->unit('extend_address');
+        }
 
         $html->set('id', $sid);
         $html->set('time', sys::date('min', $server['time']));
@@ -72,7 +75,7 @@ class tarif extends tarifs
 
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function plan($server, $tarif_name, $sid)
@@ -81,8 +84,9 @@ class tarif extends tarifs
 
         $sql->query('SELECT `ram`, `price` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $tarif = $sql->get();
 
@@ -94,17 +98,20 @@ class tarif extends tarifs
         // Если есть выбор
         if (count($aRAM) > 1) {
             // Удалить при наличии ram сервера из выбора
-            if (in_array($server['ram'], $aRAM))
+            if (in_array($server['ram'], $aRAM)) {
                 unset($aRAM[array_search($server['ram'], $aRAM)]);
+            }
 
-            foreach ($aRAM as $index => $server['ram'])
+            foreach ($aRAM as $index => $server['ram']) {
                 $options .= '<option value="' . $server['ram'] . '">'
                     . $server['ram'] . ' RAM '
                     . '(' . $aPrice[$index] . ' ' . $cfg['currency'] . '/слот | '
                     . ($aPrice[$index] * $server['slots']) . ' ' . $cfg['currency'] . '/месяц)'
                     . '</option>';
-        } else
-            return NULL;
+            }
+        } else {
+            return null;
+        }
 
         $html->get('plan', 'sections/servers/games/tarif');
         $html->set('id', $sid);
@@ -114,31 +121,35 @@ class tarif extends tarifs
 
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function unit($server, $unit_name, $tarif_name, $sid)
     {
         global $cfg, $sql, $html;
 
-        if (!$cfg['change_unit'][$server['game']])
-            return NULL;
+        if (!$cfg['change_unit'][$server['game']]) {
+            return null;
+        }
 
         $tarifs = $sql->query('SELECT `unit`, `ram` FROM `tarifs` WHERE `game`="' . $server['game'] . '" AND `name`="' . $tarif_name . '" AND `id`!="' . $server['tarif'] . '" AND `show`="1" ORDER BY `unit`');
-        if (!$sql->num($tarifs))
-            return NULL;
+        if (!$sql->num($tarifs)) {
+            return null;
+        }
 
         $units = 0;
 
         $options = '<option value="0">Выберите новую локацию</option>';
 
         while ($tarif = $sql->get($tarifs)) {
-            if (!in_array($server['ram'], explode(':', $tarif['ram'])))
+            if (!in_array($server['ram'], explode(':', $tarif['ram']))) {
                 continue;
+            }
 
             $sql->query('SELECT `id`, `name` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 continue;
+            }
 
             $unit = $sql->get();
 
@@ -147,8 +158,9 @@ class tarif extends tarifs
             $units += 1;
         }
 
-        if (!$units)
-            return NULL;
+        if (!$units) {
+            return null;
+        }
 
         $html->get('unit', 'sections/servers/games/tarif');
 
@@ -161,7 +173,7 @@ class tarif extends tarifs
 
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function unit_new($tarif, $unit, $server, $mcache)
@@ -169,8 +181,9 @@ class tarif extends tarifs
         global $ssh, $sql, $user, $start_point;
 
         // Проверка ssh соединения с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             sys::outjs(array('e' => sys::text('error', 'ssh')));
+        }
 
         // Директория сборки
         $path = $tarif['path'] . $tarif['pack'];
@@ -210,12 +223,14 @@ class tarif extends tarifs
             if (isset($aPlugins[$tarif['pack']])) {
                 $plugins = explode(',', $aPlugins[$tarif['pack']]);
 
-                foreach ($plugins as $plugin)
-                    if ($plugin)
+                foreach ($plugins as $plugin) {
+                    if ($plugin) {
                         $sql->query('INSERT INTO `plugins_install` set `server`="' . $server['id'] . '", `plugin`="' . $plugin . '", `time`="' . $start_point . '"');
+                    }
+                }
             }
         }
 
-        return NULL;
+        return null;
     }
 }

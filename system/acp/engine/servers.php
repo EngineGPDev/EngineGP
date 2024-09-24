@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $info = '<i class="fa fa-gamepad"></i> Список серверов';
 
@@ -30,8 +31,9 @@ $aSection = array(
     'delete'
 );
 
-if (!in_array($section, $aSection))
+if (!in_array($section, $aSection)) {
     $section = 'index';
+}
 
 $del = $cfg['server_delete'] * 86400;
 $time = $start_point - $del;
@@ -42,8 +44,9 @@ $html->unit('s_' . $section, true);
 
 unset($aSection[array_search($section, $aSection)]);
 
-foreach ($aSection as $noactive)
+foreach ($aSection as $noactive) {
     $html->unit('s_' . $noactive);
+}
 
 $sql->query('SELECT `id` FROM `servers` WHERE `user`!="-1"');
 $html->set('all', $sql->num());

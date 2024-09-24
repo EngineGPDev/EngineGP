@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $q_Servers = $sql->query('SELECT `unit`, `tarif` FROM `servers` WHERE `user`="' . $user['id'] . '" ORDER BY `id` ASC');
 
@@ -88,7 +89,8 @@ while ($server = $sql->get()) {
 
     $html->set('id', $server['id']);
     $html->set('unit', $aUnits[$server['unit']]['name']);
-    $html->set('tarif',
+    $html->set(
+        'tarif',
         games::info_tarif(
             $server['game'],
             $aTarifs[$server['tarif']]['name'],

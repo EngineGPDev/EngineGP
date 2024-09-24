@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $list = '';
 
@@ -36,8 +37,9 @@ $sql->query('SELECT `balance` FROM `users` WHERE `group`="user" AND `balance`!="
 $html->set('users', $sql->num());
 
 $money = 0;
-while ($us = $sql->get())
+while ($us = $sql->get()) {
     $money += $us['balance'];
+}
 
 $html->set('money', $money);
 

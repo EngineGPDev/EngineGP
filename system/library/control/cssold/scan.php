@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'control/scans.php');
 
@@ -24,13 +25,15 @@ class scan extends scans
 
         $sq = new SourceQuery();
 
-        if ($players_get)
+        if ($players_get) {
             $nmch = 'ctrl_server_scan_mon_pl_' . $id;
-        else
+        } else {
             $nmch = 'ctrl_server_scan_mon_' . $id;
+        }
 
-        if (is_array($mcache->get($nmch)))
+        if (is_array($mcache->get($nmch))) {
             return $mcache->get($nmch);
+        }
 
         $out = array();
 
@@ -46,16 +49,18 @@ class scan extends scans
             $out['image'] = '<img src="' . sys::status($server['status'], $server['game'], $server['map'], 'img') . '">';
             $out['buttons'] = sys::buttons($id, $server['status'], $server['game'], $server['unit']);
 
-            if ($players_get)
+            if ($players_get) {
                 $out['players'] = base64_decode($server['players']);
+            }
 
             $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
             return $out;
         }
 
-        if ($players_get)
+        if ($players_get) {
             $players = scan::info($sq, $id, true);
+        }
 
         $out['name'] = htmlspecialchars($info['name']);
         $out['status'] = sys::status('working', $server['game'], $info['map']);
@@ -85,8 +90,9 @@ class scan extends scans
             . '`map`="' . $info['map'] . '", '
             . '`status`="working" WHERE `id`="' . $id . '" LIMIT 1');
 
-        if ($players_get)
+        if ($players_get) {
             $sql->query('UPDATE `control_servers` set `players`="' . base64_encode($out['players']) . '" WHERE `id`="' . $id . '" LIMIT 1');
+        }
 
         $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 

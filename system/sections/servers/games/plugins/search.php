@@ -9,21 +9,25 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!isset($nmch))
+if (!isset($nmch)) {
     $nmch = false;
+}
 
 $text = isset($_POST['text']) ? $_POST['text'] : sys::outjs(array('none' => ''));
 
 $mkey = md5($text . $id);
 
-if ($mcache->get($mkey) != '')
+if ($mcache->get($mkey) != '') {
     sys::outjs(array('s' => $mcache->get($mkey)));
+}
 
-if (!isset($text[2]))
+if (!isset($text[2])) {
     sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
+}
 
 $sPlugins = array();
 $sUpdate = array();
@@ -50,8 +54,9 @@ if (!$sql->num($plugins)) {
         $sWord = false;
 
         foreach ($aText as $word) {
-            if ($word == '' || !isset($word[2]))
+            if ($word == '' || !isset($word[2])) {
                 continue;
+            }
 
             // Поиск по плагинам
             $plugins = $sql->query('SELECT `id`, `packs` FROM `plugins` WHERE `name` LIKE FROM_BASE64(\'' . base64_encode('%' . $word . '%') . '\') OR `desc` LIKE FROM_BASE64(\'' . base64_encode('%' . $word . '%') . '\') LIMIT 5');
@@ -65,7 +70,9 @@ if (!$sql->num($plugins)) {
             }
 
             if ($sql->num($plugins)) {
-                if (!$sWord) $sWord = true;
+                if (!$sWord) {
+                    $sWord = true;
+                }
 
                 $sPlugins[] = $plugins;
                 $sUpdate[] = $update;
@@ -94,13 +101,15 @@ $aPlugins = array();
 foreach ($sPlugins as $index => $plugins) {
     while ($plugin = $sql->get($plugins)) {
         // Проверка дублирования
-        if (($sUpdate[$index] and in_array($plugin['plugin'], $aPlugins)) || !$sUpdate[$index] and in_array($plugin['id'], $aPlugins))
+        if (($sUpdate[$index] and in_array($plugin['plugin'], $aPlugins)) || !$sUpdate[$index] and in_array($plugin['id'], $aPlugins)) {
             continue;
+        }
 
         // Проверка на доступность плагина к установленной на сервере сборке
         $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
-        if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all')
+        if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all') {
             continue;
+        }
 
         $install = false; // не установлен плагин
         $upd = false; // не обновлен плагин
@@ -126,10 +135,11 @@ foreach ($sPlugins as $index => $plugins) {
         }
 
         // Если установлен обновленный плагин
-        if ($upd)
+        if ($upd) {
             $sql->query('SELECT `name`, `desc`, `status`, `cfg`, `upd` FROM `plugins_update` WHERE `id`="' . $upd . '" LIMIT 1');
-        else
+        } else {
             $sql->query('SELECT `name`, `desc`, `status`, `cfg`, `upd` FROM `plugins` WHERE `id`="' . $plugin['id'] . '" LIMIT 1');
+        }
 
         $plugin = array_merge($plugin, $sql->get());
 
@@ -138,10 +148,18 @@ foreach ($sPlugins as $index => $plugins) {
         // Если установлен
         if ($install) {
             // Если есть обновление
-            if ($plugin['upd'] > $upd) $html->unit('update', 1); else $html->unit('update');
+            if ($plugin['upd'] > $upd) {
+                $html->unit('update', 1);
+            } else {
+                $html->unit('update');
+            }
 
             // Если есть редактируемые файлы
-            if ($plugin['cfg']) $html->unit('config', 1); else $html->unit('config');
+            if ($plugin['cfg']) {
+                $html->unit('config', 1);
+            } else {
+                $html->unit('config');
+            }
 
             $html->unit('install', 1);
             $html->unit('!install');
@@ -178,8 +196,9 @@ foreach ($sPlugins as $index => $plugins) {
         $html->set('id', $id);
         $html->set('plugin', $plugin['id']);
 
-        if ($install)
+        if ($install) {
             $html->set('time', $time);
+        }
 
         $html->set('name', sys::find(htmlspecialchars_decode($plugin['name']), $text));
         $html->set('desc', sys::find(htmlspecialchars_decode($plugin['desc']), $text));

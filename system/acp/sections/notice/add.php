@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $aData = array();
@@ -26,18 +27,21 @@ if ($go) {
 
     if ($aData['type'] == 'unit') {
         $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $aData['unit'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Указанная локация не найдена'));
+        }
 
         $aData['server'] = 0;
     } elseif ($aData['type'] == 'server') {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Указанный сервер не найден'));
+        }
 
         $aData['unit'] = 0;
-    } else
+    } else {
         sys::outjs(array('e' => 'Выберите получателя уведомления'));
+    }
 
     $sql->query('INSERT INTO `notice` set '
         . '`unit`="' . $aData['unit'] . '",'
@@ -52,8 +56,9 @@ if ($go) {
 $units = '';
 
 $sql->query('SELECT `id`, `name` FROM `units` ORDER BY `id` ASC');
-while ($unit = $sql->get())
+while ($unit = $sql->get()) {
     $units .= '<option value="' . $unit['id'] . '">' . $unit['name'] . '</option>';
+}
 
 $html->get('add', 'sections/notice');
 

@@ -9,12 +9,14 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Закрытие / Удаление вопроса
-if (isset($url['action']) and in_array($url['action'], array('close', 'delete')))
+if (isset($url['action']) and in_array($url['action'], array('close', 'delete'))) {
     include(SEC . 'help/action/' . $url['action'] . '.php');
+}
 
 // Массив статусов вопроса
 $status = array(
@@ -23,19 +25,21 @@ $status = array(
     2 => 'Прочитан'
 );
 
-if (in_array($user['group'], array('admin', 'support')))
+if (in_array($user['group'], array('admin', 'support'))) {
     $sql->query('SELECT `id` FROM `help` WHERE `close`="0"');
-else
+} else {
     $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0"');
+}
 
 $aPage = sys::page($page, $sql->num(), 20);
 
 sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'help/section/open');
 
-if (in_array($user['group'], array('admin', 'support')))
+if (in_array($user['group'], array('admin', 'support'))) {
     $helps = $sql->query('SELECT `id`, `user`, `type`, `service`, `status`, `date`, `time`, `title` FROM `help` WHERE `close`="0" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
-else
+} else {
     $helps = $sql->query('SELECT `id`, `type`, `service`, `status`, `date`, `time`, `title` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
+}
 
 // Массив пользователей
 $uArr = array();
@@ -45,9 +49,9 @@ while ($help = $sql->get($helps)) {
     if (in_array($user['group'], array('admin', 'support')) and !isset($uArr[$help['user']])) {
         $sql->query('SELECT `login` FROM `users` WHERE `id`="' . $help['user'] . '" LIMIT 1');
 
-        if (!$sql->num())
+        if (!$sql->num()) {
             $uArr[$help['user']] = 'Пользователь удален';
-        else {
+        } else {
             $us = $sql->get();
             $uArr[$help['user']] = $us['login'];
         }
@@ -57,9 +61,9 @@ while ($help = $sql->get($helps)) {
     switch ($help['type']) {
         case 'server':
             $sql->query('SELECT `address` FROM `servers` WHERE `id`="' . $help['service'] . '" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 $name = 'Игровой сервер: #' . $help['service'] . ' (не найден)';
-            else {
+            } else {
                 $ser = $sql->get();
                 $name = 'Игровой сервер: #' . $help['service'] . ' ' . $ser['address'];
             }
@@ -75,8 +79,9 @@ while ($help = $sql->get($helps)) {
             $name = 'Вопрос без определенной услуги';
     }
 
-    if (!empty($help['title']))
+    if (!empty($help['title'])) {
         $name = $help['title'];
+    }
 
     $html->get('question', 'sections/help/open');
 

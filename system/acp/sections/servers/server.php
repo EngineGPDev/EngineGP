@@ -9,14 +9,16 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `time`, `overdue` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = $sql->get();
 
-if ($server['time'] > $start_point and $server['overdue'])
+if ($server['time'] > $start_point and $server['overdue']) {
     $sql->query('UPDATE `servers` set `overdue`="0" WHERE `id`="' . $id . '" LIMIT 1');
+}
 
 $sql->query('SELECT * FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = $sql->get();
@@ -39,56 +41,66 @@ if ($go) {
 
         switch ($url['type']) {
             case 'overdue':
-                if ($server['time'] > $start_point)
+                if ($server['time'] > $start_point) {
                     sys::outjs(array('e' => 'Игровой сервер должен быть просрочен.'));
+                }
 
                 $sql->query('UPDATE `servers` set `overdue`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
                 break;
 
             case 'block':
-                if ($server['status'] != ('off' || 'overdue'))
+                if ($server['status'] != ('off' || 'overdue')) {
                     sys::outjs(array('e' => 'Игровой сервер должен быть выключен.'));
+                }
 
-                if ($date < $start_point)
+                if ($date < $start_point) {
                     $sql->query('UPDATE `servers` set `status`="off", `block`="0" WHERE `id`="' . $id . '" LIMIT 1');
-                else
+                } else {
                     $sql->query('UPDATE `servers` set `status`="blocked", `block`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
+                }
                 break;
 
             case 'tarif':
                 $tid = isset($url['tarif']) ? sys::int($url['tarif']) : sys::outjs(array('e' => 'Необходимо указать тариф.'));
 
-                if ($tid == $server['tarif'])
+                if ($tid == $server['tarif']) {
                     sys::outjs(array('s' => 'ok'));
+                }
 
                 $sql->query('SELECT `id`, `slots_min`, `slots_max`, `packs`, `fps`, `tickrate`, `ram` FROM `tarifs` WHERE `id`="' . $tid . '" AND `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" LIMIT 1');
-                if (!$sql->num())
+                if (!$sql->num()) {
                     sys::outjs(array('e' => 'Укажите тариф из списка.'));
+                }
 
                 $tarif = $sql->get();
 
-                if ($server['slots'] < $tarif['slots_min'] || $server['slots'] > $tarif['slots_max'])
+                if ($server['slots'] < $tarif['slots_min'] || $server['slots'] > $tarif['slots_max']) {
                     sys::outjs(array('e' => 'Данный тариф не совместим по слотам.'));
+                }
 
                 if ($server['fps']) {
-                    if (!in_array($server['fps'], explode(':', $tarif['fps'])))
+                    if (!in_array($server['fps'], explode(':', $tarif['fps']))) {
                         sys::outjs(array('e' => 'Данный тариф не совместим по FPS.'));
+                    }
                 }
 
                 if ($server['tickrate']) {
-                    if (!in_array($server['tickrate'], explode(':', $tarif['tickrate'])))
+                    if (!in_array($server['tickrate'], explode(':', $tarif['tickrate']))) {
                         sys::outjs(array('e' => 'Данный тариф не совместим по TickRate.'));
+                    }
                 }
 
                 if ($server['game'] == 'mc') {
                     $ram = $server['ram'] / $server['slots'];
 
-                    if (!in_array($ram, explode(':', $tarif['ram'])))
+                    if (!in_array($ram, explode(':', $tarif['ram']))) {
                         sys::outjs(array('e' => 'Данный тариф не совместим по RAM.'));
+                    }
                 }
 
-                if (!array_key_exists($server['pack'], sys::b64djs($tarif['packs'])))
+                if (!array_key_exists($server['pack'], sys::b64djs($tarif['packs']))) {
                     sys::outjs(array('e' => 'На данном тарифном плане нет сборки игрового сервера.'));
+                }
 
                 $sql->query('UPDATE `servers` set `tarif`="' . $tid . '" WHERE `id`="' . $id . '" LIMIT 1');
                 break;
@@ -119,47 +131,56 @@ if ($go) {
 
     if ($server['user'] != $aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Пользователь не найден.'));
-        else {
+        } else {
             $sql->query('SELECT `id` FROM `web` WHERE `user`!="' . $aData['user'] . '" AND `server`="' . $id . '" LIMIT 1');
-            if ($sql->num())
+            if ($sql->num()) {
                 sys::outjs(array('e' => 'Невозможно установить пользователя владельцем данного сервера<br>Из-за возможной несовместимости с бесплатными услугами.<br>Удалите у данного сервера бесплатные услуги.'));
+            }
         }
     }
 
-    if (sys::valid($aData['address'], 'other', $aValid['address']))
+    if (sys::valid($aData['address'], 'other', $aValid['address'])) {
         $aData['address'] = $server['address'];
+    }
 
     $sql->query('SELECT `id` FROM `servers` WHERE `id`!="' . $id . '" AND `address` LIKE \'%' . sys::first(explode(':', $unit['address'])) . '\' AND `port`="' . $aData['port'] . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Данный порт занят другим сервером.'));
+    }
 
     $slots = explode(':', $aData['slots']);
 
-    if (!isset($slots[0]) and !isset($slots[1]))
+    if (!isset($slots[0]) and !isset($slots[1])) {
         sys::outjs(array('e' => 'Слоты указаны не правильно.'));
+    }
 
-    if ($slots[0] < 2 || $slots[1] < 2)
+    if ($slots[0] < 2 || $slots[1] < 2) {
         sys::outjs(array('e' => 'Слоты указаны не правильно.'));
+    }
 
-    if ($slots[0] > $tarif['slots_max'] || $slots[0] < $tarif['slots_min'])
+    if ($slots[0] > $tarif['slots_max'] || $slots[0] < $tarif['slots_min']) {
         sys::outjs(array('e' => 'Слоты указаны не правильно.'));
+    }
 
     $slots[1] = $slots[1] > $slots[0] ? $slots[0] : $slots[1];
 
     $aPacks = sys::b64djs($tarif['packs']);
 
-    if (!array_key_exists($aData['pack'], $aPacks))
+    if (!array_key_exists($aData['pack'], $aPacks)) {
         sys::outjs(array('e' => 'Указанная сборка не найдена.'));
+    }
 
-    if (!in_array($aData['pingboost'], array(1, 2, 3)))
+    if (!in_array($aData['pingboost'], array(1, 2, 3))) {
         $aData['pingboost'] = 0;
+    }
 
     $aData['time'] = sys::checkdate($aData['time']);
 
-    foreach (array('ftp_use', 'plugins_use', 'console_use', 'stats_use', 'copy_use', 'web_use') as $section)
+    foreach (array('ftp_use', 'plugins_use', 'console_use', 'stats_use', 'copy_use', 'web_use') as $section) {
         $aData[$section] = (string)$aData[$section] == 'on' ? '1' : '0';
+    }
 
     $sql->query('UPDATE `servers` set '
         . '`user`="' . $aData['user'] . '",'
@@ -199,8 +220,9 @@ $packs = '';
 
 $aPacks = sys::b64djs($tarif['packs']);
 
-foreach ($aPacks as $name => $fullname)
+foreach ($aPacks as $name => $fullname) {
     $packs .= '<option value="' . $name . '">' . $fullname . '</option>';
+}
 
 $packs = str_replace('"' . $server['pack'] . '"', '"' . $server['pack'] . '" selected', $packs);
 
@@ -210,15 +232,17 @@ $ftp_root = $server['ftp_root'] ? '<option value="1">Корневой катал
 $tarifs = '';
 
 $sql->query('SELECT `id`, `name` FROM `tarifs` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `id`!="' . $server['tarif'] . '"');
-while ($tarif_list = $sql->get())
+while ($tarif_list = $sql->get()) {
     $tarifs .= '<option value="' . $tarif_list['id'] . '">' . $tarif_list['name'] . '</option>';
+}
 
 $copys = $sql->query('SELECT `id`, `user` FROM `copy` WHERE `server`="' . $id . '" LIMIT 10');
 while ($copy = $sql->get($copys)) {
     $aCP = explode('_', $copy['user']);
 
-    if (isset($aCP[0]) && isset($aData['user']) && $aCP[0] != $aData['user'])
+    if (isset($aCP[0]) && isset($aData['user']) && $aCP[0] != $aData['user']) {
         $sql->query('UPDATE `copy` set `user`="' . $aData['user'] . '_' . $aCP[1] . '" WHERE `id`="' . $copy['id'] . ' LIMIT 1');
+    }
 }
 
 $html->get('server', 'sections/servers');
@@ -248,10 +272,11 @@ $html->set('overdue', $server['overdue'] == 0 ? 'Установить' : date('d
 $html->set('block', $server['block'] == 0 ? 'Заблокировать' : date('d/m/Y H:i', $server['block']));
 
 foreach (array('ftp_use', 'plugins_use', 'console_use', 'stats_use', 'copy_use', 'web_use') as $section) {
-    if ($server[$section])
+    if ($server[$section]) {
         $html->unit($section, 1);
-    else
+    } else {
         $html->unit($section);
+    }
 }
 
 $html->pack('main');

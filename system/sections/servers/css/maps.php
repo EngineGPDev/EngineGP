@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `unit`, `tarif` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -34,12 +35,14 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
     $unit = $sql->get();
 
-    if (!isset($ssh))
+    if (!isset($ssh)) {
         include(LIB . 'ssh.php');
+    }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        if ($go)
+        if ($go) {
             sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        }
 
         sys::back($cfg['http'] . 'servers/id/' . $id);
     }
@@ -61,8 +64,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $i = 0;
 
     foreach ($aMaps as $index => $map) {
-        if (!isset($map[3]))
+        if (!isset($map[3])) {
             continue;
+        }
 
         $mapjs = str_replace('$', '-_-', $map);
 
@@ -77,9 +81,9 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     }
 
     // Если есть кеш
-    if ($mcache->get('server_maps_' . $id) != '')
+    if ($mcache->get('server_maps_' . $id) != '') {
         $html->arr['main'] = $mcache->get('server_maps_' . $id);
-    else {
+    } else {
         $html->get('maps', 'sections/servers/games');
         $html->set('id', $id);
         $html->set('types', isset($html->arr['types']) ? $html->arr['types'] : '');

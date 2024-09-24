@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class plugins
 {
@@ -18,10 +19,13 @@ class plugins
     {
         global $html;
 
-        if (empty($images)) return NULL;
+        if (empty($images)) {
+            return null;
+        }
 
-        if (isset($html->arr['images']))
+        if (isset($html->arr['images'])) {
             unset($html->arr['images']);
+        }
 
         $aImg = explode("\n", $images);
 
@@ -55,15 +59,16 @@ class plugins
             $html->unit('testing');
         }
 
-        return NULL;
+        return null;
     }
 
     public static function required($id, $required, $choice, $mcache)
     {
         global $sql;
 
-        if ($required == '')
-            return NULL;
+        if ($required == '') {
+            return null;
+        }
 
         $aRequi = explode(':', $required);
 
@@ -93,8 +98,9 @@ class plugins
                                 $options .= '<option value="' . $plugin . '">' . strip_tags($data['name']) . '</option>';
                             }
 
-                            if ($options != '')
+                            if ($options != '') {
                                 sys::outjs(array('e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options), $mcache);
+                            }
                         }
                     }
                 }
@@ -103,15 +109,16 @@ class plugins
             }
         }
 
-        return NULL;
+        return null;
     }
 
     public static function incompatible($id, $incompatible, $mcache)
     {
         global $sql;
 
-        if ($incompatible == '')
-            return NULL;
+        if ($incompatible == '') {
+            return null;
+        }
 
         $aIncomp = explode(':', $incompatible);
 
@@ -125,7 +132,7 @@ class plugins
             }
         }
 
-        return NULL;
+        return null;
     }
 
     public static function clear($clear, $uid, $dir)
@@ -145,13 +152,13 @@ class plugins
 
             $query = 'chown server' . $uid . ':servers ' . $dir . $clear['file'] . ';';
 
-        } else
-            // Удаление текста из файла
+        } else { // Удаление текста из файла
             $query = 'sudo -u server' . $uid . ' sed -i ' . "'s/" . str_replace('/', '\/', htmlspecialchars_decode($clear['text'])) . "//g'" . ' ' . $dir . $clear['file'] . ';';
+        }
 
         $ssh->set($query . 'sudo -u server' . $uid . ' sed -i ' . "'/./!d'" . ' ' . $dir . $clear['file']);
 
-        return NULL;
+        return null;
     }
 
     public static function write($write, $uid, $dir)
@@ -165,14 +172,14 @@ class plugins
         $query .= 'sudo -u server' . $uid . ' sed -i ' . "'s/" . str_replace('/', '\/', htmlspecialchars_decode($write['text'])) . "//g'" . ' ' . $dir . $write['file'] . ';';
 
         // Добавление текста в начало файла
-        if ($write['top'])
+        if ($write['top']) {
             $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' sed -i ' . "'1i " . str_replace(array('/', "'", '\"'), array('\/', "\'", '"'), htmlspecialchars_decode($write['text'])) . "'" . ' ' . $dir . $write['file'] . ';';
-        else
-            // Добавление текста в конец файла
+        } else { // Добавление текста в конец файла
             $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' echo "' . str_replace('"', '\"', htmlspecialchars_decode($write['text'])) . '" >> ' . $dir . $write['file'] . ';';
+        }
 
         $ssh->set($query . 'sudo -u server' . $uid . ' sed -i ' . "'/./!d'" . ' ' . $dir . $clear['file']);
 
-        return NULL;
+        return null;
     }
 }

@@ -9,18 +9,21 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $key = isset($url['key']) ? $url['key'] : exit;
 
-if (sys::valid($key, 'md5'))
+if (sys::valid($key, 'md5')) {
     exit;
+}
 
 $sql->query('SELECT `id`, `server`, `time` FROM `graph` WHERE `key`="' . $key . '" LIMIT 1');
 
-if (!$sql->num())
+if (!$sql->num()) {
     exit;
+}
 
 $graph = $sql->get();
 
@@ -31,13 +34,15 @@ if (isset($url['type'])) {
 
     $style = isset($url['style']) ? $url['style'] : 'default';
 
-    if (!array_key_exists($style, $aStyle))
+    if (!array_key_exists($style, $aStyle)) {
         $style = 'default';
+    }
 
     $type = isset($url['type']) ? $url['type'] : 'first';
 
-    if (!in_array($type, array('first', 'second')))
+    if (!in_array($type, array('first', 'second'))) {
         $type = 'first';
+    }
 
     // Выхлоп кеш баннера
     if (file_exists(TEMP . (md5($key . $style . $type)) . '.png') and $graph['time'] + 300 > $start_point) {
@@ -46,8 +51,9 @@ if (isset($url['type'])) {
     }
 
     $sql->query('SELECT `address`, `port`, `game`, `slots_start`, `online`, `status`, `name`, `map` FROM `servers` WHERE `id`="' . $graph['server'] . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         exit;
+    }
 
     $server = $sql->get();
 

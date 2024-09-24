@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $aData = array();
@@ -29,35 +30,43 @@ if ($go) {
 
     $aData['time'] = sys::checkdate($aData['time']);
 
-    if (sys::valid($aData['cod'], 'promo'))
+    if (sys::valid($aData['cod'], 'promo')) {
         sys::outjs(array('e' => 'Неправильный формат промо-кода'));
+    }
 
     if ($aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Указанный пользователь не найден'));
-    } else
+        }
+    } else {
         $aData['user'] = 0;
+    }
 
     if ($aData['server']) {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Указанный сервер не найден'));
-    } else
+        }
+    } else {
         $aData['server'] = 0;
+    }
 
-    if (!is_array($aData['tarifs']) || !count($aData['tarifs']))
+    if (!is_array($aData['tarifs']) || !count($aData['tarifs'])) {
         sys::outjs(array('e' => 'Необходимо указать минимум один тариф'));
+    }
 
-    if ($aData['discount'])
+    if ($aData['discount']) {
         $proc = strpos($aData['value'], '%') ? '%' : '';
+    }
 
     $aData['value'] = sys::int($aData['value']) . $proc;
 
     foreach ($aData['tarifs'] as $id => $on) {
         $sql->query('SELECT `id` FROM `promo` WHERE `cod`="' . $aData['cod'] . '" AND `tarif`="' . $id . '" LIMIT 1');
-        if ($sql->num())
+        if ($sql->num()) {
             continue;
+        }
 
         $sql->query('INSERT INTO `promo` set '
             . '`cod`="' . $aData['cod'] . '",'
@@ -81,8 +90,9 @@ $tarifs = '';
 $units = $sql->query('SELECT `id`, `name` FROM `units` ORDER BY `id` ASC');
 while ($unit = $sql->get($units)) {
     $sql->query('SELECT `id`, `name`, `game` FROM `tarifs` WHERE `unit`="' . $unit['id'] . '" ORDER BY `id` ASC');
-    while ($tarif = $sql->get())
+    while ($tarif = $sql->get()) {
         $tarifs .= '<label> ' . $unit['name'] . ' / #' . $tarif['id'] . ' ' . $tarif['name'] . ' (' . strtoupper($tarif['game']) . ') <input type="checkbox" name="tarifs[' . $tarif['id'] . ']"></label>';
+    }
 }
 
 $html->get('add', 'sections/promo');

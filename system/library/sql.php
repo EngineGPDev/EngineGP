@@ -9,22 +9,24 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class mysql
 {
-    var $sql_id = false;
-    var $sql_connect = false;
-    var $query = false;
-    var $query_id = false;
-    var $mysqlerror = '';
+    public $sql_id = false;
+    public $sql_connect = false;
+    public $query = false;
+    public $query_id = false;
+    public $mysqlerror = '';
 
     public function connect_mysql($c, $u, $p, $n)
     {
         if (!$this->sql_id = @new mysqli($c, $u, $p, $n)) {
-            if (!ERROR_DATABASE)
-                return NULL;
+            if (!ERROR_DATABASE) {
+                return null;
+            }
 
             $this->out_error(mysqli_connect_error());
         }
@@ -33,24 +35,27 @@ class mysql
 
         $this->sql_connect = true;
 
-        return NULL;
+        return null;
     }
 
     public function query($query)
     {
-        if (!$this->sql_connect)
+        if (!$this->sql_connect) {
             $this->connect_mysql(CONNECT_DATABASE, USER_DATABASE, PASSWORD_DATABASE, NAME_DATABASE);
+        }
 
-        if (!($this->query_id = mysqli_query($this->sql_id, $query)) and (mysqli_error($this->sql_id) and ERROR_DATABASE))
+        if (!($this->query_id = mysqli_query($this->sql_id, $query)) and (mysqli_error($this->sql_id) and ERROR_DATABASE)) {
             $this->out_error(mysqli_error($this->sql_id), $query);
+        }
 
         return $this->query_id;
     }
 
     public function get($query_id = false)
     {
-        if (!$query_id)
+        if (!$query_id) {
             $query_id = $this->query_id;
+        }
 
         $get = mysqli_fetch_assoc($query_id);
 
@@ -59,8 +64,9 @@ class mysql
 
     public function num($query_id = false)
     {
-        if (!$query_id)
+        if (!$query_id) {
             $query_id = $this->query_id;
+        }
 
         return mysqli_num_rows($query_id);
     }
@@ -80,11 +86,13 @@ class mysql
     {
         global $go;
 
-        if ($go)
+        if ($go) {
             sys::outjs(array('e' => 'Query: ' . $query . '<br>Error:<br>' . $error));
+        }
 
-        if ($query != '')
+        if ($query != '') {
             echo 'Query: ' . $query . '<br>';
+        }
 
         echo 'Error:<br>' . $error;
 
@@ -92,4 +100,4 @@ class mysql
     }
 }
 
-$sql = new mysql;
+$sql = new mysql();

@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $text = isset($_POST['text']) ? str_ireplace('.vpk', '', $_POST['text']) : '';
 
@@ -19,15 +20,17 @@ $mkey = md5($text . $id);
 $cache = $mcache->get($mkey);
 
 if (is_array($cache)) {
-    if ($go)
+    if ($go) {
         sys::outjs($cache, $nmch);
+    }
 
     sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+    }
 
     sys::outjs(array('e' => ''));
 }
@@ -36,12 +39,14 @@ if (!isset($text[2])) {
 if ($text[0] == '^') {
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` REGEXP FROM_BASE64(\'' . base64_encode(str_replace('_', '\_', $text) . '') . '\') ORDER BY `name` ASC LIMIT 12');
     $text = substr($text, 1);
-} else
+} else {
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" AND `name` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') ORDER BY `name` ASC LIMIT 12');
+}
 
 if (!$sql->num()) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+    }
 
     sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
 }

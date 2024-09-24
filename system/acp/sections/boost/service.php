@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (isset($url['subsection']) and $url['subsection'] == 'search')
+if (isset($url['subsection']) and $url['subsection'] == 'search') {
     include(SEC . 'boost/sysearch.php');
+}
 
 $list = '';
 
@@ -36,8 +38,9 @@ while ($log = $sql->get()) {
 
 $month = date('n', $start_point) - 1;
 
-if (!$month)
+if (!$month) {
     $month = 12;
+}
 
 $aData = $mcache->get('data_boost_' . $section);
 

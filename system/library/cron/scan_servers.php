@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class scan_servers extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv, $start_point, $mcache;
 
@@ -23,8 +24,9 @@ class scan_servers extends cron
         unset($servers[0], $servers[1], $servers[2]);
 
         $sql->query('SELECT `address`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -41,8 +43,9 @@ class scan_servers extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         foreach ($servers as $id) {
             $sql->query('SELECT `user`, `uid`, `address`, `port`, `status`, `time`, `overdue`, `ftp`, `stop`, `block` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
@@ -63,8 +66,9 @@ class scan_servers extends cron
                 $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
                     . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
 
-                if ($server['ftp'])
+                if ($server['ftp']) {
                     $ssh->set("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");
+                }
 
                 $sql->query('UPDATE `servers` set `status`="overdue", `online`="0", `players`="", `ftp`="0", `overdue`="' . $start_point . '" WHERE `id`="' . $id . '" LIMIT 1');
 
@@ -73,8 +77,9 @@ class scan_servers extends cron
 
             // Если аренда закончилась и сервер просрочен длительное время или поставлен на удаление
             if ($server['user'] == -1 || ($server['time'] < $start_point && ($server['overdue'] + $cfg['server_delete'] * 86400) < $start_point)) {
-                if ($server['user'] != -1)
+                if ($server['user'] != -1) {
                     $sql->query('UPDATE `servers` set `user`="-1" WHERE `id`="' . $id . '" LIMIT 1');
+                }
 
                 exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_delete ' . $id . '"');
 
@@ -95,15 +100,16 @@ class scan_servers extends cron
 
                             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Включение сервера: сервер выключен не через панель", `time`="' . $start_point . '"');
                         }
-                    } else
+                    } else {
                         exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_scan ' . $game . ' ' . $id . '"');
+                    }
 
                     break;
 
                 case 'off':
-                    if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="working" WHERE `id`="' . $id . '" LIMIT 1');
-                    else {
+                    } else {
                         // Запуск сервера (если он был выключен не через панель)
                         if ($server['stop']) {
                             exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action start ' . $game . ' ' . $id . '"');
@@ -117,35 +123,40 @@ class scan_servers extends cron
                     break;
 
                 case 'reinstall':
-                    if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'update':
-                    if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'install':
-                    if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'recovery':
-                    if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'blocked':
-                    if ($server['block'] < $start_point)
+                    if ($server['block'] < $start_point) {
                         $sql->query('UPDATE `servers` set `status`="off", `block`="0" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
             }
         }
 
-        return NULL;
+        return null;
     }
 }

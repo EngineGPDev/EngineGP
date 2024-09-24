@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $aData = array();
@@ -20,14 +21,17 @@ if ($go) {
     $aData['full'] = isset($_POST['full']) ? sys::bbc(trim($_POST['full'])) : '';
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : '';
 
-    if (in_array('', $aData))
+    if (in_array('', $aData)) {
         sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    }
 
-    if (sys::strlen($aData['name']) > 50)
+    if (sys::strlen($aData['name']) > 50) {
         sys::outjs(array('e' => 'Заголовок не должен превышать 50 символов.'));
+    }
 
-    if (sys::strlen($aData['tags']) > 100)
+    if (sys::strlen($aData['tags']) > 100) {
         sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+    }
 
     $sql->query('INSERT INTO `news` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'

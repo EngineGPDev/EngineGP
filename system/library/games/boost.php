@@ -9,15 +9,16 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class boost
 {
     private $partner_key = '';
     private $service_url = '';
 
-    function __construct($key, $url)
+    public function __construct($key, $url)
     {
         $this->partner_key = $key;
         $this->service_url = $url;
@@ -34,22 +35,26 @@ class boost
 
         $out = json_decode($this->defaultcurl(json_encode($aData)), true);
 
-        if ($out['message'] == 'Услуга уже присутствует')
+        if ($out['message'] == 'Услуга уже присутствует') {
             $out = json_decode($this->defaultcurl(json_encode($aData), 'prolong'), true);
+        }
 
-        if (!array_key_exists('status', $out))
+        if (!array_key_exists('status', $out)) {
             array('error' => 'Не удалось приобрести услугу, повторите запрос позже.');
+        }
 
-        if (!$out['status'])
+        if (!$out['status']) {
             return true;
+        }
 
         return array('error' => $out['message']);
     }
 
     private function defaultcurl($data, $action = 'buy')
     {
-        if (!($curl = curl_init()))
+        if (!($curl = curl_init())) {
             array('error' => 'FAIL: curl_init().');
+        }
 
         curl_setopt($curl, CURLOPT_URL, $this->service_url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -93,8 +98,9 @@ class boost
 
     private function othercurl($aData)
     {
-        if (!($curl = curl_init()))
+        if (!($curl = curl_init())) {
             array('error' => 'FAIL: curl_init().');
+        }
 
         curl_setopt($curl, CURLOPT_URL, $this->service_url . '?' . urldecode(http_build_query($aData)));
         curl_setopt($curl, CURLOPT_POST, true);
@@ -106,8 +112,9 @@ class boost
 
         curl_close($curl);
 
-        if ($result == 'OK')
+        if ($result == 'OK') {
             return true;
+        }
 
         $aErr = array(
             1 => 'BAD_HOSTER_ID',

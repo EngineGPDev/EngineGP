@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `slots`, `slots_start`, `autorestart` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -26,15 +27,18 @@ if ($go and $url['save']) {
             $slots = $value > $server['slots'] ? $server['slots'] : $value;
             $slots = $value < 2 ? 2 : $slots;
 
-            if ($slots != $server['slots_start'])
+            if ($slots != $server['slots_start']) {
                 $sql->query('UPDATE `servers` set `slots_start`="' . $slots . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
 
+            // no break
         case 'autorestart':
-            if ($value != $server['autorestart'])
+            if ($value != $server['autorestart']) {
                 $sql->query('UPDATE `servers` set `autorestart`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(array('s' => 'ok'), $nmch);
@@ -44,8 +48,9 @@ if ($go and $url['save']) {
 // Генерация списка слот
 $slots = '';
 
-for ($slot = 2; $slot <= $server['slots']; $slot += 1)
+for ($slot = 2; $slot <= $server['slots']; $slot += 1) {
     $slots .= '<option value="' . $slot . '">' . $slot . ' шт.</option>';
+}
 
 // Авторестарт при зависании
 $autorestart = $server['autorestart'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';

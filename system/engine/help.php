@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Проверка на авторизацию
 sys::noauth();
@@ -23,8 +24,9 @@ if (!$sql->num()) {
     $html->pack('main');
 } else {
     // Подключение раздела
-    if (!in_array($section, array('create', 'dialog', 'open', 'close', 'notice', 'upload')))
+    if (!in_array($section, array('create', 'dialog', 'open', 'close', 'notice', 'upload'))) {
         include(ENG . '404.php');
+    }
 
     $aNav = array(
         'help' => 'Техническая поддержка',

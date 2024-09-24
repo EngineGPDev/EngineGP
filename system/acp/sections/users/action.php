@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $aData = array();
 
@@ -46,65 +47,81 @@ $arr_other_null = array(
     'phone' => 'номера'
 );
 
-foreach ($arr_other as $input => $name)
-    if (sys::valid($aData[$input], 'other', $aValid[$input]))
+foreach ($arr_other as $input => $name) {
+    if (sys::valid($aData[$input], 'other', $aValid[$input])) {
         sys::outjs(array('e' => 'Неправильный формат ' . $name));
+    }
+}
 
 foreach ($arr_other as $input => $name) {
-    if ($aData[$input] == '')
+    if ($aData[$input] == '') {
         continue;
+    }
 
-    if (sys::valid($aData[$input], 'other', $aValid[$input]))
+    if (sys::valid($aData[$input], 'other', $aValid[$input])) {
         sys::outjs(array('e' => 'Неправильный формат ' . $name));
+    }
 }
 
 $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `login`="' . $aData['login'] . '" LIMIT 1');
-if ($sql->num())
+if ($sql->num()) {
     sys::outjs(array('e' => 'Логин занят другим пользователем'));
+}
 
 $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `mail`="' . $aData['mail'] . '" LIMIT 1');
-if ($sql->num())
+if ($sql->num()) {
     sys::outjs(array('e' => 'Почта занята другим пользователем'));
+}
 
 if ($aData['contacts'] != '') {
     $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `contacts`="' . $aData['contacts'] . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Контакты заняты другим пользователем'));
+    }
 }
 
 if ($aData['phone'] != '') {
     $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `phone`="' . $aData['phone'] . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Номер занят другим пользователем'));
+    }
 }
 
 if ($aData['passwd'] != '') {
-    if (sys::valid($aData['passwd'], 'other', $aValid['passwd']))
+    if (sys::valid($aData['passwd'], 'other', $aValid['passwd'])) {
         sys::outjs(array('e' => 'Неправильный формат пароля'));
+    }
 
     $aData['passwd'] = sys::passwdkey($aData['passwd']);
-} else
+} else {
     $aData['passwd'] = $us['passwd'];
+}
 
 $aData['help'] = $aData['help'] == 0 ? 0 : 1;
 $aData['confirm_phone'] = $aData['confirm_phone'] == 0 ? 0 : 1;
 $aData['group'] = in_array($aData['group'], array('user', 'support', 'admin')) ? $aData['group'] : $us['group'];
 $aData['level'] = in_array($aData['level'], array(0, 1, 2)) ? $aData['level'] : $us['level'];
 
-if ($aData['support_info'] != '' and sys::valid($aData['support_info'], 'other', $aValid['support_info']))
+if ($aData['support_info'] != '' and sys::valid($aData['support_info'], 'other', $aValid['support_info'])) {
     sys::outjs(array('e' => 'Неправильный формат подписи'));
+}
 
-if ($aData['balance'] == '') $aData['balance'] = 0;
+if ($aData['balance'] == '') {
+    $aData['balance'] = 0;
+}
 
-if (!is_numeric($aData['balance']))
+if (!is_numeric($aData['balance'])) {
     sys::outjs(array('e' => 'Неправильный формат баланса'));
+}
 
-if (!is_numeric($aData['part_money']))
+if (!is_numeric($aData['part_money'])) {
     sys::outjs(array('e' => 'Неправильный формат заработанных средств'));
+}
 
 if ($aData['replenish'] > 0) {
-    if (!is_numeric($aData['replenish']))
+    if (!is_numeric($aData['replenish'])) {
         sys::outjs(array('e' => 'Неправильный формат суммы пополнения'));
+    }
 
     $aData['balance'] += $aData['replenish'];
 
@@ -120,28 +137,34 @@ if ($aData['part_money'] < $us['part_money']) {
 if ($aData['rental']) {
     $rental = sys::int($aData['rental']);
 
-    if ($rental)
+    if ($rental) {
         $aData['rental'] = strpos($aData['rental'], '%') ? $rental . '%' : $rental;
-    else
+    } else {
         $aData['rental'] = 0;
-} else
+    }
+} else {
     $aData['rental'] = 0;
+}
 
-if (strlen($aData['rental']) > 4)
+if (strlen($aData['rental']) > 4) {
     sys::outjs(array('e' => 'Неправильно указана скидка на аренду'));
+}
 
 if ($aData['extend']) {
     $extend = sys::int($aData['extend']);
 
-    if ($extend)
+    if ($extend) {
         $aData['extend'] = strpos($aData['extend'], '%') ? $extend . '%' : $extend;
-    else
+    } else {
         $aData['extend'] = 0;
-} else
+    }
+} else {
     $aData['extend'] = 0;
+}
 
-if (strlen($aData['extend']) > 4)
+if (strlen($aData['extend']) > 4) {
     sys::outjs(array('e' => 'Неправильно указана скидка на аренду'));
+}
 
 $sql->query('UPDATE `users` set '
     . '`login`="' . $aData['login'] . '",'

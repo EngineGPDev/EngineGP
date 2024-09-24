@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/games.php');
 
@@ -19,8 +20,9 @@ if ($go) {
     // Проверка на авторизацию
     sys::noauth();
 
-    if ($mcache->get('buy_server'))
+    if ($mcache->get('buy_server')) {
         sleep(1.5);
+    }
 
     $mcache->set('buy_server', true, false, 3);
 
@@ -31,36 +33,44 @@ if ($go) {
         'limit' => isset($_POST['limit']) ? sys::int($_POST['limit']) : key(array_shift($cfg['control_limit']))
     );
 
-    if (sys::valid($aData['address'], 'ip'))
+    if (sys::valid($aData['address'], 'ip')) {
         sys::outjs(array('e' => 'Указанный адрес имеет неправильный формат'));
+    }
 
     $sql->query('SELECT `id` FROM `control` WHERE `address`="' . $aData['address'] . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Данный сервер уже подключен'));
+    }
 
-    if (sys::strlen($aData['passwd']) > 32)
+    if (sys::strlen($aData['passwd']) > 32) {
         sys::outjs(array('e' => 'Указанный пароль слишком длинный'));
+    }
 
-    if (sys::valid($aData['passwd'], 'other', $aValid['passwd']))
+    if (sys::valid($aData['passwd'], 'other', $aValid['passwd'])) {
         sys::outjs(array('e' => 'Пожалуйста, поменяйте пароль используя только латинские буквы и цифры'));
+    }
 
-    if (!array_key_exists($aData['limit'], $cfg['control_limit']))
+    if (!array_key_exists($aData['limit'], $cfg['control_limit'])) {
         $aData['limit'] = key(array_shift($cfg['control_limit']));
+    }
 
-    if (!in_array($aData['time'], $cfg['control_time']))
+    if (!in_array($aData['time'], $cfg['control_time'])) {
         $aData['time'] = array_shift($cfg['control_time']);
+    }
 
     $sum = games::define_sum(false, $cfg['control_limit'][$aData['limit']], 1, $aData['time']);
 
     // Проверка баланса
-    if ($user['balance'] < $sum)
+    if ($user['balance'] < $sum) {
         sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']));
+    }
 
     include(LIB . 'ssh.php');
 
     // Проверка ssh соединения с физ. сервером
-    if (!$ssh->auth($aData['passwd'], $aData['address']))
+    if (!$ssh->auth($aData['passwd'], $aData['address'])) {
         sys::outjs(array('e' => 'Не удалось создать связь с физическим сервером, проверьте адрес и пароль'));
+    }
 
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
@@ -89,24 +99,28 @@ if ($go) {
 }
 
 if (isset($url['get'])) {
-    if (!isset($url['time']) || !in_array($url['time'], $cfg['control_time']))
+    if (!isset($url['time']) || !in_array($url['time'], $cfg['control_time'])) {
         $url['time'] = array_shift($cfg['control_time']);
+    }
 
-    if (!isset($url['limit']) || !array_key_exists($url['limit'], $cfg['control_limit']))
+    if (!isset($url['limit']) || !array_key_exists($url['limit'], $cfg['control_limit'])) {
         $url['limit'] = key(array_shift($cfg['control_limit']));
+    }
 
     sys::out(games::define_sum(false, $cfg['control_limit'][$url['limit']], 1, $url['time']));
 }
 
 $options = '';
 
-foreach ($cfg['control_time'] as $time)
+foreach ($cfg['control_time'] as $time) {
     $options .= '<option value="' . $time . '">' . games::parse_day($time, true) . '</option>';
+}
 
 $limits = '';
 
-foreach ($cfg['control_limit'] as $limit => $price)
+foreach ($cfg['control_limit'] as $limit => $price) {
     $limits .= '<option value="' . $limit . '">Серверов: ' . $limit . ' шт. / ' . $price . ' ' . $cfg['currency'] . '</option>';
+}
 
 $html->get('index', 'sections/services/control');
 $html->set('time', $options);
@@ -115,6 +129,7 @@ $html->set('cur', $cfg['currency']);
 if ($cfg['settlement_period']) {
     $html->set('date', date('d.m.Y', $start_point));
     $html->unit('settlement_period', true, true);
-} else
+} else {
     $html->unit('settlement_period', false, true);
+}
 $html->pack('main');

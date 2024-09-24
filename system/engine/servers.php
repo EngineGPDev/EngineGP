@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Проверка на авторизацию
 sys::noauth();
@@ -19,19 +20,22 @@ if (!$id and $user['group'] == 'user') {
     $servers = $sql->query('SELECT `id` FROM `servers` WHERE `user`="' . $user['id'] . '" LIMIT 1');
     $owners = $sql->query('SELECT `id` FROM `owners` WHERE `user`="' . $user['id'] . '" LIMIT 1');
 
-    if (!$sql->num($servers) and !$sql->num($owners))
-        sys::back($cfg['http'] . 'services'); // Если нет игровых серверов отправить на страницу аренды
+    if (!$sql->num($servers) and !$sql->num($owners)) {
+        sys::back($cfg['http'] . 'services');
+    } // Если нет игровых серверов отправить на страницу аренды
 }
 
-if ($id and !$section)
+if ($id and !$section) {
     $section = 'index';
+}
 
 $title = 'Управление игровыми серверами';
 
 // Подключение раздела
 if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost', 'rcon'))) {
-    if (!$id)
+    if (!$id) {
         sys::back($cfg['http'] . 'servers');
+    }
 
     if ($user['group'] == 'admin' || ($user['group'] == 'support' and $user['level'])) {
         if ($user['group'] == 'support' and $user['level'] < 2) {
@@ -40,19 +44,22 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
                 $sql->query('SELECT `id` FROM `help` WHERE `type`="server" AND `service`="' . $id . '" LIMIT 1');
                 if (!$sql->num()) {
                     $sql->query('SELECT `rights` FROM `owners` WHERE `server`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
-                    if (!$sql->num())
+                    if (!$sql->num()) {
                         sys::back($cfg['http'] . 'servers');
+                    }
 
                     $owner = $sql->get();
 
                     $rights = sys::b64djs($owner['rights']);
 
                     if ($section == 'action') {
-                        if (!isset($rights[$url['action']]) || !$rights[$url['action']])
+                        if (!isset($rights[$url['action']]) || !$rights[$url['action']]) {
                             sys::outjs(array('e' => 'У вас нет доступа к данному серверу'));
+                        }
                     } else {
-                        if (!in_array($section, array('index', 'scan')) and (!isset($rights[$section]) || !$rights[$section]))
+                        if (!in_array($section, array('index', 'scan')) and (!isset($rights[$section]) || !$rights[$section])) {
                             sys::back($cfg['http'] . 'servers');
+                        }
                     }
                 }
             }
@@ -63,42 +70,47 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
         if (!$sql->num()) {
             $sql->query('SELECT `rights` FROM `owners` WHERE `server`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 sys::back($cfg['http'] . 'servers');
+            }
 
             $owner = $sql->get();
 
             $rights = sys::b64djs($owner['rights']);
 
             if ($section == 'action') {
-                if (!isset($rights[$url['action']]) || !$rights[$url['action']])
+                if (!isset($rights[$url['action']]) || !$rights[$url['action']]) {
                     sys::outjs(array('e' => sys::text('error', 'ser_owner')));
+                }
             } else {
-                if (!in_array($section, array('index', 'scan')) and (!isset($rights[$section]) || !$rights[$section]))
+                if (!in_array($section, array('index', 'scan')) and (!isset($rights[$section]) || !$rights[$section])) {
                     sys::back($cfg['http'] . 'servers/id/' . $owner['server']);
+                }
             }
 
             $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         }
     }
 
-    if (!$sql->num())
-        sys::back($cfg['http'] . 'servers'); // Если нет игрового сервера отправить на страницу списка
+    if (!$sql->num()) {
+        sys::back($cfg['http'] . 'servers');
+    } // Если нет игрового сервера отправить на страницу списка
 
     $html->nav($title, $cfg['http'] . 'servers');
 
     $file_section = file_exists(SEC . 'servers/' . $section . '.php');
-    if ($file_section)
+    if ($file_section) {
         include(SEC . 'servers/' . $section . '.php');
-    else
+    } else {
         sys::back($cfg['http'] . 'servers/id/' . $id);
+    }
 
 } else {
     $html->nav($title);
 
-    if ($user['group'] == 'user' and $mcache->get('servers_' . $user['id']) != '')
+    if ($user['group'] == 'user' and $mcache->get('servers_' . $user['id']) != '') {
         $html->arr['main'] = $mcache->get('servers_' . $user['id']);
-    else {
+    } else {
         include(SEC . 'servers/list.php');
         include(SEC . 'servers/owners_list.php');
 

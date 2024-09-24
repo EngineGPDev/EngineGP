@@ -9,28 +9,32 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Проверка на авторизацию
 sys::auth();
 
 // Генерация новой капчи
-if (isset($url['captcha']))
+if (isset($url['captcha'])) {
     sys::captcha('auth', $uip);
+}
 
 // Авторизация
 if ($go) {
     $nmch = 'go_auth_' . $uip;
 
-    if ($mcache->get($nmch))
+    if ($mcache->get($nmch)) {
         sys::outjs(array('e' => sys::text('other', 'mcache')), $nmch);
+    }
 
     $mcache->set($nmch, 1, false, 15);
 
     // Проверка капчи
-    if (!isset($_POST['captcha']) || sys::captcha_check('auth', $uip, $_POST['captcha']))
+    if (!isset($_POST['captcha']) || sys::captcha_check('auth', $uip, $_POST['captcha'])) {
         sys::outjs(array('e' => sys::text('other', 'captcha')), $nmch);
+    }
 
     $aData = array();
 
@@ -38,17 +42,20 @@ if ($go) {
     $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
 
     // Проверка входных данных
-    foreach ($aData as $val)
-        if ($val == '')
+    foreach ($aData as $val) {
+        if ($val == '') {
             sys::outjs(array('e' => sys::text('input', 'all')), $nmch);
+        }
+    }
 
     // Проверка логина/почты на валидность
     if (sys::valid($aData['login'], 'other', $aValid['mail']) and sys::valid($aData['login'], 'other', $aValid['login'])) {
         $out = 'login';
 
         // Если в логине указана почта
-        if (sys::ismail($aData['login']))
+        if (sys::ismail($aData['login'])) {
             $out = 'mail';
+        }
 
         sys::outjs(array('e' => sys::text('input', $out . '_valid')), $nmch);
     }
@@ -56,19 +63,22 @@ if ($go) {
     $sql_q = '`login`';
 
     // Если в логине указана почта
-    if (sys::ismail($aData['login']))
+    if (sys::ismail($aData['login'])) {
         $sql_q = '`mail`';
+    }
 
     // Проверка существования пользователя
     $sql->query('SELECT `id`, `login`, `mail`, `security_ip`, `security_code`, `passwd` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
+    }
 
     $user = $sql->get();
 
     // Проверка пароля
-    if (!sys::passwdverify($aData['passwd'], $user['passwd']))
+    if (!sys::passwdverify($aData['passwd'], $user['passwd'])) {
         sys::outjs(array('e' => sys::text('input', 'auth')), $nmch);
+    }
 
     $subnetwork = sys::whois($uip);
 
@@ -80,10 +90,12 @@ if ($go) {
             if ($subnetwork != 'не определена') {
                 $sql->query('SELECT `id` FROM `security` WHERE `user`="' . $user['id'] . '" AND `address`="' . $subnetwork . '" LIMIT 1');
 
-                if (!$sql->num())
+                if (!$sql->num()) {
                     sys::outjs(array('e' => 'Ваш ip адрес не найден в числе указаных адресов для авторизации.'), $nmch);
-            } else
+                }
+            } else {
                 sys::outjs(array('e' => 'Ваш ip адрес не найден в числе указаных адресов для авторизации.'), $nmch);
+            }
         }
     }
 
@@ -98,8 +110,9 @@ if ($go) {
             if (sys::mail('Авторизация', sys::updtext(sys::text('mail', 'security_code'), array('site' => $cfg['name'], 'code' => $ncod)), $user['mail'])) {
                 $mcache->set('auth_code_security_' . $user['id'], $ncod, false, 180);
 
-                if ($code == '')
+                if ($code == '') {
                     sys::outjs(array('i' => 'На вашу почту отправлено письмо с кодом подтверждения.', 'mail' => sys::mail_domain($user['mail'])), $nmch);
+                }
 
                 sys::outjs(array('i' => 'На вашу почту отправлено письмо с кодом подтверждения снова.', 'mail' => sys::mail_domain($user['mail'])), $nmch);
             }

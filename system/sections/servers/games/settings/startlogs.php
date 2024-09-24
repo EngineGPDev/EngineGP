@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Снимки консоли');
 
@@ -25,23 +26,25 @@ $tarif = $sql->get();
 
 include(LIB . 'ssh.php');
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+}
 
 // Путь к логам
 $folder = $tarif['install'] . $server['uid'] . '/' . $aSLdir[$server['game']];
 
 // Если выбран лог
 if (isset($url['log'])) {
-    if (sys::valid($url['log'], 'other', $aValid['startlogs']))
+    if (sys::valid($url['log'], 'other', $aValid['startlogs'])) {
         sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings/subsection/startlogs');
+    }
 
     $ssh->set('sudo -u server' . $server['uid'] . ' cat ' . $folder . '/' . $url['log']);
 
     $html->get('view', 'sections/servers/games/settings/logs');
     $html->set('id', $id);
     $html->set('name', $url['log']);
-    $html->set('log', htmlspecialchars($ssh->get(), NULL, ''));
+    $html->set('log', htmlspecialchars($ssh->get(), null, ''));
     $html->set('uri', 'startlogs');
     $html->pack('main');
 } else {
@@ -56,13 +59,15 @@ if (isset($url['log'])) {
     // Массив данных
     $aData = explode("\n", $ssh->get());
 
-    if (isset($aData[count($aData) - 1]))
+    if (isset($aData[count($aData) - 1])) {
         unset($aData[count($aData) - 1]);
+    }
 
     $olds = $aSLdirFtp[$server['game']];
 
-    if ($server['ftp_root'] || $cfg['ftp']['root'][$server['game']])
+    if ($server['ftp_root'] || $cfg['ftp']['root'][$server['game']]) {
         $olds = $aSLdir[$server['game']];
+    }
 
     // Построение списка
     foreach ($aData as $line => $log) {
@@ -71,8 +76,9 @@ if (isset($url['log'])) {
         // Название
         $name = explode('/', $aLog[2]);
 
-        if (count($name) > 2)
+        if (count($name) > 2) {
             continue;
+        }
 
         // Дата
         $date = sys::unidate($aLog[0]);
@@ -90,8 +96,9 @@ if (isset($url['log'])) {
             $html->unit('download', true, true);
 
             $html->set('url', 'ftp://' . $server['uid'] . ':' . $server['ftp_passwd'] . '@' . sys::first(explode(':', $unit['address'])) . '/' . $olds . '/' . end($name));
-        } else
+        } else {
             $html->unit('download', false, true);
+        }
         $html->pack('logs');
     }
 

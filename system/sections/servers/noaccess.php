@@ -9,14 +9,15 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Раздел недоступен');
 
-if ($server['time'] < $start_point)
+if ($server['time'] < $start_point) {
     $html->get('overdue');
-else {
+} else {
     $status = array(
         'install' => 'установки',
         'reinstall' => 'переустановки',

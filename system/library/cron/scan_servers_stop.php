@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class scan_servers_stop extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv, $start_point;
 
@@ -23,8 +24,9 @@ class scan_servers_stop extends cron
         unset($servers[0], $servers[1], $servers[2]);
 
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -41,8 +43,9 @@ class scan_servers_stop extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         $autostop = $start_point - $cfg['autostop'] * 60;
         $teststop = $start_point - $cfg['teststop'] * 60;
@@ -52,14 +55,15 @@ class scan_servers_stop extends cron
         foreach ($servers as $id) {
             $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" AND `status`="working" AND `online`="0" AND ' . $sqlq . ' LIMIT 1');
 
-            if (!$sql->num())
+            if (!$sql->num()) {
                 continue;
+            }
 
             exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action stop ' . $game . ' ' . $id . '"');
 
             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="Выключение сервера: на сервере нет игроков", `time`="' . $start_point . '"');
         }
 
-        return NULL;
+        return null;
     }
 }

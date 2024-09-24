@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/scans.php');
 
@@ -38,22 +39,25 @@ class scan extends scans
         $results = $gameQ->process();
         $info = $results[$ip . ':' . $port] ?? null;
 
-        if ($players_get)
+        if ($players_get) {
             $nmch = 'server_scan_mon_pl_' . $id;
-        else
+        } else {
             $nmch = 'server_scan_mon_' . $id;
+        }
 
-        if (is_array($mcache->get($nmch)))
+        if (is_array($mcache->get($nmch))) {
             return $mcache->get($nmch);
+        }
 
         $out = array();
 
         $out['time'] = 'Арендован до: ' . date('d.m.Y - H:i', $server['time']);
 
-        if ($server['status'] == 'overdue')
+        if ($server['status'] == 'overdue') {
             $out['time_end'] = 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400);
-        else
+        } else {
             $out['time_end'] = 'Осталось: ' . sys::date('min', $server['time']);
+        }
 
         if (!$info || $info['gq_online'] === false) {
             $out['name'] = $server['name'];
@@ -62,16 +66,18 @@ class scan extends scans
             $out['image'] = '<img src="' . sys::status($server['status'], $server['game'], $server['map'], 'img') . '">';
             $out['buttons'] = sys::buttons($id, $server['status']);
 
-            if ($players_get)
+            if ($players_get) {
                 $out['players'] = base64_decode($server['players'] ?? '');
+            }
 
             $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 
             return $out;
         }
 
-        if ($players_get)
+        if ($players_get) {
             $players = scan::players($info['players'] ?? []);
+        }
 
         $info['map'] = htmlspecialchars($info['gq_mapname']);
         $out['name'] = htmlspecialchars($info['gq_hostname']);
@@ -102,8 +108,9 @@ class scan extends scans
             . '`map`="' . $info['map'] . '", '
             . '`status`="working" WHERE `id`="' . $id . '" LIMIT 1');
 
-        if ($players_get)
+        if ($players_get) {
             $sql->query('UPDATE `servers` set `players`="' . base64_encode($out['players']) . '" WHERE `id`="' . $id . '" LIMIT 1');
+        }
 
         $mcache->set($nmch, $out, false, $cfg['mcache_server_mon']);
 

@@ -9,14 +9,16 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Проверка на авторизацию
 sys::noauth();
 
-if (isset($url['key']) && isset($url['sum']))
+if (isset($url['key']) && isset($url['sum'])) {
     sys::out(md5($cfg['freekassa_id'] . ':' . intval($url['sum']) . ':' . $cfg['freekassa_key_1'] . ':1'));
+}
 
 // Генерация списка операций
 $qLog = $sql->query('SELECT `text`, `date` FROM `logs` WHERE `user`="' . $user['id'] . '" AND `type`="replenish" ORDER BY `id` DESC LIMIT 10');

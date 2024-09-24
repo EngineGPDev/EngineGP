@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
 
@@ -21,22 +22,24 @@ $cache = $mcache->get($mkey);
 $nmch = null;
 
 if (is_array($cache)) {
-    if ($go)
+    if ($go) {
         sys::outjs($cache, $nmch);
+    }
 
     sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+    }
 
     sys::outjs(array('e' => ''));
 }
 
-if ($text[0] == 'i' and $text[1] == 'd')
+if ($text[0] == 'i' and $text[1] == 'd') {
     $notices = $sql->query('SELECT `id`, `unit`, `server`, `text`, `time` FROM `notice` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
-else {
+} else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`unit` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`server` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -46,8 +49,9 @@ else {
 }
 
 if (!$sql->num($notices)) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+    }
 
     sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
 }
@@ -60,8 +64,9 @@ while ($notice = $sql->get($notices)) {
         $unit = $sql->get();
 
         $name = $unit['name'];
-    } else
+    } else {
         $name = '<a href="' . $cfg['http'] . 'acp/servers/id/' . $notice['server'] . '">SERVER_' . $notice['server'] . '</a>';
+    }
 
     $list .= '<tr>';
     $list .= '<td>' . $notice['id'] . '</td>';

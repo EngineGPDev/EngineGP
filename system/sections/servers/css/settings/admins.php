@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Управление администраторами');
 
@@ -23,8 +24,9 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    }
 
     $aData = array();
 
@@ -45,8 +47,9 @@ if ($go) {
         if ($val != '') {
             $aDate = isset($aData['time'][$index]) ? explode('.', $aData['time'][$index]) : explode('.', date('d.m.Y', $start_point));
 
-            if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2]))
+            if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2])) {
                 $aDate = explode('.', date('d.m.Y', $start_point));
+            }
 
             $time = mktime(0, 0, 0, $aDate[1], $aDate[0], $aDate[2]);
 
@@ -68,8 +71,9 @@ if ($go) {
                 . '`text`="' . htmlspecialchars($text) . '",'
                 . '`info`="' . htmlspecialchars($aData['info'][$index]) . '"');
 
-            if ($aData['active'][$index])
+            if ($aData['active'][$index]) {
                 $usini .= $text . PHP_EOL;
+            }
         }
     }
 
@@ -92,10 +96,11 @@ $sql->query('SELECT `id`, `value`, `active`, `passwd`, `flags`, `immunity`, `tim
 while ($admin = $sql->get()) {
     $html->get('list', 'sections/servers/' . $server['game'] . '/settings/admins');
 
-    if ($admin['active'])
+    if ($admin['active']) {
         $html->unit('active', 1);
-    else
+    } else {
         $html->unit('active');
+    }
 
     $html->set('id', $admin['id']);
     $html->set('value', $admin['value']);

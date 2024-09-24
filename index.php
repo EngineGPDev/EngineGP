@@ -25,17 +25,17 @@ $dotenv->load(__DIR__ . '/.env');
 
 if ($_ENV['RUN_MODE'] === 'dev') {
     // Включение отображения ошибок в режиме разработки
-    ini_set('display_errors', TRUE);
-    ini_set('html_errors', TRUE);
+    ini_set('display_errors', true);
+    ini_set('html_errors', true);
     ini_set('error_reporting', E_ALL);
 } else {
     // Отключение отображения ошибок в продакшене
-    ini_set('display_errors', FALSE);
-    ini_set('html_errors', FALSE);
+    ini_set('display_errors', false);
+    ini_set('html_errors', false);
     ini_set('error_reporting', 0);
 }
 
-define('EGP', TRUE);
+define('EGP', true);
 define('DIR', dirname('index.php'));
 define('ROOT', DIR . '/');
 define('SYS', ROOT . 'system/');
@@ -49,7 +49,7 @@ define('SEC', SYS . 'sections/');
 
 $start_point = $_SERVER['REQUEST_TIME'];
 
-$mcache = new Memcache;
+$mcache = new Memcache();
 $mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
 
 // Настройки

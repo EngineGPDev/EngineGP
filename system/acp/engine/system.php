@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
@@ -19,13 +20,15 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (isset($url['service']) and in_array($url['service'], array('nginx', 'mysql', 'unit'))) {
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             sys::outjs(array('e' => 'Не удалось создать связь с сервером'));
+        }
 
-        if ($url['service'] == 'unit')
+        if ($url['service'] == 'unit') {
             $ssh->set('screen -dmS reboot reboot');
-        else
+        } else {
             $ssh->set('screen -dmS sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
+        }
 
         sys::outjs(array('s' => 'ok'));
     }
@@ -41,8 +44,9 @@ if ($go) {
         'ssh' => 'error'
     );
 
-    if (!$ssh->auth($unit['passwd'], $unit['address']))
+    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs($aData);
+    }
 
     $aData['ssh'] = '<i class="fa fa-retweet pointer" id="system_restart(\'unit\')" onclick="return system_restart(\'unit\')"></i>';
 

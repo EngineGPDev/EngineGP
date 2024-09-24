@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_scan_servers extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv, $start_point, $mcache;
 
@@ -23,8 +24,9 @@ class control_scan_servers extends cron
         unset($servers[0], $servers[1], $servers[2]);
 
         $sql->query('SELECT `address` FROM `control` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $unit = $sql->get();
 
@@ -41,8 +43,9 @@ class control_scan_servers extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         foreach ($servers as $id) {
             $sql->query('SELECT `uid`, `address`, `status`, `stop` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
@@ -62,15 +65,16 @@ class control_scan_servers extends cron
 
                             $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $id . '", `text`="[Контроль] Включение сервера: сервер выключен не через панель", `time`="' . $start_point . '"');
                         }
-                    } else
+                    } else {
                         exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' control_server_scan ' . $game . ' ' . $id . '"');
+                    }
 
                     break;
 
                 case 'off':
-                    if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `control_servers` set `status`="working" WHERE `id`="' . $id . '" LIMIT 1');
-                    else {
+                    } else {
                         // Запуск сервера (если он был выключен не через панель)
                         if ($server['stop']) {
                             exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' control_server_action start ' . $game . ' ' . $id . '"');
@@ -84,29 +88,33 @@ class control_scan_servers extends cron
                     break;
 
                 case 'reinstall':
-                    if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `control_servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'update':
-                    if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `control_servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'install':
-                    if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `control_servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
 
                     break;
 
                 case 'recovery':
-                    if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'')))
+                    if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `control_servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
+                    }
             }
         }
 
-        return NULL;
+        return null;
     }
 }

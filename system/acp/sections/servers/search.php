@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $text = isset($_POST['text']) ? trim($_POST['text']) : '';
 
@@ -21,23 +22,26 @@ $cache = $mcache->get($mkey);
 $nmch = null;
 
 if (is_array($cache)) {
-    if ($go)
+    if ($go) {
         sys::outjs($cache, $nmch);
+    }
 
     sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+    }
 
     sys::outjs(array('e' => ''));
 }
 
 $select = '`id`, `unit`, `tarif`, `user`, `address`, `port`, `game`, `status`, `slots`, `name`, `time` FROM `servers` WHERE `user`!="-1" AND';
 
-if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif')))
+if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif'))) {
     $select .= ' `' . $url['search'] . '`=' . sys::int($url[$url['search']]) . ' AND';
+}
 
 $check = explode('=', $text);
 
@@ -46,8 +50,9 @@ if (in_array($check[0], array('game', 'unit', 'tarif', 'user', 'status', 'slots'
 
     switch ($check[0]) {
         case 'game':
-            if (in_array($val, array('cs', 'cssold', 'css', 'csgo',' cs2', 'samp', 'crmp', 'mta', 'mc')))
+            if (in_array($val, array('cs', 'cssold', 'css', 'csgo',' cs2', 'samp', 'crmp', 'mta', 'mc'))) {
                 $servers = $sql->query('SELECT ' . $select . ' FROM `servers` WHERE `user`!="-1" AND `game`="' . $val . '" ORDER BY `id` ASC');
+            }
             break;
 
         case 'unit':
@@ -63,17 +68,18 @@ if (in_array($check[0], array('game', 'unit', 'tarif', 'user', 'status', 'slots'
             break;
 
         case 'status':
-            if (in_array($val, array('working', 'start', 'change', 'restart', 'off', 'overdue', 'blocked', 'recovery', 'reinstall', 'update', 'install')))
+            if (in_array($val, array('working', 'start', 'change', 'restart', 'off', 'overdue', 'blocked', 'recovery', 'reinstall', 'update', 'install'))) {
                 $servers = $sql->query('SELECT ' . $select . ' `status`="' . $val . '" ORDER BY `id` ASC');
+            }
             break;
 
         case 'slots':
             $servers = $sql->query('SELECT ' . $select . ' `slots`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
     }
-} elseif ($text[0] == 'i' and $text[1] == 'd')
+} elseif ($text[0] == 'i' and $text[1] == 'd') {
     $servers = $sql->query('SELECT ' . $select . ' `id`="' . sys::int($text) . '" LIMIT 1');
-else {
+} else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`name` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`game` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -86,8 +92,9 @@ else {
 }
 
 if (!$sql->num($servers)) {
-    if ($go)
+    if ($go) {
         sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+    }
 
     sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
 }

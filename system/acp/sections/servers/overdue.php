@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if ($id)
+if ($id) {
     include(SEC . 'servers/server.php');
-else {
+} else {
     $list = '';
 
     $servers = $sql->query('SELECT `id`, `unit`, `tarif`, `user`, `address`, `port`, `game`, `slots`, `name`, `overdue` FROM `servers` WHERE `user`!="-1" AND `time`<"' . $start_point . '" AND `overdue`>"' . $start_point . '" ORDER BY `id` ASC');

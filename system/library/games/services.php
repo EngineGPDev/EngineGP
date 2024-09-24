@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class services
 {
@@ -23,9 +24,9 @@ class services
         $units = $sql->query('SELECT `id` FROM `units` WHERE `' . $game . '`="1" AND `show`="1" ORDER BY `sort` ASC');
         while ($unit = $sql->get($units)) {
             $sql->query('SELECT `id` FROM `tarifs` WHERE `unit`="' . $unit['id'] . '" AND `game`="' . $game . '" AND `show`="1" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 continue;
-            else {
+            } else {
                 $sel = $unit['id'];
                 break;
             }
@@ -43,8 +44,9 @@ class services
         $units = $sql->query('SELECT `id`, `name` FROM `units` WHERE `' . $game . '`="1" AND `show`="1" ORDER BY `sort` ASC');
         while ($unit = $sql->get($units)) {
             $sql->query('SELECT `id` FROM `tarifs` WHERE `unit`="' . $unit['id'] . '" AND `game`="' . $game . '" AND `show`="1" LIMIT 1');
-            if ($sql->num())
+            if ($sql->num()) {
                 $list .= '<option value="' . $unit['id'] . '">#' . $unit['id'] . ' ' . $unit['name'] . '</option>';
+            }
         }
 
         return $list;
@@ -57,8 +59,9 @@ class services
         $list = '';
 
         $sql->query('SELECT `id`, `name` FROM `tarifs` WHERE `game`="' . $game . '" AND `unit`="' . $unit . '" AND `show`="1" ORDER BY `sort` ASC');
-        while ($tarif = $sql->get())
+        while ($tarif = $sql->get()) {
             $list .= '<option value="' . $tarif['id'] . '">' . $tarif['name'] . '</option>';
+        }
 
         return $list;
     }

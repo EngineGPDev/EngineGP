@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class tarifs
 {
@@ -19,8 +20,9 @@ class tarifs
         global $cfg, $sql, $html, $start_point;
 
         $sql->query('SELECT `aid`, `time` FROM `address_buy` WHERE `server`="' . $sid . '" LIMIT 1');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $ip_buy = $sql->get();
 
@@ -35,7 +37,7 @@ class tarifs
         $html->set('cur', $cfg['currency']);
         $html->pack('extend_address');
 
-        return NULL;
+        return null;
     }
 
     public static function address($server, $sid)
@@ -46,20 +48,23 @@ class tarifs
         $sUnit = $sql->get();
 
         if (sys::first(explode(':', $sUnit['address'])) != sys::first(explode(':', $server['address']))) {
-            if ($cfg['buy_address'][$server['game']])
+            if ($cfg['buy_address'][$server['game']]) {
                 tarif::address_extend($server['address'], $sid);
+            }
 
-            return NULL;
+            return null;
         }
 
         $options = '<option value="0">Выберите выделенный адрес</option>';
 
         $sql->query('SELECT `id`, `ip`, `price` FROM `address` WHERE `unit`="' . $server['unit'] . '" AND `buy`="0"');
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
-        while ($ip = $sql->get())
+        while ($ip = $sql->get()) {
             $options .= '<option value="' . $ip['id'] . '">' . $ip['ip'] . ':' . params::$aDefPort[$server['game']] . '</option>';
+        }
 
         $html->get('address', 'sections/servers/games/tarif');
         if ($cfg['buy_address'][$server['game']]) {
@@ -76,7 +81,7 @@ class tarifs
         $html->set('cur', $cfg['currency']);
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function address_extend($address, $sid)
@@ -85,15 +90,17 @@ class tarifs
 
         $sql->query('SELECT `aid`, `time` FROM `address_buy` WHERE `server`="' . $sid . '" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $add = $sql->get();
 
         $sql->query('SELECT `price` FROM `address` WHERE `id`="' . $add['aid'] . '" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $add = array_merge($add, $sql->get());
 
@@ -104,15 +111,16 @@ class tarifs
         $html->set('cur', $cfg['currency']);
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function address_add_sum($address, $server)
     {
         global $sql;
 
-        if (!$address)
+        if (!$address) {
             return 0;
+        }
 
         $ip = sys::first(explode(':', $server['address']));
 
@@ -140,21 +148,25 @@ class tarifs
 
         // С уменьшением (min ==> max) || закончился срок аренды
         if (($cfg['change_slots'][$server['game']]['days'] and $cfg['change_slots'][$server['game']]['down']) || $server['time'] < $start_point) {
-            for ($i = $aSlots['min']; $i <= $aSlots['max']; $i += 1)
+            for ($i = $aSlots['min']; $i <= $aSlots['max']; $i += 1) {
                 $options .= '<option value="' . $i . '">' . $i . ' шт.</option>';
+            }
 
             $html->get('slots', 'sections/servers/games/tarif');
         } else {
-            if ($server['slots'] == $aSlots['max'])
-                return NULL;
+            if ($server['slots'] == $aSlots['max']) {
+                return null;
+            }
 
             $max = $aSlots['max'] - $server['slots'];
 
-            if ($max < 1)
-                return NULL;
+            if ($max < 1) {
+                return null;
+            }
 
-            for ($i = 1; $i <= $max; $i += 1)
+            for ($i = 1; $i <= $max; $i += 1) {
                 $options .= '<option value="' . $i . '">' . $i . ' шт.</option>';
+            }
 
             $html->get('slots_buy', 'sections/servers/games/tarif');
         }
@@ -165,7 +177,7 @@ class tarifs
         $html->set('cur', $cfg['currency']);
         $html->pack('main');
 
-        return NULL;
+        return null;
     }
 
     public static function price($plan)
@@ -176,12 +188,15 @@ class tarifs
 
         unset($aPrice[0]);
 
-        if (!count($aPrice))
+        if (!count($aPrice)) {
             return false;
+        }
 
-        foreach ($aPrice as $price)
-            if ($check != $price)
+        foreach ($aPrice as $price) {
+            if ($check != $price) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -191,8 +206,9 @@ class tarifs
         global $ssh, $sql, $user, $start_point;
 
         // Проверка ssh соединения с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+        }
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -226,14 +242,15 @@ class tarifs
         $sql->query('UPDATE `servers` SET `ftp`="0" WHERE `id`="' . $server['id'] . '" LIMIT 1');
 
         // Очистка правил FireWall
-        games::iptables($server['id'], 'remove', NULL, NULL, NULL, false, $ssh);
+        games::iptables($server['id'], 'remove', null, null, null, false, $ssh);
 
         // Удаление заданий из crontab
         $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
         $panel = $sql->get();
 
-        if (!$ssh->auth($panel['passwd'], $panel['address']))
+        if (!$ssh->auth($panel['passwd'], $panel['address'])) {
             sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+        }
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');
         while ($cron = $sql->get($crons)) {
@@ -257,6 +274,6 @@ class tarifs
             $sql->query('DELETE FROM `address_buy` WHERE `id`="' . $add['id'] . '" LIMIT 1');
         }
 
-        return NULL;
+        return null;
     }
 }

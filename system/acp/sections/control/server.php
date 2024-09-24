@@ -9,14 +9,16 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `time`, `overdue` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
-if ($ctrl['time'] > $start_point and $ctrl['overdue'])
+if ($ctrl['time'] > $start_point and $ctrl['overdue']) {
     $sql->query('UPDATE `control` set `overdue`="0" WHERE `id`="' . $id . '" LIMIT 1');
+}
 
 $sql->query('SELECT * FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
@@ -33,20 +35,23 @@ if ($go) {
 
         switch ($url['type']) {
             case 'overdue':
-                if ($ctrl['time'] > $start_point)
+                if ($ctrl['time'] > $start_point) {
                     sys::outjs(array('e' => 'Игровой сервер должен быть просрочен.'));
+                }
 
                 $sql->query('UPDATE `control` set `overdue`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
                 break;
 
             case 'block':
-                if ($ctrl['status'] != ('off' || 'overdue'))
+                if ($ctrl['status'] != ('off' || 'overdue')) {
                     sys::outjs(array('e' => 'Игровой сервер должен быть выключен.'));
+                }
 
-                if ($date < $start_point)
+                if ($date < $start_point) {
                     $sql->query('UPDATE `control` set `status`="off", `block`="0" WHERE `id`="' . $id . '" LIMIT 1');
-                else
+                } else {
                     $sql->query('UPDATE `control` set `status`="blocked", `block`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
+                }
         }
 
         sys::outjs(array('s' => 'ok'));
@@ -63,22 +68,27 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if (sys::valid($aData['address'] . ':22', 'other', $aValid['address']))
+    if (sys::valid($aData['address'] . ':22', 'other', $aValid['address'])) {
         $aData['address'] = $ctrl['address'];
+    }
 
-    if (sys::valid($aData['sql_passwd'], 'en'))
+    if (sys::valid($aData['sql_passwd'], 'en')) {
         $aData['sql_passwd'] = $ctrl['sql_passwd'];
+    }
 
-    if (sys::valid($aData['sql_ftp'], 'en'))
+    if (sys::valid($aData['sql_ftp'], 'en')) {
         $aData['sql_ftp'] = $ctrl['sql_ftp'];
+    }
 
-    if (!$ssh->auth($aData['passwd'], $aData['address']))
+    if (!$ssh->auth($aData['passwd'], $aData['address'])) {
         sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+    }
 
     if ($ctrl['user'] != $aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Пользователь не найден.'));
+        }
     }
 
     $aData['time'] = sys::checkdate($aData['time']);

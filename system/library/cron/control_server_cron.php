@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class control_server_cron extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $argv, $sql, $cfg;
 
@@ -28,6 +29,6 @@ class control_server_cron extends cron
 
         exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' control_server_action ' . $cron['task'] . ' ' . $server['game'] . ' ' . $argv[3] . $cmd . '"');
 
-        return NULL;
+        return null;
     }
 }

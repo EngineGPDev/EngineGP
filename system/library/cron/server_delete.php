@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class server_delete extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $cfg, $sql, $argv;
 
@@ -22,13 +23,15 @@ class server_delete extends cron
 
         $sql->query('SELECT `id`, `uid`, `user`, `unit`, `tarif`, `game`, `slots`, `address`, `port`, `ddos` FROM `servers` WHERE `id`="' . $argv[3] . '" AND `user`="-1" LIMIT 1');
 
-        if (!$sql->num())
-            return NULL;
+        if (!$sql->num()) {
+            return null;
+        }
 
         $server = $sql->get();
 
-        if (!$server['uid'])
-            return NULL;
+        if (!$server['uid']) {
+            return null;
+        }
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
@@ -39,8 +42,9 @@ class server_delete extends cron
         include(LIB . 'ssh.php');
 
         // Проверка ssh соединения с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return NULL;
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return null;
+        }
 
         // Разделение адреса на IP и порт
         $ip = $server['address'];
@@ -79,7 +83,7 @@ class server_delete extends cron
         include(LIB . 'games/games.php');
 
         // Очистка правил FireWall
-        games::iptables($server['id'], 'remove', NULL, NULL, NULL, false, $ssh);
+        games::iptables($server['id'], 'remove', null, null, null, false, $ssh);
 
         // Очистка правил FireWall GEO
         if ($server['ddos']) {
@@ -95,8 +99,9 @@ class server_delete extends cron
         $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
         $panel = $sql->get();
 
-        if (!$ssh->auth($panel['passwd'], $panel['address']))
-            return NULL;
+        if (!$ssh->auth($panel['passwd'], $panel['address'])) {
+            return null;
+        }
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');
         while ($cron = $sql->get($crons)) {
@@ -125,13 +130,15 @@ class server_delete extends cron
             // Подготовка к удалению доп. услуги или обновление данных
             $webs = $sql->query('SELECT `id`, `type` FROM `web` WHERE `server`="' . $server['id'] . '"');
             while ($web = $sql->get($webs)) {
-                if ($aWebInstall[$server['game']][$web['type']] == ('unit' || 'user'))
+                if ($aWebInstall[$server['game']][$web['type']] == ('unit' || 'user')) {
                     $sql->query('UPDATE `web` set `server`="' . $server_sec['id'] . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
-                else
+                } else {
                     $sql->query('UPDATE `web` set `user`="0" WHERE `id`="' . $web['id'] . '" LIMIT 1');
+                }
             }
-        } else
+        } else {
             $sql->query('UPDATE `web` set `user`="0" WHERE `server`="' . $server['id'] . '"');
+        }
 
         // Удаление различной информации игрового сервера
         $sql->query('DELETE FROM `admins_' . $server['game'] . '` WHERE `server`="' . $server['id'] . '"');
@@ -144,6 +151,6 @@ class server_delete extends cron
 
         $sql->query('INSERT INTO `logs_sys` set `user`="0", `server`="' . $argv[3] . '", `text`="Удаление игрового сервера #' . $argv[3] . ' (' . $server['game'] . ') unit: #' . $server['unit'] . ', tarif: #' . $server['tarif'] . ', slots: #' . $server['slots'] . '", `time`="' . $start_point . '"');
 
-        return NULL;
+        return null;
     }
 }

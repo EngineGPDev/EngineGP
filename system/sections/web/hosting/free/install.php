@@ -9,16 +9,19 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Установка
 if ($go) {
-    if (!$aWebVHTtype && !in_array($server['tarif'], $aWebVHT))
+    if (!$aWebVHTtype && !in_array($server['tarif'], $aWebVHT)) {
         sys::outjs(array('e' => 'Недоступно для данного тарифа.'), $nmch);
+    }
 
-    if ($aWebVHTtype && in_array($server['tarif'], $aWebVHT))
+    if ($aWebVHTtype && in_array($server['tarif'], $aWebVHT)) {
         sys::outjs(array('e' => 'Недоступно для данного тарифа.'), $nmch);
+    }
 
     $aData = array();
 
@@ -28,8 +31,9 @@ if ($go) {
 
     $aData['type'] = $url['subsection'];
 
-    if (!$aWeb[$server['game']][$aData['type']])
+    if (!$aWeb[$server['game']][$aData['type']]) {
         sys::outjs(array('e' => 'Дополнительная услуга недоступна для установки.'), $nmch);
+    }
 
     // Проверка на наличие уже установленной выбранной услуги
     switch ($aWebInstall[$server['game']][$aData['type']]) {
@@ -46,71 +50,84 @@ if ($go) {
             break;
     }
 
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('i' => 'Дополнительная услуга уже установлена.'), $nmch);
+    }
 
     // Проверка на наличие уже установленной подобной услуги
     switch ($aWebInstall[$server['game']][$aData['type']]) {
         case 'server':
             foreach ($aWebOne[$server['game']][$aData['type']] as $type) {
                 $sql->query('SELECT `id` FROM `web` WHERE `type`="' . $type . '" AND `server`="' . $id . '" LIMIT 1');
-                if ($sql->num())
+                if ($sql->num()) {
                     sys::outjs(array('i' => 'Подобная услуга уже установлена.', 'type' => $type), $nmch);
+                }
             }
             break;
 
         case 'user':
             foreach ($aWebOne[$server['game']][$aData['type']] as $type) {
                 $sql->query('SELECT `id` FROM `web` WHERE `type`="' . $type . '" AND `user`="' . $server['user'] . '" LIMIT 1');
-                if ($sql->num())
+                if ($sql->num()) {
                     sys::outjs(array('i' => 'Подобная услуга уже установлена.', 'type' => $type), $nmch);
+                }
             }
             break;
 
         case 'unit':
             foreach ($aWebOne[$server['game']][$aData['type']] as $type) {
                 $sql->query('SELECT `id` FROM `web` WHERE `type`="' . $type . '" AND `unit`="' . $server['unit'] . '" LIMIT 1');
-                if ($sql->num())
+                if ($sql->num()) {
                     sys::outjs(array('i' => 'Подобная услуга уже установлена.', 'type' => $type), $nmch);
+                }
             }
     }
 
     // Проверка валидности поддомена
-    if (sys::valid($aData['subdomain'], 'other', "/^[a-z0-9]+$/"))
+    if (sys::valid($aData['subdomain'], 'other', "/^[a-z0-9]+$/")) {
         sys::outjs(array('e' => 'Адрес должен состоять из букв a-z и цифр.'), $nmch);
+    }
 
     // Проверка длины поддомена
-    if (!isset($aData['subdomain'][3]) || isset($aData['subdomain'][15]))
+    if (!isset($aData['subdomain'][3]) || isset($aData['subdomain'][15])) {
         sys::outjs(array('e' => 'Длина адреса не должна превышать 16-и символов и быть не менее 4-х символов.'), $nmch);
+    }
 
     // Проверка наличия основного домена
-    if (!in_array($aData['domain'], $aWebUnit['domains']))
+    if (!in_array($aData['domain'], $aWebUnit['domains'])) {
         sys::outjs(array('e' => 'Выбранный домен не найден.'), $nmch);
+    }
 
     // Проверка запрещенного поддомена
-    if (in_array($aData['subdomain'], $aWebUnit['subdomains']))
+    if (in_array($aData['subdomain'], $aWebUnit['subdomains'])) {
         sys::outjs(array('e' => 'Нельзя создать данный адрес, придумайте другой.'), $nmch);
+    }
 
     // Проверка поддомена на занятость
     $sql->query('SELECT `id` FROM `web` WHERE `domain`="' . $aData['subdomain'] . '.' . $aData['domain'] . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Данный адрес уже занят.'), $nmch);
+    }
 
     // Если не указан пароль сгенерировать
-    if ($aData['passwd'] == '')
+    if ($aData['passwd'] == '') {
         $aData['passwd'] = sys::passwd($aWebParam[$aData['type']]['passwd']);
+    }
 
     // Проверка длинны пароля
-    if (!isset($aData['passwd'][5]))
+    if (!isset($aData['passwd'][5])) {
         sys::outjs(array('e' => 'Необходимо указать пароль длинной не менее 6-и символов.'), $nmch);
+    }
 
     // Проверка валидности пароля
-    if (sys::valid($aData['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/"))
+    if (sys::valid($aData['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/")) {
         sys::outjs(array('e' => 'Пароль должен состоять из букв a-z и цифр, не менее 4-х и не более 16-и символов.'), $nmch);
+    }
 
     $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . $server['user'] . '" LIMIT 1');
-    if (!$sql->num())
+    if (!$sql->num()) {
         sys::outjs(array('e' => 'Необходимо указать пользователя игрового сервера.'), $nmch);
+    }
 
     $u = $sql->get();
 
@@ -127,7 +144,8 @@ if ($go) {
     }
 
     // Создание вирт. хостинга
-    $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['create'],
+    $result = json_decode(file_get_contents(sys::updtext(
+        $aWebUnit['isp']['account']['create'],
         array('login' => $login,
             'mail' => $u['mail'],
             'passwd' => $aData['passwd'],
@@ -155,8 +173,9 @@ $html->nav('Установка ' . $aWebname[$url['subsection']]);
 $domains = '';
 
 // Генерация списка доменов
-foreach ($aWebUnit['domains'] as $domain)
+foreach ($aWebUnit['domains'] as $domain) {
     $domains .= '<option value="' . $domain . '">.' . $domain . '</option>';
+}
 
 $html->get('install', 'sections/web/' . $url['subsection'] . '/free');
 $html->set('id', $id);

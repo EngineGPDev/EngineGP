@@ -9,15 +9,17 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $nmch = 'create_help_' . $user['id'];
 
     // Проверка сессии
-    if ($mcache->get($nmch))
+    if ($mcache->get($nmch)) {
         sys::outjs(array('e' => $text['mcache']), $nmch);
+    }
 
     // Создание сессии
     $mcache->set($nmch, 1, false, 10);
@@ -37,14 +39,16 @@ if ($go) {
 
     // Проверка услуги
     if (count($aData['service']) != 2) {
-        if ($aData['service'][0] != 'none')
+        if ($aData['service'][0] != 'none') {
             sys::outjs(array('e' => 'Необходимо выбрать услугу связанную с вопросом.'), $nmch);
+        }
 
         $aData['type'] = 'none';
         $aData['service'] = 0;
     } else {
-        if (!in_array($aData['service'][0], array('server', 'hosting')))
+        if (!in_array($aData['service'][0], array('server', 'hosting'))) {
             sys::outjs(array('e' => 'Необходимо выбрать услугу связанную с вопросом.'), $nmch);
+        }
 
         $aData['type'] = $aData['service'][0];
         $aData['service'] = sys::int($aData['service'][1]);
@@ -58,24 +62,28 @@ if ($go) {
                 $sql->query('SELECT `id` FROM `hosting` WHERE `id`="' . $aData['service'] . '" AND `user`="' . $user['id'] . '" LIMIT 1');
         }
 
-        if (!$sql->num())
+        if (!$sql->num()) {
             sys::outjs(array('e' => 'Выбранная услуга не найдена в базе.'), $nmch);
+        }
 
         // Защита от дублирования темы вопроса
         $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `type`="' . $aData['type'] . '" AND `service`="' . $aData['service'] . '" AND `close`="0" LIMIT 1');
-        if ($sql->num())
+        if ($sql->num()) {
             sys::outjs(array('e' => 'По выбранной услуге уже есть открытый диалог.'), $nmch);
+        }
     }
 
     // Проверка заголовка, если указан
     if (!empty($aData['title'])) {
-        if (iconv_strlen($aData['title'], 'UTF-8') < 3 || iconv_strlen($aData['title'], 'UTF-8') > 40)
+        if (iconv_strlen($aData['title'], 'UTF-8') < 3 || iconv_strlen($aData['title'], 'UTF-8') > 40) {
             sys::outjs(array('e' => 'Длина загловка не должна быть менее 3 и не превышать 40 символов.'), $nmch);
+        }
     }
 
     // Проверка сообщения
-    if (iconv_strlen($aData['text'], 'UTF-8') < 10 || iconv_strlen($aData['text'], 'UTF-8') > 1000)
+    if (iconv_strlen($aData['text'], 'UTF-8') < 10 || iconv_strlen($aData['text'], 'UTF-8') > 1000) {
         sys::outjs(array('e' => 'Длина сообщения не должна быть менее 10 и не превышать 1000 символов.'), $nmch);
+    }
 
     include(LIB . 'help.php');
 
@@ -87,12 +95,14 @@ if ($go) {
         foreach ($aData['images'] as $img) {
             $key = explode('.', $img);
 
-            if (!is_array($key) || sys::valid($key[0], 'md5') || !in_array($key[1], array('png', 'gif', 'jpg', 'jpeg', 'bmp')))
+            if (!is_array($key) || sys::valid($key[0], 'md5') || !in_array($key[1], array('png', 'gif', 'jpg', 'jpeg', 'bmp'))) {
                 continue;
+            }
 
             $sql->query('SELECT `id` FROM `help_upload` WHERE `name`="' . $img . '" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 continue;
+            }
 
             $image = $sql->get();
 
@@ -104,8 +114,9 @@ if ($go) {
 
     // Проверка открытых сообщений
     $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0" LIMIT 3');
-    if ($sql->num() == 3)
+    if ($sql->num() == 3) {
         sys::outjs(array('e' => 'У вас уже открыто 3 вопроса, чтобы создать новый необходимо их закрыть.'), $nmch);
+    }
 
     $sql->query('INSERT INTO `help` set '
         . '`user`="' . $user['id'] . '",'
@@ -132,8 +143,9 @@ if ($go) {
 $services = '';
 
 $sql->query('SELECT `id`, `address` FROM `servers` WHERE `user`="' . $user['id'] . '" LIMIT 10');
-while ($server = $sql->get())
+while ($server = $sql->get()) {
     $services .= '<option value="server_' . $server['id'] . '">Игровой сервер #' . $server['id'] . ' (' . $server['address'] . ')</option>';
+}
 
 $html->get('create', 'sections/help');
 

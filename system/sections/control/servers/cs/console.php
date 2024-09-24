@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `time_start` FROM `control_servers` WHERE `id`="' . $sid . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
@@ -24,15 +25,17 @@ if ($go) {
     $command = isset($_POST['command']) ? sys::cmd($_POST['command']) : '';
 
     if ($server['status'] == 'off') {
-        if ($command)
+        if ($command) {
             sys::outjs(array('e' => sys::text('servers', 'off')));
+        }
 
         sys::out(sys::text('servers', 'off'));
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        if ($command)
+        if ($command) {
             sys::outjs(array('e' => sys::text('error', 'ssh')));
+        }
 
         sys::out(sys::text('error', 'ssh'));
     }
@@ -42,11 +45,12 @@ if ($go) {
     $filecmd = $dir . 'qconsole.log';
 
     if ($command) {
-        if (strtolower($command) == 'clear')
+        if (strtolower($command) == 'clear') {
             $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "echo \"Очистка консоли\n\" > ' . $filecmd . '"');
-        else
+        } else {
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . $command . '"\015\';'
-                . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
+                    . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
+        }
 
         sys::outjs(array('s' => 'ok'));
     }
@@ -55,10 +59,11 @@ if ($go) {
 
     $weight = sys::int($ssh->get('du --block-size=1 ' . $filecmd . ' | awk \'{print $1}\''));
 
-    if ($weight > 524288)
+    if ($weight > 524288) {
         $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "mkdir -p ' . $dir . 'oldstart; cat ' . $filecmd . ' >> ' . $filecmd_copy . '; echo \"Выполнена очистка консоли, слишком большой объем данных\n\" > ' . $filecmd . '"');
+    }
 
-    sys::out(htmlspecialchars($ssh->get('cat ' . $filecmd), NULL, ''));
+    sys::out(htmlspecialchars($ssh->get('cat ' . $filecmd), null, ''));
 }
 
 $html->nav('Список подключенных серверов', $cfg['http'] . 'control');

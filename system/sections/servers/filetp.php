@@ -9,22 +9,24 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT `uid`, `unit`, `address`, `game`, `status`, `plugins_use`, `ftp_use`, `console_use`, `stats_use`, `copy_use`, `web_use`, `time` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = $sql->get();
 
-if (!$server['ftp_use'])
+if (!$server['ftp_use']) {
     sys::back($cfg['http'] . 'servers/id/' . $id);
+}
 
 sys::nav($server, $id, 'filetp');
 
 $frouter = explode('/', sys::route($server, 'filetp', $go));
 
-if (end($frouter) == 'noaccess.php')
+if (end($frouter) == 'noaccess.php') {
     include(SEC . 'servers/noaccess.php');
-else {
+} else {
     $sql->query('SELECT `uid`, `unit`, `tarif`, `ftp`, `ftp_root`, `ftp_passwd`, `ftp_on`, `hdd` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
     $server = array_merge($server, $sql->get());
 
@@ -68,18 +70,20 @@ else {
             include(LIB . 'ssh.php');
 
             // Проверка соединения с ssh сервером
-            if (!$ssh->auth($unit['passwd'], $unit['address']))
+            if (!$ssh->auth($unit['passwd'], $unit['address'])) {
                 sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+            }
         } else {
             include(LIB . 'ftp.php');
 
-            $ftp = new ftp;
+            $ftp = new ftp();
 
             // Проверка соединения с ftp сервером
             if (!$ftp->auth($aData['host'], $aData['login'], $aData['passwd'])) {
                 if (isset($url['action'])) {
-                    if ($url['action'] == 'search')
+                    if ($url['action'] == 'search') {
                         sys::out('Не удалось соединиться с ftp-сервером.');
+                    }
 
                     sys::outjs(array('e' => 'Не удалось соединиться с ftp-сервером.'));
                 }
@@ -89,16 +93,18 @@ else {
         }
 
         // Выполнение операций
-        if (isset($url['action']))
+        if (isset($url['action'])) {
             switch ($url['action']) {
                 case 'on':
-                    if ($server['ftp'])
+                    if ($server['ftp']) {
                         sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                    }
 
                     $used = sys::int($ssh->get('cd ' . $tarif['install'] . $server['uid'] . ' && du -b | tail -1'));
 
-                    if ($used < 1)
+                    if ($used < 1) {
                         sys::back($cfg['http'] . 'help/action/create');
+                    }
 
                     $bytes = $server['hdd'] * 1048576;
 
@@ -119,9 +125,11 @@ else {
 
                     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
+                    // no break
                 case 'change':
-                    if (!$server['ftp'])
+                    if (!$server['ftp']) {
                         sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                    }
 
                     $passwd = sys::passwd(8);
 
@@ -135,9 +143,11 @@ else {
 
                     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
+                    // no break
                 case 'off':
-                    if (!$server['ftp'])
+                    if (!$server['ftp']) {
                         sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                    }
 
                     $qSql = 'DELETE FROM users WHERE username=\'' . $server['uid'] . '\';'
                         . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
@@ -151,42 +161,52 @@ else {
 
                     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
+                    // no break
                 case 'rename':
                     $ftp->rename(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['newname']));
 
+                    // no break
                 case 'edit':
                     $ftp->edit_file(json_decode($_POST['path']), json_decode($_POST['name']));
 
+                    // no break
                 case 'create':
-                    if (isset($url['folder']))
+                    if (isset($url['folder'])) {
                         $ftp->mkdir(json_decode($_POST['path']), json_decode($_POST['name']));
+                    }
 
                     $ftp->touch(json_decode($_POST['path']), json_decode($_POST['name']), json_decode($_POST['text']));
 
+                    // no break
                 case 'delete':
-                    if (isset($url['folder']))
+                    if (isset($url['folder'])) {
                         $ftp->rmdir(json_decode($_POST['path']), json_decode($_POST['name']));
+                    }
 
                     $ftp->rmfile(json_decode($_POST['path']) . '/' . json_decode($_POST['name']));
 
+                    // no break
                 case 'chmod':
                     $ftp->chmod(json_decode($_POST['path']), json_decode($_POST['name']), sys::int($_POST['chmod']));
 
+                    // no break
                 case 'search':
                     $text = isset($_POST['find']) ? sys::first(explode('.', json_decode($_POST['find']))) : sys::out();
 
-                    if (!isset($text[2]))
+                    if (!isset($text[2])) {
                         sys::out('Для выполнения поиска, необходимо больше данных');
+                    }
 
                     $ftp->search($text, $id);
 
+                    // no break
                 case 'logs':
                     $logs = $mcache->get('filetp_logs_' . $id);
 
                     if (!$logs) {
                         include(LIB . 'ftp.php');
 
-                        $ftp = new ftp;
+                        $ftp = new ftp();
 
                         $logs = $ftp->logs($ssh->get('cat /var/log/proftpd/xferlog | grep "/' . $server['uid'] . '/" | awk \'{print $2"\\\"$3"\\\"$4"\\\"$5"\\\"$7"\\\"$8"\\\"$9"\\\"$12}\' | tail -50'), $server['uid']);
 
@@ -195,15 +215,18 @@ else {
 
                     sys::out($logs);
             }
+        }
 
-        if (!isset($_POST['path'])) $_POST['path'] = json_encode($aData['root']);
+        if (!isset($_POST['path'])) {
+            $_POST['path'] = json_encode($aData['root']);
+        }
 
         sys::out($ftp->view($ftp->read(json_decode($_POST['path'])), $id));
     }
 
-    if ($mcache->get('server_filetp_' . $id) != '')
+    if ($mcache->get('server_filetp_' . $id) != '') {
         $html->arr['main'] = $mcache->get('server_filetp_' . $id);
-    else {
+    } else {
         if ($server['ftp']) {
             $html->get('filetp_on', 'sections/servers/games/filetp');
 
@@ -212,8 +235,9 @@ else {
             $html->set('login', $aData['login']);
             $html->set('passwd', $aData['passwd']);
             $html->set('path', $aData['root']);
-        } else
+        } else {
             $html->get('filetp_off', 'sections/servers/games/filetp');
+        }
 
         $html->set('id', $id);
 

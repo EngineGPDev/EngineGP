@@ -9,15 +9,17 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (isset($url['subsection']) and $url['subsection'] == 'search')
+if (isset($url['subsection']) and $url['subsection'] == 'search') {
     include(SEC . 'servers/search.php');
+}
 
-if ($id)
+if ($id) {
     include(SEC . 'servers/server.php');
-else {
+} else {
     $list = '';
 
     $status = array(

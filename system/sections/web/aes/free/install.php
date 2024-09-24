@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Установка
 if ($go) {
@@ -64,14 +65,16 @@ $html->nav('Установка ' . $aWebname[$url['subsection']]);
 $desing = '';
 
 // Генерация списка шаблонов
-foreach ($aWebParam[$url['subsection']]['desing'] as $name => $desc)
+foreach ($aWebParam[$url['subsection']]['desing'] as $name => $desc) {
     $desing .= '<option value="' . $name . '">' . $desc . '</option>';
+}
 
 $domains = '';
 
 // Генерация списка доменов
-foreach ($aWebUnit['domains'] as $domain)
+foreach ($aWebUnit['domains'] as $domain) {
     $domains .= '<option value="' . $domain . '">.' . $domain . '</option>';
+}
 
 $html->get('install', 'sections/web/' . $url['subsection'] . '/free');
 

@@ -9,29 +9,34 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!$go)
+if (!$go) {
     exit;
+}
 
 $pid = isset($url['plugin']) ? sys::int($url['plugin']) : exit;
 
 // Проверка установки плагина
 $sql->query('SELECT `id`, `upd` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '" LIMIT 1');
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('e' => 'Данный плагин не установлен'));
+}
 
 $plugin = $sql->get();
 
 $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $unit = $sql->get();
 
-if (!isset($ssh))
+if (!isset($ssh)) {
     include(LIB . 'ssh.php');
+}
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+}
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
@@ -58,15 +63,17 @@ include(LIB . 'games/plugins.php');
 
 // Удаление добавленного при установке текста в файлах
 $sql->query('SELECT `text`, `file` FROM `plugins_write` ' . $qsql);
-while ($clear = $sql->get())
+while ($clear = $sql->get()) {
     plugins::clear($clear, $server['uid'], $dir);
+}
 
 unset($clear);
 
 // Добавление текста при удалении в файлы
 $sql->query('SELECT `text`, `file`, `top` FROM `plugins_write_del` ' . $qsql);
-while ($write = $sql->get())
+while ($write = $sql->get()) {
     plugins::write($write, $server['uid'], $dir);
+}
 
 // Удаление записи установленного плагина в базе
 $sql->query('DELETE FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '"');
@@ -74,10 +81,11 @@ $sql->query('DELETE FROM `plugins_install` WHERE `server`="' . $id . '" AND `plu
 // Очистка кеша
 $mcache->delete('server_plugins_' . $id);
 
-if ($plugin['upd'])
+if ($plugin['upd']) {
     $sql->query('SELECT `install` FROM `plugins_delete_ins` WHERE `update`="' . $plugin['upd'] . '" LIMIT 1');
-else
+} else {
     $sql->query('SELECT `install` FROM `plugins_delete_ins` WHERE `plugin`="' . $pid . '" AND `update`="0" LIMIT 1');
+}
 
 if ($sql->num()) {
     $ins = $sql->get();

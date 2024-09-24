@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (isset($url['subsection']) and $url['subsection'] == 'search')
+if (isset($url['subsection']) and $url['subsection'] == 'search') {
     include(SEC . 'logs/sysearch.php');
+}
 
 $list = '';
 
@@ -29,10 +31,11 @@ while ($log = $sql->get()) {
     $list .= '<td>' . $log['id'] . '</td>';
     $list .= '<td>' . $log['text'] . '</td>';
 
-    if (!$log['user'])
+    if (!$log['user']) {
         $list .= '<td class="text-center">Система</td>';
-    else
+    } else {
         $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $log['user'] . '">USER_' . $log['user'] . '</a></td>';
+    }
 
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/servers/id/' . $log['server'] . '">SERVER_' . $log['server'] . '</a></td>';
     $list .= '<td class="text-center">' . date('d.m.Y - H:i:s', $log['time']) . '</td>';

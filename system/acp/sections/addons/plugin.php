@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $sql->query('SELECT * FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 $plugin = $sql->get();
@@ -59,15 +60,17 @@ if ($go) {
 
     $aData['cfg'] = 0;
 
-    if ($aData['name'] == '')
+    if ($aData['name'] == '') {
         sys::outjs(array('e' => 'Необходимо указать название'));
+    }
 
     $aPacks = explode(':', $aData['packs']);
 
     $spacks = '';
 
-    foreach ($aPacks as $packs)
+    foreach ($aPacks as $packs) {
         $spacks .= trim($packs) . ':';
+    }
 
     $spacks = isset($spacks[0]) ? substr($spacks, 0, -1) : '';
 
@@ -80,8 +83,9 @@ if ($go) {
     foreach ($aIncom as $incom) {
         $incom = trim($incom);
 
-        if (!is_numeric($incom))
+        if (!is_numeric($incom)) {
             continue;
+        }
 
         $incoms .= intval($incom) . ':';
     }
@@ -100,8 +104,9 @@ if ($go) {
         foreach ($aChpl as $idchpl) {
             $idchpl = trim($idchpl);
 
-            if (!is_numeric($idchpl))
+            if (!is_numeric($idchpl)) {
                 continue;
+            }
 
             $choice .= intval($idchpl) . ':';
         }
@@ -120,8 +125,9 @@ if ($go) {
     foreach ($aRequi as $requi) {
         $requi = trim($requi);
 
-        if (!is_numeric($requi))
+        if (!is_numeric($requi)) {
             continue;
+        }
 
         $requis .= intval($requi) . ':';
     }
@@ -135,8 +141,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_config` WHERE `plugin`="' . $id . '" AND `update`="0"');
 
     foreach ($aData['config_files_file'] as $i => $file) {
-        if ($file == '')
+        if ($file == '') {
             continue;
+        }
 
         $n += 1;
 
@@ -145,14 +152,16 @@ if ($go) {
         $sql->query('INSERT INTO `plugins_config` set `plugin`="' . $id . '", `update`="0", `file`="' . $file . '", `sort`="' . $n . '"');
     }
 
-    if ($n)
+    if ($n) {
         $aData['cfg'] = 1;
+    }
 
     $sql->query('DELETE FROM `plugins_clear` WHERE `plugin`="' . $id . '" AND `update`="0"');
 
     foreach ($aData['config_clear_file'] as $i => $file) {
-        if ($aData['config_clear_text'][$i] == '' || $file == '')
+        if ($aData['config_clear_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $regex = (string)$aData['config_clear_regex'] == 'on' ? 1 : 0;
 
@@ -164,8 +173,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_write` WHERE `plugin`="' . $id . '" AND `update`="0"');
 
     foreach ($aData['config_write_file'] as $i => $file) {
-        if ($aData['config_write_text'][$i] == '' || $file == '')
+        if ($aData['config_write_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $top = (string)$aData['config_write_top'][$i] == 'on' ? 1 : 0;
 
@@ -177,8 +187,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_write_del` WHERE `plugin`="' . $id . '" AND `update`="0"');
 
     foreach ($aData['config_write_del_file'] as $i => $file) {
-        if ($aData['config_write_del_text'][$i] == '' || $file == '')
+        if ($aData['config_write_del_text'][$i] == '' || $file == '') {
             continue;
+        }
 
         $top = (string)$aData['config_write_del_top'][$i] == 'on' ? 1 : 0;
 
@@ -190,8 +201,9 @@ if ($go) {
     $sql->query('DELETE FROM `plugins_delete` WHERE `plugin`="' . $id . '" AND `update`="0"');
 
     foreach ($aData['files_delete_file'] as $file) {
-        if ($file == '')
+        if ($file == '') {
             continue;
+        }
 
         $sql->query('INSERT INTO `plugins_delete` set `plugin`="' . $id . '", `update`="0", `file`="' . $file . '"');
     }
@@ -242,8 +254,9 @@ $html->set('status', str_replace('"' . $plugin['status'] . '">', '"' . $plugin['
 $cats = '';
 
 $sql->query('SELECT `id`, `name` FROM `plugins_category` WHERE `game`="' . $plugin['game'] . '" ORDER BY `sort` ASC');
-while ($cat = $sql->get())
+while ($cat = $sql->get()) {
     $cats .= '<option value="' . $cat['id'] . '">' . $cat['name'] . '</option>';
+}
 
 $html->set('category', str_replace('"' . $plugin['cat'] . '">', '"' . $plugin['cat'] . '" selected>', $cats));
 

@@ -9,14 +9,17 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if (!$go)
+if (!$go) {
     exit;
+}
 
-if ($user['group'] != 'admin')
+if ($user['group'] != 'admin') {
     sys::outjs(array('i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'), $nmch);
+}
 
 // Проверка на наличие установленной услуги
 switch ($aWebInstall[$server['game']][$url['subsection']]) {
@@ -33,16 +36,18 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
         break;
 }
 
-if (!$sql->num())
+if (!$sql->num()) {
     sys::outjs(array('i' => 'Дополнительная услуга не установлена.'), $nmch);
+}
 
 $web = $sql->get();
 
 // Удаление вирт. хостинга
 $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], array('login' => $web['login']))), true);
 
-if (!isset($result['result']) || strtolower($result['result']) != 'ok')
+if (!isset($result['result']) || strtolower($result['result']) != 'ok') {
     sys::outjs(array('e' => 'Не удалось удалить виртуальный хостинг.'), $nmch);
+}
 
 // Обновление данных
 $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');

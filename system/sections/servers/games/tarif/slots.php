@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Изменение кол-ва слот за счет пересчета дней аренды или закончился срок аренды (иначе аренда дополнительных слот)
 if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
@@ -33,22 +34,26 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     // При возможности уменьшить
     if ($cfg['change_slots'][$server['game']]['down'] || $overdue) {
         // Проверка кол-ва слот
-        if ($slots < $tarif['slots_min'] || $slots > $tarif['slots_max'])
+        if ($slots < $tarif['slots_min'] || $slots > $tarif['slots_max']) {
             sys::outjs(array('e' => 'Переданые неверные данные.'), $nmch);
+        }
 
         if ($server['slots'] == $slots) {
-            if ($go)
+            if ($go) {
                 sys::outjs(array('s' => 'ok'), $nmch);
+            }
 
             sys::outjs(array('s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $server['time']) . ' (' . sys::date('min', $server['time']) . ')'), $nmch);
         }
     } else {
         // Установлено макс. значение
-        if ($server['slots'] == $tarif['slots_max'] and !$overdue)
+        if ($server['slots'] == $tarif['slots_max'] and !$overdue) {
             sys::outjs(array('e' => 'На игровом сервере установлено максимальное значение.'), $nmch);
+        }
 
-        if ($slots < 1 || $slots > $max)
+        if ($slots < 1 || $slots > $max) {
             sys::outjs(array('e' => 'Переданы неверные данные'), $nmch);
+        }
 
         $slots += $server['slots'];
     }
@@ -60,8 +65,9 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     $time = mktime($aDate[0], $aDate[1], $aDate[2], $aDate[4], $aDate[3], $aDate[5]);
 
     // При уменьшении кол-ва слот не добавлять дни
-    if ($slots < $server['slots'] and ($cfg['change_slots'][$server['game']]['days'] and $cfg['change_slots'][$server['game']]['down'] and !$cfg['change_slots'][$server['game']]['add']))
+    if ($slots < $server['slots'] and ($cfg['change_slots'][$server['game']]['days'] and $cfg['change_slots'][$server['game']]['down'] and !$cfg['change_slots'][$server['game']]['add'])) {
         $time = $server['time'];
+    }
 
     // Выполнение операции
     if ($go) {
@@ -87,8 +93,9 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     sys::outjs(array('s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'));
 }
 
-if ($slots < 1 || $slots > $max)
+if ($slots < 1 || $slots > $max) {
     sys::outjs(array('e' => 'Переданые неверные данные'), $nmch);
+}
 
 // Выполнение операции
 if ($go) {
@@ -97,8 +104,9 @@ if ($go) {
     $slots_new = $server['slots'] + $slots;
 
     // Проверка баланса
-    if ($user['balance'] < $sum)
+    if ($user['balance'] < $sum) {
         sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
+    }
 
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
@@ -118,8 +126,10 @@ if ($go) {
     }
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_slots'),
-            array('slots' => $slots, 'money' => $sum, 'id' => $id)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $sum . '"');
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+        sys::text('logs', 'buy_slots'),
+        array('slots' => $slots, 'money' => $sum, 'id' => $id)
+    ) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $sum . '"');
 
     sys::outjs(array('s' => 'ok'), $nmch);
 }

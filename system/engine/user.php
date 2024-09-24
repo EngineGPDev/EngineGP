@@ -9,12 +9,14 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 // Подключение раздела
-if (!in_array($section, array('auth', 'recovery', 'replenish', 'signup', 'lk', 'quit')))
+if (!in_array($section, array('auth', 'recovery', 'replenish', 'signup', 'lk', 'quit'))) {
     include(ENG . '404.php');
+}
 
 $aTitle = array(
     'auth' => 'Авторизация',
@@ -27,9 +29,10 @@ $aTitle = array(
 
 $title = $aTitle[$section];
 
-if ($section == 'lk')
+if ($section == 'lk') {
     $html->nav($title, $cfg['http'] . 'user/section/lk');
-else
+} else {
     $html->nav($title);
+}
 
 include(SEC . 'user/' . $section . '.php');

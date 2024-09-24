@@ -9,11 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-if ($user['group'] != 'admin')
+if ($user['group'] != 'admin') {
     sys::outjs(array('e' => 'У вас нет доступа к данному действию.'));
+}
 
 if ($id) {
     $sql->query('DELETE FROM `help` WHERE `id`="' . $id . '" LIMIT 1');

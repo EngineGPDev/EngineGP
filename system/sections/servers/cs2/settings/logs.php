@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $html->nav('Логи');
 
@@ -22,16 +23,18 @@ $tarif = $sql->get();
 
 include(LIB . 'ssh.php');
 
-if (!$ssh->auth($unit['passwd'], $unit['address']))
+if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+}
 
 // Путь к логам
 $folder = $tarif['install'] . $server['uid'] . '/game/csgo/logs';
 
 // Если выбран лог
 if (isset($url['log'])) {
-    if (sys::valid($url['log'], 'other', $aValid['cslogs']))
+    if (sys::valid($url['log'], 'other', $aValid['cslogs'])) {
         sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings/subsection/logs');
+    }
 
     $ssh->set('sudo -u server' . $server['uid'] . ' cat ' . $folder . '/' . $url['log']);
 
@@ -55,8 +58,9 @@ if (isset($url['log'])) {
     // Массив данных
     $aData = explode("\n", $ssh->get());
 
-    if (isset($aData[count($aData) - 1]))
+    if (isset($aData[count($aData) - 1])) {
         unset($aData[count($aData) - 1]);
+    }
 
     // Построение списка
     foreach ($aData as $line => $log) {
@@ -65,8 +69,9 @@ if (isset($url['log'])) {
         // Название
         $name = explode('/', $aLog[2]);
 
-        if (count($name) > 2)
+        if (count($name) > 2) {
             continue;
+        }
 
         // Дата
         $date = sys::unidate($aLog[0]);

@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/actions.php');
 
@@ -96,8 +97,9 @@ class action extends actions
         // Проверка времени обновления
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
-        if ($update > $start_point and $user['group'] != 'admin')
+        if ($update > $start_point and $user['group'] != 'admin') {
             return array('e' => sys::updtext(sys::text('servers', 'update'), array('time' => sys::date('max', $update))));
+        }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -106,8 +108,9 @@ class action extends actions
         $tarif = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];

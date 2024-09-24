@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class actions
 {
@@ -27,8 +28,9 @@ class actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $server_address = $server['address'] . ':' . $server['port'];
 
@@ -52,8 +54,9 @@ class actions
         global $cfg, $sql, $html, $user, $mcache;
 
         // Если в кеше есть карты
-        if ($mcache->get('server_maps_change_' . $id) != '' && !$map)
+        if ($mcache->get('server_maps_change_' . $id) != '' && !$map) {
             return array('maps' => $mcache->get('server_maps_change_' . $id));
+        }
 
         include(LIB . 'ssh.php');
 
@@ -67,8 +70,9 @@ class actions
         $tarif = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         // Массив карт игрового сервера (папка "maps")
         $aMaps = explode("\n", $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.'));
@@ -82,8 +86,9 @@ class actions
         // Если выбрана карта
         if ($map) {
             // Проверка наличия выбранной карты
-            if (!in_array($map, $aMaps))
+            if (!in_array($map, $aMaps)) {
                 return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.bsp')));
+            }
 
             // Отправка команды changelevel
             $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
@@ -131,8 +136,9 @@ class actions
         // Проверка времени переустановки
         $reinstall = $server['reinstall'] + $cfg['reinstall'][$server['game']] * 60;
 
-        if ($reinstall > $start_point && $user['group'] != 'admin')
+        if ($reinstall > $start_point && $user['group'] != 'admin') {
             return array('e' => sys::updtext(sys::text('servers', 'reinstall'), array('time' => sys::date('max', $reinstall))));
+        }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -141,8 +147,9 @@ class actions
         $tarif = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $server_address = $server['address'] . ':' . $server['port'];
 
@@ -176,9 +183,11 @@ class actions
             if (isset($aPlugins[$server['pack']])) {
                 $plugins = explode(',', $aPlugins[$server['pack']]);
 
-                foreach ($plugins as $plugin)
-                    if ($plugin)
+                foreach ($plugins as $plugin) {
+                    if ($plugin) {
                         $sql->query('INSERT INTO `plugins_install` set `server`="' . $id . '", `plugin`="' . $plugin . '", `time`="' . $start_point . '"');
+                    }
+                }
             }
         }
 
@@ -209,8 +218,9 @@ class actions
         // Проверка времени обновления
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
-        if ($update > $start_point && $user['group'] != 'admin')
+        if ($update > $start_point && $user['group'] != 'admin') {
             return array('e' => sys::updtext(sys::text('servers', 'update'), array('time' => sys::date('max', $update))));
+        }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -219,8 +229,9 @@ class actions
         $tarif = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return array('e' => sys::text('error', 'ssh'));
+        }
 
         $server_address = $server['address'] . ':' . $server['port'];
 

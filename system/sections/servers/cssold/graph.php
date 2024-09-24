@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if ($go) {
     $sql->query('SELECT `key` FROM `graph` WHERE `server`="' . $id . '" LIMIT 1');
@@ -20,8 +21,9 @@ if ($go) {
 
     $time = isset($url['time']) ? $url['time'] : 'day';
 
-    if (!in_array($time, array('day', 'week', 'month')))
+    if (!in_array($time, array('day', 'week', 'month'))) {
         $time = 'day';
+    }
 
     // Выхлоп кеш графика
     if ($mcache->get($nmch) and file_exists(TEMP . (md5($graph['key'] . 'full_' . $time)) . '.png')) {
@@ -42,9 +44,9 @@ if ($go) {
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 $html->nav('Графики');
 
-if ($mcache->get('server_graph_' . $id) != '')
+if ($mcache->get('server_graph_' . $id) != '') {
     $html->arr['main'] = $mcache->get('server_graph_' . $id);
-else {
+} else {
     $sql->query('SELECT `key` FROM `graph` WHERE `server`="' . $id . '" LIMIT 1');
 
     // Если отсутствует ключ, создать

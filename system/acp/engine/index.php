@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 $mcache_name = 'acp_main';
 
@@ -83,14 +84,17 @@ if ($html->arr['main'] == '') {
     $html->set('replenish', $replenish['SUM(`money`)']);
     $html->set('staff', $sf_list);
 
-    foreach ($aSlots as $game => $slots)
+    foreach ($aSlots as $game => $slots) {
         $html->set('slots_' . $game, $slots);
+    }
 
-    foreach ($aServers as $game => $num)
+    foreach ($aServers as $game => $num) {
         $html->set($game, $num);
+    }
 
     $html->pack('main');
 
     $mcache->set($mcache_name, $html->arr['main'], false, 10);
-} else
+} else {
     $html->arr['main'] = str_replace('[cashback]', $html->arr['cashback'], $html->arr['main']);
+}

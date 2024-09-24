@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 if (isset($url['delete']) and $url['delete'] == 'all') {
     $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
@@ -18,8 +19,9 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 
     include(LIB . 'ssh.php');
 
-    if (!$ssh->auth($panel['passwd'], $panel['address']))
+    if (!$ssh->auth($panel['passwd'], $panel['address'])) {
         sys::outjs(array('e' => 'PANEL не удалось создать связь.'));
+    }
 
     $servers = $sql->query('SELECT `id`, `user`, `game` FROM `servers` WHERE `unit`="' . $id . '"');
     while ($server = $sql->get($servers)) {
@@ -54,8 +56,9 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
     $sql->query('DELETE FROM `tarifs` WHERE `unit`="' . $id . '"');
 } else {
     $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $id . '" LIMIT 1');
-    if ($sql->num())
+    if ($sql->num()) {
         sys::outjs(array('e' => 'Нельзя удалить локацию с серверами.'));
+    }
 }
 
 $sql->query('DELETE FROM `units` WHERE `id`="' . $id . '" LIMIT 1');

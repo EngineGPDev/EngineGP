@@ -9,12 +9,13 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 class privileges extends cron
 {
-    function __construct()
+    public function __construct()
     {
         global $sql, $argv, $start_point;
 
@@ -24,12 +25,14 @@ class privileges extends cron
 
         $game = $servers[3];
 
-        if (!array_key_exists($game, cron::$admins_file))
-            return NULL;
+        if (!array_key_exists($game, cron::$admins_file)) {
+            return null;
+        }
 
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $servers[4] . '" LIMIT 1');
-        if (!$sql->num())
+        if (!$sql->num()) {
             return '������: UNIT#' . $servers[4] . ' �� ������.';
+        }
 
         $unit = $sql->get();
 
@@ -37,12 +40,14 @@ class privileges extends cron
 
         foreach ($servers as $i => $id) {
             $sql->query('SELECT `id` FROM `privileges_buy` WHERE `server`="' . $id . '" AND `status`="1" LIMIT 1');
-            if (!$sql->num())
+            if (!$sql->num()) {
                 unset($servers[$i]);
+            }
         }
 
-        if (!count($servers))
-            return NULL;
+        if (!count($servers)) {
+            return null;
+        }
 
         $sql->query('SELECT `unit` FROM `servers` WHERE `id`="' . end($servers) . '" LIMIT 1');
         $server = $sql->get();
@@ -53,8 +58,9 @@ class privileges extends cron
         include(LIB . 'ssh.php');
 
         // �������� ssh ���������� �� � ��������
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             return '������: UNIT#' . $server['unit'] . ' �� ������� ������� �����.';
+        }
 
         $time = $start_point - 172800;
 
@@ -95,12 +101,13 @@ class privileges extends cron
             $ssh->set('chown server' . $server['uid'] . ':servers ' . $file);
             $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"" . $cmd . "\"\015'");
 
-            foreach ($aMail as $mail)
+            foreach ($aMail as $mail) {
                 sys::mail('������� ����������', sys::text('mail', 'success_privilege'), $mail);
+            }
 
             echo 'server#' . $id . ' (' . $game . ') -> add privileges ' . PHP_EOL;
         }
 
-        return NULL;
+        return null;
     }
 }
