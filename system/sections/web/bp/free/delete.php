@@ -18,14 +18,14 @@ if (!$go) {
 }
 
 if ($user['group'] != 'admin') {
-    sys::outjs(array('i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'), $name_mcache);
+    sys::outjs(['i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'], $name_mcache);
 }
 
 include(LIB . 'web/free.php');
 
-$aData = array(
+$aData = [
     'type' => $url['subsection'],
-    'server' => array_merge($server, array('id' => $id))
-);
+    'server' => array_merge($server, ['id' => $id]),
+];
 
 web::delete($aData, $name_mcache);

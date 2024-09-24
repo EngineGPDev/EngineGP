@@ -17,10 +17,10 @@ class games
 {
     public static function parse_day($days, $lower = false)
     {
-        $aText = array('День', 'Дня', 'Дней');
+        $aText = ['День', 'Дня', 'Дней'];
 
         if ($lower) {
-            $aText = array('день', 'дня', 'дней');
+            $aText = ['день', 'дня', 'дней'];
         }
 
         return sys::date_decl($days, $aText);
@@ -46,20 +46,20 @@ class games
     {
         global $html, $text;
 
-        if (!in_array($status, array('install', 'reinstall', 'update', 'recovery', 'overdue', 'blocked'))) {
+        if (!in_array($status, ['install', 'reinstall', 'update', 'recovery', 'overdue', 'blocked'])) {
             return true;
         }
 
-        $aText = array(
+        $aText = [
             'install' => 'устанавливается',
             'reinstall' => 'переустанавливается',
             'update' => 'обновляется',
             'recovery' => 'восстанавливается',
             'overdue' => 'не оплачен',
-            'blocked' => 'заблокирован'
-        );
+            'blocked' => 'заблокирован',
+        ];
 
-        $msg = sys::updtext(sys::text('servers', 'determine'), array('status' => $aText[$status]));
+        $msg = sys::updtext(sys::text('servers', 'determine'), ['status' => $aText[$status]]);
 
         if ($go) {
             sys::out($msg);
@@ -77,7 +77,7 @@ class games
 
     public static function crontab_week($week)
     {
-        $aWeek = array();
+        $aWeek = [];
         $aWeek[1] = isset($week['\'1\'']) ? 'Пн., ' : '';
         $aWeek[2] = isset($week['\'2\'']) ? 'Вт., ' : '';
         $aWeek[3] = isset($week['\'3\'']) ? 'Ср., ' : '';
@@ -111,7 +111,7 @@ class games
             return 'Каждый час';
         }
 
-        $aHour = array(
+        $aHour = [
             '00', '01', '02',
             '03', '04', '05',
             '06', '07', '08',
@@ -119,15 +119,15 @@ class games
             '12', '13', '14',
             '15', '16', '17',
             '18', '19', '20',
-            '21', '22', '23'
-        );
+            '21', '22', '23',
+        ];
 
-        $aMinute = array(
+        $aMinute = [
             '00', '05', '10',
             '15', '20', '25',
             '30', '35', '40',
-            '45', '50', '55'
-        );
+            '45', '50', '55',
+        ];
 
         if (!in_array($hour, $aHour)) {
             $hour = '00';
@@ -140,14 +140,14 @@ class games
         return $hour . ':' . $minute;
     }
 
-    public static function crontab($id, $cid, $data = array())
+    public static function crontab($id, $cid, $data = [])
     {
         global $cfg;
 
         if ($data['allhour']) {
             $time = '0 * * * ';
         } else {
-            $hour = array(
+            $hour = [
                 '00', '01', '02',
                 '03', '04', '05',
                 '06', '07', '08',
@@ -155,15 +155,15 @@ class games
                 '12', '13', '14',
                 '15', '16', '17',
                 '18', '19', '20',
-                '21', '22', '23'
-            );
+                '21', '22', '23',
+            ];
 
-            $minute = array(
+            $minute = [
                 '00', '05', '10',
                 '15', '20', '25',
                 '30', '35', '40',
-                '45', '50', '55'
-            );
+                '45', '50', '55',
+            ];
 
             if (!in_array($data['hour'], $hour)) {
                 $data['hour'] = '00';
@@ -176,7 +176,7 @@ class games
             $time = $data['minute'] . ' ' . $data['hour'] . ' * * ';
         }
 
-        $week = array();
+        $week = [];
         $week[1] = isset($data['week']['\'1\'']) ? 1 : 0;
         $week[2] = isset($data['week']['\'2\'']) ? 2 : 0;
         $week[3] = isset($data['week']['\'3\'']) ? 3 : 0;
@@ -195,7 +195,7 @@ class games
             $week = '*';
         } else {
             $weeks = $week[1] . ',' . $week[2] . ',' . $week[3] . ',' . $week[4] . ',' . $week[5] . ',' . $week[6] . ',' . $week[7];
-            $weeks = str_replace(array(',0', '0'), '', $weeks);
+            $weeks = str_replace([',0', '0'], '', $weeks);
             $week = $weeks[0] == ',' ? substr($weeks, 1) : $weeks;
         }
 
@@ -204,7 +204,7 @@ class games
         return $cron_task;
     }
 
-    public static function parse_tarif($aTarif = array(), $aUnit = array())
+    public static function parse_tarif($aTarif = [], $aUnit = [])
     {
         global $cfg, $mcache;
 
@@ -275,21 +275,21 @@ class games
             $time .= '<option value="test">Тестовый период ' . games::parse_day($aTarif['test']) . '</option>';
         }
 
-        $data = array(
+        $data = [
             'packs' => $packs,
             'slots' => $slots,
             'time' => $time,
             'fps' => $fps,
             'tickrate' => $tickrate,
-            'ram' => $ram
-        );
+            'ram' => $ram,
+        ];
 
         $mcache->set($nmch, $data, false, 60);
 
         return $data;
     }
 
-    public static function parse_time($discount, $tarif, $aTime = array(), $type = 'buy')
+    public static function parse_time($discount, $tarif, $aTime = [], $type = 'buy')
     {
         global $cfg;
 
@@ -402,20 +402,20 @@ class games
         }
 
         if ($sum < 0) {
-            sys::outjs(array('e' => 'Ошибка: сумма за услугу неверна'));
+            sys::outjs(['e' => 'Ошибка: сумма за услугу неверна']);
         }
 
         return $sum;
     }
 
-    public static function define_promo($cod, $discount, $sum, $data = array(), $type = 'buy')
+    public static function define_promo($cod, $discount, $sum, $data = [], $type = 'buy')
     {
         global $cfg, $sql, $go, $start_point;
 
         // Проверка формата кода
         if (sys::valid($cod, 'promo')) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код имеет неверный формат.'));
+                sys::outjs(['e' => 'Промо-код имеет неверный формат.']);
             }
 
             return null;
@@ -426,7 +426,7 @@ class games
         // Проверка наличия промо-кода
         if (!$sql->num()) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код не найден.'));
+                sys::outjs(['e' => 'Промо-код не найден.']);
             }
 
             return null;
@@ -437,7 +437,7 @@ class games
         // Проверка типа при аренде
         if ($type == 'buy' and $promo['extend']) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код для продления игрового сервера.'));
+                sys::outjs(['e' => 'Промо-код для продления игрового сервера.']);
             }
 
             return null;
@@ -446,7 +446,7 @@ class games
         // Проверка типа при продлении
         if ($type != 'buy' and !$promo['extend']) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код для аренды нового игрового сервера.'));
+                sys::outjs(['e' => 'Промо-код для аренды нового игрового сервера.']);
             }
 
             return null;
@@ -455,7 +455,7 @@ class games
         // Проверка доступности на пользователя
         if ($promo['user'] and $data['user'] != $promo['user']) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код не найден.'));
+                sys::outjs(['e' => 'Промо-код не найден.']);
             }
 
             return null;
@@ -464,7 +464,7 @@ class games
         // Проверка доступности на сервер
         if ($promo['server'] and $data['server'] != $promo['server']) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код не найден.'));
+                sys::outjs(['e' => 'Промо-код не найден.']);
             }
 
             return null;
@@ -476,7 +476,7 @@ class games
         $sql->query('SELECT `id` FROM `promo_use` WHERE `promo`="' . $promo['id'] . '" LIMIT ' . $use);
         if ($sql->num() >= $promo['use']) {
             if (!$go) {
-                sys::outjs(array('e' => 'Промо-код использован максимальное количество раз.'));
+                sys::outjs(['e' => 'Промо-код использован максимальное количество раз.']);
             }
 
             return null;
@@ -524,7 +524,7 @@ class games
         // Проверка совпадений
         if ($check < $promo['hits']) {
             if (!$go) {
-                sys::outjs(array('e' => 'Условия для данного промо-кода не выполнены.'));
+                sys::outjs(['e' => 'Условия для данного промо-кода не выполнены.']);
             }
 
             return null;
@@ -557,10 +557,10 @@ class games
             }
 
             if (!$go) {
-                sys::outjs(array('sum' => $sum, 'discount' => 1, 'cur' => $cfg['currency']));
+                sys::outjs(['sum' => $sum, 'discount' => 1, 'cur' => $cfg['currency']]);
             }
 
-            return array('id' => $promo['id'], 'cod' => $cod, 'sum' => $sum);
+            return ['id' => $promo['id'], 'cod' => $cod, 'sum' => $sum];
 
         }
 
@@ -568,10 +568,10 @@ class games
         $days = intval($promo['value']);
 
         if (!$go) {
-            sys::outjs(array('days' => games::parse_day($days)));
+            sys::outjs(['days' => games::parse_day($days)]);
         }
 
-        return array('id' => $promo['id'], 'cod' => $cod, 'days' => $days);
+        return ['id' => $promo['id'], 'cod' => $cod, 'days' => $days];
     }
 
     public static function info_tarif($game, $tarif, $param)
@@ -588,7 +588,7 @@ class games
             return $tarif . ' / ' . $param['fps'] . ' FPS / ' . $param['tickrate'] . ' TickRate';
         }
 
-        if (in_array($game, array('css', 'csgo', 'cs2', 'rust'))) {
+        if (in_array($game, ['css', 'csgo', 'cs2', 'rust'])) {
             return $tarif . ' / ' . $param['tickrate'] . ' TickRate';
         }
 
@@ -603,17 +603,17 @@ class games
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
             if ($go) {
-                sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+                sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
             }
 
-            sys::outjs(array('maps', '<option value="0">unknown</option>'));
+            sys::outjs(['maps', '<option value="0">unknown</option>']);
         }
 
         // Генерация списка карт
-        $aMaps = array_diff(explode("\n", $ssh->get('cd ' . $folder . ' && du -ah | grep -e "\.bsp$" -e "\.vpk$" | awk \'{print $2}\'')), array(''));
+        $aMaps = array_diff(explode("\n", $ssh->get('cd ' . $folder . ' && du -ah | grep -e "\.bsp$" -e "\.vpk$" | awk \'{print $2}\'')), ['']);
 
         // Удаление ".bsp" или ".vpk"
-        $aMaps = str_ireplace(array('./', '.bsp', '.vpk'), '', $aMaps);
+        $aMaps = str_ireplace(['./', '.bsp', '.vpk'], '', $aMaps);
 
         if ($go) {
             $map = str_replace('|', '/', urldecode($map));
@@ -625,7 +625,7 @@ class games
                 $sql->query('UPDATE `' . $sqlq . 'servers` set `map_start`="' . $map . '" WHERE `id`="' . $id . '" LIMIT 1');
             }
 
-            sys::outjs(array('s' => 'ok'), $mcache);
+            sys::outjs(['s' => 'ok'], $mcache);
         }
 
         sort($aMaps);
@@ -643,7 +643,7 @@ class games
             $maps .= '<option value="' . str_replace('/', '|', $map) . '">' . $map . '</option>';
         }
 
-        sys::outjs(array('maps' => $maps));
+        sys::outjs(['maps' => $maps]);
     }
 
     public static function owners($aRights)
@@ -687,7 +687,7 @@ class games
 
         $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
             sys::text('logs', 'part'),
-            array('part' => $uid, 'money' => $sum)
+            ['part' => $uid, 'money' => $sum]
         ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $sum . '"');
 
         return null;
@@ -696,7 +696,7 @@ class games
     public static function map($map, $aMaps)
     {
         if (!is_array($aMaps)) {
-            $aMaps = explode("\n", str_ireplace(array('./', '.bsp', '.vpk'), '', $aMaps));
+            $aMaps = explode("\n", str_ireplace(['./', '.bsp', '.vpk'], '', $aMaps));
         }
 
         if (in_array($map, $aMaps)) {
@@ -706,7 +706,7 @@ class games
         return true;
     }
 
-    public static function mapsql($arr = array())
+    public static function mapsql($arr = [])
     {
         $sql = 'AND (';
 
@@ -719,10 +719,10 @@ class games
 
     public static function iptables_whois($mcache)
     {
-        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(array('info' => 'Не удалось получить информацию.'), $mcache);
+        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['info' => 'Не удалось получить информацию.'], $mcache);
 
         if (sys::valid($address, 'ip')) {
-            sys::outjs(array('e' => sys::text('servers', 'firewall')), $mcache);
+            sys::outjs(['e' => sys::text('servers', 'firewall')], $mcache);
         }
 
         include(LIB . 'geo.php');
@@ -746,7 +746,7 @@ class games
             $info = 'Не удалось получить информацию.';
         }
 
-        sys::outjs(array('info' => $info), $mcache);
+        sys::outjs(['info' => $info], $mcache);
     }
 
     public static function iptables($id, $action, $source, $dest, $unit, $snw = false, $ssh = false)
@@ -760,14 +760,14 @@ class games
             include(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                return array('e' => sys::text('all', 'ssh'));
+                return ['e' => sys::text('all', 'ssh')];
             }
         }
 
         switch ($action) {
             case 'block':
                 if (sys::valid($source, 'ip')) {
-                    return array('e' => sys::text('servers', 'firewall'));
+                    return ['e' => sys::text('servers', 'firewall')];
                 }
 
                 // Если подсеть
@@ -775,7 +775,7 @@ class games
                     $source = sys::whois($source);
 
                     if ($source == 'не определена') {
-                        return array('e' => 'Не удалось определить подсеть для указанного адреса.');
+                        return ['e' => 'Не удалось определить подсеть для указанного адреса.'];
                     }
                 }
 
@@ -783,7 +783,7 @@ class games
 
                 // Если такое правило уже добавлено или указан адрес сайта (ПУ)
                 if ($sql->num() || ($source == $cfg['ip'] || $source == $cfg['subnet'])) {
-                    return array('s' => 'ok');
+                    return ['s' => 'ok'];
                 }
 
                 $sql->query('INSERT INTO `firewall` set `sip`="' . $source . '", `dest`="' . $dest[0] . ':' . $dest[1] . '", `server`="' . $id . '", `time`="' . $start_point . '"');
@@ -794,11 +794,11 @@ class games
 
                 $ssh->set($rule . ' echo -e "#' . $line . ';\n' . $rule . '" >> /root/' . $cfg['iptables']);
 
-                return array('s' => 'ok');
+                return ['s' => 'ok'];
 
             case 'unblock':
                 if (!is_numeric($source) and sys::valid($source, 'ip')) {
-                    return array('e' => sys::text('servers', 'firewall'));
+                    return ['e' => sys::text('servers', 'firewall')];
                 }
 
                 if (is_numeric($source)) {
@@ -806,7 +806,7 @@ class games
 
                     // Если такое правило отсутствует
                     if (!$sql->num()) {
-                        return array('s' => 'ok');
+                        return ['s' => 'ok'];
                     }
                 } else {
                     $sql->query('SELECT `id`, `sip` FROM `firewall` WHERE `sip`="' . $source . '" AND `server`="' . $id . '" LIMIT 1');
@@ -820,10 +820,10 @@ class games
                         if ($sql->num()) {
                             $firewall = $sql->get();
 
-                            return array('i' => 'Указанный адрес входит в заблокированную подсеть, разблокировать подсеть?', 'id' => $firewall['id']);
+                            return ['i' => 'Указанный адрес входит в заблокированную подсеть, разблокировать подсеть?', 'id' => $firewall['id']];
                         }
 
-                        return array('s' => 'ok');
+                        return ['s' => 'ok'];
                     }
                 }
 
@@ -834,15 +834,15 @@ class games
 
                 $sql->query('DELETE FROM `firewall` WHERE `id`="' . $firewall['id'] . '" LIMIT 1');
 
-                return array('s' => 'ok');
+                return ['s' => 'ok'];
 
             case 'remove':
                 $sql->query('SELECT `id`, `sip`, `dest` FROM `firewall` WHERE `server`="' . $id . '"');
 
-                $aRule = array();
+                $aRule = [];
 
                 while ($firewall = $sql->get()) {
-                    list($ip, $port) = explode(':', $firewall['dest']);
+                    [$ip, $port] = explode(':', $firewall['dest']);
 
                     $aRule[$firewall['id']] = 'iptables -D INPUT -s ' . $firewall['sip'] . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;';
                 }
@@ -863,7 +863,7 @@ class games
 
                 $sql->query('DELETE FROM `firewall` WHERE `server`="' . $id . '" LIMIT ' . $nRule);
 
-                return array('s' => 'ok');
+                return ['s' => 'ok'];
         }
     }
 }

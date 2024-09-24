@@ -15,7 +15,7 @@ if (!defined('EGP')) {
 
 $sql->query('SELECT `id` FROM `control_copy` WHERE `server`="' . $sid . '" AND `info`="' . params::$section_copy[$server['game']]['CopyFull'] . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(array('e' => 'Для создания новой копии необходимо удалить старую.'), $nmch);
+    sys::outjs(['e' => 'Для создания новой копии необходимо удалить старую.'], $nmch);
 }
 
 $name_copy = md5($id . $start_point . $sid . $server['game']);
@@ -34,4 +34,4 @@ $sql->query('INSERT INTO `control_copy` set `user`="' . $ctrl['user'] . '_' . $i
 // Очистка кеша
 $mcache->delete('ctrl_server_copy_' . $sid);
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

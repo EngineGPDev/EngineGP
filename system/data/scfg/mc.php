@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aScfg = array(
+$aScfg = [
     'motd' => 'Название игрового сервера.',
     'server-name' => 'Название игрового сервера.',
     'level-name' => 'Название карты.',
@@ -42,10 +42,10 @@ $aScfg = array(
         . '<li>1 - Операторы могут ломать / ставить блоки внутри радиуса защиты территории спауна.</li>'
         . '<li>2 - Операторы могут использовать команды /clear, /difficulty, /effect, /gamemode, /gamerule, /give, /tp, и могут изменять командные блоки.</li>'
         . '<li>3 - Операторы могут использовать команды /ban, /deop, /kick, и /op.</li>'
-        . '<li>4 - Операторы могут использовать команду /stop.</li>'
-);
+        . '<li>4 - Операторы могут использовать команду /stop.</li>',
+];
 
-$aScfg_form = array(
+$aScfg_form = [
     'motd' => '<input value="[motd]" name="config[\'motd\']">',
     'server-name' => '<input value="[server-name]" name="config[\'server-name\']">',
     'level-name' => '<input value="[level-name]" name="config[\'level-name\']">',
@@ -119,5 +119,5 @@ $aScfg_form = array(
         . '<option value="1">1</option>'
         . '<option value="2">2</option>'
         . '<option value="3">3</option>'
-        . '<option value="4">4</option></select>'
-);
+        . '<option value="4">4</option></select>',
+];

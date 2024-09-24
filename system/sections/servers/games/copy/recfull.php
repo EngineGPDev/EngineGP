@@ -13,17 +13,17 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$cid = isset($url['cid']) ? sys::int($url['cid']) : sys::outjs(array('e' => 'Выбранная копия не найдена.'), $nmch);
+$cid = isset($url['cid']) ? sys::int($url['cid']) : sys::outjs(['e' => 'Выбранная копия не найдена.'], $nmch);
 
 $sql->query('SELECT `id`, `pack`, `name`, `info`, `plugins`, `date`, `status` FROM `copy` WHERE `id`="' . $cid . '" AND `user`="' . $server['user'] . '_' . $server['unit'] . '" AND `game`="' . $server['game'] . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::outjs(array('e' => 'Выбранная копия не найдена.'), $nmch);
+    sys::outjs(['e' => 'Выбранная копия не найдена.'], $nmch);
 }
 
 $copy = $sql->get();
 
 if (!$copy['status']) {
-    sys::outjs(array('e' => 'Дождитесь создания резервной копии.'), $nmch);
+    sys::outjs(['e' => 'Дождитесь создания резервной копии.'], $nmch);
 }
 
 if ($copy['pack'] != $server['pack']) {
@@ -32,7 +32,7 @@ if ($copy['pack'] != $server['pack']) {
 
     $aPack = sys::b64djs($tarif['packs'], true);
 
-    sys::outjs(array('e' => 'Для восстановления необходимо установить сборку: ' . $aPack[$copy['pack']] . '.'), $nmch);
+    sys::outjs(['e' => 'Для восстановления необходимо установить сборку: ' . $aPack[$copy['pack']] . '.'], $nmch);
 }
 
 if (params::$section_copy[$server['game']]['CopyFull'] == $copy['info']) {
@@ -89,4 +89,4 @@ $mcache->delete('server_plugins_' . $id);
 
 $sql->query('UPDATE `servers` set `status`="recovery" WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

@@ -14,20 +14,20 @@ if (!defined('EGP')) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : 0;
 
     if (in_array('', $aData)) {
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $sql->query('INSERT INTO `wiki_category` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
         . '`sort`="' . $aData['sort'] . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('addcat', 'sections/wiki');

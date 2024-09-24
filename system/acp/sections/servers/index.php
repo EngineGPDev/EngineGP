@@ -22,7 +22,7 @@ if ($id) {
 } else {
     $list = '';
 
-    $status = array(
+    $status = [
         'working' => '<span class="text-green">Работает</span>',
         'off' => '<span class="text-red">Выключен</span>',
         'start' => 'Запускается',
@@ -33,13 +33,13 @@ if ($id) {
         'update' => 'Обновляется',
         'recovery' => 'Восстанавливается',
         'overdue' => 'Просрочен',
-        'blocked' => 'Заблокирован'
-    );
+        'blocked' => 'Заблокирован',
+    ];
 
     $select = 'WHERE `user`!="-1"';
     $url_search = '';
 
-    if (isset($url['search']) and in_array($url['search'], array('unit', 'tarif'))) {
+    if (isset($url['search']) and in_array($url['search'], ['unit', 'tarif'])) {
         $select = 'WHERE `' . $url['search'] . '`="' . sys::int($url[$url['search']]) . '" AND `user`!="-1"';
         $url_search = '/search/' . $url['search'] . '/' . $url['search'] . '/' . $url[$url['search']];
     }
@@ -85,7 +85,7 @@ if ($id) {
 
     $html->set('url_search', $url_search);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

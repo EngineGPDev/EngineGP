@@ -23,7 +23,7 @@ if ($id) {
     $sort_page = '';
     $sort_sql = 'ORDER BY `id` ASC';
 
-    if (isset($url['sort']) and in_array($url['sort'], array('id', 'cat', 'game'))) {
+    if (isset($url['sort']) and in_array($url['sort'], ['id', 'cat', 'game'])) {
         $sort = 'asc';
 
         if (isset($url['sorting'])) {
@@ -33,7 +33,7 @@ if ($id) {
         $sort_page = '/sort/' . $url['sort'] . '/sorting/' . $sort;
         $sort_sql = 'ORDER BY `' . $url['sort'] . '` ' . $sort;
 
-        $sort_icon = array($url['sort'] => $sort);
+        $sort_icon = [$url['sort'] => $sort];
     }
 
     $list = '';
@@ -44,7 +44,7 @@ if ($id) {
 
     sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/addons' . $sort_page);
 
-    $status = array(0 => 'Стабильный', 1 => 'Нестабильный', 2 => 'Тестируемый');
+    $status = [0 => 'Стабильный', 1 => 'Нестабильный', 2 => 'Тестируемый'];
 
     $plugins = $sql->query('SELECT `id`, `cat`, `game`, `name`, `status` FROM `plugins` ' . $sort_sql . ' LIMIT ' . $aPage['num'] . ', 20');
     while ($plugin = $sql->get($plugins)) {
@@ -73,7 +73,7 @@ if ($id) {
 
     $html->set('list', $list);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

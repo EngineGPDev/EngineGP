@@ -18,20 +18,20 @@ if ($go) {
 
     // Проверка сессии
     if ($mcache->get($nmch)) {
-        sys::outjs(array('e' => $text['mcache']), $nmch);
+        sys::outjs(['e' => $text['mcache']], $nmch);
     }
 
     // Создание сессии
     $mcache->set($nmch, 1, false, 10);
 
-    $aData = array();
+    $aData = [];
 
     $aData['service'] = isset($_POST['service']) ? explode('_', $_POST['service']) : exit();
     $aData['title'] = isset($_POST['title']) ? strip_tags(trim($_POST['title'])) : '';
-    $aData['text'] = isset($_POST['text']) ? $_POST['text'] : exit();
-    $aData['images'] = isset($_POST['img']) ? $_POST['img'] : array();
+    $aData['text'] = $_POST['text'] ?? exit();
+    $aData['images'] = $_POST['img'] ?? [];
 
-    $aData['img'] = array();
+    $aData['img'] = [];
 
     /*
         Проверка входных данных
@@ -40,14 +40,14 @@ if ($go) {
     // Проверка услуги
     if (count($aData['service']) != 2) {
         if ($aData['service'][0] != 'none') {
-            sys::outjs(array('e' => 'Необходимо выбрать услугу связанную с вопросом.'), $nmch);
+            sys::outjs(['e' => 'Необходимо выбрать услугу связанную с вопросом.'], $nmch);
         }
 
         $aData['type'] = 'none';
         $aData['service'] = 0;
     } else {
-        if (!in_array($aData['service'][0], array('server', 'hosting'))) {
-            sys::outjs(array('e' => 'Необходимо выбрать услугу связанную с вопросом.'), $nmch);
+        if (!in_array($aData['service'][0], ['server', 'hosting'])) {
+            sys::outjs(['e' => 'Необходимо выбрать услугу связанную с вопросом.'], $nmch);
         }
 
         $aData['type'] = $aData['service'][0];
@@ -63,26 +63,26 @@ if ($go) {
         }
 
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Выбранная услуга не найдена в базе.'), $nmch);
+            sys::outjs(['e' => 'Выбранная услуга не найдена в базе.'], $nmch);
         }
 
         // Защита от дублирования темы вопроса
         $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `type`="' . $aData['type'] . '" AND `service`="' . $aData['service'] . '" AND `close`="0" LIMIT 1');
         if ($sql->num()) {
-            sys::outjs(array('e' => 'По выбранной услуге уже есть открытый диалог.'), $nmch);
+            sys::outjs(['e' => 'По выбранной услуге уже есть открытый диалог.'], $nmch);
         }
     }
 
     // Проверка заголовка, если указан
     if (!empty($aData['title'])) {
         if (iconv_strlen($aData['title'], 'UTF-8') < 3 || iconv_strlen($aData['title'], 'UTF-8') > 40) {
-            sys::outjs(array('e' => 'Длина загловка не должна быть менее 3 и не превышать 40 символов.'), $nmch);
+            sys::outjs(['e' => 'Длина загловка не должна быть менее 3 и не превышать 40 символов.'], $nmch);
         }
     }
 
     // Проверка сообщения
     if (iconv_strlen($aData['text'], 'UTF-8') < 10 || iconv_strlen($aData['text'], 'UTF-8') > 1000) {
-        sys::outjs(array('e' => 'Длина сообщения не должна быть менее 10 и не превышать 1000 символов.'), $nmch);
+        sys::outjs(['e' => 'Длина сообщения не должна быть менее 10 и не превышать 1000 символов.'], $nmch);
     }
 
     include(LIB . 'help.php');
@@ -95,7 +95,7 @@ if ($go) {
         foreach ($aData['images'] as $img) {
             $key = explode('.', $img);
 
-            if (!is_array($key) || sys::valid($key[0], 'md5') || !in_array($key[1], array('png', 'gif', 'jpg', 'jpeg', 'bmp'))) {
+            if (!is_array($key) || sys::valid($key[0], 'md5') || !in_array($key[1], ['png', 'gif', 'jpg', 'jpeg', 'bmp'])) {
                 continue;
             }
 
@@ -115,7 +115,7 @@ if ($go) {
     // Проверка открытых сообщений
     $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0" LIMIT 3');
     if ($sql->num() == 3) {
-        sys::outjs(array('e' => 'У вас уже открыто 3 вопроса, чтобы создать новый необходимо их закрыть.'), $nmch);
+        sys::outjs(['e' => 'У вас уже открыто 3 вопроса, чтобы создать новый необходимо их закрыть.'], $nmch);
     }
 
     $sql->query('INSERT INTO `help` set '
@@ -137,7 +137,7 @@ if ($go) {
         . '`img`="' . sys::b64js($aData['img']) . '",'
         . '`time`="' . $start_point . '"');
 
-    sys::outjs(array('s' => $help), $nmch);
+    sys::outjs(['s' => $help], $nmch);
 }
 
 $services = '';

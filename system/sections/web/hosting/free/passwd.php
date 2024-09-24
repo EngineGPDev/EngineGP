@@ -33,14 +33,14 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    sys::outjs(array('i' => 'Дополнительная услуга не установлена.'), $nmch);
+    sys::outjs(['i' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
 
 $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . $web['user'] . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::outjs(array('e' => 'Необходимо указать пользователя доп. услуги.'), $nmch);
+    sys::outjs(['e' => 'Необходимо указать пользователя доп. услуги.'], $nmch);
 }
 
 $u = $sql->get();
@@ -50,17 +50,17 @@ $passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
 // Смена пароля вирт. хостинга
 $result = json_decode(file_get_contents(sys::updtext(
     $aWebUnit['isp']['account']['passwd'],
-    array('login' => $web['login'],
+    ['login' => $web['login'],
         'mail' => $u['mail'],
         'hdd' => $aWebUnit['isp']['hdd'],
-        'passwd' => $passwd)
+        'passwd' => $passwd]
 )), true);
 
 if (!isset($result['result']) || strtolower($result['result']) != 'ok') {
-    sys::outjs(array('e' => 'Не удалось изменить пароль виртуального хостинга, обратитесь в тех.поддержку.'), $nmch);
+    sys::outjs(['e' => 'Не удалось изменить пароль виртуального хостинга, обратитесь в тех.поддержку.'], $nmch);
 }
 
 // Обновление данных
 $sql->query('UPDATE `web` set `passwd`="' . $passwd . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

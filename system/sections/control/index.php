@@ -56,7 +56,7 @@ while ($server = $sql->get()) {
 
 $html->get('servers', 'sections/control/servers');
 
-$html->set('list', isset($html->arr['list']) ? $html->arr['list'] : 'Нет установленных серверов');
+$html->set('list', $html->arr['list'] ?? 'Нет установленных серверов');
 $html->set('wait_servers', $wait_servers);
 $html->set('updates_servers', $updates_servers);
 

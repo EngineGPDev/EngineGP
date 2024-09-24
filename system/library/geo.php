@@ -42,7 +42,7 @@ class SxGeo
     protected $max_country;
     protected $pack;
 
-    public $id2iso = array(
+    public $id2iso = [
         '', 'AP', 'EU', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'CW', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU',
         'AW', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BM', 'BN', 'BO', 'BR', 'BS',
         'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN',
@@ -58,8 +58,8 @@ class SxGeo
         'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'ST', 'SV', 'SY', 'SZ', 'TC', 'TD', 'TF',
         'TG', 'TH', 'TJ', 'TK', 'TM', 'TN', 'TO', 'TL', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM',
         'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'RS', 'ZA',
-        'ZM', 'ME', 'ZW', 'A1', 'XK', 'O1', 'AX', 'GG', 'IM', 'JE', 'BL', 'MF', 'BQ', 'SS'
-    );
+        'ZM', 'ME', 'ZW', 'A1', 'XK', 'O1', 'AX', 'GG', 'IM', 'JE', 'BL', 'MF', 'BQ', 'SS',
+    ];
 
     public $batch_mode = false;
     public $memory_mode = false;
@@ -186,7 +186,7 @@ class SxGeo
         $this->ip1c = chr($ip1n);
 
         if ($this->batch_mode) {
-            $blocks = array('min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]);
+            $blocks = ['min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]];
         } else {
             $blocks = unpack("Nmin/Nmax", substr($this->b_idx_str, ($ip1n - 1) * 4, 8));
         }
@@ -252,7 +252,7 @@ class SxGeo
             $only_country = true;
         } else {
             $city = $this->readData($seek, $this->max_city, 2);
-            $country = array('id' => $city['country_id'], 'iso' => $this->id2iso[$city['country_id']]);
+            $country = ['id' => $city['country_id'], 'iso' => $this->id2iso[$city['country_id']]];
             unset($city['country_id']);
         }
 
@@ -266,23 +266,23 @@ class SxGeo
             unset($city['region_seek']);
             unset($region['country_seek']);
 
-            return array('city' => $city, 'region' => $region, 'country' => $country);
+            return ['city' => $city, 'region' => $region, 'country' => $country];
         } else {
             unset($city['region_seek']);
 
-            return array('city' => $city, 'country' => array('id' => $country['id'], 'iso' => $country['iso']));
+            return ['city' => $city, 'country' => ['id' => $country['id'], 'iso' => $country['iso']]];
         }
     }
 
     protected function unpack($pack, $item = '')
     {
-        $unpacked = array();
+        $unpacked = [];
         $empty = empty($item);
         $pack = explode('/', $pack);
         $pos = 0;
 
         foreach ($pack as $p) {
-            list($type, $name) = explode(':', $p);
+            [$type, $name] = explode(':', $p);
 
             $type0 = $type[0];
 
@@ -419,10 +419,10 @@ class SxGeo
 
     public function about()
     {
-        $charset = array('utf-8', 'latin1', 'cp1251');
-        $types = array('n/a', 'SxGeo Country', 'SxGeo City RU', 'SxGeo City EN', 'SxGeo City', 'SxGeo City Max RU', 'SxGeo City Max EN', 'SxGeo City Max');
+        $charset = ['utf-8', 'latin1', 'cp1251'];
+        $types = ['n/a', 'SxGeo Country', 'SxGeo City RU', 'SxGeo City EN', 'SxGeo City', 'SxGeo City Max RU', 'SxGeo City Max EN', 'SxGeo City Max'];
 
-        return array(
+        return [
             'Created' => date('Y.m.d', $this->info['time']),
             'Timestamp' => $this->info['time'],
             'Charset' => $charset[$this->info['charset']],
@@ -433,20 +433,20 @@ class SxGeo
             'IP Blocks' => $this->db_items,
             'Block Size' => $this->block_len,
 
-            'City' => array(
+            'City' => [
                 'Max Length' => $this->max_city,
                 'Total Size' => $this->info['city_size'],
-            ),
+            ],
 
-            'Region' => array(
+            'Region' => [
                 'Max Length' => $this->max_region,
                 'Total Size' => $this->info['region_size'],
-            ),
+            ],
 
-            'Country' => array(
+            'Country' => [
                 'Max Length' => $this->max_country,
                 'Total Size' => $this->info['country_size'],
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -65,7 +65,7 @@ class scan_servers_down extends cron
                 continue;
             }
 
-            if (!in_array(trim($ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server_address . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), array('DOWN', 'no'))) {
+            if (!in_array(trim($ssh->get('quakestat -' . (cron::$quakestat[$game]) . ' ' . $server_address . ' -retry 5 -interval 2 | grep -v frags | tail -1 | awk \'{print $2}\'')), ['DOWN', 'no'])) {
                 continue;
             }
 

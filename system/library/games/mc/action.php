@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 include(LIB . 'games/actions.php');
 
@@ -32,8 +33,9 @@ class action extends actions
         $unit = $sql->get();
 
         // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address']))
-            return array('e' => sys::text('error', 'ssh'));
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return ['e' => sys::text('error', 'ssh')];
+        }
 
         $ip = $ssh->getInternalIp();
         $port = $server['port'];
@@ -84,34 +86,36 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function config($ip, $port, $slots, $config)
     {
         $aLine = explode("\n", $config);
 
-        $search = array(
+        $search = [
             "#^server-ip=(.*?)$#is",
             "#^server-port=(.*?)$#is",
             "#^rcon\.port=(.*?)$#is",
             "#^query\.port=(.*?)$#is",
             "#^max-players=(.*?)$#is",
             "#^enable-query=(.*?)$#is",
-            "#^debug=(.*?)$#is"
-        );
+            "#^debug=(.*?)$#is",
+        ];
 
         $config = '';
 
         foreach ($aLine as $line) {
-            if (str_replace(array(' ', "\t"), '', $line) != '')
-                $edit = trim(preg_replace($search, array('', '', '', '', '', '', ''), $line));
+            if (str_replace([' ', "\t"], '', $line) != '') {
+                $edit = trim(preg_replace($search, ['', '', '', '', '', '', ''], $line));
+            }
 
-            if ($edit != '')
+            if ($edit != '') {
                 $config .= $edit . PHP_EOL;
+            }
 
             $edit = '';
         }

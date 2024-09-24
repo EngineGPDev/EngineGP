@@ -29,10 +29,10 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go) {
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 // Поиск по картам
@@ -45,10 +45,10 @@ if ($text[0] == '^') {
 
 if (!$sql->num()) {
     if ($go) {
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $i = 0;
@@ -68,6 +68,6 @@ while ($map = $sql->get()) {
     $html->pack('maps');
 }
 
-$mcache->set($mkey, array('maps' => $html->arr['maps'], 'mapsjs' => $mapsjs), false, 15);
+$mcache->set($mkey, ['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs], false, 15);
 
-sys::outjs(array('maps' => $html->arr['maps'], 'mapsjs' => $mapsjs));
+sys::outjs(['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs]);

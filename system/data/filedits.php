@@ -14,180 +14,180 @@ if (!defined('EGP')) {
 }
 
 // Массив файлов для редактирования (раздел "настройки")
-$aEdits = array(
-    'cs' => array(
-        'all' => array(
-            'files' => array(
+$aEdits = [
+    'cs' => [
+        'all' => [
+            'files' => [
                 'autoexec.cfg',
                 'fastdl.cfg',
                 'plugins.ini',
                 'users.ini',
                 'motd.txt',
-            ),
-            'path' => array(
+            ],
+            'path' => [
                 'autoexec.cfg' => 'cstrike/',
                 'fastdl.cfg' => 'cstrike/',
                 'plugins.ini' => 'cstrike/addons/amxmodx/configs/',
                 'users.ini' => 'cstrike/addons/amxmodx/configs/',
                 'motd.txt' => 'cstrike/',
-            ),
-            'desc' => array(
+            ],
+            'desc' => [
                 'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
                 'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
                 'plugins.ini' => 'Список плагинов на сервере.',
                 'users.ini' => 'Список админов на сервере.',
                 'motd.txt' => 'Окно приветствия на сервере.',
-            )
-        ),
+            ],
+        ],
 
-    ),
+    ],
 
-    'cssold' => array(
-        'all' => array(
-            'files' => array(
+    'cssold' => [
+        'all' => [
+            'files' => [
                 'autoexec.cfg',
                 'fastdl.cfg',
                 'admins_simple.ini',
-            ),
-            'path' => array(
+            ],
+            'path' => [
                 'autoexec.cfg' => 'cstrike/cfg/',
                 'fastdl.cfg' => 'cstrike/cfg/',
                 'admins_simple.ini' => 'cstrike/addons/sourcemod/configs/',
-            ),
-            'desc' => array(
+            ],
+            'desc' => [
                 'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
                 'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
                 'admins_simple.ini' => 'Список админов на сервере.',
-            )
-        )
-    ),
+            ],
+        ],
+    ],
 
-    'css' => array(
-        'all' => array(
-            'files' => array(
+    'css' => [
+        'all' => [
+            'files' => [
                 'autoexec.cfg',
                 'fastdl.cfg',
                 'admins_simple.ini',
-            ),
-            'path' => array(
+            ],
+            'path' => [
                 'autoexec.cfg' => 'cstrike/cfg/',
                 'fastdl.cfg' => 'cstrike/cfg/',
                 'admins_simple.ini' => 'cstrike/addons/sourcemod/configs/',
-            ),
-            'desc' => array(
+            ],
+            'desc' => [
                 'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
                 'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
                 'admins_simple.ini' => 'Список админов на сервере.',
-            )
-        )
-    ),
+            ],
+        ],
+    ],
 
-    'csgo' => array(
-        'all' => array(
-            'files' => array(
+    'csgo' => [
+        'all' => [
+            'files' => [
                 'autoexec.cfg',
                 'fastdl.cfg',
                 'webapi_authkey.txt',
-            ),
-            'path' => array(
+            ],
+            'path' => [
                 'autoexec.cfg' => 'csgo/cfg/',
                 'fastdl.cfg' => 'csgo/cfg/',
                 'webapi_authkey.txt' => 'csgo/',
-            ),
-            'desc' => array(
+            ],
+            'desc' => [
                 'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
                 'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
                 'webapi_authkey.txt' => 'API ключ для установки карт из мастерской <u>WorkShop</u>.',
-            )
-        )
-    ),
+            ],
+        ],
+    ],
 
-    'cs2' => array(
-        'all' => array(
-            'files' => array(
+    'cs2' => [
+        'all' => [
+            'files' => [
                 'autoexec.cfg',
                 'fastdl.cfg',
                 'webapi_authkey.txt',
-            ),
-            'path' => array(
+            ],
+            'path' => [
                 'autoexec.cfg' => 'csgo/cfg/',
                 'fastdl.cfg' => 'csgo/cfg/',
                 'webapi_authkey.txt' => 'csgo/',
-            ),
-            'desc' => array(
+            ],
+            'desc' => [
                 'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
                 'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
                 'webapi_authkey.txt' => 'API ключ для установки карт из мастерской <u>WorkShop</u>.',
-            )
-        )
-    ),
+            ],
+        ],
+    ],
 
-    'rust' => array(
-        'all' => array(
-            'files' => array(
+    'rust' => [
+        'all' => [
+            'files' => [
                 'autoexec.cfg',
                 'fastdl.cfg',
                 'webapi_authkey.txt',
-            ),
-            'path' => array(
+            ],
+            'path' => [
                 'autoexec.cfg' => 'csgo/cfg/',
                 'fastdl.cfg' => 'csgo/cfg/',
                 'webapi_authkey.txt' => 'csgo/',
-            ),
-            'desc' => array(
+            ],
+            'desc' => [
                 'autoexec.cfg' => 'Автоподключаемый конфигурационный файл.',
                 'fastdl.cfg' => 'Быстрая закачка файлов с сервера.',
                 'webapi_authkey.txt' => 'API ключ для установки карт из мастерской <u>WorkShop</u>.',
-            )
-        )
-    ),
+            ],
+        ],
+    ],
 
-    'mta' => array(
-        'all' => array(
-            'files' => array(
+    'mta' => [
+        'all' => [
+            'files' => [
                 'mtaserver.conf',
                 'acl.xml',
-                'vehiclecolors.conf'
-            ),
-            'path' => array(
+                'vehiclecolors.conf',
+            ],
+            'path' => [
                 'mtaserver.conf' => 'mods/deathmatch/',
                 'acl.xml' => 'mods/deathmatch/',
-                'vehiclecolors.conf' => 'mods/deathmatch/'
-            ),
-            'desc' => array(
+                'vehiclecolors.conf' => 'mods/deathmatch/',
+            ],
+            'desc' => [
                 'mtaserver.conf' => 'Основной конфигурационный файл сервера.',
                 'acl.xml' => 'Настройки прав на игровом сервере.',
-                'vehiclecolors.conf' => 'Настройки цветов автомобилей на игровом сервере.'
-            )
-        )
-    ),
+                'vehiclecolors.conf' => 'Настройки цветов автомобилей на игровом сервере.',
+            ],
+        ],
+    ],
 
-    'mc' => array(
-        'all' => array(
-            'files' => array(
+    'mc' => [
+        'all' => [
+            'files' => [
                 'ops.txt',
                 'permissions.yml',
                 'white-list.txt',
                 'banned-players.txt',
-                'banned-ips.txt'
-            ),
-            'path' => array(
+                'banned-ips.txt',
+            ],
+            'path' => [
                 'ops.txt' => '/',
                 'permissions.yml' => '/',
                 'white-list.txt' => '/',
                 'banned-players.txt' => '/',
-                'banned-ips.txt' => '/'
-            ),
-            'desc' => array(
+                'banned-ips.txt' => '/',
+            ],
+            'desc' => [
                 'ops.txt' => 'Файл в котором прописываются админы.',
                 'permissions.yml' => 'Список разрешений',
                 'white-list.txt' => 'Белый список игроков.',
                 'banned-players.txt' => 'Забаненные игроки.',
-                'banned-ips.txt' => 'Забаненные IP адреса.'
-            )
-        )
-    )
-);
+                'banned-ips.txt' => 'Забаненные IP адреса.',
+            ],
+        ],
+    ],
+];
 
 if (isset($aEditslist)) {
     $dir = isset($ctrlmod) ? 'control/' : '';

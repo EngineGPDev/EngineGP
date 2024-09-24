@@ -32,7 +32,7 @@ if (isset($url['page'])) {
 }
 
 // Проверяем задано ли у нас фильтрация по типу игры
-if (isset($url['game']) and in_array($url['game'], array('cs', 'css', 'cssold', 'csgo', 'samp', 'crmp', 'mta', 'mc'))) {
+if (isset($url['game']) and in_array($url['game'], ['cs', 'css', 'cssold', 'csgo', 'samp', 'crmp', 'mta', 'mc'])) {
     $type = $url['game'];
 }
 
@@ -106,8 +106,8 @@ while ($server = $sql->get()) {
     $html->pack('monitoring_list');
 }
 
-$games = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc');
-$online = array();
+$games = ['cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc'];
+$online = [];
 foreach ($games as $game) {
     $sql->query('SELECT SUM(`online`) AS `online` FROM `servers` WHERE (`status`="working" OR `status`="change") AND `game`="' . $game . '"');
     $online[$game] = $sql->get()['online'];
@@ -122,6 +122,6 @@ foreach ($games as $game) {
         $html->set('o_' . $game, '0');
     }
 }
-$html->set('list', isset($html->arr['monitoring_list']) ? $html->arr['monitoring_list'] : '');
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('list', $html->arr['monitoring_list'] ?? '');
+$html->set('pages', $html->arr['pages'] ?? '');
 $html->pack('main');

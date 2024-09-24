@@ -17,39 +17,39 @@ $sql->query('SELECT `security_ip`, `security_code` FROM `users` WHERE `id`="' . 
 $user = array_merge($user, $sql->get());
 
 // Выполнений действий
-if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_code', 'off_code', 'add', 'del', 'info'))) {
+if (isset($url['action']) and in_array($url['action'], ['on', 'off', 'on_code', 'off_code', 'add', 'del', 'info'])) {
     $snw = isset($_POST['subnetwork']) ? true : false;
 
     switch ($url['action']) {
         case 'on':
             $sql->query('UPDATE `users` set `security_ip`="1" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
             // no break
         case 'off':
             $sql->query('UPDATE `users` set `security_ip`="0" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
             // no break
         case 'on_code':
             $sql->query('UPDATE `users` set `security_code`="1" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
             // no break
         case 'off_code':
             $sql->query('UPDATE `users` set `security_code`="0" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
             // no break
         case 'add':
             $address = isset($_POST['address']) ? trim($_POST['address']) : exit();
 
             if (sys::valid($address, 'ip')) {
-                sys::outjs(array('e' => 'Указанный адрес имеет неверный формат.'));
+                sys::outjs(['e' => 'Указанный адрес имеет неверный формат.']);
             }
 
             // Если подсеть
@@ -57,7 +57,7 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
                 $address = sys::whois($address);
 
                 if ($address == 'не определена') {
-                    sys::outjs(array('e' => 'Не удалось определить подсеть для указанного адреса.'));
+                    sys::outjs(['e' => 'Не удалось определить подсеть для указанного адреса.']);
                 }
             }
 
@@ -65,18 +65,18 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
 
             // Если такой адрес уже добавлен
             if ($sql->num()) {
-                sys::outjs(array('s' => 'ok'));
+                sys::outjs(['s' => 'ok']);
             }
 
             $sql->query('INSERT INTO `security` set `user`="' . $user['id'] . '", `address`="' . $address . '", `time`="' . $start_point . '"');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
         case 'del':
             $address = isset($_POST['address']) ? trim($_POST['address']) : exit();
 
             if (!is_numeric($address) and sys::valid($address, 'ip')) {
-                sys::outjs(array('e' => sys::outjs(array('e' => 'Указанный адрес имеет неверный формат.'))));
+                sys::outjs(['e' => sys::outjs(['e' => 'Указанный адрес имеет неверный формат.'])]);
             }
 
             if (is_numeric($address)) {
@@ -84,7 +84,7 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
 
                 // Если такое правило отсутствует
                 if (!$sql->num()) {
-                    sys::outjs(array('s' => 'ok'));
+                    sys::outjs(['s' => 'ok']);
                 }
             } else {
                 $sql->query('SELECT `id` FROM `security` WHERE `user`="' . $user['id'] . '" AND `address`="' . $address . '" LIMIT 1');
@@ -98,10 +98,10 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
                     if ($sql->num()) {
                         $security = $sql->get();
 
-                        sys::outjs(array('i' => 'Указанный адрес входит в разрешенную подсеть, удалить подсеть?', 'id' => $security['id']));
+                        sys::outjs(['i' => 'Указанный адрес входит в разрешенную подсеть, удалить подсеть?', 'id' => $security['id']]);
                     }
 
-                    sys::outjs(array('s' => 'ok'));
+                    sys::outjs(['s' => 'ok']);
                 }
             }
 
@@ -109,13 +109,13 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
 
             $sql->query('DELETE FROM `security` WHERE `id`="' . $security['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
         case 'info':
-            $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(array('info' => 'Не удалось получить информацию.'));
+            $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['info' => 'Не удалось получить информацию.']);
 
             if (sys::valid($address, 'ip')) {
-                sys::outjs(array('e' => 'Указанный адрес имеет неверный формат.'));
+                sys::outjs(['e' => 'Указанный адрес имеет неверный формат.']);
             }
 
             include(LIB . 'geo.php');
@@ -139,7 +139,7 @@ if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'on_co
                 $info = 'Не удалось получить информацию.';
             }
 
-            sys::outjs(array('info' => $info));
+            sys::outjs(['info' => $info]);
     }
 }
 
@@ -159,7 +159,7 @@ $html->get('security', 'sections/user/lk');
 $html->set('ip', $uip);
 $html->set('subnetwork', sys::whois($uip));
 
-$html->set('security', isset($html->arr['security']) ? $html->arr['security'] : '', true);
+$html->set('security', $html->arr['security'] ?? '', true);
 
 if ($user['security_ip']) {
     $html->unit('security_ip', true, true);

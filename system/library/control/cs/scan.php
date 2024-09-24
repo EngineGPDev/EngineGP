@@ -35,7 +35,7 @@ class scan extends scans
             return $mcache->get($nmch);
         }
 
-        $out = array();
+        $out = [];
 
         $info = scan::info($sq, $id);
 
@@ -81,7 +81,7 @@ class scan extends scans
                 $html->pack('list');
             }
 
-            $out['players'] = isset($html->arr['list']) ? $html->arr['list'] : '';
+            $out['players'] = $html->arr['list'] ?? '';
         }
 
         $sql->query('UPDATE `control_servers` set '
@@ -106,7 +106,7 @@ class scan extends scans
         $sql->query('SELECT `address` FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
-        list($ip, $port) = explode(':', $server['address']);
+        [$ip, $port] = explode(':', $server['address']);
 
         $sq->Connect($ip, $port, 1, SourceQuery::GOLDSOURCE);
 
@@ -114,7 +114,7 @@ class scan extends scans
             $players = $sq->GetPlayers();
 
             $i = 1;
-            $data = array();
+            $data = [];
 
             foreach ($players as $n => $player) {
                 $data[$i]['i'] = $i;

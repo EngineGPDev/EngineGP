@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aScfg = array(
+$aScfg = [
     'hostname' => 'Название игрового сервера.',
     'rcon_password' => 'Пароль для упраления сервером через RCON команды.',
     'sv_password' => 'Пароль для входа на сервер.',
@@ -60,10 +60,10 @@ $aScfg = array(
     'sv_maxupdaterate' => 'Максимальное количество переданных пакетов в секунду.',
     'sv_minrate' => 'Минимально допустимый предел передачи/приёма байт в секунду между клиентом и сервером.',
     'sv_minupdaterate' => 'Минимальное количество переданных пакетов в секунду.',
-    'mp_mapvoteratio' => 'Процент голосование за следующую карту, командой votemap.'
-);
+    'mp_mapvoteratio' => 'Процент голосование за следующую карту, командой votemap.',
+];
 
-$aScfg_form = array(
+$aScfg_form = [
     'hostname' => '<input value="[hostname]" name="config[\'hostname\']">',
     'rcon_password' => '<input value="[rcon_password]" name="config[\'rcon_password\']">',
     'sv_password' => '<input value="[sv_password]" name="config[\'sv_password\']">',
@@ -110,5 +110,5 @@ $aScfg_form = array(
     'sv_minrate' => '<input value="[sv_minrate]" name="config[\'sv_minrate\']">',
     'sv_minupdaterate' => '<input value="[sv_minupdaterate]" name="config[\'sv_minupdaterate\']">',
     'mp_mapvoteratio' => '<input value="[mp_mapvoteratio]" name="config[\'mp_mapvoteratio\']">',
-    'mp_forcechasecam' => '<select name="config[\'mp_forcechasecam\']"><option value="0">Можно наблюдать за всеми с любого ракурса</option><option value="1">Можно наблюдать только за игроками своей команды</option><option value="2">Наблюдение будет доступно лишь с места вашей смерти. Тоесть, камеру нельзя будет двигать</option></select>'
-);
+    'mp_forcechasecam' => '<select name="config[\'mp_forcechasecam\']"><option value="0">Можно наблюдать за всеми с любого ракурса</option><option value="1">Можно наблюдать только за игроками своей команды</option><option value="2">Наблюдение будет доступно лишь с места вашей смерти. Тоесть, камеру нельзя будет двигать</option></select>',
+];

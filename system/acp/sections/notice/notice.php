@@ -17,7 +17,7 @@ $sql->query('SELECT * FROM `notice` WHERE `id`="' . $id . '" LIMIT 1');
 $notice = $sql->get();
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : htmlspecialchars_decode($notice['text']);
     $aData['color'] = isset($_POST['color']) ? trim($_POST['color']) : $notice['color'];
@@ -31,19 +31,19 @@ if ($go) {
     if ($aData['type'] == 'unit') {
         $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $aData['unit'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Указанная локация не найдена'));
+            sys::outjs(['e' => 'Указанная локация не найдена']);
         }
 
         $aData['server'] = 0;
     } elseif ($aData['type'] == 'server') {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Указанный сервер не найден'));
+            sys::outjs(['e' => 'Указанный сервер не найден']);
         }
 
         $aData['unit'] = 0;
     } else {
-        sys::outjs(array('e' => 'Выберите получателя уведомления'));
+        sys::outjs(['e' => 'Выберите получателя уведомления']);
     }
 
     $sql->query('UPDATE `notice` set '
@@ -53,7 +53,7 @@ if ($go) {
         . '`color`="' . $aData['color'] . '",'
         . '`time`="' . $aData['time'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $units = '';

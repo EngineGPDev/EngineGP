@@ -17,20 +17,20 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$text = isset($_POST['text']) ? $_POST['text'] : sys::outjs(array('none' => ''));
+$text = $_POST['text'] ?? sys::outjs(['none' => '']);
 
 $mkey = md5($sid . $text . $id);
 
 if ($mcache->get($mkey) != '') {
-    sys::outjs(array('s' => $mcache->get($mkey)));
+    sys::outjs(['s' => $mcache->get($mkey)]);
 }
 
 if (!isset($text[2])) {
-    sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
+    sys::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
 }
 
-$sPlugins = array();
-$sUpdate = array();
+$sPlugins = [];
+$sUpdate = [];
 
 // Поиск по плагинам
 $plugins = $sql->query('SELECT `id`, `packs` FROM `plugins` WHERE `game`="' . $server['game'] . '" AND `name` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') OR `desc` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') LIMIT 5');
@@ -83,12 +83,12 @@ if (!$sql->num($plugins)) {
         if (!$sWord) {
             $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-            sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+            sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
         }
     } else {
         $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-        sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+        sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
     }
 } else {
     $sPlugins[] = $plugins;
@@ -96,7 +96,7 @@ if (!$sql->num($plugins)) {
 }
 
 // Массив для исклуючения дублирования
-$aPlugins = array();
+$aPlugins = [];
 
 foreach ($sPlugins as $index => $plugins) {
     while ($plugin = $sql->get($plugins)) {
@@ -106,7 +106,7 @@ foreach ($sPlugins as $index => $plugins) {
         }
 
         // Проверка на доступность плагина к установленной на сервере сборке
-        $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : array($plugin['packs']);
+        $packs = strpos($plugin['packs'], ':') ? explode(':', $plugin['packs']) : [$plugin['packs']];
         if (!in_array($server['pack'], $packs) and $plugin['packs'] != 'all') {
             continue;
         }
@@ -208,8 +208,8 @@ foreach ($sPlugins as $index => $plugins) {
     }
 }
 
-$html->arr['plugins'] = isset($html->arr['plugins']) ? $html->arr['plugins'] : '';
+$html->arr['plugins'] ??= '';
 
 $mcache->set($mkey, $html->arr['plugins'], false, 15);
 
-sys::outjs(array('s' => $html->arr['plugins']), $nmch);
+sys::outjs(['s' => $html->arr['plugins']], $nmch);

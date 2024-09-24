@@ -40,7 +40,7 @@ class update_address extends cron
 
                 $sql->query('UPDATE `servers` set `address`="' . (sys::first(explode(':', $unit['address']))) . ':' . $server['port'] . '" WHERE `id`="' . $add_buy['server'] . '" LIMIT 1');
 
-                if (in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
+                if (in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
                     exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $server['game'] . ' ' . $add_buy['server'] . '"');
                 }
             }

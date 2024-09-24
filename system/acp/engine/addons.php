@@ -15,15 +15,15 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-cubes"></i> Управление дополнениями';
 
-$aSection = array(
+$aSection = [
     'index',
     'update',
     'addcat',
     'addpl',
     'cats',
     'updmp',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

@@ -15,10 +15,10 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-envelope-open"></i> Рассылка новостей';
 
-$aSection = array(
+$aSection = [
     'index',
-    'send'
-);
+    'send',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

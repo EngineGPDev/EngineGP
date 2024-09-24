@@ -34,6 +34,6 @@ while ($news = $sql->get()) {
 }
 
 $html->get('all', 'sections/news');
-$html->set('list', isset($html->arr['news']) ? $html->arr['news'] : '');
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('list', $html->arr['news'] ?? '');
+$html->set('pages', $html->arr['pages'] ?? '');
 $html->pack('main');

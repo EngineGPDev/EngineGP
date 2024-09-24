@@ -35,7 +35,7 @@ class ssh
     public function connect($address)
     {
         if (strpos($address, ':') !== false) {
-            list($host, $port) = explode(':', $address);
+            [$host, $port] = explode(':', $address);
         } else {
             $host = $address;
             $port = 22;

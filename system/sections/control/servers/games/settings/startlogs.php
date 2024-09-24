@@ -99,6 +99,6 @@ if (isset($url['log'])) {
     $html->set('id', $id);
     $html->set('server', $sid);
     $html->set('uri', 'start');
-    $html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
+    $html->set('logs', $html->arr['logs'] ?? '');
     $html->pack('main');
 }

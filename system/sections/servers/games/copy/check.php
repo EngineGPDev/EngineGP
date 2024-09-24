@@ -16,14 +16,14 @@ if (!defined('EGP')) {
 $nmch = 'server_copy_check_' . $id;
 
 if ($mcache->get($nmch)) {
-    sys::outjs(array('e' => sys::text('other', 'mcache')));
+    sys::outjs(['e' => sys::text('other', 'mcache')]);
 }
 
 $mcache->set($nmch, true, false, 10);
 
 $copys = $sql->query('SELECT `id` FROM `copy` WHERE `user`="' . $server['user'] . '_' . $server['unit'] . '" AND `status`="0"');
 if (!$sql->num($copys)) {
-    sys::outjs(array('e' => 'no find'), $nmch);
+    sys::outjs(['e' => 'no find'], $nmch);
 }
 
 while ($copy = $sql->get($copys)) {
@@ -35,4 +35,4 @@ while ($copy = $sql->get($copys)) {
 // Очистка кеша
 $mcache->delete('server_copy_' . $id);
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

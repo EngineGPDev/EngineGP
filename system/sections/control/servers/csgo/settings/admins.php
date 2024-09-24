@@ -22,18 +22,18 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
-    $aData = array();
+    $aData = [];
 
-    $aData['active'] = isset($_POST['active']) ? $_POST['active'] : '';
-    $aData['value'] = isset($_POST['value']) ? $_POST['value'] : '';
-    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : '';
-    $aData['flags'] = isset($_POST['flags']) ? $_POST['flags'] : '';
+    $aData['active'] = $_POST['active'] ?? '';
+    $aData['value'] = $_POST['value'] ?? '';
+    $aData['passwd'] = $_POST['passwd'] ?? '';
+    $aData['flags'] = $_POST['flags'] ?? '';
     $aData['immunity'] = isset($_POST['immunity']) ? sys::int($_POST['immunity']) : '';
-    $aData['time'] = isset($_POST['time']) ? $_POST['time'] : '';
-    $aData['info'] = isset($_POST['info']) ? $_POST['info'] : '';
+    $aData['time'] = $_POST['time'] ?? '';
+    $aData['info'] = $_POST['info'] ?? '';
 
     // Удаление текущих записей
     $sql->query('DELETE FROM `control_admins_' . $server['game'] . '` WHERE `server`="' . $sid . '"');
@@ -51,9 +51,9 @@ if ($go) {
             $time = mktime(0, 0, 0, $aDate[1], $aDate[0], $aDate[2]);
 
             $aData['active'][$index] = isset($aData['active'][$index]) ? 1 : 0;
-            $aData['passwd'][$index] = isset($aData['passwd'][$index]) ? $aData['passwd'][$index] : '';
-            $aData['flags'][$index] = isset($aData['flags'][$index]) ? $aData['flags'][$index] : '';
-            $aData['info'][$index] = isset($aData['info'][$index]) ? $aData['info'][$index] : '';
+            $aData['passwd'][$index] ??= '';
+            $aData['flags'][$index] ??= '';
+            $aData['info'][$index] ??= '';
 
             $text = '"' . $val . '" "' . $aData['immunity'][$index] . ':' . $aData['flags'][$index] . '" "' . $aData['passwd'][$index] . '"';
 
@@ -76,7 +76,7 @@ if ($go) {
 
     $temp = sys::temp($usini);
 
-    $ssh->setfile($temp, '/servers/' . $server['uid'] . '/csgo/addons/sourcemod/configs/admins_simple.ini', 0644);
+    $ssh->setfile($temp, '/servers/' . $server['uid'] . '/csgo/addons/sourcemod/configs/admins_simple.ini', 0o644);
 
     unlink($temp);
 
@@ -84,7 +84,7 @@ if ($go) {
 
     $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \" sm_reloadadmins\"\015'");
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Построение списка добавленных админов
@@ -116,7 +116,7 @@ $html->get('admins', 'sections/control/servers/' . $server['game'] . '/settings'
 
 $html->set('id', $id);
 $html->set('server', $sid);
-$html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
+$html->set('admins', $html->arr['admins'] ?? '');
 $html->set('index', $max['id'] < 1 ? 0 : $max['id']);
 
 $html->pack('main');

@@ -15,7 +15,7 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-gamepad"></i> Список серверов';
 
-$aSection = array(
+$aSection = [
     'index',
     'cs',
     'cssold',
@@ -28,8 +28,8 @@ $aSection = array(
     'mta',
     'mc',
     'overdue',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

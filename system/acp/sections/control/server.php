@@ -23,12 +23,12 @@ if ($ctrl['time'] > $start_point and $ctrl['overdue']) {
 $sql->query('SELECT * FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
 $ctrl = $sql->get();
 
-$aData = array();
+$aData = [];
 
 if ($go) {
-    if (isset($url['type']) and in_array($url['type'], array('overdue', 'block', 'tarif'))) {
+    if (isset($url['type']) and in_array($url['type'], ['overdue', 'block', 'tarif'])) {
         if ($url['type'] != 'tarif') {
-            $time = isset($_POST['time']) ? trim($_POST['time']) : sys::outjs(array('e' => 'Необходимо указать дату.'));
+            $time = isset($_POST['time']) ? trim($_POST['time']) : sys::outjs(['e' => 'Необходимо указать дату.']);
 
             $date = sys::checkdate($time);
         }
@@ -36,7 +36,7 @@ if ($go) {
         switch ($url['type']) {
             case 'overdue':
                 if ($ctrl['time'] > $start_point) {
-                    sys::outjs(array('e' => 'Игровой сервер должен быть просрочен.'));
+                    sys::outjs(['e' => 'Игровой сервер должен быть просрочен.']);
                 }
 
                 $sql->query('UPDATE `control` set `overdue`="' . $date . '" WHERE `id`="' . $id . '" LIMIT 1');
@@ -44,7 +44,7 @@ if ($go) {
 
             case 'block':
                 if ($ctrl['status'] != ('off' || 'overdue')) {
-                    sys::outjs(array('e' => 'Игровой сервер должен быть выключен.'));
+                    sys::outjs(['e' => 'Игровой сервер должен быть выключен.']);
                 }
 
                 if ($date < $start_point) {
@@ -54,7 +54,7 @@ if ($go) {
                 }
         }
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $aData['user'] = isset($_POST['user']) ? sys::int($_POST['user']) : $ctrl['user'];
@@ -81,13 +81,13 @@ if ($go) {
     }
 
     if (!$ssh->auth($aData['passwd'], $aData['address'])) {
-        sys::outjs(array('e' => 'Не удалось создать связь с локацией'));
+        sys::outjs(['e' => 'Не удалось создать связь с локацией']);
     }
 
     if ($ctrl['user'] != $aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Пользователь не найден.'));
+            sys::outjs(['e' => 'Пользователь не найден.']);
         }
     }
 
@@ -103,7 +103,7 @@ if ($go) {
         . '`limit`="' . $aData['limit'] . '",'
         . '`price`="' . $aData['price'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('server', 'sections/control');

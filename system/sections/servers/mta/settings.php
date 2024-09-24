@@ -18,7 +18,7 @@ $server = array_merge($server, $sql->get());
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 
-$aSub = array('start', 'file', 'firewall', 'crontab', 'startlogs', 'pack', 'api');
+$aSub = ['start', 'file', 'firewall', 'crontab', 'startlogs', 'pack', 'api'];
 
 // Если выбран подраздел
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {

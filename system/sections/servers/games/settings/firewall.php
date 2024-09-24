@@ -24,8 +24,8 @@ if (isset($url['action'])) {
     }
 
     // Добавление / удаление правил
-    if ($go && in_array($url['action'], array('block', 'unblock'))) {
-        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(array('e' => sys::text('servers', 'firewall')), $nmch);
+    if ($go && in_array($url['action'], ['block', 'unblock'])) {
+        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['e' => sys::text('servers', 'firewall')], $nmch);
         $snw = isset($_POST['subnetwork']) ? true : false;
 
         sys::outjs(games::iptables($id, $url['action'], $address, explode(':', $server['address']), $server['unit'], $snw), $nmch);
@@ -43,5 +43,5 @@ while ($firewall = $sql->get()) {
 
 $html->get('firewall', 'sections/servers/games/settings');
 $html->set('id', $id);
-$html->set('firewall', isset($html->arr['firewall']) ? $html->arr['firewall'] : '');
+$html->set('firewall', $html->arr['firewall'] ?? '');
 $html->pack('main');

@@ -32,28 +32,28 @@ function getSignature($method, $params, $secretKey)
     return hash('sha256', join('{up}', $params));
 }
 
-$unitpayIp = array('31.186.100.49', '178.132.203.105', '52.29.152.23', '52.19.56.234');
+$unitpayIp = ['31.186.100.49', '178.132.203.105', '52.29.152.23', '52.19.56.234'];
 
 if (!in_array($uip, $unitpayIp)) {
-    sys::outjs(array('error' => array('message' => 'Некорректный адрес сервера')));
+    sys::outjs(['error' => ['message' => 'Некорректный адрес сервера']]);
 }
 
 $secretKey = $cfg['unitpay_key'];
 $params = $_GET['params'];
 
 if ($params['signature'] != getSignature($_GET['method'], $params, $secretKey)) {
-    sys::outjs(array('error' => array('message' => 'Некорректная цифровая подпись')));
+    sys::outjs(['error' => ['message' => 'Некорректная цифровая подпись']]);
 }
 
-if (!in_array($_GET['method'], array('pay', 'check', 'error'))) {
-    sys::outjs(array('error' => array('message' => 'Некорректный метод')));
+if (!in_array($_GET['method'], ['pay', 'check', 'error'])) {
+    sys::outjs(['error' => ['message' => 'Некорректный метод']]);
 }
 
 // Оплата по ключу
 if (!sys::valid($params['account'], 'md5')) {
     $sql->query('SELECT `id`, `server`, `price` FROM `privileges_buy` WHERE `key`="' . $params['account'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(array('error' => array('message' => 'bad key: ' . $params['account'])));
+        sys::outjs(['error' => ['message' => 'bad key: ' . $params['account']]]);
     }
 
     $privilege = $sql->get();
@@ -61,23 +61,23 @@ if (!sys::valid($params['account'], 'md5')) {
     $money = round($params['sum'] * $cfg['curinrub'], 2);
 
     if ($money < $privilege['price']) {
-        sys::outjs(array('error' => array('message' => 'bad sum')));
+        sys::outjs(['error' => ['message' => 'bad sum']]);
     }
 
     $sql->query('SELECT `user` FROM `servers` WHERE `id`="' . $privilege['server'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(array('error' => array('message' => 'bad server')));
+        sys::outjs(['error' => ['message' => 'bad server']]);
     }
 
     $server = $sql->get();
 
     $sql->query('SELECT `id`, `balance`, `part_money` FROM `users` WHERE `id`="' . $server['user'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(array('error' => array('message' => 'bad owner')));
+        sys::outjs(['error' => ['message' => 'bad owner']]);
     }
 
     if (isset($_GET['method']) and $_GET['method'] == 'check') {
-        sys::outjs(array('result' => array('message' => 'Запрос успешно обработан')));
+        sys::outjs(['result' => ['message' => 'Запрос успешно обработан']]);
     }
 
     $user = $sql->get();
@@ -90,12 +90,12 @@ if (!sys::valid($params['account'], 'md5')) {
 
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
         sys::text('logs', 'profit'),
-        array('server' => $privilege['server'], 'money' => $money)
+        ['server' => $privilege['server'], 'money' => $money]
     ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $money . '"');
 
     $sql->query('UPDATE `privileges_buy` set `status`="1" WHERE `id`="' . $privilege['id'] . '" LIMIT 1');
 
-    sys::outjs(array('result' => array('message' => 'Запрос успешно обработан')));
+    sys::outjs(['result' => ['message' => 'Запрос успешно обработан']]);
 }
 
 switch ($_GET['method']) {
@@ -106,7 +106,7 @@ switch ($_GET['method']) {
 
         $sql->query('SELECT `id`, `balance`, `part` FROM `users` WHERE `id`="' . $user . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('result' => array('message' => 'Пользователь c ID: ' . $user . ' не найден')));
+            sys::outjs(['result' => ['message' => 'Пользователь c ID: ' . $user . ' не найден']]);
         }
 
         $user = $sql->get();
@@ -128,7 +128,7 @@ switch ($_GET['method']) {
 
                 $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
                     sys::text('logs', 'part'),
-                    array('part' => $uid, 'money' => $part_sum)
+                    ['part' => $uid, 'money' => $part_sum]
                 ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $part_sum . '"');
             }
         }
@@ -137,18 +137,18 @@ switch ($_GET['method']) {
 
         $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="Пополнение баланса на сумму: ' . $sum . ' ' . $cfg['currency'] . '", `date`="' . $start_point . '", `type`="replenish", `money`="' . $sum . '"');
 
-        sys::outjs(array('result' => array('message' => 'Запрос успешно обработан')));
+        sys::outjs(['result' => ['message' => 'Запрос успешно обработан']]);
 
         // no break
     case 'check':
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . intval($params['account']) . '" LIMIT 1');
         if ($sql->num()) {
-            sys::outjs(array('result' => array('message' => 'Запрос успешно обработан')));
+            sys::outjs(['result' => ['message' => 'Запрос успешно обработан']]);
         }
 
-        sys::outjs(array('jsonrpc' => "2.0", 'error' => array('code' => -32000, 'message' => 'Пользователь не найден'), 'id' => 1));
+        sys::outjs(['jsonrpc' => "2.0", 'error' => ['code' => -32000, 'message' => 'Пользователь не найден'], 'id' => 1]);
 
         // no break
     case 'error':
-        sys::outjs(array('result' => array('message' => 'Запрос успешно обработан')));
+        sys::outjs(['result' => ['message' => 'Запрос успешно обработан']]);
 }

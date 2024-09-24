@@ -67,7 +67,7 @@ class privileges extends cron
         foreach ($servers as $id) {
             $sql->query('DELETE FROM `privileges_buy` WHERE `date`<"' . $time . '" AND status`="0" LIMIT 5');
 
-            $aMail = array();
+            $aMail = [];
 
             $sql->query('SELECT `uid`, `tarif` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
             $server = $sql->get();

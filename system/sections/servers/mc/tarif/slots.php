@@ -19,10 +19,10 @@ if (!isset($nmch)) {
 
 // Если фикс. значение слот
 if ($tarif['slots_min'] == $tarif['slots_max']) {
-    sys::outjs(array('e' => 'На данном тарифе нельзя изменить количество слот.'), $nmch);
+    sys::outjs(['e' => 'На данном тарифе нельзя изменить количество слот.'], $nmch);
 }
 
-$slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
+$slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 $aPrice = explode(':', $tarif['price']);
 $aRAM = explode(':', $tarif['ram']);
@@ -46,7 +46,7 @@ $sum = round(($server['time'] - $start_point) / 86400 * ($aPrice[array_search($s
 if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     // Если просрочен
     if ($overdue) {
-        sys::outjs(array('i' => ''));
+        sys::outjs(['i' => '']);
 
         if ($go) {
             $start = $server['slots_start'] > $slots ? ', `slots_start`="' . $slots . '"' : '';
@@ -56,7 +56,7 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
             // Запись логов
             $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_slots') . '", `time`="' . $start_point . '"');
 
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
         }
     }
 
@@ -64,24 +64,24 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
     if ($cfg['change_slots'][$server['game']]['down'] || $overdue) {
         // Проверка кол-ва слот
         if ($slots < $tarif['slots_min'] || $slots > $tarif['slots_max']) {
-            sys::outjs(array('e' => 'Переданые неверные данные.'), $nmch);
+            sys::outjs(['e' => 'Переданые неверные данные.'], $nmch);
         }
 
         if ($server['slots'] == $slots) {
             if ($go) {
-                sys::outjs(array('s' => 'ok'), $nmch);
+                sys::outjs(['s' => 'ok'], $nmch);
             }
 
-            sys::outjs(array('s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $server['time']) . ' (' . sys::date('min', $server['time']) . ')'), $nmch);
+            sys::outjs(['s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $server['time']) . ' (' . sys::date('min', $server['time']) . ')'], $nmch);
         }
     } else {
         // Установлено макс. значение
         if ($server['slots'] == $tarif['slots_max'] and !$overdue) {
-            sys::outjs(array('e' => 'На игровом сервере установлено максимальное значение.'), $nmch);
+            sys::outjs(['e' => 'На игровом сервере установлено максимальное значение.'], $nmch);
         }
 
         if ($slots < 1 || $slots > $max) {
-            sys::outjs(array('e' => 'Переданы неверные данные'), $nmch);
+            sys::outjs(['e' => 'Переданы неверные данные'], $nmch);
         }
 
         $slots += $server['slots'];
@@ -106,7 +106,7 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
 
         $sql->query('UPDATE `servers` set `time`="' . $time . '", `slots`="' . $slots . '" ' . $start . ', `ram`=' . $server['ram'] . ' WHERE `id`="' . $id . '" LIMIT 1');
 
-        if (in_array($server['status'], array('working', 'start', 'restart')) and $slots < $server['slots_start']) {
+        if (in_array($server['status'], ['working', 'start', 'restart']) and $slots < $server['slots_start']) {
             include(LIB . 'games/' . $server['game'] . '/action.php');
 
             action::start($id, 'restart');
@@ -115,15 +115,15 @@ if ($cfg['change_slots'][$server['game']]['days'] || $overdue) {
         // Запись логов
         $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_slots') . '", `time`="' . $start_point . '"');
 
-        sys::outjs(array('s' => 'ok'), $nmch);
+        sys::outjs(['s' => 'ok'], $nmch);
     }
 
     // Выхлоп информации
-    sys::outjs(array('s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'));
+    sys::outjs(['s' => 'Сервер будет арендован до: ' . date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')']);
 }
 
 if ($slots < 1 || $slots > $max) {
-    sys::outjs(array('e' => 'Переданые неверные данные'), $nmch);
+    sys::outjs(['e' => 'Переданые неверные данные'], $nmch);
 }
 
 // Выполнение операции
@@ -134,7 +134,7 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
+        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     // Списание средств с баланса пользователя
@@ -148,7 +148,7 @@ if ($go) {
     // Обновление информации
     $sql->query('UPDATE `servers` set `slots`="' . $slots_new . '" ' . $start . ', `ram`=' . $server['ram'] . ' WHERE `id`="' . $id . '" LIMIT 1');
 
-    if (in_array($server['status'], array('working', 'start', 'restart')) and $slots_new != $server['slots_start']) {
+    if (in_array($server['status'], ['working', 'start', 'restart']) and $slots_new != $server['slots_start']) {
         include(LIB . 'games/' . $server['game'] . '/action.php');
 
         action::start($id, 'restart');
@@ -157,11 +157,11 @@ if ($go) {
     // Запись логов
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
         sys::text('logs', 'buy_slots'),
-        array('slots' => $slots, 'money' => $sum, 'id' => $id)
+        ['slots' => $slots, 'money' => $sum, 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $sum . '"');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Выхлоп информации
-sys::outjs(array('s' => 'Цена за дополнительные слоты: ' . $sum . ' ' . $cfg['currency']));
+sys::outjs(['s' => 'Цена за дополнительные слоты: ' . $sum . ' ' . $cfg['currency']]);

@@ -38,7 +38,7 @@ class plugins
             $html->pack('images');
         }
 
-        return isset($html->arr['images']) ? $html->arr['images'] : '';
+        return $html->arr['images'] ?? '';
     }
 
     public static function status($status)
@@ -99,13 +99,13 @@ class plugins
                             }
 
                             if ($options != '') {
-                                sys::outjs(array('e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options), $mcache);
+                                sys::outjs(['e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options], $mcache);
                             }
                         }
                     }
                 }
 
-                sys::outjs(array('e' => 'Для данного плагина требуется установка родителя', 'required' => true, 'pid' => $pl, 'pname' => htmlspecialchars_decode($plRequi['name'])), $mcache);
+                sys::outjs(['e' => 'Для данного плагина требуется установка родителя', 'required' => true, 'pid' => $pl, 'pname' => htmlspecialchars_decode($plRequi['name'])], $mcache);
             }
         }
 
@@ -128,7 +128,7 @@ class plugins
                 $sql->query('SELECT `name` FROM `plugins` WHERE `id`="' . $pl . '" LIMIT 1');
                 $plIncomp = $sql->get();
 
-                sys::outjs(array('e' => 'Данный плагин несовместим с уже установленным плагином', 'pid' => $pl, 'pname' => htmlspecialchars_decode($plIncomp['name'])), $mcache);
+                sys::outjs(['e' => 'Данный плагин несовместим с уже установленным плагином', 'pid' => $pl, 'pname' => htmlspecialchars_decode($plIncomp['name'])], $mcache);
             }
         }
 
@@ -146,7 +146,7 @@ class plugins
             // Временный файл
             $temp = sys::temp($file);
 
-            $ssh->setfile($temp, $dir . $clear['file'], 0644);
+            $ssh->setfile($temp, $dir . $clear['file'], 0o644);
 
             unlink($temp);
 
@@ -173,7 +173,7 @@ class plugins
 
         // Добавление текста в начало файла
         if ($write['top']) {
-            $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' sed -i ' . "'1i " . str_replace(array('/', "'", '\"'), array('\/', "\'", '"'), htmlspecialchars_decode($write['text'])) . "'" . ' ' . $dir . $write['file'] . ';';
+            $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' sed -i ' . "'1i " . str_replace(['/', "'", '\"'], ['\/', "\'", '"'], htmlspecialchars_decode($write['text'])) . "'" . ' ' . $dir . $write['file'] . ';';
         } else { // Добавление текста в конец файла
             $query .= 'sudo -u server' . $uid . ' touch ' . $dir . $write['file'] . '; sudo -u server' . $uid . ' echo "' . str_replace('"', '\"', htmlspecialchars_decode($write['text'])) . '" >> ' . $dir . $write['file'] . ';';
         }

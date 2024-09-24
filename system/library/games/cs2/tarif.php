@@ -183,7 +183,7 @@ class tarif extends tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
         }
 
         // Директория сборки

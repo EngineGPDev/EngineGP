@@ -19,7 +19,7 @@ $server = array_merge($server, $sql->get());
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 
 // Подразделы
-$aSub = array('install', 'delete', 'list', 'listing', 'search');
+$aSub = ['install', 'delete', 'list', 'listing', 'search'];
 
 // Если выбран подраздел
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
@@ -43,7 +43,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         if ($go) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
         }
 
         sys::back($cfg['http'] . 'servers/id/' . $id);
@@ -88,8 +88,8 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     } else {
         $html->get('maps', 'sections/servers/games');
         $html->set('id', $id);
-        $html->set('types', isset($html->arr['types']) ? $html->arr['types'] : '');
-        $html->set('maps', isset($html->arr['maps']) ? $html->arr['maps'] : '');
+        $html->set('types', $html->arr['types'] ?? '');
+        $html->set('maps', $html->arr['maps'] ?? '');
         $html->set('mapsjs', $mapsjs);
         $html->pack('main');
 

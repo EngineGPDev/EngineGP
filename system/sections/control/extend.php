@@ -27,7 +27,7 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']));
+        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']]);
     }
 
     // Списание средств с баланса пользователя
@@ -39,9 +39,9 @@ if ($go) {
     $sql->query('UPDATE `control` set `time`="' . $time . '" WHERE `id`="' . $id . '" LIMIT 1');
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'extend_control'), array('days' => games::parse_day($days, true), 'money' => $sum, 'id' => $id)) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $sum . '"');
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'extend_control'), ['days' => games::parse_day($days, true), 'money' => $sum, 'id' => $id]) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $sum . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 if (isset($url['get'])) {

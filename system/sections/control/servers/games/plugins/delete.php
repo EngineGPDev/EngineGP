@@ -22,7 +22,7 @@ $pid = isset($url['plugin']) ? sys::int($url['plugin']) : exit;
 // Проверка установки плагина
 $sql->query('SELECT `id`, `upd` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $pid . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::outjs(array('e' => 'Данный плагин не установлен'));
+    sys::outjs(['e' => 'Данный плагин не установлен']);
 }
 
 $plugin = $sql->get();
@@ -35,7 +35,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 // Директория игр. сервера
@@ -91,8 +91,8 @@ if ($sql->num()) {
     if ($sql->num()) {
         $plugin = $sql->get();
 
-        sys::outjs(array('i' => $ins['install'], 'pname' => $plugin['name']), $nmch);
+        sys::outjs(['i' => $ins['install'], 'pname' => $plugin['name']], $nmch);
     }
 }
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

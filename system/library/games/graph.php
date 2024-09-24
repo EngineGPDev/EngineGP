@@ -9,8 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
-if (!defined('EGP'))
+if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
 use CpChart\Data;
 use CpChart\Image;
@@ -59,43 +60,43 @@ class graph
         $MyData->setSerieTicks('ONLINE', 4);
 
         // Цвет линий
-        $MyData->setPalette('ONLINE', array('R' => 68, 'G' => 148, 'B' => 224));
-        $MyData->setPalette('CPU', array('R' => 216, 'G' => 65, 'B' => 65));
-        $MyData->setPalette('RAM', array('R' => 26, 'G' => 150, 'B' => 38));
-        $MyData->setPalette('HDD', array('R' => 205, 'G' => 196, 'B' => 37));
+        $MyData->setPalette('ONLINE', ['R' => 68, 'G' => 148, 'B' => 224]);
+        $MyData->setPalette('CPU', ['R' => 216, 'G' => 65, 'B' => 65]);
+        $MyData->setPalette('RAM', ['R' => 26, 'G' => 150, 'B' => 38]);
+        $MyData->setPalette('HDD', ['R' => 205, 'G' => 196, 'B' => 37]);
 
         $myPicture = new Image(896, 220, $MyData);
 
-        $myPicture->drawFilledRectangle(0, 0, 896, 220, array('R' => 255, 'G' => 255, 'B' => 255));
+        $myPicture->drawFilledRectangle(0, 0, 896, 220, ['R' => 255, 'G' => 255, 'B' => 255]);
 
-        $myPicture->drawRectangle(0, 0, 895, 219, array('R' => 221, 'G' => 221, 'B' => 221));
+        $myPicture->drawRectangle(0, 0, 895, 219, ['R' => 221, 'G' => 221, 'B' => 221]);
 
-        $myPicture->setFontProperties(array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8));
+        $myPicture->setFontProperties(['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]);
         $myPicture->setGraphArea(40, 20, 616, 190);
-        $myPicture->drawFilledRectangle(40, 20, 616, 190, array('R' => 240, 'G' => 242, 'B' => 242, 'Alpha' => 100));
-        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'GridR' => 76, 'GridG' => 109, 'GridB' => 120, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'ManualScale' => array(0 => array('Min' => 0, 'Max' => 32), 1 => array('Min' => 0, 'Max' => 100))));
+        $myPicture->drawFilledRectangle(40, 20, 616, 190, ['R' => 240, 'G' => 242, 'B' => 242, 'Alpha' => 100]);
+        $myPicture->drawScale(['XMargin' => 5, 'YMargin' => 5, 'GridR' => 76, 'GridG' => 109, 'GridB' => 120, 'LabelSkip' => 0, 'DrawSubTicks' => true, 'Mode' => SCALE_MODE_MANUAL, 'ManualScale' => [0 => ['Min' => 0, 'Max' => 32], 1 => ['Min' => 0, 'Max' => 100]]]);
 
-        $myPicture->drawText(676, 34, 'Средний онлайн: ' . graph::average($aOnline), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 54, 'Средняя нагрузка (CPU): ' . graph::average($aCPU) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 74, 'Средняя нагрузка (RAM): ' . graph::average($aRAM) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 94, 'Средняя нагрузка (HDD): ' . graph::average($aHDD), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
+        $myPicture->drawText(676, 34, 'Средний онлайн: ' . graph::average($aOnline), ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
+        $myPicture->drawText(676, 54, 'Средняя нагрузка (CPU): ' . graph::average($aCPU) . '%', ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
+        $myPicture->drawText(676, 74, 'Средняя нагрузка (RAM): ' . graph::average($aRAM) . '%', ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
+        $myPicture->drawText(676, 94, 'Средняя нагрузка (HDD): ' . graph::average($aHDD), ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
 
-        $myPicture->drawText(676, 129, 'Максимальный онлайн: ' . max($aOnline), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 153, 'Максимальная нагрузка (CPU): ' . max($aCPU) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 173, 'Максимальная нагрузка (RAM): ' . max($aRAM) . '%', array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
-        $myPicture->drawText(676, 193, 'Максимальная нагрузка (HDD): ' . max($aHDD), array('R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT));
+        $myPicture->drawText(676, 129, 'Максимальный онлайн: ' . max($aOnline), ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
+        $myPicture->drawText(676, 153, 'Максимальная нагрузка (CPU): ' . max($aCPU) . '%', ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
+        $myPicture->drawText(676, 173, 'Максимальная нагрузка (RAM): ' . max($aRAM) . '%', ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
+        $myPicture->drawText(676, 193, 'Максимальная нагрузка (HDD): ' . max($aHDD), ['R' => 25, 'G' => 25, 'B' => 25, 'FontName' => LIB . 'games/graph/fonts/arianamu.ttf', 'FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMLEFT]);
 
-        $myPicture->setFontProperties(array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 7));
+        $myPicture->setFontProperties(['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 7]);
         $myPicture->drawSplineChart();
-        $myPicture->setShadow(FALSE);
+        $myPicture->setShadow(false);
 
-        $myPicture->drawLegend(466, 10, array('Style' => LEGEND_NOBORDER, 'Mode' => LEGEND_HORIZONTAL));
+        $myPicture->drawLegend(466, 10, ['Style' => LEGEND_NOBORDER, 'Mode' => LEGEND_HORIZONTAL]);
 
         $myPicture->render(TEMP . (md5($key . 'full_' . $time)) . '.png');
 
         unset($MyData, $myPicture);
 
-        return NULL;
+        return null;
     }
 
     public static function first($server, $aPoints, $aStyle, $style, $key)
@@ -109,7 +110,7 @@ class graph
         // Значения
         $MyData->addPoints($aPoints, 'ONLINE');
 
-        $MyData->addPoints(array(VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID), 'NONE');
+        $MyData->addPoints([VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID], 'NONE');
         $MyData->setAbscissa('NONE');
 
         // Цвет линии
@@ -125,7 +126,7 @@ class graph
         $myPicture->drawRectangle(0, 0, 159, 247, $aStyle[$style]['border']);
 
         // Шрифт текста
-        $myPicture->setFontProperties(array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 5)));
+        $myPicture->setFontProperties(array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 5]));
 
         // Размер графика
         $myPicture->setGraphArea(35, 160, 150, 210);
@@ -134,39 +135,39 @@ class graph
         $myPicture->drawFilledRectangle(35, 160, 150, 210, $aStyle[$style]['graph']);
 
         // График
-        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => TRUE, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array($server['slots_start']), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $server['slots_start']))));
+        $myPicture->drawScale(['XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => true, 'LabelSkip' => 0, 'DrawSubTicks' => true, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => [$server['slots_start']], 'ManualScale' => [0 => ['Min' => 0, 'Max' => $server['slots_start']]]]);
 
         // Название игрового сервера
         $myPicture->drawFilledRectangle(0, 0, 18, 248, $aStyle[$style]['leftbox']);
-        $myPicture->drawText(14, 245, $server['name'], array_merge($aStyle[$style]['boxcolor'], array('Angle' => 90, 'FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 10)));
+        $myPicture->drawText(14, 245, $server['name'], array_merge($aStyle[$style]['boxcolor'], ['Angle' => 90, 'FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 10]));
         $myPicture->drawFilledRectangle(0, 0, 18, 5, $aStyle[$style]['leftbox']);
 
         // Адрес игрового сервера
         $myPicture->drawFilledRectangle(25, 5, 153, 18, $aStyle[$style]['box']);
-        $myPicture->drawText(28, 17, 'Адрес сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(26, 30, $server_address, array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(28, 17, 'Адрес сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(26, 30, $server_address, array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Статус игрового сервера
         $myPicture->drawFilledRectangle(25, 35, 153, 48, $aStyle[$style]['box']);
-        $myPicture->drawText(28, 47, 'Состояние сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(26, 62, graph::status($server['status'], $server['map']), array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(28, 47, 'Состояние сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(26, 62, graph::status($server['status'], $server['map']), array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Игроки на игровом сервере
         $myPicture->drawFilledRectangle(25, 65, 153, 78, $aStyle[$style]['box']);
-        $myPicture->drawText(28, 77, 'Игроки на сервере', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(26, 92, $server['online'] . ' / ' . $server['slots_start'], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(28, 77, 'Игроки на сервере', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(26, 92, $server['online'] . ' / ' . $server['slots_start'], array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Полоска загрузки
-        $myPicture->drawProgress(83, 82, ceil($server['slots_start'] / 100 * $server['online']), array_merge($aStyle[$style]['progress'], array('Width' => 70, 'Height' => 8)));
+        $myPicture->drawProgress(83, 82, ceil($server['slots_start'] / 100 * $server['online']), array_merge($aStyle[$style]['progress'], ['Width' => 70, 'Height' => 8]));
 
         // Тип игрового сервера
         $myPicture->drawFilledRectangle(25, 95, 153, 108, $aStyle[$style]['box']);
-        $myPicture->drawText(28, 107, 'Тип сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(26, 122, $aGname[$server['game']], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(28, 107, 'Тип сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(26, 122, $aGname[$server['game']], array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Хостинг игровых серверов
-        $myPicture->drawText(89, 230, $cfg['graph'], array_merge($aStyle[$style]['color'], array('FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE)));
-        $myPicture->drawText(89, 245, 'Хостинг игровых серверов', array_merge($aStyle[$style]['color'], array('FontSize' => 8, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE)));
+        $myPicture->drawText(89, 230, $cfg['graph'], array_merge($aStyle[$style]['color'], ['FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE]));
+        $myPicture->drawText(89, 245, 'Хостинг игровых серверов', array_merge($aStyle[$style]['color'], ['FontSize' => 8, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE]));
 
         $myPicture->drawSplineChart();
 
@@ -174,7 +175,7 @@ class graph
 
         unset($MyData, $myPicture);
 
-        return NULL;
+        return null;
     }
 
     public static function second($server, $aPoints, $aStyle, $style, $key)
@@ -188,7 +189,7 @@ class graph
         // Значения
         $MyData->addPoints($aPoints, 'ONLINE');
 
-        $MyData->addPoints(array(VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID), 'NONE');
+        $MyData->addPoints([VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID], 'NONE');
         $MyData->setAbscissa('NONE');
 
         // Цвет линии
@@ -202,8 +203,8 @@ class graph
 
         // Название игрового сервера
         $myPicture->drawFilledRectangle(5, 5, 410, 18, $aStyle[$style]['box']);
-        $myPicture->drawText(8, 17, 'Название сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(6, 31, $server['name'], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(8, 17, 'Название сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(6, 31, $server['name'], array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Костыль для "обрезания" названия сервера
         $myPicture->drawFilledRectangle(405, 19, 560, 35, $aStyle[$style]['fon']);
@@ -212,7 +213,7 @@ class graph
         $myPicture->drawRectangle(0, 0, 559, 94, $aStyle[$style]['border']);
 
         // Шрифт текста
-        $myPicture->setFontProperties(array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 5)));
+        $myPicture->setFontProperties(array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 5]));
 
         // Размер графика
         $myPicture->setGraphArea(430, 5, 554, 60);
@@ -221,34 +222,34 @@ class graph
         $myPicture->drawFilledRectangle(430, 5, 554, 60, $aStyle[$style]['graph']);
 
         // График
-        $myPicture->drawScale(array('XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => TRUE, 'LabelSkip' => 0, 'DrawSubTicks' => TRUE, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => array($server['slots_start']), 'ManualScale' => array(0 => array('Min' => 0, 'Max' => $server['slots_start']))));
+        $myPicture->drawScale(['XMargin' => 5, 'YMargin' => 5, 'CycleBackground' => true, 'LabelSkip' => 0, 'DrawSubTicks' => true, 'Mode' => SCALE_MODE_MANUAL, 'Factors' => [$server['slots_start']], 'ManualScale' => [0 => ['Min' => 0, 'Max' => $server['slots_start']]]]);
 
         // Адрес игрового сервера
         $myPicture->drawFilledRectangle(5, 36, 210, 49, $aStyle[$style]['box']);
-        $myPicture->drawText(8, 48, 'Адрес сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(6, 62, $server_address, array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(8, 48, 'Адрес сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(6, 62, $server_address, array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Статус игрового сервера
         $myPicture->drawFilledRectangle(215, 36, 410, 49, $aStyle[$style]['box']);
-        $myPicture->drawText(218, 48, 'Состояние сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(216, 62, graph::status($server['status'], $server['map']), array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(218, 48, 'Состояние сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(216, 62, graph::status($server['status'], $server['map']), array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Игроки на игровом сервере
         $myPicture->drawFilledRectangle(5, 67, 210, 80, $aStyle[$style]['box']);
-        $myPicture->drawText(8, 79, 'Игроки на сервере', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(6, 93, $server['online'] . ' / ' . $server['slots_start'], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(8, 79, 'Игроки на сервере', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(6, 93, $server['online'] . ' / ' . $server['slots_start'], array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Полоска загрузки
-        $myPicture->drawProgress(90, 83, ceil($server['slots_start'] / 100 * $server['online']), array_merge($aStyle[$style]['progress'], array('Width' => 120, 'Height' => 8)));
+        $myPicture->drawProgress(90, 83, ceil($server['slots_start'] / 100 * $server['online']), array_merge($aStyle[$style]['progress'], ['Width' => 120, 'Height' => 8]));
 
         // Тип игрового сервера
         $myPicture->drawFilledRectangle(215, 67, 410, 80, $aStyle[$style]['box']);
-        $myPicture->drawText(218, 79, 'Тип сервера', array_merge($aStyle[$style]['boxcolor'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
-        $myPicture->drawText(216, 91, $aGname[$server['game']], array_merge($aStyle[$style]['color'], array('FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8)));
+        $myPicture->drawText(218, 79, 'Тип сервера', array_merge($aStyle[$style]['boxcolor'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
+        $myPicture->drawText(216, 91, $aGname[$server['game']], array_merge($aStyle[$style]['color'], ['FontName' => LIB . 'games/graph/fonts/tahoma.ttf', 'FontSize' => 8]));
 
         // Хостинг игровых серверов
-        $myPicture->drawText(490, 77, $cfg['graph'], array('FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE));
-        $myPicture->drawText(490, 90, 'Хостинг игровых серверов', array('FontSize' => 8, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE));
+        $myPicture->drawText(490, 77, $cfg['graph'], ['FontSize' => 10, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE]);
+        $myPicture->drawText(490, 90, 'Хостинг игровых серверов', ['FontSize' => 8, 'Align' => TEXT_ALIGN_BOTTOMMIDDLE]);
 
         $myPicture->drawSplineChart();
 
@@ -256,7 +257,7 @@ class graph
 
         unset($MyData, $myPicture);
 
-        return NULL;
+        return null;
     }
 
     public static function online_day($server, $max)
@@ -265,28 +266,31 @@ class graph
 
         $time = $start_point - 86400;
 
-        $aOnline = array();
+        $aOnline = [];
 
-        $aSel = array();
+        $aSel = [];
 
         $sql->query('SELECT `online` FROM `graph_hour` WHERE `server`="' . $server . '" AND `time`>"' . $time . '" ORDER BY `id` DESC LIMIT 24');
-        while ($value = $sql->get())
+        while ($value = $sql->get()) {
             $aSel[] = $value['online'];
+        }
 
         $n = count($aSel);
 
         $n = $n > 1 ? $n - 1 : 0;
 
         if ($n) {
-            for ($i = $n; $i >= 0; $i -= 1)
+            for ($i = $n; $i >= 0; $i -= 1) {
                 $aOnline[] = $aSel[$i] > $max ? $max : $aSel[$i];
+            }
         }
 
         $add = count($aOnline);
 
         if ($add < 24) {
-            for ($i = $n; $i <= 23; $i += 1)
+            for ($i = $n; $i <= 23; $i += 1) {
                 $aOnline[] = 0;
+            }
         }
 
         return $aOnline;
@@ -296,46 +300,47 @@ class graph
     {
         global $sql, $start_point;
 
-        $aData = array(
-            'limit' => array(
+        $aData = [
+            'limit' => [
                 'day' => 24,
                 'week' => 7,
-                'month' => 30
-            ),
+                'month' => 30,
+            ],
 
-            'for' => array(
+            'for' => [
                 'day' => 23,
                 'week' => 6,
-                'month' => 29
-            ),
+                'month' => 29,
+            ],
 
-            'from' => array(
+            'from' => [
                 'day' => 'graph_hour',
                 'week' => 'graph_day',
-                'month' => 'graph_day'
-            ),
+                'month' => 'graph_day',
+            ],
 
-            'time' => array(
+            'time' => [
                 'day' => 86400,
                 'week' => 604800,
-                'month' => 2592000
-            )
-        );
+                'month' => 2592000,
+            ],
+        ];
 
         $time = $start_point - $aData['time'][$period];
 
-        $aOnline = array();
+        $aOnline = [];
 
-        $aCPU = array();
-        $aRAM = array();
-        $aHDD = array();
-        $aTime = array();
+        $aCPU = [];
+        $aRAM = [];
+        $aHDD = [];
+        $aTime = [];
 
-        $aSel = array();
+        $aSel = [];
 
         $sql->query('SELECT `online`, `cpu`, `ram`, `hdd`, `time` FROM `' . $aData['from'][$period] . '` WHERE `server`="' . $server . '" AND `time`>"' . $time . '" ORDER BY `id` DESC LIMIT ' . $aData['limit'][$period]);
-        while ($value = $sql->get())
-            $aSel[] = array('online' => $value['online'], 'cpu' => $value['cpu'], 'ram' => $value['ram'], 'hdd' => $value['hdd'], 'time' => $value['time']);
+        while ($value = $sql->get()) {
+            $aSel[] = ['online' => $value['online'], 'cpu' => $value['cpu'], 'ram' => $value['ram'], 'hdd' => $value['hdd'], 'time' => $value['time']];
+        }
 
         $n = count($aSel);
 
@@ -375,7 +380,7 @@ class graph
             $aTime[] = VOID;
         }
 
-        return array('online' => $aOnline, 'cpu' => $aCPU, 'ram' => $aRAM, 'hdd' => $aHDD, 'time' => $aTime);
+        return ['online' => $aOnline, 'cpu' => $aCPU, 'ram' => $aRAM, 'hdd' => $aHDD, 'time' => $aTime];
     }
 
     private static function status($status, $map)

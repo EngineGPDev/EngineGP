@@ -16,7 +16,7 @@ if (!defined('EGP')) {
 $sql->query('SELECT * FROM `plugins_update` WHERE `id`="' . $id . '" LIMIT 1');
 $plugin = $sql->get();
 
-$aGames = array(
+$aGames = [
     'cs' => 'Counter-Strike: 1.6',
     'cssold' => 'Counter-Strike: Source v34',
     'css' => 'Counter-Strike: Source',
@@ -25,11 +25,11 @@ $aGames = array(
     'samp' => 'San Andreas Multiplayer',
     'crmp' => 'GTA: Criminal Russia',
     'mta' => 'Multi Theft Auto',
-    'mc' => 'Minecraft'
-);
+    'mc' => 'Minecraft',
+];
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : $plugin['name'];
     $aData['cat'] = isset($_POST['category']) ? sys::int($_POST['category']) : $plugin['cat'];
@@ -46,22 +46,22 @@ if ($go) {
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $plugin['sort'];
     $aData['price'] = isset($_POST['price']) ? ceil($_POST['price']) : $plugin['price'];
 
-    $aData['config_files_file'] = isset($_POST['config_files_file']) ? $_POST['config_files_file'] : array();
-    $aData['config_files_sort'] = isset($_POST['config_files_sort']) ? $_POST['config_files_sort'] : array();
-    $aData['config_clear_file'] = isset($_POST['config_clear_file']) ? $_POST['config_clear_file'] : array();
-    $aData['config_clear_text'] = isset($_POST['config_clear_text']) ? $_POST['config_clear_text'] : array();
-    $aData['config_write_file'] = isset($_POST['config_write_file']) ? $_POST['config_write_file'] : array();
-    $aData['config_write_text'] = isset($_POST['config_write_text']) ? $_POST['config_write_text'] : array();
-    $aData['config_write_top'] = isset($_POST['config_write_top']) ? $_POST['config_write_top'] : array();
-    $aData['config_write_del_file'] = isset($_POST['config_write_del_file']) ? $_POST['config_write_del_file'] : array();
-    $aData['config_write_del_text'] = isset($_POST['config_write_del_text']) ? $_POST['config_write_del_text'] : array();
-    $aData['config_write_del_top'] = isset($_POST['config_write_del_top']) ? $_POST['config_write_del_top'] : array();
-    $aData['files_delete_file'] = isset($_POST['files_delete_file']) ? $_POST['files_delete_file'] : array();
+    $aData['config_files_file'] = $_POST['config_files_file'] ?? [];
+    $aData['config_files_sort'] = $_POST['config_files_sort'] ?? [];
+    $aData['config_clear_file'] = $_POST['config_clear_file'] ?? [];
+    $aData['config_clear_text'] = $_POST['config_clear_text'] ?? [];
+    $aData['config_write_file'] = $_POST['config_write_file'] ?? [];
+    $aData['config_write_text'] = $_POST['config_write_text'] ?? [];
+    $aData['config_write_top'] = $_POST['config_write_top'] ?? [];
+    $aData['config_write_del_file'] = $_POST['config_write_del_file'] ?? [];
+    $aData['config_write_del_text'] = $_POST['config_write_del_text'] ?? [];
+    $aData['config_write_del_top'] = $_POST['config_write_del_top'] ?? [];
+    $aData['files_delete_file'] = $_POST['files_delete_file'] ?? [];
 
     $aData['cfg'] = 0;
 
     if ($aData['name'] == '') {
-        sys::outjs(array('e' => 'Необходимо указать название'));
+        sys::outjs(['e' => 'Необходимо указать название']);
     }
 
     $aPacks = explode(':', $aData['packs']);
@@ -229,7 +229,7 @@ if ($go) {
         . '`price`="' . $aData['price'] . '",'
         . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('update', 'sections/addons');

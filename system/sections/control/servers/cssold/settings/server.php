@@ -22,7 +22,7 @@ include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     sys::back($cfg['http'] . 'control/id/' . $id . '/server/' . $sid . '/section/settings');
@@ -34,7 +34,7 @@ $file = '/servers/' . $server['uid'] . '/cstrike/cfg/server.cfg';
 
 // Сохранение изменений
 if ($go) {
-    $servercfg = isset($_POST['config']) ? $_POST['config'] : '';
+    $servercfg = $_POST['config'] ?? '';
 
     $config = '';
 
@@ -51,7 +51,7 @@ if ($go) {
     // Временый файл
     $temp = sys::temp($config . $config_end);
 
-    $ssh->setfile($temp, $file, 0644);
+    $ssh->setfile($temp, $file, 0o644);
 
     $ssh->set('chown server' . $server['uid'] . ':servers ' . $file);
 
@@ -59,14 +59,14 @@ if ($go) {
 
     $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "exec server.cfg"\015\';');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep -ve "^#\|^[[:space:]]*$"');
 
 $fScfg = explode("\n", strip_tags($ssh->get()));
 
-$servercfg = array();
+$servercfg = [];
 $other = '';
 
 // Убираем пробелы и генерируем массив

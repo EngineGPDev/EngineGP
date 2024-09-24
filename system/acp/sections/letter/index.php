@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$group = array('user' => 'Пользователь', 'support' => 'Тех.поддержка', 'admin' => 'Администратор');
+$group = ['user' => 'Пользователь', 'support' => 'Тех.поддержка', 'admin' => 'Администратор'];
 $list = '';
 
 $sql->query('SELECT `id`, `login`, `mail`, `group`, `name`, `lastname`, `patronymic`, `balance`, `time` FROM `users` WHERE `notice_news`="1" ORDER BY `id` ASC');

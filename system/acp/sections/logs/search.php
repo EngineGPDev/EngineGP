@@ -31,17 +31,17 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go) {
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 $select = '`id`, `user`, `text`, `date`, `type`, `money` FROM `logs`';
 
 $check = explode('=', $text);
 
-if (in_array($check[0], array('server', 'user'))) {
+if (in_array($check[0], ['server', 'user'])) {
     $val = trim($check[1]);
 
     switch ($check[0]) {
@@ -66,10 +66,10 @@ if (in_array($check[0], array('server', 'user'))) {
 
 if (!$sql->num()) {
     if ($go) {
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
@@ -84,6 +84,6 @@ while ($log = $sql->get()) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

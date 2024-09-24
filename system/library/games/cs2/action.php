@@ -34,7 +34,7 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         $ip = $ssh->getInternalIp();
@@ -73,7 +73,7 @@ class action extends actions
         include_once(LIB . 'games/games.php');
 
         if (games::map($server['map_start'], $ssh->get())) {
-            return array('e' => sys::updtext(sys::text('servers', 'nomap'), array('map' => $server['map_start'] . '.vpk')));
+            return ['e' => sys::updtext(sys::text('servers', 'nomap'), ['map' => $server['map_start'] . '.vpk'])];
         }
 
         // Античит VAC
@@ -91,13 +91,13 @@ class action extends actions
         $map = $check[0] == 'workshop' ? '+workshop_start_map ' . $check[1] : '+map \'' . $server['map_start'] . '\'';
 
         // Игровой режим
-        $mods = array(
+        $mods = [
             1 => '+game_type 0 +game_mode 0',
             2 => '+game_type 0 +game_mode 1',
             3 => '+game_type 1 +game_mode 0',
             4 => '+game_type 1 +game_mode 1',
-            5 => '+game_type 1 +game_mode 2'
-        );
+            5 => '+game_type 1 +game_mode 2',
+        ];
 
         $mod = !$server['pingboost'] ? $mods[2] : $mods[$server['pingboost']];
 
@@ -127,10 +127,10 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function change($id, $map = false)
@@ -139,7 +139,7 @@ class action extends actions
 
         // Если в кеше есть карты
         if ($mcache->get('server_maps_change_' . $id) != '' and !$map) {
-            return array('maps' => $mcache->get('server_maps_change_' . $id));
+            return ['maps' => $mcache->get('server_maps_change_' . $id)];
         }
 
         include(LIB . 'ssh.php');
@@ -157,7 +157,7 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         // Массив карт игрового сервера (папка "maps")
@@ -167,7 +167,7 @@ class action extends actions
         unset($aMaps[count($aMaps) - 1]);
 
         // Удаление ".vpk"
-        $aMaps = str_ireplace(array('./', '.vpk'), '', $aMaps);
+        $aMaps = str_ireplace(['./', '.vpk'], '', $aMaps);
 
         // Если выбрана карта
         if ($map) {
@@ -175,7 +175,7 @@ class action extends actions
 
             // Проверка наличия выбранной карты
             if (games::map($map, $aMaps)) {
-                return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.vpk')));
+                return ['e' => sys::updtext(sys::text('servers', 'change'), ['map' => $map . '.vpk'])];
             }
 
             // Отправка команды changelevel
@@ -187,10 +187,10 @@ class action extends actions
             // Сброс кеша
             actions::clmcache($id);
 
-            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])));
-            sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']));
+            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])]);
+            sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']]);
 
-            return array('s' => 'ok');
+            return ['s' => 'ok'];
         }
 
         // Сортировка списка карт
@@ -221,7 +221,7 @@ class action extends actions
         // Запись карт в кеш
         $mcache->set('server_maps_change_' . $id, $html->arr['maps'], false, 60);
 
-        return array('maps' => $html->arr['maps']);
+        return ['maps' => $html->arr['maps']];
     }
 
     public static function update($id)
@@ -237,7 +237,7 @@ class action extends actions
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
         if ($update > $start_point and $user['group'] != 'admin') {
-            return array('e' => sys::updtext(sys::text('servers', 'update'), array('time' => sys::date('max', $update))));
+            return ['e' => sys::updtext(sys::text('servers', 'update'), ['time' => sys::date('max', $update)])];
         }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -248,7 +248,7 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         // Директория игрового сервера
@@ -271,9 +271,9 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 }

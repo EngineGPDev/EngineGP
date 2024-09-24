@@ -14,18 +14,18 @@ if (!defined('EGP')) {
 }
 
 // Подключение раздела
-if (!in_array($section, array('auth', 'recovery', 'replenish', 'signup', 'lk', 'quit'))) {
+if (!in_array($section, ['auth', 'recovery', 'replenish', 'signup', 'lk', 'quit'])) {
     include(ENG . '404.php');
 }
 
-$aTitle = array(
+$aTitle = [
     'auth' => 'Авторизация',
     'recovery' => 'Восстановление',
     'replenish' => 'Пополнение баланса',
     'signup' => 'Регистрация',
     'lk' => 'Личный кабинет',
-    'quit' => 'Выход'
-);
+    'quit' => 'Выход',
+];
 
 $title = $aTitle[$section];
 

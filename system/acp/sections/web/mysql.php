@@ -33,7 +33,7 @@ if ($id) {
     $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `type`="mysql" ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
     while ($web = $sql->get($webs)) {
         if (!$web['unit']) {
-            $unit = array('name' => 'Веб хостинг');
+            $unit = ['name' => 'Веб хостинг'];
         } else {
             $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $web['unit'] . '" LIMIT 1');
             $unit = $sql->get();
@@ -62,7 +62,7 @@ if ($id) {
 
     $html->set('list', $list);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

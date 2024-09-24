@@ -24,6 +24,6 @@ while ($aLog = $sql->get($qLog)) {
 
 $html->get('logs', 'sections/user/lk');
 
-$html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : 'Нет логов операций', true);
+$html->set('logs', $html->arr['logs'] ?? 'Нет логов операций', true);
 
 $html->pack('main');

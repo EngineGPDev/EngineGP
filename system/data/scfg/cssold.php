@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aScfg = array(
+$aScfg = [
     'hostname' => 'Название игрового сервера.',
     'rcon_password' => 'Пароль для упраления сервером через RCON команды.',
     'sv_password' => 'Пароль для входа на сервер.',
@@ -71,10 +71,10 @@ $aScfg = array(
     'sv_mincmdrate' => 'Минимальное количество пакетов в секунду к серверу. 0 = Не лимитирован.',
     'sv_minupdaterate' => 'Минимальное количество переданных пакетов в секунду.',
     'net_maxfilesize' => 'Максимальный размер загружаемого файла в MB',
-    'phys_timescale' => 'Коэффициент шкалы времени для вычисления "физики" в игре. Если по тарифу тикрейт 100, то нужно выставить значение 1.5'
-);
+    'phys_timescale' => 'Коэффициент шкалы времени для вычисления "физики" в игре. Если по тарифу тикрейт 100, то нужно выставить значение 1.5',
+];
 
-$aScfg_form = array(
+$aScfg_form = [
     'hostname' => '<input value="[hostname]" name="config[\'hostname\']">',
     'rcon_password' => '<input value="[rcon_password]" name="config[\'rcon_password\']">',
     'sv_password' => '<input value="[sv_password]" name="config[\'sv_password\']">',
@@ -132,5 +132,5 @@ $aScfg_form = array(
     'sv_minupdaterate' => '<input value="[sv_minupdaterate]" name="config[\'sv_minupdaterate\']">',
     'sv_downloadurl' => '<input value="[sv_downloadurl]" name="config[\'sv_downloadurl\']">',
     'net_maxfilesize' => '<input value="[net_maxfilesize]" name="config[\'net_maxfilesize\']">',
-    'phys_timescale' => '<input value="[phys_timescale]" name="config[\'phys_timescale\']">'
-);
+    'phys_timescale' => '<input value="[phys_timescale]" name="config[\'phys_timescale\']">',
+];

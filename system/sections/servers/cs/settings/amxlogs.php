@@ -94,7 +94,7 @@ if (isset($url['log'])) {
 
     $html->set('id', $id);
     $html->set('uri', 'amx');
-    $html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : '');
+    $html->set('logs', $html->arr['logs'] ?? '');
 
     $html->pack('main');
 }

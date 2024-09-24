@@ -15,13 +15,13 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-shopping-bag"></i> Управление тарифами';
 
-$aSection = array(
+$aSection = [
     'index',
     'add',
     'copy',
     'stats',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

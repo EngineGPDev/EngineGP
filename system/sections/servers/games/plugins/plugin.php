@@ -46,7 +46,7 @@ if ($mcache->get('server_plugin_' . $pid . $id) != '') {
     include(LIB . 'games/plugins.php');
 
     // Построение списка редактируемых файлов
-    $aConf = array();
+    $aConf = [];
 
     $sql->query('SELECT `id`, `file` FROM `plugins_config` WHERE (`plugin`="' . $pid . '" AND `update`="0") OR (`plugin`="' . $pid . '" AND `update`="' . $install['upd'] . '") ORDER BY `sort`, `id` ASC');
     while ($config = $sql->get()) {

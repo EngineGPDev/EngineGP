@@ -35,9 +35,9 @@ $whoops->pushHandler($loggingInFile);
 $whoops->register();
 
 // Парсинг адреса
-$url = is_array(sys::url()) ? sys::url() : array();
+$url = is_array(sys::url()) ? sys::url() : [];
 $route = sys::url(false);
-$section = isset($url['section']) ? $url['section'] : false;
+$section = $url['section'] ?? false;
 
 $id = array_key_exists('id', $url) ? sys::int($url['id']) : false;
 $go = array_key_exists('go', $url);
@@ -92,18 +92,18 @@ if (in_array($route, $aRoute)) {
 if (isset($html->arr['main'])) {
     $html->upd(
         'main',
-        array(
+        [
             '[home]',
             '[js]',
             '[css]',
-            '[img]'
-        ),
-        array(
+            '[img]',
+        ],
+        [
             $cfg['http'],
             $cfg['http'] . 'template/js/',
             $cfg['http'] . 'template/css/',
-            $cfg['http'] . 'template/images/'
-        )
+            $cfg['http'] . 'template/images/',
+        ]
     );
 }
 
@@ -136,14 +136,14 @@ if ($auth) {
     // Здесь вы можете использовать информацию о пользователе, например, $user['balance']
     $html->set('login', $user['login']);
     $html->set('balance', round($user['balance'], 2));
-    $html->set('other_menu', isset($html->arr['vmenu']) ? $html->arr['vmenu'] : '');
+    $html->set('other_menu', $html->arr['vmenu'] ?? '');
 } else {
     // Если пользователь не авторизован, выполните необходимые действия
     $html->set('other_menu', '');
 }
 
-$html->set('nav', isset($html->arr['nav']) ? $html->arr['nav'] : '', true);
-$html->set('main', isset($html->arr['main']) ? $html->arr['main'] : '', true);
+$html->set('nav', $html->arr['nav'] ?? '', true);
+$html->set('main', $html->arr['main'] ?? '', true);
 
 $sql->query('SELECT `id`, `login`, `time` FROM `users` ORDER BY `id` ASC');
 $online = '<span style="padding:0 5px;">';

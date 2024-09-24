@@ -17,24 +17,24 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$plan = isset($url['plan']) ? sys::int($url['plan']) : sys::outjs(array('e' => 'Переданые не все данные'), $nmch);
+$plan = isset($url['plan']) ? sys::int($url['plan']) : sys::outjs(['e' => 'Переданые не все данные'], $nmch);
 
 $aPrice = explode(':', $tarif['price']);
 $aRAM = explode(':', $tarif['ram']);
 
 // Проверка плана
 if (array_search($plan, $aRAM) === false) {
-    sys::outjs(array('e' => 'Переданы неверные данные'), $nmch);
+    sys::outjs(['e' => 'Переданы неверные данные'], $nmch);
 }
 
 $ram = $server['slots_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
 
 if ($plan == $ram) {
-    sys::outjs(array('e' => 'Смысла в этой операции нет'), $nmch);
+    sys::outjs(['e' => 'Смысла в этой операции нет'], $nmch);
 }
 
 if (!tarif::price($tarif['price'])) {
-    sys::outjs(array('e' => 'Чтобы изменить тариф, перейдите в настройки запуска'), $nmch);
+    sys::outjs(['e' => 'Чтобы изменить тариф, перейдите в настройки запуска'], $nmch);
 }
 
 if ($server['time'] < $start_point + 86400) {
@@ -66,7 +66,7 @@ if ($go) {
 
     $sql->query('UPDATE `servers` set `time`="' . $time . '", `ram`="' . $plan . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    if (in_array($server['status'], array('working', 'start', 'restart'))) {
+    if (in_array($server['status'], ['working', 'start', 'restart'])) {
         include(LIB . 'games/' . $server['game'] . '/action.php');
 
         action::start($id, 'restart');
@@ -75,8 +75,8 @@ if ($go) {
     // Запись логов
     $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_plan') . '", `time`="' . $start_point . '"');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Выхлоп информации
-sys::outjs(array('s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'), $nmch);
+sys::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'], $nmch);

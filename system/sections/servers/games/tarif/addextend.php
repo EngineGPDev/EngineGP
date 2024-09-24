@@ -18,7 +18,7 @@ if ($go) {
     $sql->query('SELECT `id`, `aid`, `time` FROM `address_buy` WHERE `server`="' . $id . '" LIMIT 1');
 
     if (!$sql->num()) {
-        sys::outjs(array('s' => 'ok'), $nmch);
+        sys::outjs(['s' => 'ok'], $nmch);
     }
 
     $add = $sql->get();
@@ -29,7 +29,7 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $add['price']) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
+        sys::outjs(['e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     // Списание средств с баланса пользователя
@@ -44,8 +44,8 @@ if ($go) {
     // Запись логов
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
         sys::text('logs', 'extend_address'),
-        array('money' => $add['price'], 'id' => $id)
+        ['money' => $add['price'], 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $add['price'] . '"');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }

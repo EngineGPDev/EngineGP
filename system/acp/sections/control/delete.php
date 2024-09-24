@@ -15,4 +15,4 @@ if (!defined('EGP')) {
 
 $sql->query('UPDATE `control` set `user`="-1", `status`="overdue", `time`="0", `overdue`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

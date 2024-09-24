@@ -14,11 +14,11 @@ if (!defined('EGP')) {
 }
 
 // Закрытие / Удаление вопроса
-if (isset($url['action']) and in_array($url['action'], array('open', 'delete'))) {
+if (isset($url['action']) and in_array($url['action'], ['open', 'delete'])) {
     include(SEC . 'help/action/' . $url['action'] . '.php');
 }
 
-if (in_array($user['group'], array('admin', 'support'))) {
+if (in_array($user['group'], ['admin', 'support'])) {
     $sql->query('SELECT `id`, `user`, `type`, `service`, `date`, `time` FROM `help` WHERE `close`="1"');
 } else {
     $sql->query('SELECT `id`, `type`, `service`, `date`, `time` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="1"');
@@ -28,18 +28,18 @@ $aPage = sys::page($page, $sql->num(), 20);
 
 sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'help/section/close');
 
-if (in_array($user['group'], array('admin', 'support'))) {
+if (in_array($user['group'], ['admin', 'support'])) {
     $helps = $sql->query('SELECT `id`, `user`, `type`, `service`, `date`, `time` FROM `help` WHERE `close`="1" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
 } else {
     $helps = $sql->query('SELECT `id`, `type`, `service`, `date`, `time` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="1" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
 }
 
 // Массив пользователей
-$uArr = array();
+$uArr = [];
 
 while ($help = $sql->get($helps)) {
     // Создатель вопроса
-    if (in_array($user['group'], array('admin', 'support')) and !isset($uArr[$help['user']])) {
+    if (in_array($user['group'], ['admin', 'support']) and !isset($uArr[$help['user']])) {
         $sql->query('SELECT `login` FROM `users` WHERE `id`="' . $help['user'] . '" LIMIT 1');
 
         if (!$sql->num()) {
@@ -91,13 +91,13 @@ while ($help = $sql->get($helps)) {
 
 $html->get('close', 'sections/help');
 
-$html->set('question', isset($html->arr['question']) ? $html->arr['question'] : '');
+$html->set('question', $html->arr['question'] ?? '');
 
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('pages', $html->arr['pages'] ?? '');
 
 $html->pack('main');
 
-if (!in_array($user['group'], array('admin', 'support'))) {
+if (!in_array($user['group'], ['admin', 'support'])) {
     $html->unitall('user', 'main', 1);
     $html->unitall('support', 'main');
 } else {

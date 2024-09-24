@@ -29,7 +29,7 @@ if ($go) {
 
     if (isset($server['status']) && $server['status'] == 'off') {
         if ($command) {
-            sys::outjs(array('e' => sys::text('servers', 'off')));
+            sys::outjs(['e' => sys::text('servers', 'off')]);
         }
 
         sys::out(sys::text('servers', 'off'));
@@ -37,7 +37,7 @@ if ($go) {
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         if ($command) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
         }
 
         sys::out(sys::text('error', 'ssh'));
@@ -52,7 +52,7 @@ if ($go) {
         $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . $command . '"\015\';'
             . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $command = 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X hardcopy -h ' . $filecmd . ' && cat ' . $filecmd;

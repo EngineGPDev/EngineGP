@@ -26,19 +26,19 @@ if ($go) {
     $nmch = 'go_recovery_' . $uip;
 
     if ($mcache->get($nmch)) {
-        sys::outjs(array('e' => sys::text('all', 'mcache')), $nmch);
+        sys::outjs(['e' => sys::text('all', 'mcache')], $nmch);
     }
 
     $mcache->set($nmch, 1, false, 15);
 
     // Проверка капчи
     if (!isset($_POST['captcha']) || sys::captcha_check('recovery', $uip, $_POST['captcha'])) {
-        sys::outjs(array('e' => sys::text('other', 'captcha')), $nmch);
+        sys::outjs(['e' => sys::text('other', 'captcha')], $nmch);
     }
 
-    $aData = array();
+    $aData = [];
 
-    $aData['login'] = isset($_POST['login']) ? $_POST['login'] : '';
+    $aData['login'] = $_POST['login'] ?? '';
 
     // Проверка логина/почты на валидность
     if (sys::valid($aData['login'], 'other', $aValid['mail']) && sys::valid($aData['login'], 'other', $aValid['login'])) {
@@ -49,7 +49,7 @@ if ($go) {
             $out = 'mail';
         }
 
-        sys::outjs(array('e' => sys::text('input', $out . '_valid')), $nmch);
+        sys::outjs(['e' => sys::text('input', $out . '_valid')], $nmch);
     }
 
     $sql_q = '`login`';
@@ -62,7 +62,7 @@ if ($go) {
     // Проверка существования пользователя
     $sql->query('SELECT `id`, `mail` FROM `users` WHERE ' . $sql_q . '="' . $aData['login'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(array('e' => sys::text('input', 'recovery')), $nmch);
+        sys::outjs(['e' => sys::text('input', 'recovery')], $nmch);
     }
 
     $user = $sql->get();
@@ -76,12 +76,12 @@ if ($go) {
         $sql->query('UPDATE `recovery` set `date`="' . $start_point . '" WHERE `id`="' . $recovery['id'] . '" LIMIT 1');
 
         // Повторная отправка письма на почту
-        if (sys::mail('Восстановление доступа', sys::updtext(sys::text('mail', 'recovery'), array('site' => $cfg['name'], 'url' => $cfg['http'] . $link . $recovery['key'])), $user['mail'])) {
-            sys::outjs(array('s' => sys::text('output', 'remail'), 'mail' => sys::mail_domain($user['mail'])), $nmch);
+        if (sys::mail('Восстановление доступа', sys::updtext(sys::text('mail', 'recovery'), ['site' => $cfg['name'], 'url' => $cfg['http'] . $link . $recovery['key']]), $user['mail'])) {
+            sys::outjs(['s' => sys::text('output', 'remail'), 'mail' => sys::mail_domain($user['mail'])], $nmch);
         }
 
         // Выхлоп: не удалось отправить письмо
-        sys::outjs(array('e' => sys::text('error', 'mail')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
     }
 
     // Генерация ключа
@@ -91,12 +91,12 @@ if ($go) {
     $sql->query('INSERT INTO `recovery` set `user`="' . $user['id'] . '", `mail`="' . $user['mail'] . '", `key`="' . $key . '", `date`="' . $start_point . '"');
 
     // Отправка письма на почту
-    if (sys::mail('Восстановление доступа', sys::updtext(sys::text('mail', 'recovery'), array('site' => $cfg['name'], 'url' => $cfg['http'] . $link . $key)), $user['mail'])) {
-        sys::outjs(array('s' => sys::text('output', 'mail'), 'mail' => sys::mail_domain($user['mail'])), $nmch);
+    if (sys::mail('Восстановление доступа', sys::updtext(sys::text('mail', 'recovery'), ['site' => $cfg['name'], 'url' => $cfg['http'] . $link . $key]), $user['mail'])) {
+        sys::outjs(['s' => sys::text('output', 'mail'), 'mail' => sys::mail_domain($user['mail'])], $nmch);
     }
 
     // Выхлоп: не удалось отправить письмо
-    sys::outjs(array('e' => sys::text('error', 'mail')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
 }
 
 // Завершение восстановления
@@ -121,7 +121,7 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
         $sql->query('UPDATE `users` set `passwd`="' . sys::passwdkey($passwd) . '" WHERE `id`="' . $data['user'] . '" LIMIT 1');
         $sql->query('DELETE FROM `recovery` WHERE `id`="' . $data['id'] . '" LIMIT 1');
 
-        if (sys::mail('Восстановление доступа', sys::updtext(sys::text('mail', 'recovery_end'), array('site' => $cfg['name'], 'passwd' => $passwd)), $data['mail'])) {
+        if (sys::mail('Восстановление доступа', sys::updtext(sys::text('mail', 'recovery_end'), ['site' => $cfg['name'], 'passwd' => $passwd]), $data['mail'])) {
             sys::outhtml('Операция по восстановлению успешно выполнена, на вашу почту отправлен новый пароль.', 5, 'http://' . sys::mail_domain($data['mail']));
         }
 

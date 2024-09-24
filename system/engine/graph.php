@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$key = isset($url['key']) ? $url['key'] : exit;
+$key = $url['key'] ?? exit;
 
 if (sys::valid($key, 'md5')) {
     exit;
@@ -32,15 +32,15 @@ if (isset($url['type'])) {
 
     include(LIB . 'games/graph.php');
 
-    $style = isset($url['style']) ? $url['style'] : 'default';
+    $style = $url['style'] ?? 'default';
 
     if (!array_key_exists($style, $aStyle)) {
         $style = 'default';
     }
 
-    $type = isset($url['type']) ? $url['type'] : 'first';
+    $type = $url['type'] ?? 'first';
 
-    if (!in_array($type, array('first', 'second'))) {
+    if (!in_array($type, ['first', 'second'])) {
         $type = 'first';
     }
 

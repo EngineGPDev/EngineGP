@@ -28,8 +28,8 @@ if (!$ssh->auth($unit['passwd'], $unit['address'])) {
 // Удаление файла csstats.dat
 $ssh->set('rm ' . $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/data/csstats.dat');
 
-if (in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
+if (in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
     shell_exec('php cron.php ' . $cfg['cron_key'] . ' server_action restart cs ' . $id);
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }

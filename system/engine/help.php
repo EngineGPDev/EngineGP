@@ -24,19 +24,19 @@ if (!$sql->num()) {
     $html->pack('main');
 } else {
     // Подключение раздела
-    if (!in_array($section, array('create', 'dialog', 'open', 'close', 'notice', 'upload'))) {
+    if (!in_array($section, ['create', 'dialog', 'open', 'close', 'notice', 'upload'])) {
         include(ENG . '404.php');
     }
 
-    $aNav = array(
+    $aNav = [
         'help' => 'Техническая поддержка',
         'create' => 'Создание вопроса',
         'dialog' => 'Решение вопроса',
         'open' => 'Список открытых вопросов',
-        'close' => 'Список закрытых вопросов'
-    );
+        'close' => 'Список закрытых вопросов',
+    ];
 
-    $title = isset($aNav[$section]) ? $aNav[$section] : $section;
+    $title = $aNav[$section] ?? $section;
     $html->nav($aNav['help'], $cfg['http'] . 'help/section/open');
     $html->nav($title);
 

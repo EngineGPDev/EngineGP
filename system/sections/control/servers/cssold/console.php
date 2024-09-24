@@ -26,7 +26,7 @@ if ($go) {
 
     if ($server['status'] == 'off') {
         if ($command) {
-            sys::outjs(array('e' => sys::text('servers', 'off')));
+            sys::outjs(['e' => sys::text('servers', 'off')]);
         }
 
         sys::out(sys::text('servers', 'off'));
@@ -34,7 +34,7 @@ if ($go) {
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         if ($command) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
         }
 
         sys::out(sys::text('error', 'ssh'));
@@ -52,7 +52,7 @@ if ($go) {
                     . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
         }
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $filecmd_copy = $dir . 'oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log';

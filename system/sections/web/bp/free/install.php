@@ -15,21 +15,21 @@ if (!defined('EGP')) {
 
 // Установка
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(array('e' => 'Необходимо указать адрес.'), $name_mcache);
-    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(array('e' => 'Необходимо выбрать домен.'), $name_mcache);
-    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(array('e' => 'Необходимо выбрать шаблон.'), $name_mcache);
-    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : sys::passwd($aWebParam[$url['subsection']]['passwd']);
+    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(['e' => 'Необходимо указать адрес.'], $name_mcache);
+    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(['e' => 'Необходимо выбрать домен.'], $name_mcache);
+    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(['e' => 'Необходимо выбрать шаблон.'], $name_mcache);
+    $aData['passwd'] = $_POST['passwd'] ?? sys::passwd($aWebParam[$url['subsection']]['passwd']);
 
     $aData['type'] = $url['subsection'];
-    $aData['server'] = array_merge($server, array('id' => $id));
+    $aData['server'] = array_merge($server, ['id' => $id]);
 
     $sql->query('SELECT `mail`, `contacts` FROM `users` WHERE `id`="' . $server['user'] . '" LIMIT 1');
     $us = $sql->get();
 
     if ($us['contacts'] == '') {
-        sys::outjs(array('e' => 'Укажите в профиле контактную информацию'));
+        sys::outjs(['e' => 'Укажите в профиле контактную информацию']);
     }
 
     if (strpos($us['contacts'], 'ttp', 1)) {

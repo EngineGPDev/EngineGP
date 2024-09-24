@@ -31,16 +31,16 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go) {
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 if (substr($text, 0, 5) == 'game=') {
     $game = trim(substr($text, 5));
 
-    if (in_array($game, array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc'))) {
+    if (in_array($game, ['cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc'])) {
         $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `game`="' . $game . '" ORDER BY `id` ASC');
     }
 } elseif ($text[0] == 'i' and $text[1] == 'd') {
@@ -59,17 +59,17 @@ if (substr($text, 0, 5) == 'game=') {
 
 if (!$sql->num($webs)) {
     if ($go) {
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
 
 while ($web = $sql->get($webs)) {
     if (!$web['unit']) {
-        $unit = array('name' => 'Веб хостинг');
+        $unit = ['name' => 'Веб хостинг'];
     } else {
         $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $web['unit'] . '" LIMIT 1');
         $unit = $sql->get();
@@ -94,6 +94,6 @@ while ($web = $sql->get($webs)) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

@@ -50,6 +50,6 @@ while ($quest = $sql->get()) {
 $html->get('question', 'sections/wiki');
 
 $html->set('category', $category['name']);
-$html->set('list', isset($html->arr['question']) ? $html->arr['question'] : '');
+$html->set('list', $html->arr['question'] ?? '');
 
 $html->pack('main');

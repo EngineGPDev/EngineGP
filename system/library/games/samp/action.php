@@ -34,7 +34,7 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         $ip = $ssh->getInternalIp();
@@ -87,10 +87,10 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function config($ip, $port, $slots, $config)
@@ -102,7 +102,7 @@ class action extends actions
         foreach ($aLine as $line) {
             $param = explode(' ', trim($line));
 
-            if (in_array(trim($param[0]), array('bind', 'port', 'maxplayers', 'query'))) {
+            if (in_array(trim($param[0]), ['bind', 'port', 'maxplayers', 'query'])) {
                 continue;
             }
 

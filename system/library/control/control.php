@@ -61,11 +61,11 @@ class ctrl
 
         include(LIB . 'ssh.php');
 
-        $aData = array(
+        $aData = [
             'cpu' => '0%',
             'ram' => '0%',
-            'hdd' => '0%'
-        );
+            'hdd' => '0%',
+        ];
 
         $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
         $ctrl = $sql->get();
@@ -90,11 +90,11 @@ class ctrl
 
         include(LIB . 'ssh.php');
 
-        $aData = array(
+        $aData = [
             'cpu' => 'произошла ошибка',
             'ram' => 'произошла ошибка',
-            'hdd' => 'произошла ошибка'
-        );
+            'hdd' => 'произошла ошибка',
+        ];
 
         $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
         $ctrl = $sql->get();
@@ -144,7 +144,7 @@ class ctrl
         }
 
         // Если аренда закончилась, а услуга не просрочена
-        if ($ctrl['time'] < $start_point && !in_array($ctrl['status'], array('overdue', 'blocked'))) {
+        if ($ctrl['time'] < $start_point && !in_array($ctrl['status'], ['overdue', 'blocked'])) {
             $sql->query('UPDATE `control` set `status`="overdue" WHERE `id`="' . $id . '" LIMIT 1');
 
             $status = 'overdue';
@@ -155,7 +155,7 @@ class ctrl
             $sql->query('UPDATE `control` set `status`="working" WHERE `id`="' . $id . '" LIMIT 1');
         }
 
-        if (in_array($ctrl['status'], array('working', 'error'))) {
+        if (in_array($ctrl['status'], ['working', 'error'])) {
             $status = 'working';
             if (!$ssh->auth($ctrl['passwd'], $ctrl['address'])) {
                 $status = 'error';
@@ -174,12 +174,12 @@ class ctrl
 
         $time_end = $ctrl['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $ctrl['overdue'] + $cfg['control_delete'] * 86400) : 'Осталось: ' . sys::date('min', $ctrl['time']);
 
-        $aData = array(
+        $aData = [
             'time' => sys::today($ctrl['time']),
             'time_end' => $time_end,
             'buttons' => ctrl::buttons($id, $status),
-            'status' => ctrl::status($status)
-        );
+            'status' => ctrl::status($status),
+        ];
 
         return $aData;
     }
@@ -204,7 +204,7 @@ class ctrl
     {
         global $cfg, $html, $sql, $mcache, $start_point;
 
-        $aUnit = array('index', 'console', 'settings', 'plugins', 'filetp', 'copy', 'boost');
+        $aUnit = ['index', 'console', 'settings', 'plugins', 'filetp', 'copy', 'boost'];
 
         $html->get('gmenu', 'sections/control/servers/' . $server['game']);
 
@@ -245,7 +245,7 @@ class ctrl
     {
         global $start_point;
 
-        if (in_array($server['status'], array('install', 'reinstall', 'update', 'recovery'))) {
+        if (in_array($server['status'], ['install', 'reinstall', 'update', 'recovery'])) {
             if ($go) {
                 sys::out('Раздел недоступен');
             }
@@ -273,7 +273,7 @@ class ctrl
 
             $out = $core ? '<option value="0">Автоматическое определение</option><option value="1">1 ядро/поток</option>' : '<option value="' . $core . '">' . $core . ' ядро/поток</option><option value="0">Автоматическое определение</option>';
 
-            sys::outjs(array('core_fix' => $core));
+            sys::outjs(['core_fix' => $core]);
         }
 
         $n = sys::int($ssh->get('cat /proc/cpuinfo | grep "cpu MHz" | wc -l'));
@@ -288,7 +288,7 @@ class ctrl
             $list .= '<option value="' . $i . '">' . $i . ' ядро/поток</option>';
         }
 
-        sys::outjs(array('core_fix' => str_replace($core . '"', $core . '" selected="select"', $list)));
+        sys::outjs(['core_fix' => str_replace($core . '"', $core . '" selected="select"', $list)]);
     }
 
     public static function iptables($id, $action, $source, $dest, $unit, $snw = false, $ssh = false)
@@ -302,14 +302,14 @@ class ctrl
             include(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                return array('e' => sys::text('all', 'ssh'));
+                return ['e' => sys::text('all', 'ssh')];
             }
         }
 
         switch ($action) {
             case 'block':
                 if (sys::valid($source, 'ip')) {
-                    return array('e' => sys::text('servers', 'firewall'));
+                    return ['e' => sys::text('servers', 'firewall')];
                 }
 
                 // Если подсеть
@@ -317,7 +317,7 @@ class ctrl
                     $source = sys::whois($source);
 
                     if ($source == 'не определена') {
-                        return array('e' => 'Не удалось определить подсеть для указанного адреса.');
+                        return ['e' => 'Не удалось определить подсеть для указанного адреса.'];
                     }
                 }
 
@@ -325,7 +325,7 @@ class ctrl
 
                 // Если такое правило уже добавлено или указан адрес сайта (ПУ)
                 if ($sql->num() || ($source == $cfg['ip'] || $source == $cfg['subnet'])) {
-                    return array('s' => 'ok');
+                    return ['s' => 'ok'];
                 }
 
                 $sql->query('INSERT INTO `control_firewall` set `sip`="' . $source . '", `dest`="' . $dest[0] . ':' . $dest[1] . '", `server`="' . $id . '", `time`="' . $start_point . '"');
@@ -336,11 +336,11 @@ class ctrl
 
                 $ssh->set($rule . ' echo -e "#' . $line . ';\n' . $rule . '" >> /root/' . $cfg['iptables']);
 
-                return array('s' => 'ok');
+                return ['s' => 'ok'];
 
             case 'unblock':
                 if (!is_numeric($source) and sys::valid($source, 'ip')) {
-                    return array('e' => sys::text('servers', 'firewall'));
+                    return ['e' => sys::text('servers', 'firewall')];
                 }
 
                 if (is_numeric($source)) {
@@ -348,7 +348,7 @@ class ctrl
 
                     // Если такое правило отсутствует
                     if (!$sql->num()) {
-                        return array('s' => 'ok');
+                        return ['s' => 'ok'];
                     }
                 } else {
                     $sql->query('SELECT `id`, `sip` FROM `control_firewall` WHERE `sip`="' . $source . '" AND `server`="' . $id . '" LIMIT 1');
@@ -362,10 +362,10 @@ class ctrl
                         if ($sql->num()) {
                             $firewall = $sql->get();
 
-                            return array('i' => 'Указанный адрес входит в заблокированную подсеть, разблокировать подсеть?', 'id' => $firewall['id']);
+                            return ['i' => 'Указанный адрес входит в заблокированную подсеть, разблокировать подсеть?', 'id' => $firewall['id']];
                         }
 
-                        return array('s' => 'ok');
+                        return ['s' => 'ok'];
                     }
                 }
 
@@ -376,15 +376,15 @@ class ctrl
 
                 $sql->query('DELETE FROM `control_firewall` WHERE `id`="' . $firewall['id'] . '" LIMIT 1');
 
-                return array('s' => 'ok');
+                return ['s' => 'ok'];
 
             case 'remove':
                 $sql->query('SELECT `id`, `sip`, `dest` FROM `control_firewall` WHERE `server`="' . $id . '"');
 
-                $aRule = array();
+                $aRule = [];
 
                 while ($firewall = $sql->get()) {
-                    list($ip, $port) = explode(':', $firewall['dest']);
+                    [$ip, $port] = explode(':', $firewall['dest']);
 
                     $aRule[$firewall['id']] = 'iptables -D INPUT -s ' . $firewall['sip'] . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;';
                 }
@@ -405,18 +405,18 @@ class ctrl
 
                 $sql->query('DELETE FROM `control_firewall` WHERE `server`="' . $id . '" LIMIT ' . $nRule);
 
-                return array('s' => 'ok');
+                return ['s' => 'ok'];
         }
     }
 
-    public static function crontab($id, $cid, $data = array())
+    public static function crontab($id, $cid, $data = [])
     {
         global $cfg;
 
         if ($data['allhour']) {
             $time = '0 * * * ';
         } else {
-            $hour = array(
+            $hour = [
                 '00', '01', '02',
                 '03', '04', '05',
                 '06', '07', '08',
@@ -424,15 +424,15 @@ class ctrl
                 '12', '13', '14',
                 '15', '16', '17',
                 '18', '19', '20',
-                '21', '22', '23'
-            );
+                '21', '22', '23',
+            ];
 
-            $minute = array(
+            $minute = [
                 '00', '05', '10',
                 '15', '20', '25',
                 '30', '35', '40',
-                '45', '50', '55'
-            );
+                '45', '50', '55',
+            ];
 
             if (!in_array($data['hour'], $hour)) {
                 $data['hour'] = '00';
@@ -445,7 +445,7 @@ class ctrl
             $time = $data['minute'] . ' ' . $data['hour'] . ' * * ';
         }
 
-        $week = array();
+        $week = [];
         $week[1] = isset($data['week']['\'1\'']) ? 1 : 0;
         $week[2] = isset($data['week']['\'2\'']) ? 2 : 0;
         $week[3] = isset($data['week']['\'3\'']) ? 3 : 0;
@@ -464,7 +464,7 @@ class ctrl
             $week = '*';
         } else {
             $weeks = $week[1] . ',' . $week[2] . ',' . $week[3] . ',' . $week[4] . ',' . $week[5] . ',' . $week[6] . ',' . $week[7];
-            $weeks = str_replace(array(',0', '0'), '', $weeks);
+            $weeks = str_replace([',0', '0'], '', $weeks);
             $week = $weeks[0] == ',' ? substr($weeks, 1) : $weeks;
         }
 

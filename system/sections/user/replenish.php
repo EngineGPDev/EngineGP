@@ -35,5 +35,5 @@ $html->set('wmr', $cfg['webmoney_wmr']);
 $html->set('freekassa', $cfg['freekassa_id']);
 $html->set('balance', round($user['balance'], 2));
 $html->set('cur', $cfg['currency']);
-$html->set('logs', isset($html->arr['logs']) ? $html->arr['logs'] : 'Нет логов операций', true);
+$html->set('logs', $html->arr['logs'] ?? 'Нет логов операций', true);
 $html->pack('main');

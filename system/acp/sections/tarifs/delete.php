@@ -15,9 +15,9 @@ if (!defined('EGP')) {
 
 $sql->query('SELECT `id` FROM `servers` WHERE `tarif`="' . $id . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(array('e' => 'Нельзя удалить тариф с серверами.'));
+    sys::outjs(['e' => 'Нельзя удалить тариф с серверами.']);
 }
 
 $sql->query('DELETE FROM `tarifs` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

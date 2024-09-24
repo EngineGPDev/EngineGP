@@ -61,7 +61,7 @@ $html->set('discount', $discount);
 $html->set('autostop', $autostop);
 $html->set('show', $show);
 
-foreach (array('ftp', 'plugins', 'console', 'stats', 'copy', 'web') as $section) {
+foreach (['ftp', 'plugins', 'console', 'stats', 'copy', 'web'] as $section) {
     if ($tarif[$section]) {
         $html->unit($section, 1);
     } else {

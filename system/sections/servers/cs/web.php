@@ -18,7 +18,7 @@ $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
 include(DATA . 'web.php');
 
 // Если выбран подраздел
-if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_array($url['action'], array_merge($aAction[$url['subsection']], array('install', 'manage')))) {
+if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_array($url['action'], array_merge($aAction[$url['subsection']], ['install', 'manage']))) {
     if ($go) {
         $nmch = sys::rep_act('server_web_go_' . $id, 10);
     } else {
@@ -87,7 +87,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub) and in_arr
 
         $html->get('web', 'sections/servers/' . $server['game']);
         $html->set('id', $id);
-        $html->set('web', isset($html->arr['web']) ? $html->arr['web'] : 'Дополнительные услуги отсутствуют');
+        $html->set('web', $html->arr['web'] ?? 'Дополнительные услуги отсутствуют');
         $html->pack('main');
 
         $mcache->set('server_web_' . $id, $html->arr['main'], false, 4);

@@ -17,7 +17,7 @@ $sql->query('SELECT * FROM `promo` WHERE `id`="' . $id . '" LIMIT 1');
 $promo = $sql->get();
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['cod'] = isset($_POST['cod']) ? trim($_POST['cod']) : $promo['cod'];
     $aData['value'] = isset($_POST['value']) ? trim($_POST['value']) : $promo['value'];
@@ -33,18 +33,18 @@ if ($go) {
     $aData['time'] = sys::checkdate($aData['time']);
 
     if (sys::valid($aData['cod'], 'promo')) {
-        sys::outjs(array('e' => 'Неправильный формат промо-кода'));
+        sys::outjs(['e' => 'Неправильный формат промо-кода']);
     }
 
     $sql->query('SELECT `id` FROM `promo` WHERE `id`!="' . $id . '" AND `cod`="' . $aData['cod'] . '" AND `tarif`="' . $promo['tarif'] . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(array('e' => 'Указанный код используется в другой акции'));
+        sys::outjs(['e' => 'Указанный код используется в другой акции']);
     }
 
     if ($aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Указанный пользователь не найден'));
+            sys::outjs(['e' => 'Указанный пользователь не найден']);
         }
     } else {
         $aData['user'] = 0;
@@ -53,7 +53,7 @@ if ($go) {
     if ($aData['server']) {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Указанный сервер не найден'));
+            sys::outjs(['e' => 'Указанный сервер не найден']);
         }
     } else {
         $aData['server'] = 0;
@@ -77,7 +77,7 @@ if ($go) {
         . '`server`="' . $aData['server'] . '",'
         . '`time`="' . $aData['time'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $sql->query('SELECT `id`, `unit`, `name`, `game` FROM `tarifs` WHERE `id`="' . $promo['tarif'] . '" LIMIT 1');
@@ -91,7 +91,7 @@ $html->get('promo', 'sections/promo');
 $html->set('id', $promo['id']);
 $html->set('cod', $promo['cod']);
 $html->set('value', $promo['value']);
-$html->set('data', str_replace(array('{', '}'), '', base64_decode($promo['data'])));
+$html->set('data', str_replace(['{', '}'], '', base64_decode($promo['data'])));
 $html->set('hits', $promo['hits']);
 $html->set('use', $promo['use']);
 $html->set('user', $promo['user']);

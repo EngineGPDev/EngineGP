@@ -33,18 +33,18 @@ if (isset($url['maps'])) {
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
             if ($map != $server['map_start']) {
                 games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/csgo/maps', $map, true, $nmch);
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'vac':
@@ -53,16 +53,16 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'mod':
-            if (in_array($value, array(1, 2, 3, 4, 5))) {
+            if (in_array($value, [1, 2, 3, 4, 5])) {
                 $sql->query('UPDATE `servers` set `pingboost`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'slots':
@@ -74,7 +74,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'autorestart':
@@ -83,7 +83,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'tickrate':
@@ -92,14 +92,14 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'fastdl':
             include(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+                sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
             }
 
             if ($value) {
@@ -128,7 +128,7 @@ if ($go and $url['save']) {
             $sql->query('UPDATE `servers` set `fastdl`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 

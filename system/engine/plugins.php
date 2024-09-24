@@ -13,13 +13,13 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aGame = array(
+$aGame = [
     'cs' => 'Counter-Strike: 1.6',
     'cssold' => 'Counter-Strike: Source v34',
     'css' => 'Counter-Strike: Source',
     'csgo' => 'Counter-Strike: Global Offensive',
-    'cs2' => 'Counter-Strike: 2'
-);
+    'cs2' => 'Counter-Strike: 2',
+];
 
 if (!isset($url['game']) || !array_key_exists($url['game'], $aGame)) {
     $url['game'] = 'cs';
@@ -163,7 +163,7 @@ if (!isset($html->arr['main'])) {
             $html->get('category', 'sections/plugins');
 
             $html->set('name', $cat['name']);
-            $html->set('plugins', isset($html->arr['plugins']) ? $html->arr['plugins'] : 'Доступных для установки плагинов нет.', 1);
+            $html->set('plugins', $html->arr['plugins'] ?? 'Доступных для установки плагинов нет.', 1);
 
             $html->pack('addons');
         }
@@ -171,7 +171,7 @@ if (!isset($html->arr['main'])) {
         $html->get('plugins', 'sections/plugins');
 
         $html->set('game', $aGame[$url['game']]);
-        $html->set('addons', isset($html->arr['addons']) ? $html->arr['addons'] : '');
+        $html->set('addons', $html->arr['addons'] ?? '');
 
         $html->pack('main');
 

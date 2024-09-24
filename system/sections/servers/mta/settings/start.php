@@ -20,7 +20,7 @@ include(LIB . 'games/games.php');
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'slots':
@@ -32,7 +32,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'autorestart':
@@ -41,7 +41,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 

@@ -20,4 +20,4 @@ if (isset($url['type']) and $url['type'] == 'cat') {
     $sql->query('DELETE FROM `wiki_answer` WHERE `wiki`="' . $id . '" LIMIT 1');
 }
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

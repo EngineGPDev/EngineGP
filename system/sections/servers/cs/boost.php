@@ -16,13 +16,13 @@ if (!defined('EGP')) {
 include(DATA . 'boost.php');
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
-    $aData['site'] = isset($url['site']) ? $url['site'] : sys::outjs(array('e' => 'Необходимо указать сервис.'));
+    $aData['site'] = $url['site'] ?? sys::outjs(['e' => 'Необходимо указать сервис.']);
 
     // Проверка сервиса
     if (!in_array($aData['site'], $aBoost[$server['game']]['boost'])) {
-        sys::outjs(array('e' => 'Указанный сервис по раскрутке не найден.'));
+        sys::outjs(['e' => 'Указанный сервис по раскрутке не найден.']);
     }
 
     if (isset($url['rating'])) {
@@ -44,11 +44,11 @@ if ($go) {
         sys::out($rating, 'server_boost_' . $id);
     }
 
-    $aData['service'] = isset($url['service']) ? sys::int($url['service']) : sys::outjs(array('e' => 'Необходимо указать номер услуги.'));
+    $aData['service'] = isset($url['service']) ? sys::int($url['service']) : sys::outjs(['e' => 'Необходимо указать номер услуги.']);
 
     // Проверка номера услуги
     if (!in_array($aData['service'], $aBoost[$server['game']][$aData['site']]['services'])) {
-        sys::outjs(array('e' => 'Неправильно указан номер услуги.'));
+        sys::outjs(['e' => 'Неправильно указан номер услуги.']);
     }
 
     // Определение суммы
@@ -56,17 +56,17 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']), $name_mcache);
+        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $name_mcache);
     }
 
     include(LIB . 'games/boost.php');
 
     $boost = new boost($aBoost[$server['game']][$aData['site']]['key'], $aBoost[$server['game']][$aData['site']]['api']);
 
-    $buy = $boost->$aBoost[$server['game']][$aData['site']]['type'](array('period' => $aData['service'], 'address' => $server['address']));
+    $buy = $boost->$aBoost[$server['game']][$aData['site']]['type'](['period' => $aData['service'], 'address' => $server['address']]);
 
     if (is_array($buy)) {
-        sys::outjs(array('e' => $buy['error']));
+        sys::outjs(['e' => $buy['error']]);
     }
 
     // Списание средств с баланса пользователя
@@ -79,13 +79,13 @@ if ($go) {
 
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
         sys::text('logs', 'buy_boost'),
-        array('circles' => $aBoost[$server['game']][$aData['site']]['circles'][$aData['service']],
-                'money' => $sum, 'site' => $aBoost[$server['game']][$aData['site']]['site'], 'id' => $id)
+        ['circles' => $aBoost[$server['game']][$aData['site']]['circles'][$aData['service']],
+                'money' => $sum, 'site' => $aBoost[$server['game']][$aData['site']]['site'], 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="boost", `money`="' . $sum . '"');
 
     $sql->query('INSERT INTO `boost` set `user`="' . $user['id'] . '", `server`="' . $id . '", `site`="' . $aData['site'] . '", `circles`="' . $aBoost[$server['game']][$aData['site']]['circles'][$aData['service']] . '", `money`="' . $sum . '", `date`="' . $start_point . '"');
 
-    sys::outjs(array('s' => 'ok'), $name_mcache);
+    sys::outjs(['s' => 'ok'], $name_mcache);
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

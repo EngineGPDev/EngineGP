@@ -39,7 +39,7 @@ if (is_array($promo)) {
 if ($go) {
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
+        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     // Списание средств с баланса пользователя
@@ -65,23 +65,23 @@ if ($go) {
     if (!is_array($promo)) {
         $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
             sys::text('logs', 'extend_server'),
-            array('days' => $days,
+            ['days' => $days,
                     'money' => $sum,
-                    'id' => $id)
+                    'id' => $id]
         ) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $sum . '"');
     } else {
         $sql->query('UPDATE `servers` set `benefit`="' . $time . '" WHERE `id`="' . $id . '" LIMIT 1');
         $sql->query('INSERT INTO `promo_use` set `promo`="' . $promo['id'] . '", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
         $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
             sys::text('logs', 'extend_server_promo'),
-            array('days' => $days,
+            ['days' => $days,
                     'money' => $sum,
-                    'promo' => $promo['cod'], 'id' => $id)
+                    'promo' => $promo['cod'], 'id' => $id]
         ) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $sum . '"');
     }
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Выхлоп цены
-sys::outjs(array('s' => $sum));
+sys::outjs(['s' => $sum]);

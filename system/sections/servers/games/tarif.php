@@ -59,7 +59,7 @@ if (!$server['test']) {
 
     // Шаблон изменения кол-ва слот
     if ($tarif['slots_min'] != $tarif['slots_max']) {
-        tarif::slots($server, array('min' => $tarif['slots_min'], 'max' => $tarif['slots_max']), $id);
+        tarif::slots($server, ['min' => $tarif['slots_min'], 'max' => $tarif['slots_max']], $id);
     }
 
     // Шаблон изменения локации (если аренда не менее 1 дня)
