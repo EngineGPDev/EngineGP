@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7ed1ecc5e87db359e7464c6d2af85a4",
+    "content-hash": "4abd1f9731c7a59130d5f66a7ee10016",
     "packages": [
         {
             "name": "austinb/gameq",
@@ -586,16 +586,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.39",
+            "version": "3.0.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "211ebc399c6e73c225a018435fe5ae209d1d1485"
+                "reference": "db92f1b1987b12b13f248fe76c3a52cadb67bb98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/211ebc399c6e73c225a018435fe5ae209d1d1485",
-                "reference": "211ebc399c6e73c225a018435fe5ae209d1d1485",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/db92f1b1987b12b13f248fe76c3a52cadb67bb98",
+                "reference": "db92f1b1987b12b13f248fe76c3a52cadb67bb98",
                 "shasum": ""
             },
             "require": {
@@ -676,7 +676,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.39"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.42"
             },
             "funding": [
                 {
@@ -692,7 +692,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-24T06:27:33+00:00"
+            "time": "2024-09-16T03:06:04+00:00"
         },
         {
             "name": "psr/container",
