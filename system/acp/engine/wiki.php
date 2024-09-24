@@ -15,14 +15,14 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-cubes"></i> Управление википедией';
 
-$aSection = array(
+$aSection = [
     'addcat',
     'cat',
     'cats',
     'index',
     'add',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

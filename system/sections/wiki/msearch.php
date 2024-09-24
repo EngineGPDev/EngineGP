@@ -17,20 +17,20 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$text = isset($_POST['text']) ? $_POST['text'] : (isset($url['tag']) ? urldecode($url['tag']) : sys::outjs(array('none' => '')));
+$text = $_POST['text'] ?? (isset($url['tag']) ? urldecode($url['tag']) : sys::outjs(['none' => '']));
 
 $mkey = md5($text . 'wiki');
 
 if ($mcache->get($mkey) != '' and !isset($url['tag'])) {
-    sys::outjs(array('s' => $mcache->get($mkey)));
+    sys::outjs(['s' => $mcache->get($mkey)]);
 }
 
 if (!isset($text[2]) and !isset($url['tag'])) {
-    sys::outjs(array('s' => 'Для выполнения поиска, необходимо больше данных', $nmch));
+    sys::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
 }
 
-$aWiki_q = array();
-$aNswer_q = array();
+$aWiki_q = [];
+$aNswer_q = [];
 
 // Поиск по вопросу
 $wiki_q = $sql->query('SELECT `id` FROM `wiki` WHERE `name` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') OR `tags` LIKE FROM_BASE64(\'' . base64_encode('%' . $text . '%') . '\') LIMIT 3');
@@ -44,7 +44,7 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
     if (!strpos($text, ' ')) {
         $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-        sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+        sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
     }
 
     // Массив слов
@@ -81,11 +81,11 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
 if (!count($aWiki_q) and !count($aNswer_q) and !isset($url['tag'])) {
     $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-    sys::outjs(array('s' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
 }
 
 // Защита от дублирования
-$aResult = array();
+$aResult = [];
 
 foreach ($aWiki_q as $index => $wiki_q) {
     // Генерация списка (совпадение по вопросу)
@@ -157,8 +157,8 @@ foreach ($aNswer_q as $index => $answer_q) {
     }
 }
 
-$html->arr['question'] = isset($html->arr['question']) ? $html->arr['question'] : 'По вашему запросу ничего не найдено';
+$html->arr['question'] ??= 'По вашему запросу ничего не найдено';
 
 $mcache->set($mkey, $html->arr['question'], false, 15);
 
-sys::outjs(array('s' => $html->arr['question']), $nmch);
+sys::outjs(['s' => $html->arr['question']], $nmch);

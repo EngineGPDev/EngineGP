@@ -17,7 +17,7 @@ if (!defined('EGP')) {
 $dotenv = new Symfony\Component\Dotenv\Dotenv();
 $dotenv->load(ROOT.'.env');
 
-$cfg = array(
+$cfg = [
     'name' => $_ENV['APP_NAME'],
     'graph' => $_ENV['APP_NAME'],
     'url' => $_ENV['APP_URL'],
@@ -32,7 +32,7 @@ $cfg = array(
             '_COOKIE' => array_keys($_COOKIE),
             '_SERVER' => array_keys($_SERVER),
             '_ENV' => array_keys($_ENV),
-        ]
+        ],
     ],
 
     // Данные для пополнения баланса пользователям
@@ -45,7 +45,7 @@ $cfg = array(
     'unitpay_pubkey' => '', // Публичный ключ UnitPay
 
     // Уведомления о сообщениях в тикетах
-    'notice_admin' => array(1), // перечислить id пользователя, на их почты будут отправлять уведомления
+    'notice_admin' => [1], // перечислить id пользователя, на их почты будут отправлять уведомления
 
     // Данные для работы с sms шлюзом (sms.ru)
     'sms_gateway' => 'http://sms.ru/sms/send?api_id=_KEY_&from=_WHO_', // шлюз
@@ -101,43 +101,43 @@ $cfg = array(
 
     // Услуга "Контроль"
     'control_delete' => 10, // через сколько дней удалять услугу
-    'control_time' => array(30, 90), // периоды аренды
-    'control_limit' => array( // лимит / цена
+    'control_time' => [30, 90], // периоды аренды
+    'control_limit' => [ // лимит / цена
         1 => 50,
         5 => 100,
         10 => 150,
-        20 => 250
-    ),
+        20 => 250,
+    ],
     'control_server' => 'http://games.enginegp.ru/', // головной сервер, путь к архивам
-    'control_packs' => array(
-        'cs' => array(
+    'control_packs' => [
+        'cs' => [
             '6153' => 'Build 6153',
             '5787' => 'Build 5787',
-            'rehlds' => 'ReHLDS'
-        ),
-        'cssold' => array(
+            'rehlds' => 'ReHLDS',
+        ],
+        'cssold' => [
             'cssold' => 'Стандарт',
-        ),
-        'css' => array(
+        ],
+        'css' => [
             'default' => 'Стандарт',
-        ),
-        'csgo' => array(
+        ],
+        'csgo' => [
             'default' => 'Стандарт',
-        )
-    ),
-    'control_install' => array(
+        ],
+    ],
+    'control_install' => [
         'cs' => 'pack="6153", `map_start`="de_dust2", `fps`="1100"',
         'cssold' => 'pack="cssold", `map_start`="de_dust2", `fps`="1000",`tickrate`="100"',
         'css' => 'pack="default", `map_start`="de_dust2", `tickrate`="100"',
-        'csgo' => 'pack="default", `map_start`="de_dust2", `tickrate`="128"'
-    ),
-    'control_steamcmd' => array(
+        'csgo' => 'pack="default", `map_start`="de_dust2", `tickrate`="128"',
+    ],
+    'control_steamcmd' => [
         'css' => 232330,
-        'csgo' => 740
-    ),
+        'csgo' => 740,
+    ],
 
     // Задержка в возможности повторной переустановки сервера (минуты)
-    'reinstall' => array(
+    'reinstall' => [
         'cs' => '60',
         'cssold' => '60',
         'css' => '60',
@@ -147,23 +147,23 @@ $cfg = array(
         'samp' => '60',
         'crmp' => '60',
         'mta' => '60',
-        'mc' => '60'
-    ),
+        'mc' => '60',
+    ],
 
     // Задержка в возможности повторного обновления сервера (минуты)
-    'update' => array(
+    'update' => [
         'cs' => '60',
         'cssold' => '60',
         'css' => '60',
         'csgo' => '60',
         'cs2' => '60',
-        'rust' => '60'
-    ),
+        'rust' => '60',
+    ],
 
     // Параметры ftp игровых серверов
-    'ftp' => array(
+    'ftp' => [
         // Корневая директория серверов (false = server/(cstrike | csgo | l4d)/ | true = server/)
-        'root' => array(
+        'root' => [
             'cs' => false,
             'cssold' => false,
             'css' => false,
@@ -173,11 +173,11 @@ $cfg = array(
             'samp' => false,
             'crmp' => false,
             'mta' => false,
-            'mc' => false
-        ),
+            'mc' => false,
+        ],
 
         // Путь к директори для файлового менеджера EngineGP (используется при $cfg['ftp']['root'][$game] == TRUE)
-        'dir' => array(
+        'dir' => [
             'cs' => '/cstrike',
             'cssold' => '/cstrike',
             'css' => '/cstrike',
@@ -187,11 +187,11 @@ $cfg = array(
             'samp' => '/',
             'crmp' => '/',
             'mta' => '/mods/deathmatch',
-            'mc' => '/'
-        ),
+            'mc' => '/',
+        ],
 
         // Путь к директори (используется при $cfg['ftp']['root'][$game] == FALSE)
-        'home' => array(
+        'home' => [
             'cs' => '/cstrike',
             'cssold' => '/cstrike',
             'css' => '/cstrike',
@@ -201,75 +201,75 @@ $cfg = array(
             'samp' => '/',
             'crmp' => '/',
             'mta' => '/mods/deathmatch',
-            'mc' => '/'
-        ),
-    ),
+            'mc' => '/',
+        ],
+    ],
 
     // Смена количества слот
-    'change_slots' => array(
-        'cs' => array(
+    'change_slots' => [
+        'cs' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'cssold' => array(
+        'cssold' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'css' => array(
+        'css' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'csgo' => array(
+        'csgo' => [
             'days' => false, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'cs2' => array(
+        'cs2' => [
             'days' => false, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'rust' => array(
+        'rust' => [
             'days' => false, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'samp' => array(
+        'samp' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'crmp' => array(
+        'crmp' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'mta' => array(
+        'mta' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
 
-        'mc' => array(
+        'mc' => [
             'days' => true, // При смене кол-ва слот вычитывать/добавлять дни аренды (add == true), если false, то смена (увеличение) на платной основе
             'down' => true, // Если 'days == true', то дать возможность уменьшать слоты
-            'add' => true // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
-        )
-    ),
+            'add' => true, // Если 'down == true', то при уменьшении кол-во слот, добавлять дни к аренде
+        ],
+    ],
 
     // Смена локации
-    'change_unit' => array(
+    'change_unit' => [
         'cs' => false,
         'cssold' => false,
         'css' => false,
@@ -279,11 +279,11 @@ $cfg = array(
         'samp' => false,
         'crmp' => false,
         'mta' => false,
-        'mc' => false
-    ),
+        'mc' => false,
+    ],
 
     // Аренда выделенного адреса (пример: cs 1.6 => ip:27015)
-    'buy_address' => array(
+    'buy_address' => [
         'cs' => true, // true == по месячная аренда, false == разовая оплата на весь период аренды игрового сервера
         'cssold' => true,
         'css' => true,
@@ -293,20 +293,20 @@ $cfg = array(
         'samp' => true,
         'crmp' => true,
         'mta' => true,
-        'mc' => true
-    ),
+        'mc' => true,
+    ],
 
     // Тестовый период (тестовый период возможен только пользователям с подтвержденным номером, выдается 1 раз)
-    'tests' => array(
+    'tests' => [
         'game' => false, // Разрешить брать тест другой игры
-        'sametime' => false // Разрешить брать тест другой игры во время тестирования. (при условии, что game == true)
-    ),
+        'sametime' => false, // Разрешить брать тест другой игры во время тестирования. (при условии, что game == true)
+    ],
 
     // Боты на сервере (включение -nobots в параметре запуска сервера)
-    'bots' => array(
+    'bots' => [
         'cssold' => false, // true == разрешены, false == запрещены
         'css' => false,
         'csgo' => false,
-        'cs2' => false
-    )
-);
+        'cs2' => false,
+    ],
+];

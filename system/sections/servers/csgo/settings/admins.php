@@ -25,18 +25,18 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
-    $aData = array();
+    $aData = [];
 
-    $aData['active'] = isset($_POST['active']) && is_array($_POST['active']) ? $_POST['active'] : array();
-    $aData['value'] = isset($_POST['value']) && is_array($_POST['value']) ? $_POST['value'] : array();
-    $aData['passwd'] = isset($_POST['passwd']) && is_array($_POST['passwd']) ? $_POST['passwd'] : array();
-    $aData['flags'] = isset($_POST['flags']) && is_array($_POST['flags']) ? $_POST['flags'] : array();
-    $aData['immunity'] = isset($_POST['immunity']) && is_array($_POST['immunity']) ? sys::int($_POST['immunity']) : array();
-    $aData['time'] = isset($_POST['time']) && is_array($_POST['time']) ? $_POST['time'] : array();
-    $aData['info'] = isset($_POST['info']) && is_array($_POST['info']) ? $_POST['info'] : array();
+    $aData['active'] = isset($_POST['active']) && is_array($_POST['active']) ? $_POST['active'] : [];
+    $aData['value'] = isset($_POST['value']) && is_array($_POST['value']) ? $_POST['value'] : [];
+    $aData['passwd'] = isset($_POST['passwd']) && is_array($_POST['passwd']) ? $_POST['passwd'] : [];
+    $aData['flags'] = isset($_POST['flags']) && is_array($_POST['flags']) ? $_POST['flags'] : [];
+    $aData['immunity'] = isset($_POST['immunity']) && is_array($_POST['immunity']) ? sys::int($_POST['immunity']) : [];
+    $aData['time'] = isset($_POST['time']) && is_array($_POST['time']) ? $_POST['time'] : [];
+    $aData['info'] = isset($_POST['info']) && is_array($_POST['info']) ? $_POST['info'] : [];
 
     // Удаление текущих записей
     $sql->query('DELETE FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '"');
@@ -54,9 +54,9 @@ if ($go) {
             $time = mktime(0, 0, 0, $aDate[1], $aDate[0], $aDate[2]);
 
             $aData['active'][$index] = isset($aData['active'][$index]) ? 1 : 0;
-            $aData['passwd'][$index] = isset($aData['passwd'][$index]) ? $aData['passwd'][$index] : '';
-            $aData['flags'][$index] = isset($aData['flags'][$index]) ? $aData['flags'][$index] : '';
-            $aData['info'][$index] = isset($aData['info'][$index]) ? $aData['info'][$index] : '';
+            $aData['passwd'][$index] ??= '';
+            $aData['flags'][$index] ??= '';
+            $aData['info'][$index] ??= '';
 
             $text = '"' . $val . '" "' . $aData['immunity'][$index] . ':' . $aData['flags'][$index] . '" "' . $aData['passwd'][$index] . '"';
 
@@ -88,7 +88,7 @@ if ($go) {
 
     $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \" sm_reloadadmins\"\015'");
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Построение списка добавленных админов
@@ -119,7 +119,7 @@ $max = $sql->get();
 $html->get('admins', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
-$html->set('admins', isset($html->arr['admins']) ? $html->arr['admins'] : '');
+$html->set('admins', $html->arr['admins'] ?? '');
 $html->set('index', isset($max['id']) < 1 ? 0 : $max['id']);
 
 $html->pack('main');

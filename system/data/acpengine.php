@@ -14,7 +14,7 @@ if (!defined('EGP')) {
 }
 
 // Массив главных разделов
-$aRoute = array(
+$aRoute = [
     'system',
     'users',
     'units',
@@ -32,11 +32,11 @@ $aRoute = array(
     'pages',
     'letter',
     'logs',
-    'cashback'
-);
+    'cashback',
+];
 
 // Массив регулярных выражений
-$aValid = array(
+$aValid = [
     'login' => '/^[A-Za-z0-9_]{4,16}$/',
     'mail' => '/^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i',
     'name' => '/^[А-ЯЁ]{1,1}[а-яё]{2,15}$/u',
@@ -46,11 +46,11 @@ $aValid = array(
     'contacts' => '/^(http|https):\/\/(new\.vk|vk)\.com\/[A-Za-z\_\.]{1,2}[A-Za-z0-9\_\.]{4,32}$|^[A-Za-z][A-Za-z0-9\.\-\_]{6,32}$/',
     'passwd' => '/^[A-Za-z0-9]{6,26}$/',
     'support_info' => '/[^а-яА-Я\s]+/msi',
-    'address' => '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{1,5}/'
-);
+    'address' => '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{1,5}/',
+];
 
 // Массив имен игр
-$aGname = array(
+$aGname = [
     'cs' => 'CS: 1.6',
     'css' => 'CS: Source',
     'cssold' => 'CS: Source v34',
@@ -60,5 +60,5 @@ $aGname = array(
     'mc' => 'Minecraft',
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP',
-    'crmp' => 'GTA: CRMP'
-);
+    'crmp' => 'GTA: CRMP',
+];

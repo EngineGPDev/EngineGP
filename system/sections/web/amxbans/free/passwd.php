@@ -19,9 +19,9 @@ if (!$go) {
 
 include(LIB . 'web/free.php');
 
-$aData = array(
+$aData = [
     'type' => $url['subsection'],
-    'server' => array_merge($server, array('id' => $id))
-);
+    'server' => array_merge($server, ['id' => $id]),
+];
 
 web::passwd($aData, $nmch);

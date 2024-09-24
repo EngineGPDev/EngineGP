@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aScfg = array(
+$aScfg = [
     'hostname' => 'Название игрового сервера.',
     'rcon_password' => 'Пароль для упраления сервером через RCON команды.',
     'sv_password' => 'Пароль для входа на сервер.',
@@ -25,10 +25,10 @@ $aScfg = array(
     'sv_downloadurl' => 'Место, из которого клиенты могут скачать недостающие файлы.<br>Использовать, <u>если не включен FastDL</u>.',
     'mapgroup' => 'Набор карт на сервере.',
     'sv_hibernate_when_empty' => 'Через сколько секунд переводить сервер в спящий режим.<br><u>0 = Cпящий режим выключен</u>.',
-    'sv_setsteamaccount' => 'Токен для игрового сервера (без него на сервер не смогут зайти игроки).'
-);
+    'sv_setsteamaccount' => 'Токен для игрового сервера (без него на сервер не смогут зайти игроки).',
+];
 
-$aScfg_form = array(
+$aScfg_form = [
     'hostname' => '<input value="[hostname]" name="config[\'hostname\']">',
     'rcon_password' => '<input value="[rcon_password]" name="config[\'rcon_password\']">',
     'sv_password' => '<input value="[sv_password]" name="config[\'sv_password\']">',
@@ -52,5 +52,5 @@ $aScfg_form = array(
     'sv_downloadurl' => '<input value="[sv_downloadurl]" name="config[\'sv_downloadurl\']">',
     'mapgroup' => '<input value="[mapgroup]" name="config[\'mapgroup\']">',
     'sv_hibernate_when_empty' => '<input value="[sv_hibernate_when_empty]" name="config[\'sv_hibernate_when_empty\']">',
-    'sv_setsteamaccount' => '<input value="[sv_setsteamaccount]" name="config[\'sv_setsteamaccount\']">'
-);
+    'sv_setsteamaccount' => '<input value="[sv_setsteamaccount]" name="config[\'sv_setsteamaccount\']">',
+];

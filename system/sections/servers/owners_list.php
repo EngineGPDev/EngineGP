@@ -17,8 +17,8 @@ $owners = $sql->query('SELECT `server` FROM `owners` WHERE `user`="' . $user['id
 
 $n = $sql->num($owners);
 
-$aUnits = array();
-$aTarifs = array();
+$aUnits = [];
+$aTarifs = [];
 
 // Проверка массивов в кеше
 if (is_array($mcache->get('owners_aut_' . $user['id'])) and $mcache->get('owners_nser_' . $user['id']) == $n) {
@@ -34,25 +34,25 @@ if (is_array($mcache->get('owners_aut_' . $user['id'])) and $mcache->get('owners
                 $sql->query('SELECT `name` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
                 $unit = $sql->get();
 
-                $aUnits[$server['unit']] = array(
-                    'name' => $unit['name']
-                );
+                $aUnits[$server['unit']] = [
+                    'name' => $unit['name'],
+                ];
             }
 
             if (!array_key_exists($server['tarif'], $aTarifs)) {
                 $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
                 $tarif = $sql->get();
 
-                $aTarifs[$server['tarif']] = array(
+                $aTarifs[$server['tarif']] = [
                     'name' => $tarif['name'],
-                    'packs' => sys::b64djs($tarif['packs'])
-                );
+                    'packs' => sys::b64djs($tarif['packs']),
+                ];
             }
         }
     }
 
     // Запись массивов в кеш
-    $mcache->set('owners_aut_' . $user['id'], array($aUnits, $aTarifs), false, 60);
+    $mcache->set('owners_aut_' . $user['id'], [$aUnits, $aTarifs], false, 60);
 
     // Запись кол-во серверов в кеш
     $mcache->set('owners_nser_' . $user['id'], $n, false, 60);
@@ -101,7 +101,7 @@ while ($owner = $sql->get($owners)) {
             games::info_tarif(
                 $server['game'],
                 $aTarifs[$server['tarif']]['name'],
-                array('fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram'])
+                ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]
             )
         );
 

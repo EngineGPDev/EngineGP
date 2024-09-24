@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$text = array(
+$text = [
     'buy_server' => 'Аренда игрового сервера на срок: [days], списана сумма: [money] руб. (сервер: #[id])',
     'buy_control' => 'Аренда услуги \"Контроль\" на срок: [days], списана сумма: [money] руб. (сервер: #[id])',
     'buy_server_promo' => 'Аренда игрового сервера на срок: [days], использование промо-кода: [promo], списана сумма: [money] руб. (сервер: #[id])',
@@ -30,4 +30,4 @@ $text = array(
     'buy_boost' => 'Покупка кругов: [circles] шт. на сайте: [site], списана сумма: [money] руб. (сервер: #[id])',
     'buy_plugin' => 'Покупка плагина: [plugin], списана сумма: [money] руб. (сервер: #[id])',
     'ctrl_buy_plugin' => 'Покупка плагина: [plugin], списана сумма: [money] руб. (CTRL сервер: #[id])',
-);
+];

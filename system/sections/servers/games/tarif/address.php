@@ -20,15 +20,15 @@ if (!isset($nmch)) {
 // Проверка наличия арендованного выделенного адреса
 $sql->query('SELECT `id` FROM `address_buy` WHERE `server`="' . $id . '" LIMIT 1');
 if ($sql->num() and $go) {
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
-$aid = isset($url['aid']) ? sys::int($url['aid']) : sys::outjs(array('e' => 'Переданы не все данные'), $nmch);
+$aid = isset($url['aid']) ? sys::int($url['aid']) : sys::outjs(['e' => 'Переданы не все данные'], $nmch);
 
 $sql->query('SELECT `ip`, `price` FROM `address` WHERE `id`="' . $aid . '" AND `unit`="' . $server['unit'] . '" AND `buy`="0" LIMIT 1');
 
 if (!$sql->num()) {
-    sys::outjs(array('e' => 'Выделенный адрес не найден.'), $nmch);
+    sys::outjs(['e' => 'Выделенный адрес не найден.'], $nmch);
 }
 
 $add = $sql->get();
@@ -37,7 +37,7 @@ $add = $sql->get();
 if ($go) {
     // Проверка баланса
     if ($user['balance'] < $add['price']) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']), $nmch);
+        sys::outjs(['e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     include(LIB . 'ssh.php');
@@ -47,7 +47,7 @@ if ($go) {
 
     // Проверка ssh соединения с локацией
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     // Списание средств с баланса пользователя
@@ -71,10 +71,10 @@ if ($go) {
     // Запись логов
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
         sys::text('logs', 'buy_address'),
-        array('money' => $add['price'], 'id' => $id)
+        ['money' => $add['price'], 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $add['price'] . '"');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
-sys::outjs(array('s' => $add['price']));
+sys::outjs(['s' => $add['price']]);

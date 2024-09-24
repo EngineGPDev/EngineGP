@@ -17,15 +17,15 @@ if (!defined('EGP')) {
 if ($go) {
     include(LIB . 'web/free.php');
 
-    $aData = array();
+    $aData = [];
 
-    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(array('e' => 'Необходимо указать адрес.'), $nmch);
-    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(array('e' => 'Необходимо выбрать домен.'), $nmch);
-    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(array('e' => 'Необходимо выбрать шаблон.'), $nmch);
-    $aData['passwd'] = isset($_POST['passwd']) ? $_POST['passwd'] : sys::passwd($aWebParam[$url['subsection']]['passwd']);
+    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(['e' => 'Необходимо указать адрес.'], $nmch);
+    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(['e' => 'Необходимо выбрать домен.'], $nmch);
+    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(['e' => 'Необходимо выбрать шаблон.'], $nmch);
+    $aData['passwd'] = $_POST['passwd'] ?? sys::passwd($aWebParam[$url['subsection']]['passwd']);
 
     $aData['type'] = $url['subsection'];
-    $aData['server'] = array_merge($server, array('id' => $id));
+    $aData['server'] = array_merge($server, ['id' => $id]);
 
     $aData['config_sql'] = '"Databases"' . PHP_EOL
         . '{' . PHP_EOL

@@ -37,7 +37,7 @@ class help
             }
         }
 
-        $str_search = array(
+        $str_search = [
             "#\\\n#is",
             "#\[spoiler\](.+?)\[\/spoiler\]#is",
             "#\[sp\](.+?)\[\/sp\]#is",
@@ -46,10 +46,10 @@ class help
             "#\[code\](.+?)\[\/code\]#is",
             "#\[quote\](.+?)\[\/quote\]#is",
             "#\[url=(.+?)\](.+?)\[\/url\]#is",
-            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
-        );
+            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is",
+        ];
 
-        $str_replace = array(
+        $str_replace = [
             "<br>",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
@@ -58,8 +58,8 @@ class help
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'><pre><code>\\1</code></pre></div></div>",
             "<blockquote><p>\\1</p></blockquote>",
             "<a href='\\1' target='_blank'>\\2</a>",
-            " <a href='\\2' target='_blank'>\\2</a>"
-        );
+            " <a href='\\2' target='_blank'>\\2</a>",
+        ];
 
         return preg_replace($str_search, $str_replace, $etext);
     }
@@ -78,16 +78,16 @@ class help
             $diff = 1;
         }
 
-        $seconds = array('секунду', 'секунды', 'секунд');
-        $minutes = array('минуту', 'минуты', 'минут');
-        $hours = array('час', 'часа', 'часов');
-        $days = array('день', 'дня', 'дней');
-        $weeks = array('неделю', 'недели', 'недель');
-        $months = array('месяц', 'месяца', 'месяцев');
-        $years = array('год', 'года', 'лет');
+        $seconds = ['секунду', 'секунды', 'секунд'];
+        $minutes = ['минуту', 'минуты', 'минут'];
+        $hours = ['час', 'часа', 'часов'];
+        $days = ['день', 'дня', 'дней'];
+        $weeks = ['неделю', 'недели', 'недель'];
+        $months = ['месяц', 'месяца', 'месяцев'];
+        $years = ['год', 'года', 'лет'];
 
-        $phrase = array($seconds, $minutes, $hours, $days, $weeks, $months, $years);
-        $length = array(1, 60, 3600, 86400, 604800, 2630880, 31570560);
+        $phrase = [$seconds, $minutes, $hours, $days, $weeks, $months, $years];
+        $length = [1, 60, 3600, 86400, 604800, 2630880, 31570560];
 
         for ($i = 6; ($i >= 0) and (($no = $diff / $length[$i]) <= 1); $i -= 1) ;
 
@@ -107,7 +107,7 @@ class help
 
     private static function parse_ago($number, $titles)
     {
-        $cases = array(2, 0, 1, 1, 1, 2);
+        $cases = [2, 0, 1, 1, 1, 2];
 
         return $titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }

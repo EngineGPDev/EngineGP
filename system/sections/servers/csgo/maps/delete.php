@@ -27,7 +27,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -43,12 +43,12 @@ $maps = $ssh->get();
 $aMaps = explode("\n", str_ireplace('.bsp', '', $maps));
 
 // Массив переданных карт
-$in_aMaps = isset($_POST['maps']) ? $_POST['maps'] : array();
+$in_aMaps = $_POST['maps'] ?? [];
 
 // Обработка выборки
 foreach ($in_aMaps as $name => $sel) {
     if ($sel) {
-        $map = str_replace(array("\\", "'", "'", '-_-'), array('', '', '', '$'), $name);
+        $map = str_replace(["\\", "'", "'", '-_-'], ['', '', '', '$'], $name);
 
         // Проверка наличия карты
         if (!in_array($map, $aMaps)) {
@@ -85,4 +85,4 @@ foreach ($in_aMaps as $name => $sel) {
     }
 }
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

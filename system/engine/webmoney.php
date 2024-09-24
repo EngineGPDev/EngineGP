@@ -71,7 +71,7 @@ if (!sys::valid($_POST['us_user'], 'md5')) {
 
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
         sys::text('logs', 'profit'),
-        array('server' => $privilege['server'], 'money' => $money)
+        ['server' => $privilege['server'], 'money' => $money]
     ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $money . '"');
 
     $sql->query('UPDATE `privileges_buy` set `status`="1" WHERE `id`="' . $privilege['id'] . '" LIMIT 1');
@@ -105,7 +105,7 @@ if ($cfg['part']) {
 
         $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
             sys::text('logs', 'part'),
-            array('part' => $uid, 'money' => $part_sum)
+            ['part' => $uid, 'money' => $part_sum]
         ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $part_sum . '"');
     }
 }

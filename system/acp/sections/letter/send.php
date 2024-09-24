@@ -15,18 +15,18 @@ if (!defined('EGP')) {
 
 set_time_limit(1200);
 
-$aData = array();
+$aData = [];
 
-$aData['title'] = isset($_POST['title']) ? trim($_POST['title']) : sys::outjs(array('e' => 'Необходимо указать заголовок'));
-$aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : sys::outjs(array('e' => 'Необходимо указать сообщение'));
-$aData['users'] = isset($_POST['users']) ? $_POST['users'] : sys::outjs(array('e' => 'Необходимо указать получателей'));
+$aData['title'] = isset($_POST['title']) ? trim($_POST['title']) : sys::outjs(['e' => 'Необходимо указать заголовок']);
+$aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : sys::outjs(['e' => 'Необходимо указать сообщение']);
+$aData['users'] = $_POST['users'] ?? sys::outjs(['e' => 'Необходимо указать получателей']);
 
 if ($aData['title'] == '' || $aData['text'] == '') {
-    sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+    sys::outjs(['e' => 'Необходимо заполнить все поля']);
 }
 
 if (!is_array($aData['users']) || !count($aData['users'])) {
-    sys::outjs(array('e' => 'Необходимо указать минимум одного получателя'));
+    sys::outjs(['e' => 'Необходимо указать минимум одного получателя']);
 }
 
 $noletter = '';
@@ -44,8 +44,8 @@ foreach ($aData['users'] as $id => $cheked) {
     $tpl = file_get_contents(DATA . 'mail.ini');
 
     $text = str_replace(
-        array('[name]', '[text]', '[http]', '[img]', '[css]'),
-        array($cfg['name'], $aData['text'], $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'),
+        ['[name]', '[text]', '[http]', '[img]', '[css]'],
+        [$cfg['name'], $aData['text'], $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'],
         $tpl
     );
 
@@ -60,4 +60,4 @@ if ($noletter == '') {
     $noletter = 'отправлено всем.';
 }
 
-sys::outjs(array('s' => $noletter));
+sys::outjs(['s' => $noletter]);

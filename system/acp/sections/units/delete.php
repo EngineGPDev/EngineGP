@@ -20,7 +20,7 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-        sys::outjs(array('e' => 'PANEL не удалось создать связь.'));
+        sys::outjs(['e' => 'PANEL не удалось создать связь.']);
     }
 
     $servers = $sql->query('SELECT `id`, `user`, `game` FROM `servers` WHERE `unit`="' . $id . '"');
@@ -57,10 +57,10 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 } else {
     $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $id . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(array('e' => 'Нельзя удалить локацию с серверами.'));
+        sys::outjs(['e' => 'Нельзя удалить локацию с серверами.']);
     }
 }
 
 $sql->query('DELETE FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

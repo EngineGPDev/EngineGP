@@ -34,7 +34,7 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         $ip = $ssh->getInternalIp();
@@ -87,45 +87,45 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => ''));
-        sys::reset_mcache('server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0));
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function config($ip, $port, $slots, $config)
     {
-        $aRepl = array(
+        $aRepl = [
             '<serverip>', '</serverip>',
             '<maxplayers>', '</maxplayers>',
             '<httpserver>', '</httpserver>',
             '<serverport>', '</serverport>',
             '<httpport>', '</httpport>',
             '<logfile>', '</logfile>',
-            '<ase>', '</ase>'
-        );
+            '<ase>', '</ase>',
+        ];
 
         $config = str_ireplace($aRepl, $aRepl, $config);
-        $config = str_ireplace(array('<config>', '</config>', "\r", "\t"), '', $config);
+        $config = str_ireplace(['<config>', '</config>', "\r", "\t"], '', $config);
         $config = preg_replace("#\<\!--(.+?)--\>#is", '', $config);
 
         $aLine = explode("\n", $config);
 
-        $search = array(
+        $search = [
             "#\<serverip\>(.+?)\<\/serverip\>#is",
             "#\<maxplayers\>(.+?)\<\/maxplayers\>#is",
             "#\<httpserver\>(.+?)\<\/httpserver\>#is",
             "#\<serverport\>(.+?)\<\/serverport\>#is",
             "#\<httpport\>(.+?)\<\/httpport\>#is",
             "#\<logfile\>(.+?)\<\/logfile\>#is",
-            "#\<ase\>(.+?)\<\/ase\>#is"
-        );
+            "#\<ase\>(.+?)\<\/ase\>#is",
+        ];
 
         $config = '<config>' . PHP_EOL;
 
         foreach ($aLine as $line) {
-            if (str_replace(array(' ', "\t"), '', $line) != '') {
-                $edit = trim(preg_replace($search, array('', '', '', '', '', ''), $line));
+            if (str_replace([' ', "\t"], '', $line) != '') {
+                $edit = trim(preg_replace($search, ['', '', '', '', '', ''], $line));
             }
 
             if ($edit != '') {

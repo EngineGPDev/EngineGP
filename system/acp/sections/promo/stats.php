@@ -16,7 +16,7 @@ if (!defined('EGP')) {
 if (isset($url['delete'])) {
     $sql->query('DELETE FROM `promo_use` WHERE `id`="' . sys::int($url['delete']) . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $list = '';

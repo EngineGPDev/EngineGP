@@ -31,7 +31,7 @@ class notice_help extends cron
 
             $user = $sql->get();
 
-            if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help'), array('site' => $cfg['name'], 'url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id'])), $user['mail'])) {
+            if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $user['mail'])) {
                 continue;
             }
 

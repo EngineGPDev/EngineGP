@@ -14,7 +14,7 @@ if (!defined('EGP')) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
     $aData['text'] = isset($_POST['text']) ? sys::bbc(trim($_POST['text'])) : '';
@@ -22,15 +22,15 @@ if ($go) {
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : '';
 
     if (in_array('', $aData)) {
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     if (sys::strlen($aData['name']) > 50) {
-        sys::outjs(array('e' => 'Заголовок не должен превышать 50 символов.'));
+        sys::outjs(['e' => 'Заголовок не должен превышать 50 символов.']);
     }
 
     if (sys::strlen($aData['tags']) > 100) {
-        sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+        sys::outjs(['e' => 'Теги не должен превышать 100 символов.']);
     }
 
     $sql->query('INSERT INTO `news` set '
@@ -41,7 +41,7 @@ if ($go) {
         . '`views`="0",'
         . '`date`="' . $start_point . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('add', 'sections/news');

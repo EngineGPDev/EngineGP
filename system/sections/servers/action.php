@@ -17,13 +17,13 @@ $sql->query('SELECT `game`, `status` FROM `servers` WHERE `id`="' . $id . '" LIM
 $server = $sql->get();
 
 if (!isset($url['action'])) {
-    sys::outjs(array('e' => 'Неверный запрос для выполнения операции'));
+    sys::outjs(['e' => 'Неверный запрос для выполнения операции']);
 }
 
 $nmch = 'server_action_' . $id;
 
 if ($mcache->get($nmch)) {
-    sys::outjs(array('e' => sys::text('other', 'mcache')));
+    sys::outjs(['e' => sys::text('other', 'mcache')]);
 }
 
 $mcache->set($nmch, true, false, 10);
@@ -32,8 +32,8 @@ include(LIB . 'games/' . $server['game'] . '/action.php');
 
 switch ($url['action']) {
     case 'stop':
-        if (!in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
-            sys::outjs(array('e' => sys::text('error', 'ser_stop')), $nmch);
+        if (!in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
+            sys::outjs(['e' => sys::text('error', 'ser_stop')], $nmch);
         }
 
         sys::outjs(action::stop($id), $nmch);
@@ -41,15 +41,15 @@ switch ($url['action']) {
         // no break
     case 'start':
         if ($server['status'] != 'off') {
-            sys::outjs(array('e' => sys::text('error', 'ser_start')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ser_start')], $nmch);
         }
 
         sys::outjs(action::start($id), $nmch);
 
         // no break
     case 'restart':
-        if (!in_array($server['status'], array('working', 'start', 'restart', 'change'))) {
-            sys::outjs(array('e' => sys::text('error', 'ser_restart')), $nmch);
+        if (!in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
+            sys::outjs(['e' => sys::text('error', 'ser_restart')], $nmch);
         }
 
         sys::outjs(action::start($id, 'restart'), $nmch);
@@ -58,10 +58,10 @@ switch ($url['action']) {
     case 'change':
         if ($server['status'] != 'working') {
             if ($server['status'] == 'change') {
-                sys::outjs(array('e' => sys::text('other', 'mcache')), $nmch);
+                sys::outjs(['e' => sys::text('other', 'mcache')], $nmch);
             }
 
-            sys::outjs(array('e' => sys::text('error', 'ser_change')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ser_change')], $nmch);
         }
 
         if (isset($url['change'])) {
@@ -73,7 +73,7 @@ switch ($url['action']) {
         // no break
     case 'reinstall':
         if ($server['status'] != 'off') {
-            sys::outjs(array('e' => sys::text('error', 'ser_reinstall')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ser_reinstall')], $nmch);
         }
 
         sys::outjs(action::reinstall($id), $nmch);
@@ -81,7 +81,7 @@ switch ($url['action']) {
         // no break
     case 'update':
         if ($server['status'] != 'off') {
-            sys::outjs(array('e' => sys::text('error', 'ser_update')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ser_update')], $nmch);
         }
 
         sys::outjs(action::update($id), $nmch);

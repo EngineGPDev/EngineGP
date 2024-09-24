@@ -16,22 +16,22 @@ if (!defined('EGP')) {
 if ($go) {
     include(LIB . 'control/' . $server['game'] . '/rcon.php');
 
-    if (isset($url['action']) and in_array($url['action'], array('kick', 'kill'))) {
-        $player = isset($_POST['player']) ? $_POST['player'] : sys::outjs(array('e' => 'Необходимо выбрать игрока.'));
+    if (isset($url['action']) and in_array($url['action'], ['kick', 'kill'])) {
+        $player = $_POST['player'] ?? sys::outjs(['e' => 'Необходимо выбрать игрока.']);
 
         if ($url['action'] == 'kick') {
-            rcon::cmd(array_merge($server, array('id' => $id)), 'amx_kick "' . $player . '" "EGP Panel"');
+            rcon::cmd(array_merge($server, ['id' => $id]), 'amx_kick "' . $player . '" "EGP Panel"');
         } else {
-            rcon::cmd(array_merge($server, array('id' => $id)), 'amx_slay "' . $player . '"');
+            rcon::cmd(array_merge($server, ['id' => $id]), 'amx_slay "' . $player . '"');
         }
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     include(LIB . 'geo.php');
     $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
-    $aPlayers = rcon::players(rcon::cmd(array_merge($server, array('id' => $id))));
+    $aPlayers = rcon::players(rcon::cmd(array_merge($server, ['id' => $id])));
 
     foreach ($aPlayers as $i => $aPlayer) {
         $html->get('player', 'sections/control/servers/' . $server['game'] . '/rcon');
@@ -48,7 +48,7 @@ if ($go) {
         $html->pack('players');
     }
 
-    sys::outjs(array('s' => isset($html->arr['players']) ? $html->arr['players'] : ''));
+    sys::outjs(['s' => $html->arr['players'] ?? '']);
 }
 
 $html->nav('Список подключенных серверов', $cfg['http'] . 'control');

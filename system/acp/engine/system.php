@@ -19,9 +19,9 @@ if ($go) {
 
     include(LIB . 'ssh.php');
 
-    if (isset($url['service']) and in_array($url['service'], array('nginx', 'mysql', 'unit'))) {
+    if (isset($url['service']) and in_array($url['service'], ['nginx', 'mysql', 'unit'])) {
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(array('e' => 'Не удалось создать связь с сервером'));
+            sys::outjs(['e' => 'Не удалось создать связь с сервером']);
         }
 
         if ($url['service'] == 'unit') {
@@ -30,10 +30,10 @@ if ($go) {
             $ssh->set('screen -dmS sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
         }
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
-    $aData = array(
+    $aData = [
         'verPanel' => '4.0.0-beta.5',
         'cpu' => '0%',
         'ram' => '0%',
@@ -41,8 +41,8 @@ if ($go) {
         'nginx' => '<a href="#" onclick="return system_restart(\'nginx\')">Перезагрузить</a>',
         'mysql' => '<a href="#" onclick="return system_restart(\'mysql\')">Перезагрузить</a>',
         'uptime' => 'unknown',
-        'ssh' => 'error'
-    );
+        'ssh' => 'error',
+    ];
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         sys::outjs($aData);

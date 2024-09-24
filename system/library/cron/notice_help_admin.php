@@ -31,11 +31,11 @@ class notice_help_admin extends cron
             $admin = $sql->get();
 
             if ($help['notice_admin'] != 2) {
-                if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help_admin_new'), array('url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id'])), $admin['mail'])) {
+                if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help_admin_new'), ['url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $admin['mail'])) {
                     continue;
                 }
             } else {
-                if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help_admin'), array('url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id'])), $admin['mail'])) {
+                if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help_admin'), ['url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $admin['mail'])) {
                     continue;
                 }
             }

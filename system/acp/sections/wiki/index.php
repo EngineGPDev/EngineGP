@@ -46,7 +46,7 @@ if ($id) {
 
     $html->set('list', $list);
 
-    $html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+    $html->set('pages', $html->arr['pages'] ?? '');
 
     $html->pack('main');
 }

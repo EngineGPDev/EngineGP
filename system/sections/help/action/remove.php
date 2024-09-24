@@ -14,15 +14,15 @@ if (!defined('EGP')) {
 }
 
 if ($user['group'] != 'admin') {
-    sys::outjs(array('e' => 'У вас нет доступа к данному действию.'));
+    sys::outjs(['e' => 'У вас нет доступа к данному действию.']);
 }
 
 if ($id) {
-    $msg = isset($url['msg']) ? sys::int($url['msg']) : sys::outjs(array('s' => 'ok'));
+    $msg = isset($url['msg']) ? sys::int($url['msg']) : sys::outjs(['s' => 'ok']);
 
     $sql->query('SELECT `img` FROM `help_dialogs` WHERE `id`="' . $msg . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     $images = $sql->get();
@@ -37,7 +37,7 @@ if ($id) {
 
     $sql->query('DELETE FROM `help_dialogs` WHERE `id`="' . $msg . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
-sys::outjs(array('e' => 'Вопрос не найден в базе.'));
+sys::outjs(['e' => 'Вопрос не найден в базе.']);

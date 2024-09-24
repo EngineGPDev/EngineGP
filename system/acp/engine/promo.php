@@ -15,13 +15,13 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-gift"></i> Управление акциями';
 
-$aSection = array(
+$aSection = [
     'index',
     'add',
     'end',
     'stats',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

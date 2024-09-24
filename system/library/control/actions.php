@@ -29,7 +29,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -41,10 +41,10 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0));
+        sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function change($id, $map = false)
@@ -53,7 +53,7 @@ class actions
 
         // Если в кеше есть карты
         if ($mcache->get('ctrl_server_maps_change_' . $id) != '' && !$map) {
-            return array('maps' => $mcache->get('ctrl_server_maps_change_' . $id));
+            return ['maps' => $mcache->get('ctrl_server_maps_change_' . $id)];
         }
 
         include(LIB . 'ssh.php');
@@ -66,7 +66,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         // Массив карт игрового сервера (папка "maps")
@@ -82,7 +82,7 @@ class actions
         if ($map) {
             // Проверка наличия выбранной карты
             if (!in_array($map, $aMaps)) {
-                return array('e' => sys::updtext(sys::text('servers', 'change'), array('map' => $map . '.bsp')));
+                return ['e' => sys::updtext(sys::text('servers', 'change'), ['map' => $map . '.bsp'])];
             }
 
             // Отправка команды changelevel
@@ -94,10 +94,10 @@ class actions
             // Сброс кеша
             actions::clmcache($id);
 
-            sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])));
-            sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']));
+            sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])]);
+            sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']]);
 
-            return array('s' => 'ok');
+            return ['s' => 'ok'];
         }
 
         // Сортировка списка карт
@@ -117,7 +117,7 @@ class actions
         // Запись карт в кеш
         $mcache->set('ctrl_server_maps_change_' . $id, $html->arr['maps'], false, 30);
 
-        return array('maps' => $html->arr['maps']);
+        return ['maps' => $html->arr['maps']];
     }
 
     public static function reinstall($id)
@@ -134,7 +134,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -144,14 +144,14 @@ class actions
 
         // Если включена система автораспределения и не установлен фиксированный поток
         if (!$server['core_fix']) {
-            $proc_stat = array();
+            $proc_stat = [];
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
 
         $path = 'rm ' . $server['pack'] . '.zip; wget ' . $cfg['control_server'] . '/' . $server['pack'] . '.zip; unzip ' . $server['pack'] . '.zip; rm ' . $server['pack'] . '.zip;';
 
-        if (in_array($server['game'], array('css', 'csgo'))) {
+        if (in_array($server['game'], ['css', 'csgo'])) {
             $path = 'cd ' . $cfg['steamcmd'] . '; ./steamcmd.sh +login anonymous +force_install_dir "/servers/' . $uid . '" +app_update ' . $cfg['control_steamcmd'][$game] . ' +quit;';
         }
 
@@ -166,7 +166,7 @@ class actions
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core)) {
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+                return ['e' => 'Не удается выполнить операцию, нет свободного потока.'];
             }
 
             $taskset = 'taskset -c ' . $core;
@@ -198,10 +198,10 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0));
+        sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function update($id)
@@ -218,7 +218,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
@@ -228,7 +228,7 @@ class actions
 
         // Если включена система автораспределения и не установлен фиксированный поток
         if (!$server['core_fix']) {
-            $proc_stat = array();
+            $proc_stat = [];
 
             $proc_stat[0] = $ssh->get('cat /proc/stat');
         }
@@ -246,7 +246,7 @@ class actions
             $core = sys::cpu_idle($server['unit'], $proc_stat, $unit['fcpu'], true); // число от 1 до n (где n число ядер/потоков в процессоре (без нулевого)
 
             if (!is_numeric($core)) {
-                return array('e' => 'Не удается выполнить операцию, нет свободного потока.');
+                return ['e' => 'Не удается выполнить операцию, нет свободного потока.'];
             }
 
             $taskset = 'taskset -c ' . $core;
@@ -270,10 +270,10 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => ''));
-        sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, array('name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0));
+        sys::reset_mcache('ctrl_server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('ctrl_server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function delete($id)
@@ -286,7 +286,7 @@ class actions
         $server = $sql->get();
 
         if (!$server['uid']) {
-            return array('e' => 'uid 404');
+            return ['e' => 'uid 404'];
         }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `control` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -294,7 +294,7 @@ class actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return array('e' => sys::text('error', 'ssh'));
+            return ['e' => sys::text('error', 'ssh')];
         }
 
         // Убить процессы
@@ -332,7 +332,7 @@ class actions
         $panel = $sql->get();
 
         if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-            return array('e' => 'Неудалось создать связь с панелью');
+            return ['e' => 'Неудалось создать связь с панелью'];
         }
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `control_crontab` WHERE `server`="' . $id . '"');
@@ -350,7 +350,7 @@ class actions
         $sql->query('DELETE FROM `control_plugins_buy` WHERE `server`="' . $id . '" LIMIT 1');
         $sql->query('DELETE FROM `control_servers` WHERE `id`="' . $id . '" LIMIT 1');
 
-        return array('s' => 'ok');
+        return ['s' => 'ok'];
     }
 
     public static function clmcache($id)

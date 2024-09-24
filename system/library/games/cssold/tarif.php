@@ -96,7 +96,7 @@ class tarif extends tarifs
         unset($aPrice[$server['tickrate'] . '_' . $server['fps']]);
 
         foreach ($aPrice as $param => $price) {
-            list($tickrate, $fps) = explode('_', $param);
+            [$tickrate, $fps] = explode('_', $param);
 
             $options .= '<option value="' . $param . '">'
                 . $tickrate . ' TickRate / '
@@ -180,7 +180,7 @@ class tarif extends tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
         }
 
         // Директория сборки

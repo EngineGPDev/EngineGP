@@ -24,7 +24,7 @@ if (!isset($ssh)) {
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/maps');
@@ -42,7 +42,7 @@ if ($go and isset($url['gen'])) {
 
     $maps = $ssh->get();
 
-    $aMaps = explode("\n", str_ireplace(array('./', '.vpk'), '', $maps));
+    $aMaps = explode("\n", str_ireplace(['./', '.vpk'], '', $maps));
 
     sort($aMaps);
     reset($aMaps);
@@ -59,13 +59,13 @@ if ($go and isset($url['gen'])) {
         $list .= $map . "\n";
     }
 
-    sys::outjs(array('s' => $list), $nmch);
+    sys::outjs(['s' => $list], $nmch);
 }
 
-$aFiles = array(
+$aFiles = [
     'mapcycle' => 'mapcycle.txt',
-    'maps' => 'maplist.txt'
-);
+    'maps' => 'maplist.txt',
+];
 
 // Сохранение
 if ($go and isset($url['file'])) {
@@ -73,7 +73,7 @@ if ($go and isset($url['file'])) {
         exit;
     }
 
-    $data = isset($_POST['data']) ? $_POST['data'] : '';
+    $data = $_POST['data'] ?? '';
 
     $temp = sys::temp($data);
 
@@ -86,7 +86,7 @@ if ($go and isset($url['file'])) {
 
     unlink($temp);
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $dir . $aFiles['mapcycle'] . '; cat ' . $dir . $aFiles['mapcycle'] . '"');

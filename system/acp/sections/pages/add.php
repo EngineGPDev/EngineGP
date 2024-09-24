@@ -14,13 +14,13 @@ if (!defined('EGP')) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
     $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : '';
 
     if (in_array('', $aData)) {
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $name = md5(time() . rand(5, 100) . rand(10, 20) . rand(1, 20) . rand(40, 80));
@@ -33,7 +33,7 @@ if ($go) {
 
     $sql->query('INSERT INTO `pages` set `name`="' . htmlspecialchars($aData['name']) . '", `file`="' . $name . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('add', 'sections/pages');

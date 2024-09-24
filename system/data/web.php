@@ -13,66 +13,66 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aSub = array(
+$aSub = [
     'csbans',
     'bp',
     'csstats',
     'astats',
     'sourcebans',
     'mysql',
-    'hosting'
-);
+    'hosting',
+];
 
-$aAction = array(
-    'csbans' => array(
+$aAction = [
+    'csbans' => [
         #'update',
         'passwd',
         'delete',
-        'connect'
-    ),
+        'connect',
+    ],
 
-    'csstats' => array(
+    'csstats' => [
         #'update',
         'delete',
-        'connect'
-    ),
+        'connect',
+    ],
 
-    'bp' => array(
+    'bp' => [
         #'update',
         'settings',
         'passwd',
-        'delete'
-    ),
+        'delete',
+    ],
 
-    'astats' => array(
+    'astats' => [
         #'update',
         'delete',
-        'connect'
-    ),
+        'connect',
+    ],
 
-    'sourcebans' => array(
+    'sourcebans' => [
         #'update',
         'passwd',
         'delete',
-        'connect'
-    ),
+        'connect',
+    ],
 
-    'mysql' => array(
+    'mysql' => [
         'install',
         'passwd',
-        'delete'
-    ),
+        'delete',
+    ],
 
-    'hosting' => array(
+    'hosting' => [
         'install',
         'passwd',
-        'delete'
-    )
-);
+        'delete',
+    ],
+];
 
 // Бесплатные доп. услуги
-$aWeb = array(
-    'cs' => array(
+$aWeb = [
+    'cs' => [
         'csbans' => true,
 
         'bp' => true,
@@ -81,112 +81,112 @@ $aWeb = array(
         'astats' => true,
 
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'cssold' => array(
+    'cssold' => [
         'sourcebans' => false,
 
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'css' => array(
+    'css' => [
         'sourcebans' => true,
 
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'csgo' => array(
+    'csgo' => [
         'sourcebans' => true,
 
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'cs2' => array(
+    'cs2' => [
         'sourcebans' => true,
 
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'samp' => array(
+    'samp' => [
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'crmp' => array(
+    'crmp' => [
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'mta' => array(
+    'mta' => [
         'mysql' => true,
-        'hosting' => true
-    ),
+        'hosting' => true,
+    ],
 
-    'mc' => array(
+    'mc' => [
         'mysql' => true,
-        'hosting' => true
-    )
-);
+        'hosting' => true,
+    ],
+];
 
-$aWebOne = array(
-    'cs' => array(
-        'csbans' => array(),
+$aWebOne = [
+    'cs' => [
+        'csbans' => [],
 
-        'bp' => array(),
+        'bp' => [],
 
-        'csstats' => array('astats'),
-        'astats' => array('csstats'),
+        'csstats' => ['astats'],
+        'astats' => ['csstats'],
 
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'cssold' => array(
-        'sourcebans' => array(),
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+    'cssold' => [
+        'sourcebans' => [],
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'css' => array(
-        'sourcebans' => array(),
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+    'css' => [
+        'sourcebans' => [],
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'csgo' => array(
-        'sourcebans' => array(),
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+    'csgo' => [
+        'sourcebans' => [],
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'cs2' => array(
-        'sourcebans' => array(),
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+    'cs2' => [
+        'sourcebans' => [],
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'samp' => array(
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+    'samp' => [
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'mta' => array(
-        'mysql' => array(),
-        'hosting' => array()
-    ),
+    'mta' => [
+        'mysql' => [],
+        'hosting' => [],
+    ],
 
-    'mc' => array(
-        'mysql' => array(),
-        'hosting' => array()
-    )
-);
+    'mc' => [
+        'mysql' => [],
+        'hosting' => [],
+    ],
+];
 
-$aWebInstall = array(
+$aWebInstall = [
     /*
         'unit' ==> одна услуга на одной локации
 
@@ -194,17 +194,17 @@ $aWebInstall = array(
 
         'server' ==> каждая услуга на каждый игровой сервер
     */
-    'system' => array(
+    'system' => [
         'csbans' => 'server',
         'csstats' => 'server',
         'bp' => 'server',
         'astats' => 'server',
         'sourcebans' => 'server',
         'mysql' => 'server',
-        'hosting' => 'server'
-    ),
+        'hosting' => 'server',
+    ],
 
-    'cs' => array(
+    'cs' => [
         'csbans' => 'unit',
 
         'bp' => 'user',
@@ -213,59 +213,59 @@ $aWebInstall = array(
         'astats' => 'unit',
 
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'cssold' => array(
+    'cssold' => [
         'sourcebans' => 'unit',
 
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'css' => array(
+    'css' => [
         'sourcebans' => 'unit',
 
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'csgo' => array(
+    'csgo' => [
         'sourcebans' => 'unit',
 
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'cs2' => array(
+    'cs2' => [
         'sourcebans' => 'unit',
 
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'samp' => array(
+    'samp' => [
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'crmp' => array(
+    'crmp' => [
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'mta' => array(
+    'mta' => [
         'mysql' => 'server',
-        'hosting' => 'user'
-    ),
+        'hosting' => 'user',
+    ],
 
-    'mc' => array(
+    'mc' => [
         'mysql' => 'server',
-        'hosting' => 'user'
-    )
-);
+        'hosting' => 'user',
+    ],
+];
 
-$aWebname = array(
+$aWebname = [
     'csbans' => 'СS:Bans 1.3',
 
     'bp' => 'Buy Privileges',
@@ -276,10 +276,10 @@ $aWebname = array(
     'sourcebans' => 'SourceBans',
 
     'mysql' => 'MySQL',
-    'hosting' => 'WebHosting'
-);
+    'hosting' => 'WebHosting',
+];
 
-$aWebDesc = array(
+$aWebDesc = [
     'csbans' => 'система контроля наказаний игроков на серверах (замена amxbans).',
 
     'bp' => 'многофункциональная система продажи привилегий.',
@@ -290,10 +290,10 @@ $aWebDesc = array(
     'sourcebans' => 'система контроля наказаний игроков на серверах.',
 
     'mysql' => 'свободная реляционная система управления базами данных.',
-    'hosting' => 'услуга для размещения сайта, форума или обычных файлов в сети.'
-);
+    'hosting' => 'услуга для размещения сайта, форума или обычных файлов в сети.',
+];
 
-$aWebType = array(
+$aWebType = [
     'csbans' => 'bans',
     'sourcebans' => 'bans',
 
@@ -302,244 +302,244 @@ $aWebType = array(
 
     'bp' => 'other',
     'mysql' => 'other',
-    'hosting' => 'other'
-);
+    'hosting' => 'other',
+];
 
-$aWebTypeInfo = array(
-    'cs' => array(
+$aWebTypeInfo = [
+    'cs' => [
         'bans' => 'Системы управления банами',
         'stats' => 'Статистика',
-        'other' => 'Прочее'
-    ),
+        'other' => 'Прочее',
+    ],
 
-    'cssold' => array(
+    'cssold' => [
         'bans' => 'Системы управления банами',
         'stats' => 'Статистика',
-        'other' => 'Прочее'
-    ),
+        'other' => 'Прочее',
+    ],
 
-    'css' => array(
+    'css' => [
         'bans' => 'Системы управления банами',
         'stats' => 'Статистика',
-        'other' => 'Прочее'
-    ),
+        'other' => 'Прочее',
+    ],
 
-    'csgo' => array(
+    'csgo' => [
         'bans' => 'Системы управления банами',
         'stats' => 'Статистика',
-        'other' => 'Прочее'
-    ),
+        'other' => 'Прочее',
+    ],
 
-    'cs2' => array(
+    'cs2' => [
         'bans' => 'Системы управления банами',
         'stats' => 'Статистика',
-        'other' => 'Прочее'
-    ),
+        'other' => 'Прочее',
+    ],
 
-    'samp' => array(
-        'other' => 'Прочее'
-    ),
+    'samp' => [
+        'other' => 'Прочее',
+    ],
 
-    'crmp' => array(
-        'other' => 'Прочее'
-    ),
+    'crmp' => [
+        'other' => 'Прочее',
+    ],
 
-    'mta' => array(
-        'other' => 'Прочее'
-    ),
+    'mta' => [
+        'other' => 'Прочее',
+    ],
 
-    'mc' => array(
-        'other' => 'Прочее'
-    )
-);
+    'mc' => [
+        'other' => 'Прочее',
+    ],
+];
 
-$aWebParam = array(
-    'csbans' => array(
+$aWebParam = [
+    'csbans' => [
         'passwd' => 10,
-        'desing' => array(
-            'default' => 'Default'
-        ),
-    ),
+        'desing' => [
+            'default' => 'Default',
+        ],
+    ],
 
-    'csstats' => array(
-        'desing' => array(
-            'default' => 'Default'
-        ),
-    ),
+    'csstats' => [
+        'desing' => [
+            'default' => 'Default',
+        ],
+    ],
 
-    'astats' => array(
-        'desing' => array(
-            'default' => 'Default'
-        ),
-    ),
+    'astats' => [
+        'desing' => [
+            'default' => 'Default',
+        ],
+    ],
 
-    'sourcebans' => array(
+    'sourcebans' => [
         'passwd' => 10,
-        'desing' => array(
-            'default' => 'Default'
-        ),
-    ),
+        'desing' => [
+            'default' => 'Default',
+        ],
+    ],
 
-    'mysql' => array(
+    'mysql' => [
         'passwd' => 10,
-    ),
+    ],
 
-    'hosting' => array(
+    'hosting' => [
         'passwd' => 10,
-    )
-);
+    ],
+];
 
 $aWebVHTtype = true; // Разрешен ли всем вирт. хостинг
-$aWebVHT = array( // Массив списка tarif_id зависит от значения VHT, если VHT true, то перечисленным id тарифов недоступен вирт. хост или наоборот.
+$aWebVHT = [ // Массив списка tarif_id зависит от значения VHT, если VHT true, то перечисленным id тарифов недоступен вирт. хост или наоборот.
 
-);
+];
 
-$aWebUnit = array(
+$aWebUnit = [
     'address' => '127.0.0.1:22', // ip:22 web сервера
     'passwd' => 'kgdfgjksad', // пароль ssh root
     'pma' => '127.0.0.1', // Домен || ip без http / pma / index.php и т.д.
-    'domains' => array(
+    'domains' => [
         'domain.ru',
-    ),
-    'subdomains' => array( // список поддоменов, которые нельзя создать
-        'panel', 'admin'
-    ),
+    ],
+    'subdomains' => [ // список поддоменов, которые нельзя создать
+        'panel', 'admin',
+    ],
 
-    'isp' => array(
+    'isp' => [
         'panel' => 'ip/manager', // https://_ЗНАЧЕНИЕ_ (панель управления вирт. хостинга ISP MANAGER PRO 4)
 
-        'domain' => array(
+        'domain' => [
             'create' => 'http://IP:1500/?authinfo=root:password&out=json&name=[subdomain].[domain].&sdtype=A&addr=[ip]&prio=&wght=&port=&func=domain.sublist.edit&elid=&plid=[domain]&sok=ok',
             'delete' => 'http://IP:1500/?authinfo=root:password&out=json&func=domain.sublist.delete&elid=[subdomain].+A++[ip]&plid=[domain]&sok=ok',
-        ),
+        ],
 
-        'account' => array(
+        'account' => [
             'create' => 'http://IP:1500/?authinfo=root:password&out=json&name=[login]&passwd=[passwd]&confirm=[passwd]&owner=root&ip=IP&domain=[domain]&preset=default&email=[mail]&phpmod=on&func=user.edit&elid=&sok=ok',
             'passwd' => 'http://IP:1500/?authinfo=root:password&out=json&name=[login]&passwd=[passwd]&confirm=[passwd]&preset=default&email=[mail]&disklimit=1000&phpmod=on&func=user.edit&elid=[login]&sok=ok',
             'delete' => 'http://IP:1500/?authinfo=root:password&out=json&func=user.delete&elid=[login]&sok=ok',
-        ),
+        ],
 
-        'crontab' => array(
-            'bp' => array(
+        'crontab' => [
+            'bp' => [
                 'install' => 'http://IP:1500/?authinfo=root:password&out=json&min=*&hour=*&mday=*&month=*&wday=*&name=/usr/bin/wget+http://[subdomain].[domain]/cron.php?cron=874319&period=daily&crmin=all&evmin=02&semin=&crhour=all&evhour=02&sehour=&crmday=all&evmday=02&semday=&crmonth=all&evmonth=02&semonth=&crwday=all&evwday=02&sewday=&hideout=on&func=cron.edit&elid=&sok=ok',
-                'delete' => 'http://IP:1500/?authinfo=root:password&out=json&elid=[data]&func=cron.delete&sok=ok'
-            )
-        )
-    ),
+                'delete' => 'http://IP:1500/?authinfo=root:password&out=json&elid=[data]&func=cron.delete&sok=ok',
+            ],
+        ],
+    ],
 
-    'unit' => array(
+    'unit' => [
         'csbans' => 'remote',
         'csstats' => 'remote',
         'astats' => 'remote',
         'sourcebans' => 'remote',
-        'mysql' => 'remote'
-    ),
+        'mysql' => 'remote',
+    ],
 
-    'path' => array(
-        'local' => array(
+    'path' => [
+        'local' => [
             'csbans' => '/path/web/csbans/',
             'csstats' => '/path/web/csstats/',
             'astats' => '/path/web/astats/',
-            'sourcebans' => '/path/web/sourcebans/'
-        ),
+            'sourcebans' => '/path/web/sourcebans/',
+        ],
 
-        'remote' => array(
+        'remote' => [
             'csbans' => '/path/web/csbans/',
             'csstats' => '/path/web/csstats/',
             'astats' => '/path/web/astats/',
-            'sourcebans' => '/path/web/sourcebans/'
-        ),
-    ),
+            'sourcebans' => '/path/web/sourcebans/',
+        ],
+    ],
 
-    'install' => array(
-        'local' => array(
+    'install' => [
+        'local' => [
             'csbans' => '/var/www/',
             'csstats' => '/var/www/',
             'astats' => '/var/www/',
-            'sourcebans' => '/var/www/'
-        ),
+            'sourcebans' => '/var/www/',
+        ],
 
-        'remote' => array(
+        'remote' => [
             'csbans' => '/var/www/web/',
             'csstats' => '/var/www/web/',
             'astats' => '/var/www/web/',
-            'sourcebans' => '/var/www/web/'
-        )
-    )
-);
+            'sourcebans' => '/var/www/web/',
+        ],
+    ],
+];
 
-$aWebConnect = array(
-    'csbans' => array(
-        'cs' => 0  // id плагина
-    ),
+$aWebConnect = [
+    'csbans' => [
+        'cs' => 0,  // id плагина
+    ],
 
-    'csstats' => array(
-        'cs' => 0
-    ),
+    'csstats' => [
+        'cs' => 0,
+    ],
 
-    'sourcebans' => array(
+    'sourcebans' => [
         'cssold' => 0,
         'css' => 0,
         'csgo' => 0,
-    )
-);
+    ],
+];
 
-$aWebChmod = array(
+$aWebChmod = [
     'csbans' => 'chmod 777 assets protected/runtime',
     'csstats' => '',
     'astats' => 'chmod 777 ftpcache',
-    'sourcebans' => 'chmod 777 demos themes_c'
-);
+    'sourcebans' => 'chmod 777 demos themes_c',
+];
 
-$aWebSQL = array(
-    'csbans' => array(
-        'install' => array(
+$aWebSQL = [
+    'csbans' => [
+        'install' => [
             "INSERT INTO amx_webadmins set id='1', username='admin', password=MD5('[passwd]'), level='1', email='[mail]'",
-        ),
+        ],
 
-        'connect' => array(
+        'connect' => [
             "DELETE FROM amx_serverinfo WHERE address='[address]'",
-            "INSERT INTO amx_serverinfo set timestamp='[time]', hostname='[name]', rcon='[rcon]', address='[address]', gametype='cstrike', amxban_version='1.6', motd_delay='10', amxban_menu='1'"
-        ),
+            "INSERT INTO amx_serverinfo set timestamp='[time]', hostname='[name]', rcon='[rcon]', address='[address]', gametype='cstrike', amxban_version='1.6', motd_delay='10', amxban_menu='1'",
+        ],
 
-        'passwd' => array(
-            "UPDATE amx_webadmins set password=MD5('[passwd]') WHERE id='1' LIMIT 1"
-        )
-    ),
+        'passwd' => [
+            "UPDATE amx_webadmins set password=MD5('[passwd]') WHERE id='1' LIMIT 1",
+        ],
+    ],
 
-    'sourcebans' => array(
-        'install' => array(
-            "INSERT INTO sb_admins set aid='1', user='admin', authid='', password=SHA1(SHA1('SourceBans[passwd]')), gid='-1', email='[mail]', extraflags='-513'"
-        ),
+    'sourcebans' => [
+        'install' => [
+            "INSERT INTO sb_admins set aid='1', user='admin', authid='', password=SHA1(SHA1('SourceBans[passwd]')), gid='-1', email='[mail]', extraflags='-513'",
+        ],
 
-        'connect' => array(
+        'connect' => [
             "DELETE FROM sb_servers  WHERE ip='[ip]' and port='[port]'",
-            "INSERT INTO sb_servers set ip='[ip]', port='[port]', rcon='[rcon]', modid='3', enabled='1'"
-        ),
+            "INSERT INTO sb_servers set ip='[ip]', port='[port]', rcon='[rcon]', modid='3', enabled='1'",
+        ],
 
-        'passwd' => array(
-            "UPDATE sb_admins set password=SHA1(SHA1('SourceBans[passwd]')) WHERE aid='1' LIMIT 1"
-        )
-    ),
+        'passwd' => [
+            "UPDATE sb_admins set password=SHA1(SHA1('SourceBans[passwd]')) WHERE aid='1' LIMIT 1",
+        ],
+    ],
 
-    'csstats' => array()
-);
+    'csstats' => [],
+];
 
-$aWebdbConf = array(
-    'csbans' => array(
+$aWebdbConf = [
+    'csbans' => [
         'file' => '/include/db.config.inc.php',
-        'chmod' => 0644
-    ),
+        'chmod' => 0o644,
+    ],
 
-    'csstats' => array(
+    'csstats' => [
         'file' => '/include/config.php',
-        'chmod' => 0644
-    ),
+        'chmod' => 0o644,
+    ],
 
-    'sourcebans' => array(
+    'sourcebans' => [
         'file' => '/config.php',
-        'chmod' => 0644
-    )
-);
+        'chmod' => 0o644,
+    ],
+];
 
-$aWebothPath = array();
+$aWebothPath = [];

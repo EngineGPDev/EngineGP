@@ -14,7 +14,7 @@ if (!defined('EGP')) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['cod'] = isset($_POST['cod']) ? trim($_POST['cod']) : '';
     $aData['value'] = isset($_POST['value']) ? trim($_POST['value']) : '';
@@ -26,18 +26,18 @@ if ($go) {
     $aData['server'] = isset($_POST['server']) ? sys::int($_POST['server']) : '';
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : '';
     $aData['data'] = isset($_POST['data']) ? trim($_POST['data']) : '';
-    $aData['tarifs'] = isset($_POST['tarifs']) ? $_POST['tarifs'] : '';
+    $aData['tarifs'] = $_POST['tarifs'] ?? '';
 
     $aData['time'] = sys::checkdate($aData['time']);
 
     if (sys::valid($aData['cod'], 'promo')) {
-        sys::outjs(array('e' => 'Неправильный формат промо-кода'));
+        sys::outjs(['e' => 'Неправильный формат промо-кода']);
     }
 
     if ($aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Указанный пользователь не найден'));
+            sys::outjs(['e' => 'Указанный пользователь не найден']);
         }
     } else {
         $aData['user'] = 0;
@@ -46,14 +46,14 @@ if ($go) {
     if ($aData['server']) {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Указанный сервер не найден'));
+            sys::outjs(['e' => 'Указанный сервер не найден']);
         }
     } else {
         $aData['server'] = 0;
     }
 
     if (!is_array($aData['tarifs']) || !count($aData['tarifs'])) {
-        sys::outjs(array('e' => 'Необходимо указать минимум один тариф'));
+        sys::outjs(['e' => 'Необходимо указать минимум один тариф']);
     }
 
     if ($aData['discount']) {
@@ -82,7 +82,7 @@ if ($go) {
             . '`time`="' . $aData['time'] . '"');
     }
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $tarifs = '';

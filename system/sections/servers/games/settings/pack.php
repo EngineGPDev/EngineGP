@@ -18,17 +18,17 @@ $tarif = $sql->get();
 
 $aPacks = sys::b64djs($tarif['packs'], true);
 
-$pack = isset($url['pack']) ? $url['pack'] : exit;
+$pack = $url['pack'] ?? exit;
 
 if ($pack == $server['pack']) {
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 // Проверка сборки
 if (!array_key_exists($pack, $aPacks)) {
-    sys::outjs(array('e' => 'Сборка не найдена.'));
+    sys::outjs(['e' => 'Сборка не найдена.']);
 }
 
 $sql->query('UPDATE `servers` set `pack`="' . $pack . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'), 'server_settings_' . $id);
+sys::outjs(['s' => 'ok'], 'server_settings_' . $id);

@@ -15,11 +15,11 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa-regular fa-newspaper"></i> Управление новостями';
 
-$aSection = array(
+$aSection = [
     'index',
     'add',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

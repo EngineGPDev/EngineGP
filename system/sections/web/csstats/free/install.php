@@ -17,14 +17,14 @@ if (!defined('EGP')) {
 if ($go) {
     include(LIB . 'web/free.php');
 
-    $aData = array();
+    $aData = [];
 
-    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(array('e' => 'Необходимо указать адрес.'), $nmch);
-    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(array('e' => 'Необходимо выбрать домен.'), $nmch);
-    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(array('e' => 'Необходимо выбрать шаблон.'), $nmch);
+    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(['e' => 'Необходимо указать адрес.'], $nmch);
+    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(['e' => 'Необходимо выбрать домен.'], $nmch);
+    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(['e' => 'Необходимо выбрать шаблон.'], $nmch);
 
     $aData['type'] = $url['subsection'];
-    $aData['server'] = array_merge($server, array('id' => $id));
+    $aData['server'] = array_merge($server, ['id' => $id]);
 
     $aData['config_sql'] = 'csstats_key "[key]"' . PHP_EOL
         . 'csstats_url "[domain]"' . PHP_EOL

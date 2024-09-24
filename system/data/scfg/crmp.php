@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aScfg = array(
+$aScfg = [
     'hostname' => 'Название игрового сервера.',
     'rcon' => 'Управление RCON командами.',
     'rcon_password' => 'Пароль для упраления сервером через RCON команды.',
@@ -29,10 +29,10 @@ $aScfg = array(
     'weapon_rate' => 'Время в миллисекундах за которое сервер обновляет данные о стрельбе игрока.',
     'stream_distance' => 'Дистанция для обновления стримера игроков.',
     'stream_rate' => 'Время в миллисекундах за которое сервер обновляет игроков в стримере.',
-    'logqueries' => 'Логирование всех запросов.'
-);
+    'logqueries' => 'Логирование всех запросов.',
+];
 
-$aScfg_form = array(
+$aScfg_form = [
     'hostname' => '<input value="[hostname]" name="config[\'hostname\']">',
     'rcon_password' => '<input value="[rcon_password]" name="config[\'rcon_password\']">',
     'password' => '<input value="[password]" name="config[\'password\']">',
@@ -59,5 +59,5 @@ $aScfg_form = array(
         . '<option value="1">Включено</option></select>',
     'lanmode' => '<select name="config[\'lanmode\']">'
         . '<option value="0">Интернет</option>'
-        . '<option value="1">Локальный</option></select>'
-);
+        . '<option value="1">Локальный</option></select>',
+];

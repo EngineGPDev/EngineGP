@@ -42,4 +42,4 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 
 $sql->query('DELETE FROM `users` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

@@ -100,7 +100,7 @@ if ($user['name'] || $user['lastname'] || $user['patronymic']) {
     $html->unit('nlp');
 }
 
-if (isset($user['wmr'][0]) and in_array($user['wmr'][0], array('R', 'Z', 'U'))) {
+if (isset($user['wmr'][0]) and in_array($user['wmr'][0], ['R', 'Z', 'U'])) {
     $html->unit('wmr', true, true);
 } else {
     $html->unit('wmr', false, true);

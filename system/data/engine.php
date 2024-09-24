@@ -14,7 +14,7 @@ if (!defined('EGP')) {
 }
 
 // Массив главных разделов
-$aRoute = array(
+$aRoute = [
     'index',
     'servers',
     'services',
@@ -36,11 +36,11 @@ $aRoute = array(
     'graph',
     'api_v1',
     'monitoring',
-    'partners'
-);
+    'partners',
+];
 
 // Массив регулярных выражений
-$aValid = array(
+$aValid = [
     'login' => '/^[A-Za-z0-9_]{4,16}$/',
     'mail' => '/^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i',
     'name' => '/^[А-ЯЁ]{1,1}[а-яё]{2,15}$/u',
@@ -52,13 +52,13 @@ $aValid = array(
     'cslogs' => '/^L[A-Za-z0-9\.]/',
     'csamxlogs' => '/^[A-Za-z0-9_\.-]/',
     'csssmlogs' => '/^[A-Za-z0-9_\.-]/',
-    'address' => '/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}:[0-9]{4,5}$/'
-);
+    'address' => '/^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}:[0-9]{4,5}$/',
+];
 
 // Массив данных для регистрации
-$aSignup = array(
+$aSignup = [
     // Массив дополнительных полей
-    'input' => array(
+    'input' => [
         'login' => true,
         'mail' => true,
         'name' => true,
@@ -66,10 +66,10 @@ $aSignup = array(
         'patronymic' => false,
         'phone' => false,
         'contacts' => false,
-        'passwd' => true
-    ),
+        'passwd' => true,
+    ],
     // Массив описания полей
-    'info' => array(
+    'info' => [
         'login' => 'Логин',
         'mail' => 'Почта',
         'name' => 'Имя',
@@ -77,10 +77,10 @@ $aSignup = array(
         'patronymic' => 'Отчество',
         'phone' => 'Телефон',
         'contacts' => 'Контакты',
-        'passwd' => 'Пароль'
-    ),
+        'passwd' => 'Пароль',
+    ],
     // Массив типа полей
-    'type' => array(
+    'type' => [
         'login' => 'text',
         'mail' => 'text',
         'name' => 'text',
@@ -88,10 +88,10 @@ $aSignup = array(
         'patronymic' => 'text',
         'phone' => 'text',
         'contacts' => 'text',
-        'passwd' => 'password'
-    ),
+        'passwd' => 'password',
+    ],
     // Массив подсказки полей
-    'placeholder' => array(
+    'placeholder' => [
         'login' => 'Введите логин',
         'mail' => 'Введите почту',
         'name' => 'Введите имя',
@@ -99,9 +99,9 @@ $aSignup = array(
         'patronymic' => 'Введите отчество',
         'phone' => 'Введите номер',
         'contacts' => 'Введите skype или vk',
-        'passwd' => 'Введите пароль'
-    )
-);
+        'passwd' => 'Введите пароль',
+    ],
+];
 
 // Данные для вывода информаци отправителя
 $iHelp = 0; // 0 = Имя/Отчество || 1 = Имя || 2 = Логин | 3 = Почта
@@ -110,7 +110,7 @@ $iHelp = 0; // 0 = Имя/Отчество || 1 = Имя || 2 = Логин | 3 =
 $tHelp = 0; // 0 - вариант: * минут назад (макс 10мин) || 1 - дата. время (* минут назад)
 
 // Названия игр
-$aGname = array(
+$aGname = [
     'cs' => 'CS: 1.6',
     'css' => 'CS: Source',
     'cssold' => 'CS: Source v34',
@@ -120,23 +120,23 @@ $aGname = array(
     'mc' => 'Minecraft',
     'mta' => 'GTA: MTA',
     'samp' => 'GTA: SAMP',
-    'crmp' => 'GTA: CRMP'
-);
+    'crmp' => 'GTA: CRMP',
+];
 
 // Роутер подразделов
-$aRouteSub = array(
-    'settings' => array(
+$aRouteSub = [
+    'settings' => [
         'api',
         'pack',
         'firewall',
         'crontab',
         'startlogs',
-        'file'
-    ),
-);
+        'file',
+    ],
+];
 
 // Директория логов StartLogs
-$aSLdir = array(
+$aSLdir = [
     'cs' => 'cstrike/oldstart',
     'cssold' => 'cstrike/oldstart',
     'css' => 'cstrike/oldstart',
@@ -146,11 +146,11 @@ $aSLdir = array(
     'mc' => 'oldstart',
     'mta' => 'mods/deathmatch/oldstart',
     'samp' => 'oldstart',
-    'crmp' => 'oldstart'
-);
+    'crmp' => 'oldstart',
+];
 
 // Директория логов StartLogs ftp (указывать изходя из настроек ftp)
-$aSLdirFtp = array(
+$aSLdirFtp = [
     'cs' => 'oldstart',
     'cssold' => 'oldstart',
     'css' => 'oldstart',
@@ -160,24 +160,24 @@ $aSLdirFtp = array(
     'mc' => 'oldstart',
     'mta' => 'mods/deathmatch/oldstart',
     'samp' => 'oldstart',
-    'crmp' => 'oldstart'
-);
+    'crmp' => 'oldstart',
+];
 
 // Права для совладельцев
-$aOwners = array(
-    'cs' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
-    'cssold' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
-    'css' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
-    'csgo' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
-    'cs2' => array('start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'),
-    'rust' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
-    'mc' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
-    'mta' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
-    'samp' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'),
-    'crmp' => array('start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph')
-);
+$aOwners = [
+    'cs' => ['start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'],
+    'cssold' => ['start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'],
+    'css' => ['start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'],
+    'csgo' => ['start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'],
+    'cs2' => ['start', 'stop', 'restart', 'change', 'reinstall', 'update', 'console', 'settings', 'plugins', 'maps', 'filetp', 'tarif', 'copy', 'graph'],
+    'rust' => ['start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'],
+    'mc' => ['start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'],
+    'mta' => ['start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'],
+    'samp' => ['start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'],
+    'crmp' => ['start', 'stop', 'restart', 'reinstall', 'console', 'settings', 'plugins', 'filetp', 'tarif', 'copy', 'graph'],
+];
 
-$aOwnersI = array(
+$aOwnersI = [
     'start' => 'Включение',
     'stop' => 'Выключение',
     'restart' => 'Перезагрузка',
@@ -191,5 +191,5 @@ $aOwnersI = array(
     'filetp' => 'Раздел "FileTP"',
     'tarif' => 'Раздел "Тариф"',
     'copy' => 'Раздел "Копии"',
-    'graph' => 'Раздел "Графики"'
-);
+    'graph' => 'Раздел "Графики"',
+];

@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aData = array();
+$aData = [];
 
 $aData['login'] = isset($_POST['login']) ? trim($_POST['login']) : $us['login'];
 $aData['passwd'] = isset($_POST['passwd']) ? trim($_POST['passwd']) : '';
@@ -34,22 +34,22 @@ $aData['replenish'] = isset($_POST['replenish']) ? trim($_POST['replenish']) : 0
 $aData['rental'] = isset($_POST['rental']) ? trim($_POST['rental']) : 0;
 $aData['extend'] = isset($_POST['extend']) ? trim($_POST['extend']) : 0;
 
-$arr_other = array(
+$arr_other = [
     'login' => 'логина',
-    'mail' => 'почты'
-);
+    'mail' => 'почты',
+];
 
-$arr_other_null = array(
+$arr_other_null = [
     'name' => 'имени',
     'lastname' => 'фамилии',
     'patronymic' => 'отчества',
     'contacts' => 'контактов',
-    'phone' => 'номера'
-);
+    'phone' => 'номера',
+];
 
 foreach ($arr_other as $input => $name) {
     if (sys::valid($aData[$input], 'other', $aValid[$input])) {
-        sys::outjs(array('e' => 'Неправильный формат ' . $name));
+        sys::outjs(['e' => 'Неправильный формат ' . $name]);
     }
 }
 
@@ -59,37 +59,37 @@ foreach ($arr_other as $input => $name) {
     }
 
     if (sys::valid($aData[$input], 'other', $aValid[$input])) {
-        sys::outjs(array('e' => 'Неправильный формат ' . $name));
+        sys::outjs(['e' => 'Неправильный формат ' . $name]);
     }
 }
 
 $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `login`="' . $aData['login'] . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(array('e' => 'Логин занят другим пользователем'));
+    sys::outjs(['e' => 'Логин занят другим пользователем']);
 }
 
 $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `mail`="' . $aData['mail'] . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(array('e' => 'Почта занята другим пользователем'));
+    sys::outjs(['e' => 'Почта занята другим пользователем']);
 }
 
 if ($aData['contacts'] != '') {
     $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `contacts`="' . $aData['contacts'] . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(array('e' => 'Контакты заняты другим пользователем'));
+        sys::outjs(['e' => 'Контакты заняты другим пользователем']);
     }
 }
 
 if ($aData['phone'] != '') {
     $sql->query('SELECT `id` FROM `users` WHERE `id`!="' . $id . '" AND `phone`="' . $aData['phone'] . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(array('e' => 'Номер занят другим пользователем'));
+        sys::outjs(['e' => 'Номер занят другим пользователем']);
     }
 }
 
 if ($aData['passwd'] != '') {
     if (sys::valid($aData['passwd'], 'other', $aValid['passwd'])) {
-        sys::outjs(array('e' => 'Неправильный формат пароля'));
+        sys::outjs(['e' => 'Неправильный формат пароля']);
     }
 
     $aData['passwd'] = sys::passwdkey($aData['passwd']);
@@ -99,11 +99,11 @@ if ($aData['passwd'] != '') {
 
 $aData['help'] = $aData['help'] == 0 ? 0 : 1;
 $aData['confirm_phone'] = $aData['confirm_phone'] == 0 ? 0 : 1;
-$aData['group'] = in_array($aData['group'], array('user', 'support', 'admin')) ? $aData['group'] : $us['group'];
-$aData['level'] = in_array($aData['level'], array(0, 1, 2)) ? $aData['level'] : $us['level'];
+$aData['group'] = in_array($aData['group'], ['user', 'support', 'admin']) ? $aData['group'] : $us['group'];
+$aData['level'] = in_array($aData['level'], [0, 1, 2]) ? $aData['level'] : $us['level'];
 
 if ($aData['support_info'] != '' and sys::valid($aData['support_info'], 'other', $aValid['support_info'])) {
-    sys::outjs(array('e' => 'Неправильный формат подписи'));
+    sys::outjs(['e' => 'Неправильный формат подписи']);
 }
 
 if ($aData['balance'] == '') {
@@ -111,16 +111,16 @@ if ($aData['balance'] == '') {
 }
 
 if (!is_numeric($aData['balance'])) {
-    sys::outjs(array('e' => 'Неправильный формат баланса'));
+    sys::outjs(['e' => 'Неправильный формат баланса']);
 }
 
 if (!is_numeric($aData['part_money'])) {
-    sys::outjs(array('e' => 'Неправильный формат заработанных средств'));
+    sys::outjs(['e' => 'Неправильный формат заработанных средств']);
 }
 
 if ($aData['replenish'] > 0) {
     if (!is_numeric($aData['replenish'])) {
-        sys::outjs(array('e' => 'Неправильный формат суммы пополнения'));
+        sys::outjs(['e' => 'Неправильный формат суммы пополнения']);
     }
 
     $aData['balance'] += $aData['replenish'];
@@ -147,7 +147,7 @@ if ($aData['rental']) {
 }
 
 if (strlen($aData['rental']) > 4) {
-    sys::outjs(array('e' => 'Неправильно указана скидка на аренду'));
+    sys::outjs(['e' => 'Неправильно указана скидка на аренду']);
 }
 
 if ($aData['extend']) {
@@ -163,7 +163,7 @@ if ($aData['extend']) {
 }
 
 if (strlen($aData['extend']) > 4) {
-    sys::outjs(array('e' => 'Неправильно указана скидка на аренду'));
+    sys::outjs(['e' => 'Неправильно указана скидка на аренду']);
 }
 
 $sql->query('UPDATE `users` set '
@@ -185,4 +185,4 @@ $sql->query('UPDATE `users` set '
     . '`rental`="' . $aData['rental'] . '",'
     . '`extend`="' . $aData['extend'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

@@ -20,7 +20,7 @@ $html->nav('Список подключенных серверов', $cfg['http'
 $html->nav('Список игровых серверов #' . $id, $cfg['http'] . 'control/id/' . $id);
 $html->nav($server['address'], $cfg['http'] . 'control/id/' . $id . '/server/' . $sid);
 
-$aSub = array('start', 'server', 'admins', 'bans', 'firewall', 'crontab', 'startlogs', 'debug', 'logs', 'smlogs', 'pack', 'file');
+$aSub = ['start', 'server', 'admins', 'bans', 'firewall', 'crontab', 'startlogs', 'debug', 'logs', 'smlogs', 'pack', 'file'];
 
 // Если выбран подраздел
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {

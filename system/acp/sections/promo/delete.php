@@ -16,4 +16,4 @@ if (!defined('EGP')) {
 $sql->query('DELETE FROM `promo` WHERE `id`="' . $id . '" LIMIT 1');
 $sql->query('DELETE FROM `promo_use` WHERE `promo`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

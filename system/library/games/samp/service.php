@@ -15,14 +15,14 @@ if (!defined('EGP')) {
 
 class service
 {
-    public static function buy($aData = array())
+    public static function buy($aData = [])
     {
         global $cfg, $sql, $user, $start_point;
 
         // Проверка локации
         $sql->query('SELECT `address`, `test` FROM `units` WHERE `id`="' . $aData['unit'] . '" AND `samp`="1" AND `show`="1" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Локация не найдена.'));
+            sys::outjs(['e' => 'Локация не найдена.']);
         }
 
         $unit = $sql->get();
@@ -30,7 +30,7 @@ class service
         // Проверка тарифа
         $sql->query('SELECT `id` FROM `tarifs` WHERE `id`="' . $aData['tarif'] . '" AND `unit`="' . $aData['unit'] . '" AND `show`="1" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(array('e' => 'Тариф не найден.'));
+            sys::outjs(['e' => 'Тариф не найден.']);
         }
 
         $sql->query('SELECT '
@@ -63,7 +63,7 @@ class service
 
         // Проверка сборки
         if (!array_key_exists($aData['pack'], sys::b64djs($tarif['packs'], true))) {
-            sys::outjs(array('e' => 'Сборка не найдена.'));
+            sys::outjs(['e' => 'Сборка не найдена.']);
         }
 
         $test = 0;
@@ -71,7 +71,7 @@ class service
         // Проверка периода на тест
         if ($aData['test']) {
             if (!$tarif['test'] || !$unit['test']) {
-                sys::outjs(array('e' => 'Тестовый период недоступен.'));
+                sys::outjs(['e' => 'Тестовый период недоступен.']);
             }
 
 
@@ -81,36 +81,36 @@ class service
                 $test_info = $sql->get();
 
                 if (!$cfg['tests']['game'] || $test_info['game'] == 'samp') {
-                    sys::outjs(array('e' => 'Тестовый период предоставляется один раз.'));
+                    sys::outjs(['e' => 'Тестовый период предоставляется один раз.']);
                 }
 
                 $sql->query('SELECT `id` FROM `servers` WHERE `user`="' . $user['id'] . '" AND `test`="1" LIMIT 1');
                 if ($sql->num() and !$cfg['tests']['sametime']) {
-                    sys::outjs(array('e' => 'Чтобы получить тестовый период другой игры, дождитесь окончания текущего.'));
+                    sys::outjs(['e' => 'Чтобы получить тестовый период другой игры, дождитесь окончания текущего.']);
                 }
             }
 
             // Проверка наличия мест на локации
             $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND `test`="1" AND `time`>"' . $start_point . '" LIMIT ' . $unit['test']);
             if ($sql->num() == $unit['test']) {
-                sys::outjs(array('e' => 'Свободного места для тестового периода нет.'));
+                sys::outjs(['e' => 'Свободного места для тестового периода нет.']);
             }
 
             // Проверка наличия мест для выбранного тарифа
             $sql->query('SELECT `id` FROM `servers` WHERE `tarif`="' . $aData['tarif'] . '" AND `test`="1" AND `time`>"' . $start_point . '" LIMIT ' . $tarif['tests']);
             if ($sql->num() == $tarif['tests']) {
-                sys::outjs(array('e' => 'Свободного места для тестового периода выбранного тарифа нет.'));
+                sys::outjs(['e' => 'Свободного места для тестового периода выбранного тарифа нет.']);
             }
 
             $test = 1;
         } elseif // Проверка периода
         (!$cfg['settlement_period'] and !in_array($aData['time'], explode(':', $tarif['time']))) {
-            sys::outjs(array('e' => 'Переданные данные периода неверны.'));
+            sys::outjs(['e' => 'Переданные данные периода неверны.']);
         }
 
         // Проверка слот
         if ($aData['slots'] < $tarif['slots_min'] || $aData['slots'] > $tarif['slots_max']) {
-            sys::outjs(array('e' => 'Переданные данные слот неверны.'));
+            sys::outjs(['e' => 'Переданные данные слот неверны.']);
         }
 
         // Определение суммы
@@ -128,12 +128,12 @@ class service
             $aData['promo'],
             $tarif['discount'],
             $sum,
-            array(
+            [
                 'tarif' => $aData['tarif'],
                 'slots' => $aData['slots'],
                 'time' => $aData['time'],
-                'user' => $user['id']
-            )
+                'user' => $user['id'],
+            ]
         );
 
         $days = $aData['time']; // Кол-во дней аренды
@@ -149,7 +149,7 @@ class service
 
         // Проверка баланса
         if ($user['balance'] < $sum) {
-            sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']));
+            sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']]);
         }
 
         // Выделенный адрес игрового сервера
@@ -198,7 +198,7 @@ class service
         if (!$ip || !$port) {
             $sql->query('UPDATE `tarifs` set `show`="0" WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
 
-            sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
+            sys::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
         }
 
         if ($test) {
@@ -208,7 +208,7 @@ class service
         }
 
         // Массив данных
-        $aSDATA = array(
+        $aSDATA = [
             'unit' => $aData['unit'], // идентификатор локации
             'tarif' => $aData['tarif'], // идентификатор тарифа
             'pack' => $aData['pack'], // Выбранная сборка для установки
@@ -232,13 +232,13 @@ class service
             'cpu' => $tarif['cpu'], // значение cpu
             'ram' => $tarif['ram'], // значение ram
             'hdd' => $tarif['hdd'], // Дисковое пространство
-            'promo' => $promo // Использование промо-кода
-        );
+            'promo' => $promo, // Использование промо-кода
+        ];
 
         return $aSDATA;
     }
 
-    public static function install($aSDATA = array())
+    public static function install($aSDATA = [])
     {
         global $cfg, $sql, $user, $start_point;
 
@@ -250,7 +250,7 @@ class service
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')));
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
         }
 
         // Массив данных тарифа (путь сборки,путь установки)
@@ -330,18 +330,18 @@ class service
         // Запись получения тестового периода
         if ($aSDATA['test']) {
             $sql->query('INSERT INTO `tests` set `server`="' . $id . '", `unit`="' . $aSDATA['unit'] . '", `game`="samp", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-            $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server_test'), array('id' => $id)) . '", `date`="' . $start_point . '", `type`="buy", `money`="0"');
+            $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server_test'), ['id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="0"');
         } else {
             // Реф. система
             games::part($user['id'], $aSDATA['sum']);
 
             // Запись логов
             if (!is_array($aSDATA['promo'])) {
-                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server'), array('days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'id' => $id)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
+                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server'), ['days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             } else {
                 $sql->query('UPDATE `servers` set `benefit`="' . $aSDATA['time'] . '" WHERE `id`="' . $id . '" LIMIT 1');
                 $sql->query('INSERT INTO `promo_use` set `promo`="' . $aSDATA['promo']['id'] . '", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server_promo'), array('days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
+                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server_promo'), ['days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             }
         }
 

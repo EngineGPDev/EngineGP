@@ -17,20 +17,20 @@ $sql->query('SELECT * FROM `wiki_category` WHERE `id`="' . $id . '" LIMIT 1');
 $wiki = $sql->get();
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : htmlspecialchars_decode($wiki['name']);
     $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $wiki['sort'];
 
     if (in_array('', $aData)) {
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $sql->query('UPDATE `wiki_category` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
         . '`sort`="' . $aData['sort'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('cat', 'sections/wiki');

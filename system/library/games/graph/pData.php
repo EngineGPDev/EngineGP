@@ -43,18 +43,18 @@ class pData
 {
     public $Data;
 
-    public $Palette = array('0' => array('R' => 188, 'G' => 224, 'B' => 46, 'Alpha' => 100),
-        '1' => array('R' => 224, 'G' => 100, 'B' => 46, 'Alpha' => 100),
-        '2' => array('R' => 224, 'G' => 214, 'B' => 46, 'Alpha' => 100),
-        '3' => array('R' => 46, 'G' => 151, 'B' => 224, 'Alpha' => 100),
-        '4' => array('R' => 176, 'G' => 46, 'B' => 224, 'Alpha' => 100),
-        '5' => array('R' => 224, 'G' => 46, 'B' => 117, 'Alpha' => 100),
-        '6' => array('R' => 92, 'G' => 224, 'B' => 46, 'Alpha' => 100),
-        '7' => array('R' => 224, 'G' => 176, 'B' => 46, 'Alpha' => 100));
+    public $Palette = ['0' => ['R' => 188, 'G' => 224, 'B' => 46, 'Alpha' => 100],
+        '1' => ['R' => 224, 'G' => 100, 'B' => 46, 'Alpha' => 100],
+        '2' => ['R' => 224, 'G' => 214, 'B' => 46, 'Alpha' => 100],
+        '3' => ['R' => 46, 'G' => 151, 'B' => 224, 'Alpha' => 100],
+        '4' => ['R' => 176, 'G' => 46, 'B' => 224, 'Alpha' => 100],
+        '5' => ['R' => 224, 'G' => 46, 'B' => 117, 'Alpha' => 100],
+        '6' => ['R' => 92, 'G' => 224, 'B' => 46, 'Alpha' => 100],
+        '7' => ['R' => 224, 'G' => 176, 'B' => 46, 'Alpha' => 100]];
 
     public function pData()
     {
-        $this->Data = array();
+        $this->Data = [];
         $this->Data['XAxisDisplay'] = AXIS_FORMAT_DEFAULT;
         $this->Data['XAxisFormat'] = null;
         $this->Data['XAxisName'] = null;
@@ -97,10 +97,10 @@ class pData
     public function stripVOID($Values)
     {
         if (!is_array($Values)) {
-            return (array());
+            return ([]);
         }
 
-        $Result = array();
+        $Result = [];
 
         foreach ($Values as $Key => $Value) {
             if ($Value != VOID) {
@@ -329,10 +329,10 @@ class pData
 
     public function setScatterSerieColor($ID, $Format)
     {
-        $R = isset($Format['R']) ? $Format['R'] : 0;
-        $G = isset($Format['G']) ? $Format['G'] : 0;
-        $B = isset($Format['B']) ? $Format['B'] : 0;
-        $Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
+        $R = $Format['R'] ?? 0;
+        $G = $Format['G'] ?? 0;
+        $B = $Format['B'] ?? 0;
+        $Alpha = $Format['Alpha'] ?? 100;
 
         if (isset($this->Data['ScatterSeries'][$ID])) {
             $this->Data['ScatterSeries'][$ID]['Color']['R'] = $R;
@@ -362,7 +362,7 @@ class pData
         $this->Data['Min'] = $GlobalMin;
         $this->Data['Max'] = $GlobalMax;
 
-        return (array($GlobalMin, $GlobalMax));
+        return ([$GlobalMin, $GlobalMax]);
     }
 
     public function drawAll()
@@ -494,10 +494,10 @@ class pData
 
     public function addRandomValues($SerieName = 'Serie1', $Options = '')
     {
-        $Values = isset($Options['Values']) ? $Options['Values'] : 20;
-        $Min = isset($Options['Min']) ? $Options['Min'] : 0;
-        $Max = isset($Options['Max']) ? $Options['Max'] : 100;
-        $withFloat = isset($Options['withFloat']) ? $Options['withFloat'] : false;
+        $Values = $Options['Values'] ?? 20;
+        $Min = $Options['Min'] ?? 0;
+        $Max = $Options['Max'] ?? 100;
+        $withFloat = $Options['withFloat'] ?? false;
 
         for ($i = 0; $i <= $Values; $i += 1) {
             if ($withFloat) {
@@ -564,10 +564,10 @@ class pData
     /* Associate a color to an axis */
     public function setAxisColor($AxisID, $Format)
     {
-        $R = isset($Format['R']) ? $Format['R'] : 0;
-        $G = isset($Format['G']) ? $Format['G'] : 0;
-        $B = isset($Format['B']) ? $Format['B'] : 0;
-        $Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
+        $R = $Format['R'] ?? 0;
+        $G = $Format['G'] ?? 0;
+        $B = $Format['B'] ?? 0;
+        $Alpha = $Format['Alpha'] ?? 100;
 
         if (isset($this->Data['Axis'][$AxisID])) {
             $this->Data['Axis'][$AxisID]['Color']['R'] = $R;
@@ -666,10 +666,10 @@ class pData
         }
 
         foreach ($Series as $Key => $Serie) {
-            $R = isset($Format['R']) ? $Format['R'] : 0;
-            $G = isset($Format['G']) ? $Format['G'] : 0;
-            $B = isset($Format['B']) ? $Format['B'] : 0;
-            $Alpha = isset($Format['Alpha']) ? $Format['Alpha'] : 100;
+            $R = $Format['R'] ?? 0;
+            $G = $Format['G'] ?? 0;
+            $B = $Format['B'] ?? 0;
+            $Alpha = $Format['Alpha'] ?? 100;
 
             if (isset($this->Data['Series'][$Serie])) {
                 $OldR = $this->Data['Series'][$Serie]['Color']['R'];
@@ -710,13 +710,13 @@ class pData
         while (!feof($fileHandle)) {
             $buffer = fgets($fileHandle, 4096);
             if (preg_match('/,/', $buffer)) {
-                list($R, $G, $B, $Alpha) = preg_split('/,/', $buffer);
+                [$R, $G, $B, $Alpha] = preg_split('/,/', $buffer);
                 if ($this->Palette == '') {
                     $ID = 0;
                 } else {
                     $ID = count($this->Palette);
                 }
-                $this->Palette[$ID] = array('R' => $R, 'G' => $G, 'B' => $B, 'Alpha' => $Alpha);
+                $this->Palette[$ID] = ['R' => $R, 'G' => $G, 'B' => $B, 'Alpha' => $Alpha];
             }
         }
         fclose($fileHandle);
@@ -726,7 +726,7 @@ class pData
         if (isset($this->Data['Series'])) {
             foreach ($this->Data['Series'] as $Key => $Value) {
                 if (!isset($this->Palette[$ID])) {
-                    $this->Data['Series'][$Key]['Color'] = array('R' => 0, 'G' => 0, 'B' => 0, 'Alpha' => 0);
+                    $this->Data['Series'][$Key]['Color'] = ['R' => 0, 'G' => 0, 'B' => 0, 'Alpha' => 0];
                 } else {
                     $this->Data['Series'][$Key]['Color'] = $this->Palette[$ID];
                 }
@@ -844,10 +844,10 @@ class pData
     /* Load data from a CSV (or similar) data source */
     public function importFromCSV($FileName, $Options = '')
     {
-        $Delimiter = isset($Options['Delimiter']) ? $Options['Delimiter'] : ',';
-        $GotHeader = isset($Options['GotHeader']) ? $Options['GotHeader'] : false;
-        $SkipColumns = isset($Options['SkipColumns']) ? $Options['SkipColumns'] : array(-1);
-        $DefaultSerieName = isset($Options['DefaultSerieName']) ? $Options['DefaultSerieName'] : 'Serie';
+        $Delimiter = $Options['Delimiter'] ?? ',';
+        $GotHeader = $Options['GotHeader'] ?? false;
+        $SkipColumns = $Options['SkipColumns'] ?? [-1];
+        $DefaultSerieName = $Options['DefaultSerieName'] ?? 'Serie';
 
         $Handle = @fopen($FileName, 'r');
         if ($Handle) {
@@ -890,12 +890,12 @@ class pData
     /* Create a dataset based on a formula */
     public function createFunctionSerie($SerieName, $Formula = '', $Options = '')
     {
-        $MinX = isset($Options['MinX']) ? $Options['MinX'] : -10;
-        $MaxX = isset($Options['MaxX']) ? $Options['MaxX'] : 10;
-        $XStep = isset($Options['XStep']) ? $Options['XStep'] : 1;
-        $AutoDescription = isset($Options['AutoDescription']) ? $Options['AutoDescription'] : false;
-        $RecordAbscissa = isset($Options['RecordAbscissa']) ? $Options['RecordAbscissa'] : false;
-        $AbscissaSerie = isset($Options['AbscissaSerie']) ? $Options['AbscissaSerie'] : 'Abscissa';
+        $MinX = $Options['MinX'] ?? -10;
+        $MaxX = $Options['MaxX'] ?? 10;
+        $XStep = $Options['XStep'] ?? 1;
+        $AutoDescription = $Options['AutoDescription'] ?? false;
+        $RecordAbscissa = $Options['RecordAbscissa'] ?? false;
+        $AbscissaSerie = $Options['AbscissaSerie'] ?? 'Abscissa';
 
         if ($Formula == '') {
             return (0);
@@ -996,7 +996,7 @@ class pData
 
     public function convertToArray($Value)
     {
-        $Values = array();
+        $Values = [];
         $Values[] = $Value;
         return ($Values);
     }

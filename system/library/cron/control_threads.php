@@ -19,7 +19,7 @@ class control_threads extends cron
     {
         global $sql, $cfg, $argv;
 
-        $aUnit = array();
+        $aUnit = [];
         $sql->query('SELECT `id` FROM `control` ORDER BY `id` ASC');
 
         if (!$sql->num()) {

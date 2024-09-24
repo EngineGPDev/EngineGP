@@ -15,14 +15,14 @@ if (!defined('EGP')) {
 
 $html->nav('Список подключенных серверов', $cfg['http'] . 'control');
 
-if (in_array($ctrl['status'], array('install', 'overdue', 'blocked'))) {
+if (in_array($ctrl['status'], ['install', 'overdue', 'blocked'])) {
     include(SEC . 'control/noaccess.php');
 } else {
     if ($go) {
-        $game = isset($url['game']) ? $url['game'] : sys::outjs(array('e' => 'Необходимо указать игру'));
+        $game = $url['game'] ?? sys::outjs(['e' => 'Необходимо указать игру']);
 
-        if (!in_array($game, array('cs', 'cssold', 'css', 'csgo'))) {
-            sys::outjs(array('e' => 'Указанная игра не найдена'));
+        if (!in_array($game, ['cs', 'cssold', 'css', 'csgo'])) {
+            sys::outjs(['e' => 'Указанная игра не найдена']);
         }
 
         $sql->query('SELECT `address`, `passwd`, `limit` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
@@ -30,7 +30,7 @@ if (in_array($ctrl['status'], array('install', 'overdue', 'blocked'))) {
 
         $sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="' . $id . '" LIMIT ' . $ctrl['limit']);
         if ($sql->num() == $ctrl['limit']) {
-            sys::outjs(array('e' => 'На данном тарифе нельзя установить больше, чем ' . $ctrl['limit'] . ' шт. игровых серверов'));
+            sys::outjs(['e' => 'На данном тарифе нельзя установить больше, чем ' . $ctrl['limit'] . ' шт. игровых серверов']);
         }
 
         $ip = $ctrl['address'];
@@ -57,7 +57,7 @@ if (in_array($ctrl['status'], array('install', 'overdue', 'blocked'))) {
 
         $uid = $sql->id() + 1000;
 
-        if (in_array($game, array('css', 'csgo'))) {
+        if (in_array($game, ['css', 'csgo'])) {
             $screen = 'cd ' . $cfg['steamcmd'] . '; ./steamcmd.sh +login anonymous +force_install_dir "/servers/' . $uid . '" +app_update ' . $cfg['control_steamcmd'][$game] . ' +quit; cd /servers/' . $uid . ';';
         } else {
             $zip = array_shift(array_keys($cfg['control_packs'][$game])) . '.zip';
@@ -68,7 +68,7 @@ if (in_array($ctrl['status'], array('install', 'overdue', 'blocked'))) {
         include(LIB . 'ssh.php');
 
         if (!$ssh->auth($ctrl['passwd'], $ctrl['address'])) {
-            sys::outjs(array('e' => 'Неудалось создать связь с физическим сервером'));
+            sys::outjs(['e' => 'Неудалось создать связь с физическим сервером']);
         }
 
         $ssh->set('mkdir /servers/' . $uid . ';' // Создание директории
@@ -83,7 +83,7 @@ if (in_array($ctrl['status'], array('install', 'overdue', 'blocked'))) {
 
         $sql->query('UPDATE `control_servers` set `uid`="' . $uid . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-        sys::outjs(array('s' => 'ok', 'id' => $id));
+        sys::outjs(['s' => 'ok', 'id' => $id]);
     }
 
     $html->nav('Подключенный сервер #' . $id, $cfg['http'] . 'control/id/' . $id);

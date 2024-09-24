@@ -18,9 +18,9 @@ class html
     public $dir = TPL;
     public $template = null;
     public $select_template = null;
-    public $arr = array();
-    public $data = array();
-    public $unitblock = array();
+    public $arr = [];
+    public $data = [];
+    public $unitblock = [];
 
     public function set($name, $var, $unset = false)
     {
@@ -102,8 +102,8 @@ class html
     public function pack($compile)
     {
         if (isset($this->unitblock)) {
-            $find_preg = array();
-            $replace_preg = array();
+            $find_preg = [];
+            $replace_preg = [];
 
             foreach ($this->unitblock as $key_find => $key_replace) {
                 $find_preg[] = $key_find;
@@ -113,8 +113,8 @@ class html
             $this->select_template = preg_replace($find_preg, $replace_preg, $this->select_template);
         }
 
-        $find = array();
-        $replace = array();
+        $find = [];
+        $replace = [];
 
         if (isset($this->data)) {
             foreach ($this->data as $key_find => $key_replace) {
@@ -136,14 +136,14 @@ class html
         return null;
     }
 
-    public function upd($name, $old = array(), $new = array())
+    public function upd($name, $old = [], $new = [])
     {
         $this->arr[$name] = str_replace($old, $new, $this->arr[$name]);
 
         return null;
     }
 
-    public function unitall($name, $arr = array(), $var = false, $mirror = false)
+    public function unitall($name, $arr = [], $var = false, $mirror = false)
     {
         $block = str_replace($name, "'\\|" . $name . "\\|(.*?)\\|_" . $name . "\\|'si", $name);
 

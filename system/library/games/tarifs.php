@@ -207,7 +207,7 @@ class tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
         }
 
         // Убить процессы
@@ -249,7 +249,7 @@ class tarifs
         $panel = $sql->get();
 
         if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $mcache);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
         }
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');

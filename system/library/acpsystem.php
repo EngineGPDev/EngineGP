@@ -25,7 +25,7 @@ class sys
             return $all ? null : 'index';
         }
 
-        $url = array();
+        $url = [];
 
         $string = str_replace('//', '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $aUrl = explode('/', trim($string, ' /'));
@@ -57,7 +57,7 @@ class sys
         return preg_replace("([^0-9])", '', $data);
     }
 
-    public static function first($array = array())
+    public static function first($array = [])
     {
         return $array[0];
     }
@@ -202,11 +202,11 @@ class sys
             $page = 1;
         }
 
-        $aPage = array(
+        $aPage = [
             'page' => $page,
             'num' => $num_go,
-            'ceil' => $ceil
-        );
+            'ceil' => $ceil,
+        ];
 
         return $aPage;
     }
@@ -214,7 +214,7 @@ class sys
     public static function page_list($countnum, $actnum)
     {
         if ($countnum == 0 || $countnum == 1) {
-            return array();
+            return [];
         }
 
         if ($countnum > 10) {
@@ -310,16 +310,16 @@ class sys
             $diff = 1;
         }
 
-        $seconds = array('секунду', 'секунды', 'секунд');
-        $minutes = array('минуту', 'минуты', 'минут');
-        $hours = array('час', 'часа', 'часов');
-        $days = array('день', 'дня', 'дней');
-        $weeks = array('неделю', 'недели', 'недель');
-        $months = array('месяц', 'месяца', 'месяцев');
-        $years = array('год', 'года', 'лет');
+        $seconds = ['секунду', 'секунды', 'секунд'];
+        $minutes = ['минуту', 'минуты', 'минут'];
+        $hours = ['час', 'часа', 'часов'];
+        $days = ['день', 'дня', 'дней'];
+        $weeks = ['неделю', 'недели', 'недель'];
+        $months = ['месяц', 'месяца', 'месяцев'];
+        $years = ['год', 'года', 'лет'];
 
-        $phrase = array($seconds, $minutes, $hours, $days, $weeks, $months, $years);
-        $length = array(1, 60, 3600, 86400, 604800, 2630880, 31570560);
+        $phrase = [$seconds, $minutes, $hours, $days, $weeks, $months, $years];
+        $length = [1, 60, 3600, 86400, 604800, 2630880, 31570560];
 
         for ($i = 6; ($i >= 0) and (($no = $diff / $length[$i]) <= 1); $i -= 1) ;
 
@@ -339,7 +339,7 @@ class sys
 
     private static function parse_ago($number, $titles)
     {
-        $cases = array(2, 0, 1, 1, 1, 2);
+        $cases = [2, 0, 1, 1, 1, 2];
 
         return $titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
@@ -359,20 +359,20 @@ class sys
         $minutes = floor(($check_time % 3600) / 60);
         $seconds = $check_time % 60;
 
-        $adata = array(
-            'min' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('ч.', 'ч.', 'ч.'),
-                'minutes' => array('мин.', 'мин.', 'мин.'),
-                'seconds' => array('сек.', 'сек.', 'сек.')
-            ),
-            'max' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('час', 'часа', 'часов'),
-                'minutes' => array('минуту', 'минуты', 'минут'),
-                'seconds' => array('секунду', 'секунды', 'секунд')
-            )
-        );
+        $adata = [
+            'min' => [
+                'days' => ['день', 'дня', 'дней'],
+                'hours' => ['ч.', 'ч.', 'ч.'],
+                'minutes' => ['мин.', 'мин.', 'мин.'],
+                'seconds' => ['сек.', 'сек.', 'сек.'],
+            ],
+            'max' => [
+                'days' => ['день', 'дня', 'дней'],
+                'hours' => ['час', 'часа', 'часов'],
+                'minutes' => ['минуту', 'минуты', 'минут'],
+                'seconds' => ['секунду', 'секунды', 'секунд'],
+            ],
+        ];
 
         $text = '';
 
@@ -561,14 +561,14 @@ class sys
         $time = explode(' ', $time);
 
         if (count($time) != 2) {
-            sys::outjs(array('e' => 'Указанная дата неправильная.'));
+            sys::outjs(['e' => 'Указанная дата неправильная.']);
         }
 
         $aDate = explode('/', $time[0]);
         $aTime = explode(':', $time[1]);
 
         if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2])) {
-            sys::outjs(array('e' => 'Указанная дата неправильная.'));
+            sys::outjs(['e' => 'Указанная дата неправильная.']);
         }
 
         return mktime($aTime[0], $aTime[1], 0, $aDate[1], $aDate[0], $aDate[2]);
@@ -586,8 +586,8 @@ class sys
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
         $text = str_replace(
-            array('[name]', '[text]', '[http]', '[img]', '[css]'),
-            array($cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'),
+            ['[name]', '[text]', '[http]', '[img]', '[css]'],
+            [$cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'],
             $tpl
         );
 
@@ -664,7 +664,7 @@ class sys
 
         $lines = explode("\n", $text);
 
-        $str_search = array(
+        $str_search = [
             "#\[spoiler\](.+?)\[\/spoiler\]#is",
             "#\[sp\](.+?)\[\/sp\]#is",
             "#\[b\](.+?)\[\/b\]#is",
@@ -673,10 +673,10 @@ class sys
             "#<code>(.+?)<\/code>#isU",
             "#\[quote\](.+?)\[\/quote\]#is",
             "#\[url=(.+?)\](.+?)\[\/url\]#is",
-            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
-        );
+            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is",
+        ];
 
-        $str_replace = array(
+        $str_replace = [
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
             "<b>\\1</b>",
@@ -687,8 +687,8 @@ class sys
             },
             "<blockquote><p>\\1</p></blockquote>",
             "<a href='\\1'>\\2</a>",
-            "<a href='\\2'>\\2</a>"
-        );
+            "<a href='\\2'>\\2</a>",
+        ];
 
         $uptext = '';
 
@@ -710,7 +710,7 @@ class sys
     {
         global $cfg, $user;
 
-        $group = isset($user['group']) ? $user['group'] : 'user';
+        $group = $user['group'] ?? 'user';
 
         if ($section != 'error' || !$cfg['text_group']) {
             $group = 'all';
@@ -718,7 +718,7 @@ class sys
 
         include(DATA . 'text/' . $section . '.php');
 
-        return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
+        return $text[$name][$group] ?? $text[$name];
     }
 
     public static function updtext($text, $data)

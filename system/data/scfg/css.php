@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aScfg = array(
+$aScfg = [
     'hostname' => 'Название игрового сервера.',
     'rcon_password' => 'Пароль для управления сервером через RCON команды.',
     'sv_password' => 'Пароль доступа на сервер.',
@@ -83,10 +83,10 @@ $aScfg = array(
     'sv_hudhint_sound' => 'Озвучивать окошко подсказок.',
     'phys_timescale' => 'Коэффициент шкалы времени для вычисления "физики" в игре. Если по тарифу тикрейт 100, то нужно выставить значение 1.5.',
     'sv_use_steam_voice' => 'Использовать голосовой кодек Steam.',
-    'sv_allow_voice_from_file' => 'Разрешить игрокам использовать voice_inputfromfile на сервере.'
-);
+    'sv_allow_voice_from_file' => 'Разрешить игрокам использовать voice_inputfromfile на сервере.',
+];
 
-$aScfg_form = array(
+$aScfg_form = [
     'hostname' => '<input value="[hostname]" name="config[\'hostname\']">',
     'rcon_password' => '<input value="[rcon_password]" name="config[\'rcon_password\']">',
     'sv_password' => '<input value="[sv_password]" name="config[\'sv_password\']">',
@@ -157,6 +157,6 @@ $aScfg_form = array(
     'sv_maxspeed' => '<input value="[sv_maxspeed]" name="config[\'sv_maxspeed\']">',
     'mp_disable_respawn_times' => '<input value="[mp_disable_respawn_times]" name="config[\'mp_disable_respawn_times\']">',
     'phys_timescale' => '<input value="[phys_timescale]" name="config[\'phys_timescale\']">',
-    'sv_maxcmdrate' => '<input value="[sv_maxcmdrate]" name="config[\'sv_maxcmdrate\']">'
+    'sv_maxcmdrate' => '<input value="[sv_maxcmdrate]" name="config[\'sv_maxcmdrate\']">',
 
-);
+];

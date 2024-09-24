@@ -14,14 +14,14 @@ if (!defined('EGP')) {
 }
 
 // Подключение раздела
-if (!in_array($section, array('cs', 'css', 'cssold', 'csgo', 'cs2', 'rust',  'mc', 'mta', 'samp', 'crmp', 'hosting', 'privileges', 'control'))) {
+if (!in_array($section, ['cs', 'css', 'cssold', 'csgo', 'cs2', 'rust',  'mc', 'mta', 'samp', 'crmp', 'hosting', 'privileges', 'control'])) {
     $title = 'Список услуг';
     $html->nav($title);
 
     $html->get('index', 'sections/services');
     $html->pack('main');
 } else {
-    $aNav = array(
+    $aNav = [
         'cs' => 'Counter-Srike: 1.6',
         'css' => 'Counter-Srike: Source',
         'cssold' => 'Counter-Srike: Source v34',
@@ -35,7 +35,7 @@ if (!in_array($section, array('cs', 'css', 'cssold', 'csgo', 'cs2', 'rust',  'mc
         'hosting' => 'виртуального хостинга',
         'privileges' => 'привилегий на игровом сервере',
         'control' => 'услуги "контроль"',
-    );
+    ];
 
     $title = 'Аренда ' . $aNav[$section];
 

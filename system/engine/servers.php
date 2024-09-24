@@ -32,7 +32,7 @@ if ($id and !$section) {
 $title = 'Управление игровыми серверами';
 
 // Подключение раздела
-if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost', 'rcon'))) {
+if (in_array($section, ['action', 'scan', 'index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost', 'rcon'])) {
     if (!$id) {
         sys::back($cfg['http'] . 'servers');
     }
@@ -54,10 +54,10 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
 
                     if ($section == 'action') {
                         if (!isset($rights[$url['action']]) || !$rights[$url['action']]) {
-                            sys::outjs(array('e' => 'У вас нет доступа к данному серверу'));
+                            sys::outjs(['e' => 'У вас нет доступа к данному серверу']);
                         }
                     } else {
-                        if (!in_array($section, array('index', 'scan')) and (!isset($rights[$section]) || !$rights[$section])) {
+                        if (!in_array($section, ['index', 'scan']) and (!isset($rights[$section]) || !$rights[$section])) {
                             sys::back($cfg['http'] . 'servers');
                         }
                     }
@@ -80,10 +80,10 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
 
             if ($section == 'action') {
                 if (!isset($rights[$url['action']]) || !$rights[$url['action']]) {
-                    sys::outjs(array('e' => sys::text('error', 'ser_owner')));
+                    sys::outjs(['e' => sys::text('error', 'ser_owner')]);
                 }
             } else {
-                if (!in_array($section, array('index', 'scan')) and (!isset($rights[$section]) || !$rights[$section])) {
+                if (!in_array($section, ['index', 'scan']) and (!isset($rights[$section]) || !$rights[$section])) {
                     sys::back($cfg['http'] . 'servers/id/' . $owner['server']);
                 }
             }
@@ -115,7 +115,7 @@ if (in_array($section, array('action', 'scan', 'index', 'console', 'settings', '
         include(SEC . 'servers/owners_list.php');
 
         $html->get('servers', 'sections/servers');
-        $html->set('list', isset($html->arr['list']) ? $html->arr['list'] : 'У вас нет игровых серверов', true);
+        $html->set('list', $html->arr['list'] ?? 'У вас нет игровых серверов', true);
         $html->set('wait_servers', $wait_servers);
         $html->set('updates_servers', $updates_servers);
         $html->pack('main');

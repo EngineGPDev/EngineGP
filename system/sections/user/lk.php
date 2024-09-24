@@ -21,19 +21,19 @@ if (isset($url['passwd'])) {
     sys::out(sys::passwd(10));
 }
 
-$aTitle = array(
+$aTitle = [
     'index' => 'Профиль',
     'settings' => 'Настройки',
     'auth' => 'Логи авторизаций',
     'logs' => 'История операций',
-    'security' => 'Безопасность'
-);
+    'security' => 'Безопасность',
+];
 
-$url['subsection'] = isset($url['subsection']) ? $url['subsection'] : 'index';
+$url['subsection'] ??= 'index';
 
 // Подключение раздела
-if (in_array($url['subsection'], array('index', 'settings', 'auth', 'logs', 'security', 'action', 'cashback'))) {
-    $title = isset($aTitle[$url['subsection']]) ? $aTitle[$url['subsection']] : '';
+if (in_array($url['subsection'], ['index', 'settings', 'auth', 'logs', 'security', 'action', 'cashback'])) {
+    $title = $aTitle[$url['subsection']] ?? '';
     $html->nav($title);
 
     include(LIB . 'users.php');

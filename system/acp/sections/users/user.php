@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$status = array(
+$status = [
     'working' => '<span class="text-green">Работает</span>',
     'off' => '<span class="text-red">Выключен</span>',
     'start' => 'Запускается',
@@ -24,8 +24,8 @@ $status = array(
     'update' => 'Обновляется',
     'recovery' => 'Восстанавливается',
     'overdue' => 'Просрочен',
-    'blocked' => 'Заблокирован'
-);
+    'blocked' => 'Заблокирован',
+];
 
 $sql->query('SELECT * FROM `users` WHERE `id`="' . $id . '" LIMIT 1');
 $us = $sql->get();

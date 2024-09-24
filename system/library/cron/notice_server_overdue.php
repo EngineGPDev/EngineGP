@@ -26,7 +26,7 @@ class notice_server_overdue extends cron
 
             $server_address = $server['address'] . ':' . $server['port'];
 
-            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), array('site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address)), $user['mail'])) {
+            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), ['site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address]), $user['mail'])) {
                 continue;
             }
 

@@ -58,7 +58,7 @@ include(LIB . 'ssh.php');
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $name_mcache);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $name_mcache);
 }
 
 // Директория дополнительной услуги
@@ -67,14 +67,14 @@ $install = $aWebUnit['install'][$aWebUnit['unit'][$url['subsection']]][$url['sub
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $name_mcache);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $name_mcache);
 }
 
-$arSel = array('$adm_login', '$adm_pass', '$wmr_on', '$purse', '$secret_key', '$to', '$vk', '$skype');
+$arSel = ['$adm_login', '$adm_pass', '$wmr_on', '$purse', '$secret_key', '$to', '$vk', '$skype'];
 
 $conf = explode("\n", $ssh->get('cat ' . $install . '/core/cfg.php'));
 
-$aData = array();
+$aData = [];
 
 if ($go) {
     $aData['bp_login'] = isset($_POST['bp_login']) ? trim($_POST['bp_login']) : '';
@@ -82,7 +82,7 @@ if ($go) {
     $aData['bp_mail'] = isset($_POST['bp_mail']) ? trim($_POST['bp_mail']) : '';
     $aData['bp_vk'] = isset($_POST['bp_vk']) ? trim($_POST['bp_vk']) : '';
     $aData['bp_skype'] = isset($_POST['bp_skype']) ? trim($_POST['bp_skype']) : '';
-    $aData['bp_webmoney'] = isset($_POST['bp_webmoney']) ? $_POST['bp_webmoney'] : '0';
+    $aData['bp_webmoney'] = $_POST['bp_webmoney'] ?? '0';
     $aData['bp_wmr'] = isset($_POST['bp_wmr']) ? trim($_POST['bp_wmr']) : '';
     $aData['bp_sign_key'] = isset($_POST['bp_sign_key']) ? trim($_POST['bp_sign_key']) : '';
 
@@ -92,7 +92,7 @@ if ($go) {
         $aData[$var] = str_replace('"', '', $val);
     }
 
-    $str_search = array(
+    $str_search = [
         '#\$adm_login = ".*"#iu',
         '#\$adm_pass = ".*"#iu',
         '#\$to = ".*"#iu',
@@ -101,9 +101,9 @@ if ($go) {
         '#\$wmr_on = ".*"#iu',
         '#\$purse = ".*"#iu',
         '#\$secret_key = ".*"#iu',
-    );
+    ];
 
-    $str_replace = array(
+    $str_replace = [
         '$adm_login = "' . $aData['bp_login'] . '"',
         '$adm_pass = "' . $aData['bp_passwd'] . '"',
         '$to = "' . $aData['bp_mail'] . '"',
@@ -111,8 +111,8 @@ if ($go) {
         '$skype = "' . $aData['bp_skype'] . '"',
         '$wmr_on = "' . $aData['bp_webmoney'] . '"',
         '$purse = "' . $aData['bp_wmr'] . '"',
-        '$secret_key = "' . $aData['bp_sign_key'] . '"'
-    );
+        '$secret_key = "' . $aData['bp_sign_key'] . '"',
+    ];
 
     $data = '';
 
@@ -131,7 +131,7 @@ if ($go) {
     $ssh->setfile($temp, $install . '/core/cfg.php');
     $ssh->set('chmod 0644' . ' ' . $install . '/core/cfg.php');
 
-    sys::outjs(array('s' => 'ok'), $name_mcache);
+    sys::outjs(['s' => 'ok'], $name_mcache);
 }
 
 foreach ($conf as $str) {
@@ -142,7 +142,7 @@ foreach ($conf as $str) {
     }
 
     $var = trim($aStr[0]);
-    $val = str_replace(array('"', ';'), '', trim($aStr[1]));
+    $val = str_replace(['"', ';'], '', trim($aStr[1]));
 
     if (!in_array($var, $arSel)) {
         continue;
@@ -153,7 +153,7 @@ foreach ($conf as $str) {
 
 $webmoney = $aData['$wmr_on'] == 'on' ? '<option value="on">Включено</option><option value="off">Выключено</option>' : '<option value="off">Выключено</option><option value="on">Включено</option>';
 
-sys::outjs(array(
+sys::outjs([
     's' => 'ok',
     'bp_login' => $aData['$adm_login'],
     'bp_passwd' => $aData['$adm_pass'],
@@ -162,4 +162,4 @@ sys::outjs(array(
     'bp_skype' => $aData['$skype'],
     'bp_wmr' => $aData['$purse'],
     'bp_sign_key' => $aData['$secret_key'],
-    'bp_webmoney' => $webmoney), $name_mcache);
+    'bp_webmoney' => $webmoney], $name_mcache);

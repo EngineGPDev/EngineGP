@@ -13,27 +13,27 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aFindMap = array(
-    'cs' => array(
-        'de' => array('de'),
-        'cs' => array('cs'),
-        'aim' => array('aim'),
-        'awp' => array('awp'),
-        'bhop' => array('bhop'),
-        'csde' => array('csde'),
-        'deathrun' => array('deathrun'),
-        'jail' => array('jail', 'jailbreak', 'jb'),
-        'zm' => array('zm', 'ze'),
-        'fy' => array('fy'),
-        'gg' => array('gg'),
-        'surf' => array('surf'),
-        'dm' => array('dm', 'deathmatch'),
-        'as' => array('as'),
-        'es' => array('es'),
-        'fun' => array('fun'),
-        'he' => array('he'),
-        'ka' => array('ka'),
-        'sp' => array('sp'),
-        '35hp' => array('35hp')
-    )
-);
+$aFindMap = [
+    'cs' => [
+        'de' => ['de'],
+        'cs' => ['cs'],
+        'aim' => ['aim'],
+        'awp' => ['awp'],
+        'bhop' => ['bhop'],
+        'csde' => ['csde'],
+        'deathrun' => ['deathrun'],
+        'jail' => ['jail', 'jailbreak', 'jb'],
+        'zm' => ['zm', 'ze'],
+        'fy' => ['fy'],
+        'gg' => ['gg'],
+        'surf' => ['surf'],
+        'dm' => ['dm', 'deathmatch'],
+        'as' => ['as'],
+        'es' => ['es'],
+        'fun' => ['fun'],
+        'he' => ['he'],
+        'ka' => ['ka'],
+        'sp' => ['sp'],
+        '35hp' => ['35hp'],
+    ],
+];

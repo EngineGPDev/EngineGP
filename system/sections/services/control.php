@@ -26,28 +26,28 @@ if ($go) {
 
     $mcache->set('buy_server', true, false, 3);
 
-    $aData = array(
+    $aData = [
         'address' => isset($_POST['address']) ? trim($_POST['address']) : 0,
-        'passwd' => isset($_POST['passwd']) ? $_POST['passwd'] : 0,
+        'passwd' => $_POST['passwd'] ?? 0,
         'time' => isset($_POST['time']) ? sys::int($_POST['time']) : 30,
-        'limit' => isset($_POST['limit']) ? sys::int($_POST['limit']) : key(array_shift($cfg['control_limit']))
-    );
+        'limit' => isset($_POST['limit']) ? sys::int($_POST['limit']) : key(array_shift($cfg['control_limit'])),
+    ];
 
     if (sys::valid($aData['address'], 'ip')) {
-        sys::outjs(array('e' => 'Указанный адрес имеет неправильный формат'));
+        sys::outjs(['e' => 'Указанный адрес имеет неправильный формат']);
     }
 
     $sql->query('SELECT `id` FROM `control` WHERE `address`="' . $aData['address'] . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(array('e' => 'Данный сервер уже подключен'));
+        sys::outjs(['e' => 'Данный сервер уже подключен']);
     }
 
     if (sys::strlen($aData['passwd']) > 32) {
-        sys::outjs(array('e' => 'Указанный пароль слишком длинный'));
+        sys::outjs(['e' => 'Указанный пароль слишком длинный']);
     }
 
     if (sys::valid($aData['passwd'], 'other', $aValid['passwd'])) {
-        sys::outjs(array('e' => 'Пожалуйста, поменяйте пароль используя только латинские буквы и цифры'));
+        sys::outjs(['e' => 'Пожалуйста, поменяйте пароль используя только латинские буквы и цифры']);
     }
 
     if (!array_key_exists($aData['limit'], $cfg['control_limit'])) {
@@ -62,14 +62,14 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(array('e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']));
+        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']]);
     }
 
     include(LIB . 'ssh.php');
 
     // Проверка ssh соединения с физ. сервером
     if (!$ssh->auth($aData['passwd'], $aData['address'])) {
-        sys::outjs(array('e' => 'Не удалось создать связь с физическим сервером, проверьте адрес и пароль'));
+        sys::outjs(['e' => 'Не удалось создать связь с физическим сервером, проверьте адрес и пароль']);
     }
 
     // Списание средств с баланса пользователя
@@ -93,9 +93,9 @@ if ($go) {
     $id = $sql->id();
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_control'), array('days' => games::parse_day($days, true), 'money' => $sum, 'id' => $id)) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $sum . '"');
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_control'), ['days' => games::parse_day($days, true), 'money' => $sum, 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $sum . '"');
 
-    sys::outjs(array('s' => 'ok', 'id' => $id));
+    sys::outjs(['s' => 'ok', 'id' => $id]);
 }
 
 if (isset($url['get'])) {

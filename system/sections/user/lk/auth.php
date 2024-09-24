@@ -38,6 +38,6 @@ while ($aBro = $sql->get($qBro)) {
 
 $html->get('auth', 'sections/user/lk');
 
-$html->set('auth', isset($html->arr['auth']) ? $html->arr['auth'] : '', true);
+$html->set('auth', $html->arr['auth'] ?? '', true);
 
 $html->pack('main');

@@ -24,7 +24,7 @@ $html->pack('types');
 
 $type = false;
 
-if (isset($url['type']) and in_array($url['type'], array('de', 'cs', 'aim', 'awp', 'bhop', 'csde', 'deathrun', 'jail'))) {
+if (isset($url['type']) and in_array($url['type'], ['de', 'cs', 'aim', 'awp', 'bhop', 'csde', 'deathrun', 'jail'])) {
     $type = '^' . $url['type'] . '\_';
 }
 
@@ -63,8 +63,8 @@ $html->get('install', 'sections/servers/games/maps');
 
 $html->set('id', $id);
 
-$html->set('types', isset($html->arr['types']) ? $html->arr['types'] : '');
-$html->set('maps', isset($html->arr['maps']) ? $html->arr['maps'] : 'К сожалению карты не найдены в базе');
+$html->set('types', $html->arr['types'] ?? '');
+$html->set('maps', $html->arr['maps'] ?? 'К сожалению карты не найдены в базе');
 $html->set('amaps', $mapsjs);
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('pages', $html->arr['pages'] ?? '');
 $html->pack('main');

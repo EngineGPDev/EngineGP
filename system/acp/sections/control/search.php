@@ -31,17 +31,17 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go) {
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 $select = '`id`, `user`, `address`, `time`, `date`, `status`, `limit`, `price` FROM `control` WHERE `user`!="-1" AND';
 
 $check = explode('=', $text);
 
-if (in_array($check[0], array('limit', 'price', 'user', 'status'))) {
+if (in_array($check[0], ['limit', 'price', 'user', 'status'])) {
     $val = trim($check[1]);
 
     switch ($check[0]) {
@@ -58,7 +58,7 @@ if (in_array($check[0], array('limit', 'price', 'user', 'status'))) {
             break;
 
         case 'status':
-            if (in_array($val, array('working', 'error', 'reboot', 'overdue', 'blocked', 'install'))) {
+            if (in_array($val, ['working', 'error', 'reboot', 'overdue', 'blocked', 'install'])) {
                 $ctrls = $sql->query('SELECT ' . $select . ' `status`="' . $val . '" ORDER BY `id` ASC');
             }
     }
@@ -73,20 +73,20 @@ if (in_array($check[0], array('limit', 'price', 'user', 'status'))) {
 
 if (!$sql->num($ctrls)) {
     if ($go) {
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
-$status = array(
+$status = [
     'working' => '<span class="text-green">Работает</span>',
     'reboot' => 'перезагружается',
     'error' => '<span class="text-red">Не отвечает</span>',
     'install' => 'Настраивается',
     'overdue' => 'Просрочен',
-    'blocked' => 'Заблокирован'
-);
+    'blocked' => 'Заблокирован',
+];
 
 $list = '';
 
@@ -108,6 +108,6 @@ while ($ctrl = $sql->get($ctrls)) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

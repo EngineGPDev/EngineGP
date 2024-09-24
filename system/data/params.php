@@ -16,37 +16,37 @@ if (!defined('EGP')) {
 class params
 {
     // Скидки / Наценки
-    public static $disconunt = array(
-        'service' => array(
-            'time' => array(
-                'buy' => array(
+    public static $disconunt = [
+        'service' => [
+            'time' => [
+                'buy' => [
                     '15' => '+:30',
                     '90' => '-:5%',
-                    '180' => '-:7%'
-                ),
+                    '180' => '-:7%',
+                ],
 
-                'extend' => array(
+                'extend' => [
                     '1' => '+:100%',
                     '15' => '+:30%',
                     '90' => '-:5%',
-                    '180' => '-:7%'
-                )
-            ),
+                    '180' => '-:7%',
+                ],
+            ],
 
-            9 => array(
-                'buy' => array(
-                    '30' => '+:49%'
-                ),
+            9 => [
+                'buy' => [
+                    '30' => '+:49%',
+                ],
 
-                'extend' => array(
-                    '1' => '+:50%'
-                )
-            )
-        )
-    );
+                'extend' => [
+                    '1' => '+:50%',
+                ],
+            ],
+        ],
+    ];
 
     // Стандартные порты
-    public static $aDefPort = array(
+    public static $aDefPort = [
         'cs' => 27015,
         'cssold' => 27015,
         'css' => 27015,
@@ -57,232 +57,232 @@ class params
         'crmp' => 7777,
         'mta' => 22003,
         'mc' => 25565,
-    );
+    ];
 
     // Параметры раздела "Копии"
-    public static $section_copy = array(
-        'cs' => array(
+    public static $section_copy = [
+        'cs' => [
             'CopyFull' => 'cstrike',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'addons' => 'Директория с дополнениями (модули/плагины)',
                 'cfg' => 'Файлы настроек (server.cfg/motd.txt/liblist.gam/banned.cfg и т.д.)',
                 'dlls' => 'Директория с библиотеками (название.so)',
                 'gfx' => 'Директория с изображениями (название.tga)',
                 'maps' => 'Директория с картами (название.bsp)',
                 'models' => 'Директория с моделями (название.mdl)',
-                'sound' => 'Директория со звуками (название.mp3/название.wav)'
-            ),
+                'sound' => 'Директория со звуками (название.mp3/название.wav)',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'addons' => 'cstrike/addons',
                 'dlls' => 'cstrike/dlls',
                 'gfx' => 'cstrike/gfx',
                 'maps' => 'cstrike/maps',
                 'models' => 'cstrike/models',
-                'sound' => 'cstrike/sound'
-            ),
+                'sound' => 'cstrike/sound',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'cstrike/server.cfg cstrike/motd.txt cstrike/fastdl.cfg cstrike/liblist.gam cstrike/banned.cfg cstrike/listip.cfg cstrike/reunion.cfg cstrike/mapcycle.txt'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'cstrike/server.cfg cstrike/motd.txt cstrike/fastdl.cfg cstrike/liblist.gam cstrike/banned.cfg cstrike/listip.cfg cstrike/reunion.cfg cstrike/mapcycle.txt',
+            ],
+        ],
 
-        'cssold' => array(
+        'cssold' => [
             'CopyFull' => 'cstrike',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'addons' => 'Директория с дополнениями (модули/плагины)',
                 'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
                 'maps' => 'Директория с картами (название.bsp)',
                 'models' => 'Директория с моделями (название.mdl)',
-                'sound' => 'Директория со звуками (название.mp3/название.wav)'
-            ),
+                'sound' => 'Директория со звуками (название.mp3/название.wav)',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'addons' => 'cstrike/addons',
                 'maps' => 'cstrike/maps',
                 'models' => 'cstrike/models',
-                'sound' => 'cstrike/sound'
-            ),
+                'sound' => 'cstrike/sound',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'cstrike/cfg/server.cfg cstrike/motd.txt cstrike/fastdl.cfg cstrike/banned_user.cfg cstrike/banned_ip.cfg cstrike/mapcycle.txt cstrike/maplist.txt'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'cstrike/cfg/server.cfg cstrike/motd.txt cstrike/fastdl.cfg cstrike/banned_user.cfg cstrike/banned_ip.cfg cstrike/mapcycle.txt cstrike/maplist.txt',
+            ],
+        ],
 
-        'css' => array(
+        'css' => [
             'CopyFull' => 'cstrike',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'addons' => 'Директория с дополнениями (модули/плагины)',
                 'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
                 'maps' => 'Директория с картами (название.bsp)',
                 'models' => 'Директория с моделями (название.mdl)',
-                'sound' => 'Директория со звуками (название.mp3/название.wav)'
-            ),
+                'sound' => 'Директория со звуками (название.mp3/название.wav)',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'addons' => 'cstrike/addons',
                 'maps' => 'cstrike/maps',
                 'models' => 'cstrike/models',
-                'sound' => 'cstrike/sound'
-            ),
+                'sound' => 'cstrike/sound',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'cstrike/cfg/server.cfg cstrike/motd.txt cstrike/fastdl.cfg cstrike/banned_user.cfg cstrike/banned_ip.cfg cstrike/mapcycle.txt cstrike/maplist.txt'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'cstrike/cfg/server.cfg cstrike/motd.txt cstrike/fastdl.cfg cstrike/banned_user.cfg cstrike/banned_ip.cfg cstrike/mapcycle.txt cstrike/maplist.txt',
+            ],
+        ],
 
-        'csgo' => array(
+        'csgo' => [
             'CopyFull' => 'csgo',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'addons' => 'Директория с дополнениями (модули/плагины)',
                 'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
                 'maps' => 'Директория с картами (название.bsp)',
                 'models' => 'Директория с моделями (название.mdl)',
-                'sound' => 'Директория со звуками (название.mp3/название.wav)'
-            ),
+                'sound' => 'Директория со звуками (название.mp3/название.wav)',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'addons' => 'csgo/addons',
                 'maps' => 'csgo/maps',
                 'models' => 'csgo/models',
-                'sound' => 'csgo/sound'
-            ),
+                'sound' => 'csgo/sound',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt',
+            ],
+        ],
 
-        'cs2' => array(
+        'cs2' => [
             'CopyFull' => 'csgo',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'addons' => 'Директория с дополнениями (модули/плагины)',
                 'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
                 'maps' => 'Директория с картами (название.bsp)',
                 'models' => 'Директория с моделями (название.mdl)',
-                'sound' => 'Директория со звуками (название.mp3/название.wav)'
-            ),
+                'sound' => 'Директория со звуками (название.mp3/название.wav)',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'addons' => 'csgo/addons',
                 'maps' => 'csgo/maps',
                 'models' => 'csgo/models',
-                'sound' => 'csgo/sound'
-            ),
+                'sound' => 'csgo/sound',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt',
+            ],
+        ],
 
-        'rust' => array(
+        'rust' => [
             'CopyFull' => '*',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'addons' => 'Директория с дополнениями (модули/плагины)',
                 'cfg' => 'Файлы настроек (server.cfg/motd.txt/banned_user.cfg/banned_ip.cfg и т.д.)',
                 'maps' => 'Директория с картами (название.bsp)',
                 'models' => 'Директория с моделями (название.mdl)',
-                'sound' => 'Директория со звуками (название.mp3/название.wav)'
-            ),
+                'sound' => 'Директория со звуками (название.mp3/название.wav)',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'addons' => 'csgo/addons',
                 'maps' => 'csgo/maps',
                 'models' => 'csgo/models',
-                'sound' => 'csgo/sound'
-            ),
+                'sound' => 'csgo/sound',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'csgo/cfg/server.cfg csgo/motd.txt csgo/fastdl.cfg csgo/banned_user.cfg csgo/banned_ip.cfg csgo/mapcycle.txt csgo/maplist.txt',
+            ],
+        ],
 
-        'samp' => array(
+        'samp' => [
             'CopyFull' => '*',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'filterscripts' => 'Директория с дополнительными скриптами',
                 'cfg' => 'Файл настроек (server.cfg)',
                 'gamemodes' => 'Директория с модами',
-                'scriptfiles' => 'Директория с скриптами'
-            ),
+                'scriptfiles' => 'Директория с скриптами',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'filterscripts' => 'filterscripts',
                 'gamemodes' => 'gamemodes',
-                'scriptfiles' => 'scriptfiles'
-            ),
+                'scriptfiles' => 'scriptfiles',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'server.cfg'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'server.cfg',
+            ],
+        ],
 
-        'crmp' => array(
+        'crmp' => [
             'CopyFull' => '*',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'filterscripts' => 'Директория с дополнительными скриптами',
                 'cfg' => 'Файл настроек (server.cfg)',
                 'gamemodes' => 'Директория с модами',
-                'scriptfiles' => 'Директория с скриптами'
-            ),
+                'scriptfiles' => 'Директория с скриптами',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'filterscripts' => 'filterscripts',
                 'gamemodes' => 'gamemodes',
-                'scriptfiles' => 'scriptfiles'
-            ),
+                'scriptfiles' => 'scriptfiles',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'server.cfg'
-            )
-        ),
+            'aCopyFile' => [
+                'cfg' => 'server.cfg',
+            ],
+        ],
 
-        'mta' => array(
+        'mta' => [
             'CopyFull' => '*',
 
-            'aCopy' => array(
+            'aCopy' => [
                 'databases' => 'Директория баз данных',
                 'cfg' => 'Файлы настроек (mtaserver.conf, acl.xml, vehiclecolors.conf и т.д.)',
                 'modules ' => 'Директория с модулями',
-                'resources' => 'Директория с ресурсами'
-            ),
+                'resources' => 'Директория с ресурсами',
+            ],
 
-            'aCopyDir' => array(
+            'aCopyDir' => [
                 'databases' => 'mods/deathmatch/databases',
                 'modules' => 'mods/deathmatch/modules',
-                'resources' => 'mods/deathmatch/resources'
-            ),
+                'resources' => 'mods/deathmatch/resources',
+            ],
 
-            'aCopyFile' => array(
-                'cfg' => 'mods/deathmatch/mtaserver.conf mods/deathmatch/acl.xml mods/deathmatch/vehiclecolors.conf mods/deathmatch/settings.xml'
-            )
-        )
-    );
+            'aCopyFile' => [
+                'cfg' => 'mods/deathmatch/mtaserver.conf mods/deathmatch/acl.xml mods/deathmatch/vehiclecolors.conf mods/deathmatch/settings.xml',
+            ],
+        ],
+    ];
 
     // Дни в месяцах
-    public static $aDayMonth = array(
+    public static $aDayMonth = [
         1 => 31, 2 => 28, 3 => 31, 4 => 30,
         5 => 31, 6 => 30, 7 => 31, 8 => 31,
-        9 => 30, 10 => 31, 11 => 30, 12 => 31
-    );
+        9 => 30, 10 => 31, 11 => 30, 12 => 31,
+    ];
 
     // Названия месяцев
-    public static $aNameMonth = array(
+    public static $aNameMonth = [
         1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель',
         5 => 'Май', 6 => 'Июнь', 7 => 'Июль', 8 => 'Август',
-        9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь'
-    );
+        9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь',
+    ];
 
     // Директории
-    public static $aDirGame = array(
+    public static $aDirGame = [
         'cs' => 'cstrike',
         'cssold' => 'cstrike',
         'css' => 'cstrike',
@@ -293,10 +293,10 @@ class params
         'crmp' => '',
         'mta' => '',
         'mc' => '',
-    );
+    ];
 
     // Исполняемые файлы
-    public static $aFileGame = array(
+    public static $aFileGame = [
         'cs' => 'hlds_run hlds_linux hlds_i686',
         'cssold' => 'srcds_run srcds_i486 srcds_i686',
         'css' => 'srcds_linux srcds_run',
@@ -306,6 +306,6 @@ class params
         'samp' => 'samp03svr',
         'crmp' => 'samp03svr-cr',
         'mta' => 'mta-server',
-        'mc' => 'start.jar'
-    );
+        'mc' => 'start.jar',
+    ];
 }

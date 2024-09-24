@@ -13,12 +13,12 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aGames = array('cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc');
-$types = array('cfg', 'txt', 'ini', 'js');
+$aGames = ['cs', 'cssold', 'css', 'csgo', 'cs2', 'samp', 'crmp', 'mta', 'mc'];
+$types = ['cfg', 'txt', 'ini', 'js'];
 
 if (isset($url['get'])) {
     if ($url['get'] == 'cat') {
-        $game = isset($url['game']) ? $url['game'] : sys::out();
+        $game = $url['game'] ?? sys::out();
 
         if (!in_array($game, $aGames)) {
             sys::out();
@@ -36,7 +36,7 @@ if (isset($url['get'])) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
     $aData['game'] = isset($_POST['game']) ? trim($_POST['game']) : '';
@@ -51,34 +51,34 @@ if ($go) {
     $aData['required'] = isset($_POST['required']) ? trim($_POST['required']) : '';
     $aData['update'] = isset($_POST['update']) ? (is_numeric($_POST['update']) ? ceil((float)$_POST['update']) : 0) : 0;
     $aData['delete'] = isset($_POST['delete']) ? (is_numeric($_POST['delete']) ? ceil((float)$_POST['delete']) : 0) : 0;
-    $aData['aecfg'] = isset($_POST['aecfg']) ? $_POST['aecfg'] : 0;
+    $aData['aecfg'] = $_POST['aecfg'] ?? 0;
     $aData['sort'] = isset($_POST['sort']) ? (is_numeric($_POST['sort']) ? ceil((float)$_POST['sort']) : 0) : 0;
     $aData['price'] = isset($_POST['price']) ? (is_numeric($_POST['price']) ? ceil((float)$_POST['price']) : 0) : 0;
 
-    $aData['config_files_file'] = isset($_POST['config_files_file']) ? $_POST['config_files_file'] : array();
-    $aData['config_files_sort'] = isset($_POST['config_files_sort']) ? $_POST['config_files_sort'] : array();
-    $aData['config_clear_file'] = isset($_POST['config_clear_file']) ? $_POST['config_clear_file'] : array();
-    $aData['config_clear_text'] = isset($_POST['config_clear_text']) ? $_POST['config_clear_text'] : array();
-    $aData['config_write_file'] = isset($_POST['config_write_file']) ? $_POST['config_write_file'] : array();
-    $aData['config_write_text'] = isset($_POST['config_write_text']) ? $_POST['config_write_text'] : array();
-    $aData['config_write_top'] = isset($_POST['config_write_top']) ? $_POST['config_write_top'] : array();
-    $aData['config_write_del_file'] = isset($_POST['config_write_del_file']) ? $_POST['config_write_del_file'] : array();
-    $aData['config_write_del_text'] = isset($_POST['config_write_del_text']) ? $_POST['config_write_del_text'] : array();
-    $aData['config_write_del_top'] = isset($_POST['config_write_del_top']) ? $_POST['config_write_del_top'] : array();
-    $aData['files_delete_file'] = isset($_POST['files_delete_file']) ? $_POST['files_delete_file'] : array();
+    $aData['config_files_file'] = $_POST['config_files_file'] ?? [];
+    $aData['config_files_sort'] = $_POST['config_files_sort'] ?? [];
+    $aData['config_clear_file'] = $_POST['config_clear_file'] ?? [];
+    $aData['config_clear_text'] = $_POST['config_clear_text'] ?? [];
+    $aData['config_write_file'] = $_POST['config_write_file'] ?? [];
+    $aData['config_write_text'] = $_POST['config_write_text'] ?? [];
+    $aData['config_write_top'] = $_POST['config_write_top'] ?? [];
+    $aData['config_write_del_file'] = $_POST['config_write_del_file'] ?? [];
+    $aData['config_write_del_text'] = $_POST['config_write_del_text'] ?? [];
+    $aData['config_write_del_top'] = $_POST['config_write_del_top'] ?? [];
+    $aData['files_delete_file'] = $_POST['files_delete_file'] ?? [];
 
     $aData['cfg'] = 0;
 
     if ($aData['name'] == '') {
-        sys::outjs(array('e' => 'Необходимо указать название'));
+        sys::outjs(['e' => 'Необходимо указать название']);
     }
 
     if (sys::strlen($aData['name']) > 50) {
-        sys::outjs(array('e' => 'Длина названия не должна превышать 50 символов.'));
+        sys::outjs(['e' => 'Длина названия не должна превышать 50 символов.']);
     }
 
     if (!in_array($aData['game'], $aGames)) {
-        sys::outjs(array('e' => 'Необходимо выбрать игру'));
+        sys::outjs(['e' => 'Необходимо выбрать игру']);
     }
 
     include(LIB . 'zip.php');
@@ -96,13 +96,13 @@ if ($go) {
         $aData['update'] = 0;
     }
 
-    $edit = array();
+    $edit = [];
 
     if (!$aData['update']) {
         if (!move_uploaded_file($_FILES['file']['tmp_name'], FILES . 'plugins/install/' . $id . '.zip')) {
             $sql->query('DELETE FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 
-            sys::outjs(array('e' => 'Неудалось загрузить архив'));
+            sys::outjs(['e' => 'Неудалось загрузить архив']);
         }
 
         $zip = new ZipArchive();
@@ -112,7 +112,7 @@ if ($go) {
 
             unlink(FILES . 'plugins/install/' . $id . '.zip');
 
-            sys::outjs(array('e' => 'Неудалось открыть архив'));
+            sys::outjs(['e' => 'Неудалось открыть архив']);
         }
 
         $count = $zip->numFiles;
@@ -144,7 +144,7 @@ if ($go) {
         if (!move_uploaded_file($_FILES['new_file']['tmp_name'], FILES . 'plugins/install/u' . $aData['update'] . '.zip')) {
             $sql->query('DELETE FROM `plugins_update` WHERE `id`="' . $aData['update'] . '" LIMIT 1');
 
-            sys::outjs(array('e' => 'Неудалось загрузить архив'));
+            sys::outjs(['e' => 'Неудалось загрузить архив']);
         }
 
         if (!move_uploaded_file($_FILES['upd_file']['tmp_name'], FILES . 'plugins/update/' . $aData['update'] . '.zip')) {
@@ -152,7 +152,7 @@ if ($go) {
 
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
 
-            sys::outjs(array('e' => 'Неудалось загрузить архив обновления'));
+            sys::outjs(['e' => 'Неудалось загрузить архив обновления']);
         }
 
         $zip = new ZipArchive();
@@ -163,7 +163,7 @@ if ($go) {
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
             unlink(FILES . 'plugins/update/' . $aData['update'] . '.zip');
 
-            sys::outjs(array('e' => 'Неудалось открыть архив'));
+            sys::outjs(['e' => 'Неудалось открыть архив']);
         }
 
         $count = $zip->numFiles;
@@ -374,7 +374,7 @@ if ($go) {
                 . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
     }
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $html->get('addpl', 'sections/addons');

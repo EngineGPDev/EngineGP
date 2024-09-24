@@ -26,7 +26,7 @@ class graph_servers_day extends cron
                 continue;
             }
 
-            $aGraph = array('online' => 0, 'cpu' => 0, 'ram' => 0, 'hdd' => 0, 'time' => 0);
+            $aGraph = ['online' => 0, 'cpu' => 0, 'ram' => 0, 'hdd' => 0, 'time' => 0];
 
             $sql->query('SELECT `online`, `cpu`, `ram`, `hdd` FROM `graph_hour` WHERE `server`="' . $server['id'] . '" AND `time`>"' . ($start_point - 86400) . '" ORDER BY `id` DESC LIMIT 24');
 

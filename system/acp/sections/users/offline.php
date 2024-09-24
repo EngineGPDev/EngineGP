@@ -15,7 +15,7 @@ if (!defined('EGP')) {
 
 $list = '';
 
-$aGroup = array('user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор');
+$aGroup = ['user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор'];
 
 $sql->query('SELECT `id` FROM `users` WHERE `time`<"' . ($start_point - 181) . '"');
 
@@ -38,6 +38,6 @@ while ($us = $sql->get()) {
 $html->get('offline', 'sections/users');
 
 $html->set('list', $list);
-$html->set('pages', isset($html->arr['pages']) ? $html->arr['pages'] : '');
+$html->set('pages', $html->arr['pages'] ?? '');
 
 $html->pack('main');

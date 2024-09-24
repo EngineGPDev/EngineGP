@@ -33,34 +33,34 @@ if (isset($url['core'])) {
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(array('s' => 'ok'), $nmch);
+            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
             if ($map != $server['map_start']) {
                 games::maplist($sid, $unit, '/servers/' . $server['uid'] . '/csgo/maps', $map, true, $nmch, true);
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'address':
             if ($server['status'] != 'off') {
-                sys::outjs(array('e' => 'Необходимо выключить игровой сервер'), $nmch);
+                sys::outjs(['e' => 'Необходимо выключить игровой сервер'], $nmch);
             }
 
             $address = isset($_POST['address']) ? trim($_POST['address']) : $server['address'];
 
             if (sys::valid($address, 'other', $aValid['address'])) {
-                sys::outjs(array('e' => 'Адрес игрового сервера имеет неверный формат'), $nmch);
+                sys::outjs(['e' => 'Адрес игрового сервера имеет неверный формат'], $nmch);
             }
 
             $sql->query('SELECT `id` FROM `control_servers` WHERE `unit`="' . $id . '" AND `address`="' . $address . '" LIMIT 1');
             if ($sql->num()) {
-                sys::outjs(array('e' => 'Данный адрес занят другим сервером'), $nmch);
+                sys::outjs(['e' => 'Данный адрес занят другим сервером'], $nmch);
             }
 
             if ($address != $server['address']) {
@@ -68,16 +68,16 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'mod':
-            if (in_array($value, array(1, 2, 3, 4, 5))) {
+            if (in_array($value, [1, 2, 3, 4, 5])) {
                 $sql->query('UPDATE `control_servers` set `pingboost`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'vac':
@@ -86,14 +86,14 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'core_fix':
             $n = ctrl::cpulist($unit, $server['core_fix'], true);
 
             if ($value > $n) {
-                sys::outjs(array('e' => 'На физическом сервере нет такого ядра/потока'), $nmch);
+                sys::outjs(['e' => 'На физическом сервере нет такого ядра/потока'], $nmch);
             }
 
             if ($value < 0) {
@@ -105,7 +105,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'slots':
@@ -117,7 +117,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'autorestart':
@@ -126,23 +126,23 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'tickrate':
-            if (in_array($value, array('64', '128'))) {
+            if (in_array($value, ['64', '128'])) {
                 $sql->query('UPDATE `control_servers` set `tickrate`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
             }
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'fastdl':
             include(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+                sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
             }
 
             if ($value) {
@@ -154,7 +154,7 @@ if ($go and $url['save']) {
                 // Временый файл
                 $temp = sys::temp($fastdl);
 
-                $ssh->setfile($temp, '/servers/' . $server['uid'] . '/csgo/cfg/fastdl.cfg', 0644);
+                $ssh->setfile($temp, '/servers/' . $server['uid'] . '/csgo/cfg/fastdl.cfg', 0o644);
 
                 $ssh->set('chown server' . $server['uid'] . ':servers /servers/' . $server['uid'] . '/csgo/cfg/fastdl.cfg;'
                     . 'ln -s /servers/' . $server['uid'] . '/csgo /var/nginx/fast_' . $server['uid'] . ';'
@@ -170,7 +170,7 @@ if ($go and $url['save']) {
             $sql->query('UPDATE `control_servers` set `fastdl`="' . $value . '" WHERE `id`="' . $sid . '" LIMIT 1');
 
             $mcache->delete('ctrl_server_settings_' . $sid);
-            sys::outjs(array('s' => 'ok'), $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 
@@ -192,7 +192,7 @@ $autorestart = $server['autorestart'] ? '<option value="1">Включен</optio
 
 $tickrate = '';
 
-foreach (array('64', '128') as $value) {
+foreach (['64', '128'] as $value) {
     $tickrate .= '<option value="' . $value . '">' . $value . ' TickRate</option>';
 }
 

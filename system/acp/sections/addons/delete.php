@@ -18,7 +18,7 @@ if (!isset($url['type'])) {
 }
 
 $id = $url['id'];
-$plugin = array();
+$plugin = [];
 
 if ($url['type'] == 'plugin') {
     $sql->query('DELETE FROM `plugins_config` WHERE `plugin`="' . $id . '"');
@@ -70,4 +70,4 @@ if ($url['type'] == 'plugin') {
     }
 }
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

@@ -20,4 +20,4 @@ unlink(FILES . 'pages/' . $page['file']);
 
 $sql->query('DELETE FROM `pages` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'));
+sys::outjs(['s' => 'ok']);

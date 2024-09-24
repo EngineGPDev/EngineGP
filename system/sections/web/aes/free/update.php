@@ -35,7 +35,7 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    sys::outjs(array('e' => 'Дополнительная услуга не установлена.'), $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
@@ -46,7 +46,7 @@ include(LIB . 'games/games.php');
 $upd = $web['update'] + 86400;
 
 if ($upd > $start_point) {
-    sys::outjs(array('e' => 'Для повторного обновления должно пройти: ' . games::date('max', $upd)));
+    sys::outjs(['e' => 'Для повторного обновления должно пройти: ' . games::date('max', $upd)]);
 }
 
 include(LIB . 'ssh.php');
@@ -55,14 +55,14 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
     $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
     $unit = $sql->get();
 } else {
-    $unit = array(
+    $unit = [
         'address' => $aWebUnit['address'],
         'passwd' => $aWebUnit['passwd'],
-    );
+    ];
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 $install = $aWebUnit['install'][$aWebUnit['unit'][$url['subsection']]][$url['subsection']] . $web['domain'];
@@ -74,4 +74,4 @@ $ssh->set('cat ' . $install . '/include/db.config.inc.php > ' . $path . '/includ
 
 $sql->query('UPDATE `web` set `update`="' . $start_point . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

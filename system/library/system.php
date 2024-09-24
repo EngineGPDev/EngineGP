@@ -25,7 +25,7 @@ class sys
             return $all ? null : 'index';
         }
 
-        $url = array();
+        $url = [];
 
         $string = str_replace('//', '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $aUrl = explode('/', trim($string, ' /'));
@@ -72,7 +72,7 @@ class sys
             }
         }
 
-        $aUnit = array('index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost');
+        $aUnit = ['index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost'];
 
         $html->get('gmenu', 'sections/servers/' . $server['game']);
 
@@ -182,7 +182,7 @@ class sys
         $dir = '';
         $use = true;
 
-        if (in_array($inc, array('plugins', 'ftp', 'console', 'graph', 'copy', 'web'))) {
+        if (in_array($inc, ['plugins', 'ftp', 'console', 'graph', 'copy', 'web'])) {
             $server['graph_use'] = $server['stats_use'];
 
             if (!$server[$inc . '_use']) {
@@ -190,7 +190,7 @@ class sys
             }
         }
 
-        if (!$use || $server['time'] < $start_point || in_array($server['status'], array('install', 'reinstall', 'update', 'recovery', 'blocked'))) {
+        if (!$use || $server['time'] < $start_point || in_array($server['status'], ['install', 'reinstall', 'update', 'recovery', 'blocked'])) {
             if ($go) {
                 sys::out('Раздел недоступен');
             }
@@ -377,8 +377,8 @@ class sys
         $tpl = file_get_contents(DATA . 'mail.ini', "r");
 
         $text = str_replace(
-            array('[name]', '[text]', '[http]', '[img]', '[css]'),
-            array($cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'),
+            ['[name]', '[text]', '[http]', '[img]', '[css]'],
+            [$cfg['name'], $text, $cfg['http'], $cfg['http'] . 'template/images/', $cfg['http'] . 'template/css/'],
             $tpl
         );
 
@@ -406,7 +406,7 @@ class sys
 
         $domain = end($domain);
 
-        if (in_array($domain, array('list.ru', 'bk.ru', 'inbox.ru'))) {
+        if (in_array($domain, ['list.ru', 'bk.ru', 'inbox.ru'])) {
             $domain = 'mail.ru';
         }
 
@@ -437,7 +437,7 @@ class sys
     public static function login($mail, $lchar)
     {
         if (!$lchar) {
-            return str_replace(array('.', '_', '+', '-'), '', sys::first(explode('@', $mail)));
+            return str_replace(['.', '_', '+', '-'], '', sys::first(explode('@', $mail)));
         }
 
         $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
@@ -446,7 +446,7 @@ class sys
         $start = strlen($a) - 1;
         $b = rand(0, $start);
         $start = $a[$b];
-        $login = array();
+        $login = [];
 
         $i = 0;
 
@@ -466,7 +466,7 @@ class sys
         $start = strlen($a) - 1;
         $b = rand(0, $start);
         $start = $a[$b];
-        $passwd = array();
+        $passwd = [];
 
         $i = 0;
 
@@ -494,7 +494,7 @@ class sys
 
         if ($auth) {
             if ($go) {
-                sys::outjs(array('e' => sys::text('output', 'auth')));
+                sys::outjs(['e' => sys::text('output', 'auth')]);
             }
 
             $link = 'user/section/lk';
@@ -511,7 +511,7 @@ class sys
 
         if (!$auth) {
             if ($go) {
-                sys::outjs(array('e' => sys::text('output', 'noauth')));
+                sys::outjs(['e' => sys::text('output', 'noauth')]);
             }
 
             $link = 'user/section/auth';
@@ -562,20 +562,20 @@ class sys
         $minutes = floor(($check_time % 3600) / 60);
         $seconds = $check_time % 60;
 
-        $adata = array(
-            'min' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('ч.', 'ч.', 'ч.'),
-                'minutes' => array('мин.', 'мин.', 'мин.'),
-                'seconds' => array('сек.', 'сек.', 'сек.')
-            ),
-            'max' => array(
-                'days' => array('день', 'дня', 'дней'),
-                'hours' => array('час', 'часа', 'часов'),
-                'minutes' => array('минуту', 'минуты', 'минут'),
-                'seconds' => array('секунду', 'секунды', 'секунд')
-            )
-        );
+        $adata = [
+            'min' => [
+                'days' => ['день', 'дня', 'дней'],
+                'hours' => ['ч.', 'ч.', 'ч.'],
+                'minutes' => ['мин.', 'мин.', 'мин.'],
+                'seconds' => ['сек.', 'сек.', 'сек.'],
+            ],
+            'max' => [
+                'days' => ['день', 'дня', 'дней'],
+                'hours' => ['час', 'часа', 'часов'],
+                'minutes' => ['минуту', 'минуты', 'минут'],
+                'seconds' => ['секунду', 'секунды', 'секунд'],
+            ],
+        ];
 
         $text = '';
 
@@ -666,7 +666,7 @@ class sys
 
     public static function day($time)
     {
-        $days = array('день', 'дня', 'дней');
+        $days = ['день', 'дня', 'дней'];
 
         $time = $time % 100;
 
@@ -693,7 +693,7 @@ class sys
 
         $lines = explode("\n", $text);
 
-        $str_search = array(
+        $str_search = [
             "#\\\n#is",
             "#\[spoiler\](.+?)\[\/spoiler\]#is",
             "#\[sp\](.+?)\[\/sp\]#is",
@@ -703,10 +703,10 @@ class sys
             "#\[quote\](.+?)\[\/quote\]#is",
             "#\[url=(.+?)\](.+?)\[\/url\]#is",
             "#\[img=(.+?)\] \[\/img\]#is",
-            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is"
-        );
+            "#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is",
+        ];
 
-        $str_replace = array(
+        $str_replace = [
             "<br />",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
             "<div><b class='spoiler'>Посмотреть содержимое</b><div class='spoiler_main'>\\1</div></div>",
@@ -716,8 +716,8 @@ class sys
             "<blockquote><p>\\1</p></blockquote>",
             "<a href='\\1' target='_blank'>\\2</a>",
             "<a href='\\1' target='_blank' style='display: block;'><img src='" . $cfg['url'] . "template/images/help_screenshot.png' alt='Изображение'></a>",
-            "<a href='\\2' target='_blank'> \\2</a>"
-        );
+            "<a href='\\2' target='_blank'> \\2</a>",
+        ];
 
         $uptext = '';
 
@@ -728,7 +728,7 @@ class sys
         return $uptext;
     }
 
-    public static function first($array = array())
+    public static function first($array = [])
     {
         return $array[0];
     }
@@ -747,7 +747,7 @@ class sys
     {
         global $cfg, $user;
 
-        $group = isset($user['group']) ? $user['group'] : 'user';
+        $group = $user['group'] ?? 'user';
 
         if ($section != 'error' || !$cfg['text_group']) {
             $group = 'all';
@@ -755,7 +755,7 @@ class sys
 
         include(DATA . 'text/' . $section . '.php');
 
-        return isset($text[$name][$group]) ? $text[$name][$group] : $text[$name];
+        return $text[$name][$group] ?? $text[$name];
     }
 
     public static function key($param = 'defegp')
@@ -775,8 +775,8 @@ class sys
         $symbols_fon = 20;
         $font = LIB . 'captcha/text.ttf';
 
-        $chars = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '9');
-        $colors = array('20', '50', '80', '100');
+        $chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '9'];
+        $colors = ['20', '50', '80', '100'];
 
         $src = imagecreatetruecolor($width, $height);
         $fon = imagecolorallocate($src, 255, 255, 255);
@@ -858,7 +858,7 @@ class sys
         $start = strlen($a) - 1;
         $b = rand(0, $start);
         $start = $a[$b];
-        $code = array();
+        $code = [];
 
         $i = 0;
 
@@ -919,7 +919,7 @@ class sys
             $name = substr($name, 0, -2) . '$';
         }
 
-        return str_replace(array('\.', '\*'), array('.', '*'), $name);
+        return str_replace(['\.', '\*'], ['.', '*'], $name);
     }
 
     public static function temp($text)
@@ -937,7 +937,7 @@ class sys
 
     public static function size($val)
     {
-        $aSize = array(' Байт', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб');
+        $aSize = [' Байт', ' Кб', ' Мб', ' Гб', ' Тб', ' Пб'];
 
         return $val ? round($val / pow(1024, ($i = floor(log($val, 1024)))), 2) . $aSize[$i] : '0 Байт';
     }
@@ -978,11 +978,11 @@ class sys
             $page = 1;
         }
 
-        $aPage = array(
+        $aPage = [
             'page' => $page,
             'num' => $num_go,
-            'ceil' => $ceil
-        );
+            'ceil' => $ceil,
+        ];
 
         return $aPage;
     }
@@ -990,7 +990,7 @@ class sys
     public static function page_list($countnum, $actnum)
     {
         if ($countnum == 0 || $countnum == 1) {
-            return array();
+            return [];
         }
 
         if ($countnum > 10) {
@@ -1143,7 +1143,7 @@ class sys
         }
 
         if ($mcache->get($name)) {
-            sys::outjs(array('e' => sys::text('other', 'mcache')));
+            sys::outjs(['e' => sys::text('other', 'mcache')]);
         }
 
         $mcache->set($name, true, false, $time);
@@ -1151,16 +1151,16 @@ class sys
         return $name;
     }
 
-    public static function reset_mcache($nmch, $id, $data = array(), $ctrl = false)
+    public static function reset_mcache($nmch, $id, $data = [], $ctrl = false)
     {
         global $mcache;
 
-        $cache = array(
+        $cache = [
             'name' => $data['name'],
             'status' => sys::status($data['status'], $data['game']),
             'online' => $data['online'],
             'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">',
-        );
+        ];
 
         $cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) : sys::buttons($id, $data['status'], $data['game']);
 
@@ -1180,7 +1180,7 @@ class sys
         switch ($status) {
             case 'working':
                 if ($get == 'img') {
-                    if (in_array($game, array('samp', 'crmp', 'mta', 'mc'))) {
+                    if (in_array($game, ['samp', 'crmp', 'mta', 'mc'])) {
                         $map = $game;
                     }
 
@@ -1280,11 +1280,11 @@ class sys
             unset($html->arr['buttons']);
         }
 
-        $other = in_array($game, array('samp', 'crmp', 'mta', 'mc', 'rust'));
+        $other = in_array($game, ['samp', 'crmp', 'mta', 'mc', 'rust']);
 
         $dir = $ctrl ? 'control/servers' : 'servers';
 
-        if (in_array($status, array('working', 'change', 'start', 'restart'))) {
+        if (in_array($status, ['working', 'change', 'start', 'restart'])) {
             $html->get('stop', 'sections/' . $dir . '/buttons');
 
             $html->set('id', $id);
@@ -1364,7 +1364,7 @@ class sys
             global $description;
 
             if (isset($description)) {
-                $text = str_replace(array('"', '-'), array('', '—'), strip_tags($description));
+                $text = str_replace(['"', '-'], ['', '—'], strip_tags($description));
 
                 if (strlen($text) > 160) {
                     mb_internal_encoding('UTF-8');
@@ -1378,7 +1378,7 @@ class sys
             global $keywords;
 
             if (isset($keywords)) {
-                return str_replace(array('"', '-'), array('', '—'), strip_tags($keywords));
+                return str_replace(['"', '-'], ['', '—'], strip_tags($keywords));
             }
         }
 
@@ -1407,7 +1407,7 @@ class sys
             $info = $sql->get();
 
             if ($info['benefit'] > $start_point) {
-                sys::outjs(array('e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])), $nmch);
+                sys::outjs(['e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])], $nmch);
             }
         }
 

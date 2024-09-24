@@ -15,14 +15,14 @@ if (!defined('EGP')) {
 
 $info = '<i class="fa fa-users"></i> Управление пользователями';
 
-$aSection = array(
+$aSection = [
     'index',
     'online',
     'offline',
     'signup',
     'stats',
-    'delete'
-);
+    'delete',
+];
 
 if (!in_array($section, $aSection)) {
     $section = 'index';

@@ -16,18 +16,18 @@ if (!defined('EGP')) {
 // Выполнение операции
 if ($go) {
     if ($server['status'] != 'off') {
-        sys::outjs(array('e' => 'Игровой сервер должен быть выключен'), $nmch);
+        sys::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
     }
 
-    $pack = isset($url['pack']) ? $url['pack'] : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
+    $pack = $url['pack'] ?? sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
     // Проверка сборки
     if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true))) {
-        sys::outjs(array('e' => 'Сборка не найдена.'));
+        sys::outjs(['e' => 'Сборка не найдена.']);
     }
 
     $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
-    $tarif = array_merge(array('pack' => $pack), $sql->get());
+    $tarif = array_merge(['pack' => $pack], $sql->get());
 
     $sql->query('SELECT `name`, `address`, `passwd` FROM `units` WHERE `id`="' . $tarif['unit'] . '" LIMIT 1');
     $unit = $sql->get();
@@ -66,7 +66,7 @@ if ($go) {
     }
 
     if (!$ip || !$port) {
-        sys::outjs(array('e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.'));
+        sys::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
     }
 
     $server['id'] = $id;
@@ -91,7 +91,7 @@ if ($go) {
     // Запись логов
     $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_unit') . '", `time`="' . $start_point . '"');
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Генерация списка сборок
@@ -105,4 +105,4 @@ if (is_array($aPack)) {
 }
 
 // Выхлоп информации
-sys::outjs(array('s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')', 'p' => $packs));
+sys::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')', 'p' => $packs]);

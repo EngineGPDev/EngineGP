@@ -59,7 +59,7 @@ class scan_servers extends cron
             }
 
             // Если аренда закончилась, а сервер не просрочен (и не заблокирован)
-            if ($server['time'] < $start_point && !in_array($server['status'], array('overdue', 'blocked'))) {
+            if ($server['time'] < $start_point && !in_array($server['status'], ['overdue', 'blocked'])) {
                 $server_address = $server['address'] . ':' . $server['port'];
 
                 // Убить процессы

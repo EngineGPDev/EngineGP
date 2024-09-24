@@ -47,7 +47,7 @@ if (!isset($ssh)) {
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
@@ -64,19 +64,19 @@ $path = $tarif['install'] . $server['uid'] . '/' . $config['file'];
 
 // Сохранение
 if ($go) {
-    $data = isset($_POST['data']) ? $_POST['data'] : '';
+    $data = $_POST['data'] ?? '';
 
     $temp = sys::temp($data);
 
     // Отправление файла на сервер
-    $ssh->setfile($temp, $path, 0644);
+    $ssh->setfile($temp, $path, 0o644);
 
     // Смена владельца/группы файла
     $ssh->set('chown server' . $server['uid'] . ':servers ' . $path);
 
     unlink($temp);
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $path . '; cat ' . $path . '"');

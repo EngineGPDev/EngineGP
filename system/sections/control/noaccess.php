@@ -18,11 +18,11 @@ $html->nav('Раздел недоступен');
 if ($ctrl['time'] < $start_point) {
     $html->get('overdue');
 } else {
-    $status = array(
+    $status = [
         'install' => 'установки',
         'reboot' => 'перезагрузки',
-        'blocked' => 'блокировки'
-    );
+        'blocked' => 'блокировки',
+    ];
 
     $html->get('noaccess');
 

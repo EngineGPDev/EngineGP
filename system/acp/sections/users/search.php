@@ -21,7 +21,7 @@ $cache = $mcache->get($mkey);
 
 $nmch = null;
 
-$aGroup = array('user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор');
+$aGroup = ['user' => 'Пользователь', 'support' => 'Тех. поддержка', 'admin' => 'Администратор'];
 
 if (is_array($cache)) {
     if ($go) {
@@ -33,10 +33,10 @@ if (is_array($cache)) {
 
 if (!isset($text[2])) {
     if ($go) {
-        sys::outjs(array('e' => 'Для выполнения поиска, необходимо больше данных'), $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    sys::outjs(array('e' => ''));
+    sys::outjs(['e' => '']);
 }
 
 if ($text[0] == 'i' and $text[1] == 'd') {
@@ -56,10 +56,10 @@ if ($text[0] == 'i' and $text[1] == 'd') {
 
 if (!$sql->num()) {
     if ($go) {
-        sys::outjs(array('e' => 'По вашему запросу ничего не найдено'), $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    sys::outjs(array('e' => 'По вашему запросу ничего не найдено'));
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
@@ -75,6 +75,6 @@ while ($us = $sql->get()) {
     $list .= '</tr>';
 }
 
-$mcache->set($mkey, array('s' => $list), false, 15);
+$mcache->set($mkey, ['s' => $list], false, 15);
 
-sys::outjs(array('s' => $list));
+sys::outjs(['s' => $list]);

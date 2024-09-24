@@ -87,7 +87,7 @@ class mysql
         global $go;
 
         if ($go) {
-            sys::outjs(array('e' => 'Query: ' . $query . '<br>Error:<br>' . $error));
+            sys::outjs(['e' => 'Query: ' . $query . '<br>Error:<br>' . $error]);
         }
 
         if ($query != '') {

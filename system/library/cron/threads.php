@@ -19,7 +19,7 @@ class threads extends cron
     {
         global $sql, $cfg, $argv;
 
-        $aUnit = array();
+        $aUnit = [];
         $sql->query('SELECT `id` FROM `units` ORDER BY `id` ASC');
 
         if (!$sql->num()) {

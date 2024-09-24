@@ -34,13 +34,13 @@ if (!file_exists(CRON . $task . '.php')) {
     exit('Invalid cron method');
 }
 
-$user = array('id' => 0, 'group' => 'admin');
+$user = ['id' => 0, 'group' => 'admin'];
 
 class cron
 {
     public static $seping = 5;
 
-    public static $process = array(
+    public static $process = [
         'cs' => 'hlds_',
         'cssold' => 'srcds_i686',
         'css' => 'srcds_',
@@ -50,29 +50,29 @@ class cron
         'samp' => 'samp',
         'crmp' => 'samp',
         'mta' => 'mta',
-        'mc' => 'java'
-    );
+        'mc' => 'java',
+    ];
 
-    public static $quakestat = array(
+    public static $quakestat = [
         'cs' => 'a2s',
         'cssold' => 'a2s',
         'css' => 'a2s',
         'csgo' => 'a2s',
         'cs2' => 'a2s',
-        'mta' => 'eye'
-    );
+        'mta' => 'eye',
+    ];
 
-    public static $admins_file = array(
+    public static $admins_file = [
         'cs' => 'cstrike/addons/amxmodx/configs/users.ini',
         'cssold' => 'cstrike/addons/sourcemod/configs/admins_simple.ini',
         'css' => 'cstrike/addons/sourcemod/configs/admins_simple.ini',
         'csgo' => 'csgo/addons/sourcemod/configs/admins_simple.ini',
-        'cs2' => 'csgo/addons/sourcemod/configs/admins_simple.ini'
-    );
+        'cs2' => 'csgo/addons/sourcemod/configs/admins_simple.ini',
+    ];
 
     public static function thread($num, $type, $aData)
     {
-        $threads = array();
+        $threads = [];
 
         for ($n = 1; $n <= $num; $n += 1) {
             $data = '';

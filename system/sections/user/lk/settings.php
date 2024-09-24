@@ -16,16 +16,16 @@ if (!defined('EGP')) {
 $sql->query('SELECT `notice_news`, `notice_help` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
 $user = array_merge($user, $sql->get());
 
-if (isset($url['action']) and in_array($url['action'], array('upload', 'news', 'help', 'important'))) {
+if (isset($url['action']) and in_array($url['action'], ['upload', 'news', 'help', 'important'])) {
     switch ($url['action']) {
         case 'upload':
-            $file = isset($_POST['value']) ? $_POST['value'] : exit;
-            $name = isset($_POST['name']) ? $_POST['name'] : exit;
+            $file = $_POST['value'] ?? exit;
+            $name = $_POST['name'] ?? exit;
 
             $pname = explode('.', $name);
             $type = strtolower(end($pname));
 
-            if (!in_array($type, array('png', 'gif', 'jpg', 'bmp'))) {
+            if (!in_array($type, ['png', 'gif', 'jpg', 'bmp'])) {
                 exit('Допустимый формат изображений: png, gif, jpg, bmp.');
             }
 
@@ -42,7 +42,7 @@ if (isset($url['action']) and in_array($url['action'], array('upload', 'news', '
 
             $sql->query('UPDATE `users` set `notice_news`="' . $notice . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
 
             // no break
         case 'help':
@@ -50,7 +50,7 @@ if (isset($url['action']) and in_array($url['action'], array('upload', 'news', '
 
             $sql->query('UPDATE `users` set `notice_help`="' . $notice . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
     }
 }
 

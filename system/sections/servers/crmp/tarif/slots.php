@@ -19,10 +19,10 @@ if (!isset($nmch)) {
 
 // Если фикс. значение слот
 if ($tarif['slots_min'] == $tarif['slots_max']) {
-    sys::outjs(array('e' => 'На данном тарифе нельзя изменить количество слот.'), $nmch);
+    sys::outjs(['e' => 'На данном тарифе нельзя изменить количество слот.'], $nmch);
 }
 
-$slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(array('e' => 'Переданы не все данные.'), $nmch);
+$slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 $overdue = $server['time'] < $start_point;
 

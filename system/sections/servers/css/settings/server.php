@@ -25,7 +25,7 @@ include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
@@ -35,7 +35,7 @@ include(DATA . 'scfg/' . $server['game'] . '.php');
 
 // Сохранение изменений
 if ($go) {
-    $servercfg = isset($_POST['config']) ? $_POST['config'] : '';
+    $servercfg = $_POST['config'] ?? '';
 
     $config = '';
 
@@ -59,7 +59,7 @@ if ($go) {
 
     unlink($temp);
 
-    sys::outjs(array('s' => 'ok'), $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Чтение файла - server.cfg
@@ -69,7 +69,7 @@ $ssh->set('echo "" >> ' . $file . ' && cat ' . $file . ' | grep -ve "^#\|^[[:spa
 
 $fScfg = explode("\n", strip_tags($ssh->get()));
 
-$servercfg = array();
+$servercfg = [];
 $other = '';
 
 // Убираем пробелы и генерируем массив

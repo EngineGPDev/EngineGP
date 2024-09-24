@@ -51,12 +51,12 @@ class control_scan_servers_route extends cron
 
         sleep(1);
 
-        $aCpu = sys::cpu_idle($unit['fcpu'], array($first, $ssh->get('cat /proc/stat')), true);
+        $aCpu = sys::cpu_idle($unit['fcpu'], [$first, $ssh->get('cat /proc/stat')], true);
 
         array_shift($aCpu);
 
-        $idle = array();
-        $uses = array();
+        $idle = [];
+        $uses = [];
 
         foreach ($aCpu as $cpu => $data) {
             $core = sys::int($cpu) + 1;

@@ -14,7 +14,7 @@ if (!defined('EGP')) {
 }
 
 if ($go) {
-    $aData = array();
+    $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
     $aData['text'] = isset($_POST['text']) ? sys::bbc(trim($_POST['text'])) : '';
@@ -22,16 +22,16 @@ if ($go) {
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : '';
 
     if (in_array('', $aData)) {
-        sys::outjs(array('e' => 'Необходимо заполнить все поля'));
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     if (sys::strlen($aData['tags']) > 100) {
-        sys::outjs(array('e' => 'Теги не должен превышать 100 символов.'));
+        sys::outjs(['e' => 'Теги не должен превышать 100 символов.']);
     }
 
     $sql->query('SELECT `id` FROM `wiki_category` WHERE `id`="' . $aData['cat'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(array('e' => 'Указанная категория не найдена'));
+        sys::outjs(['e' => 'Указанная категория не найдена']);
     }
 
     $sql->query('INSERT INTO `wiki` set '
@@ -47,7 +47,7 @@ if ($go) {
         . '`cat`="' . $aData['cat'] . '",'
         . '`text`="' . htmlspecialchars($aData['text']) . '"');
 
-    sys::outjs(array('s' => 'ok'));
+    sys::outjs(['s' => 'ok']);
 }
 
 $cats = '';

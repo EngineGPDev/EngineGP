@@ -26,12 +26,12 @@ class boost
 
     public function def($data)
     {
-        $aData = array(
+        $aData = [
             'service' => 'boost',
             'period' => $data['period'],
             'address' => $data['address'],
-            'game' => 'cs16'
-        );
+            'game' => 'cs16',
+        ];
 
         $out = json_decode($this->defaultcurl(json_encode($aData)), true);
 
@@ -40,20 +40,20 @@ class boost
         }
 
         if (!array_key_exists('status', $out)) {
-            array('error' => 'Не удалось приобрести услугу, повторите запрос позже.');
+            ['error' => 'Не удалось приобрести услугу, повторите запрос позже.'];
         }
 
         if (!$out['status']) {
             return true;
         }
 
-        return array('error' => $out['message']);
+        return ['error' => $out['message']];
     }
 
     private function defaultcurl($data, $action = 'buy')
     {
         if (!($curl = curl_init())) {
-            array('error' => 'FAIL: curl_init().');
+            ['error' => 'FAIL: curl_init().'];
         }
 
         curl_setopt($curl, CURLOPT_URL, $this->service_url);
@@ -70,28 +70,28 @@ class boost
 
     public function vipms($data)
     {
-        $aData = array(
+        $aData = [
             'format' => 'POST',
             'country' => 'RU',
             'hoster_id' => 1,
             'key' => $this->partner_key,
             'full_address' => $data['address'],
-            'service_id' => $data['period']
-        );
+            'service_id' => $data['period'],
+        ];
 
         return $this->othercurl($aData);
     }
 
     public function fulls($data)
     {
-        $aData = array(
+        $aData = [
             'format' => 'POST',
             'country' => 'RU',
             'hoster_id' => 1,
             'key' => $this->partner_key,
             'full_address' => $data['address'],
-            'service_id' => $data['period']
-        );
+            'service_id' => $data['period'],
+        ];
 
         return $this->othercurl($aData);
     }
@@ -99,7 +99,7 @@ class boost
     private function othercurl($aData)
     {
         if (!($curl = curl_init())) {
-            array('error' => 'FAIL: curl_init().');
+            ['error' => 'FAIL: curl_init().'];
         }
 
         curl_setopt($curl, CURLOPT_URL, $this->service_url . '?' . urldecode(http_build_query($aData)));
@@ -116,14 +116,14 @@ class boost
             return true;
         }
 
-        $aErr = array(
+        $aErr = [
             1 => 'BAD_HOSTER_ID',
             2 => 'HOSTER_NOT_FOUND',
             3 => 'BAD_HOSTER_IP',
             4 => 'FORM_INVALID',
-            5 => 'BAD_SERVICE_ID'
-        );
+            5 => 'BAD_SERVICE_ID',
+        ];
 
-        return array('error' => $aErr[$result]);
+        return ['error' => $aErr[$result]];
     }
 }

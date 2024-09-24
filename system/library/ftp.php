@@ -17,17 +17,17 @@ class ftp
 {
     public $steck = false;
 
-    public $dayru = array(
+    public $dayru = [
         'Mon' => 'Понедельник',
         'Tue' => 'Вторник',
         'Wed' => 'Среда',
         'Thu' => 'Четверг',
         'Fri' => 'Пятница',
         'Sat' => 'Суббота',
-        'Sun' => 'Воскресенье'
-    );
+        'Sun' => 'Воскресенье',
+    ];
 
-    public $mounthint = array(
+    public $mounthint = [
         'Jan' => '01',
         'Feb' => '02',
         'Mar' => '03',
@@ -39,10 +39,10 @@ class ftp
         'Sep' => '09',
         'Oct' => '10',
         'Nov' => '11',
-        'Dec' => '12'
-    );
+        'Dec' => '12',
+    ];
 
-    public $mounthru = array(
+    public $mounthru = [
         'Jan' => 'Янв',
         'Feb' => 'Фев',
         'Mar' => 'Мар',
@@ -54,10 +54,10 @@ class ftp
         'Sep' => 'Сен',
         'Oct' => 'Окт',
         'Nov' => 'Ноя',
-        'Dec' => 'Дек'
-    );
+        'Dec' => 'Дек',
+    ];
 
-    public $aEdits = array(
+    public $aEdits = [
         'txt',
         'cfg',
         'conf',
@@ -71,8 +71,8 @@ class ftp
         'js',
         'css',
         'sma',
-        'log'
-    );
+        'log',
+    ];
 
     public function auth($host, $user, $password, $port = 21)
     {
@@ -99,11 +99,11 @@ class ftp
 
         $path = str_replace('//', '/', $path);
 
-        $aDir = array();
-        $aFile = array();
-        $aInfo = array();
+        $aDir = [];
+        $aFile = [];
+        $aInfo = [];
 
-        $rawlist = array();
+        $rawlist = [];
 
         $data = ftp_rawlist($this->steck, $path);
 
@@ -135,11 +135,11 @@ class ftp
             }
         }
 
-        $aData = array(
+        $aData = [
             'folder' => $aDir,
             'file' => $aFile,
-            'path' => $path
-        );
+            'path' => $path,
+        ];
 
         return $aData;
     }
@@ -208,13 +208,13 @@ class ftp
             }
         }
 
-        return isset($html->arr['list']) ? $html->arr['list'] : '';
+        return $html->arr['list'] ?? '';
     }
 
     public function mkdir($path, $folders)
     {
         if (!@ftp_chdir($this->steck, $path)) {
-            sys::outjs(array('e' => 'Ошибка: не удалось создать папку'));
+            sys::outjs(['e' => 'Ошибка: не удалось создать папку']);
         }
 
         $aFolder = explode('/', $folders);
@@ -226,14 +226,14 @@ class ftp
 
             if (!@ftp_chdir($this->steck, $folder)) {
                 if (!@ftp_mkdir($this->steck, $folder)) {
-                    sys::outjs(array('e' => 'Ошибка: не удалось создать папку ' . $folder));
+                    sys::outjs(['e' => 'Ошибка: не удалось создать папку ' . $folder]);
                 }
 
                 @ftp_chdir($this->steck, $folder);
             }
         }
 
-        sys::outjs(array('s' => 'ok'));
+        sys::outjs(['s' => 'ok']);
     }
 
     public function touch($path, $file, $text)
@@ -257,7 +257,7 @@ class ftp
         $dir = ($dir == '') ? '/' : $dir;
 
         if (!@ftp_chdir($this->steck, $dir)) {
-            sys::outjs(array('e' => 'Ошибка: не удалось создать файл'));
+            sys::outjs(['e' => 'Ошибка: не удалось создать файл']);
         }
 
         $temp = sys::temp($text);
@@ -265,12 +265,12 @@ class ftp
         if (@ftp_put($this->steck, $file, $temp, FTP_BINARY)) {
             unlink($temp);
 
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
         }
 
         unlink($temp);
 
-        sys::outjs(array('e' => 'Ошибка: не удалось создать файл'));
+        sys::outjs(['e' => 'Ошибка: не удалось создать файл']);
     }
 
     public function edit_file($path, $file)
@@ -282,46 +282,46 @@ class ftp
 
             unlink(TEMP . $name);
 
-            sys::outjs(array('s' => $data));
+            sys::outjs(['s' => $data]);
         }
 
-        sys::outjs(array('e' => 'Не удалось открыть файл'));
+        sys::outjs(['e' => 'Не удалось открыть файл']);
     }
 
     public function rename($path, $oldname, $newname)
     {
         if (@ftp_rename($this->steck, $path . '/' . $oldname, $path . '/' . $newname)) {
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
         }
 
-        sys::outjs(array('e' => 'Не удалось сменить имя'));
+        sys::outjs(['e' => 'Не удалось сменить имя']);
     }
 
     public function rmdir($path, $folder)
     {
         if (@ftp_rmdir($this->steck, $path . '/' . $folder)) {
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
         }
 
-        sys::outjs(array('e' => 'Ошибка: не удалось удалить папку.'));
+        sys::outjs(['e' => 'Ошибка: не удалось удалить папку.']);
     }
 
     public function rmfile($file)
     {
         if (@ftp_delete($this->steck, $file)) {
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
         }
 
-        sys::outjs(array('e' => 'Ошибка: не удалось удалить файл'));
+        sys::outjs(['e' => 'Ошибка: не удалось удалить файл']);
     }
 
     public function chmod($path, $name, $chmod)
     {
         if (ftp_site($this->steck, 'CHMOD 0' . $chmod . ' ' . $path . '/' . $name)) {
-            sys::outjs(array('s' => 'ok'));
+            sys::outjs(['s' => 'ok']);
         }
 
-        sys::outjs(array('e' => 'Ошибка: не удалось изменить права.'));
+        sys::outjs(['e' => 'Ошибка: не удалось изменить права.']);
     }
 
     public function search($str, $server)
@@ -340,7 +340,7 @@ class ftp
             }
 
             // Файлы
-            $aFile = array();
+            $aFile = [];
 
             // Файлы в корне
             $end = array_search('', $aData);
@@ -354,7 +354,7 @@ class ftp
                     $info .= $aInfo[$n] . ' ';
                 }
 
-                $aFile['/'][] = array('info' => $info, 'name' => $aInfo[8]);
+                $aFile['/'][] = ['info' => $info, 'name' => $aInfo[8]];
             }
 
             // Перебор директорий и файлов в них
@@ -379,7 +379,7 @@ class ftp
                         $info .= $aInfo[$n] . ' ';
                     }
 
-                    $aFile[$dir][] = array('info' => $info, 'name' => $aInfo[8]);
+                    $aFile[$dir][] = ['info' => $info, 'name' => $aInfo[8]];
                 }
             }
 
@@ -388,7 +388,7 @@ class ftp
             $aFile = $cache;
         }
 
-        $aFind = array();
+        $aFind = [];
 
         // Поиск
         foreach ($aFile as $dir => $files) {
@@ -396,7 +396,7 @@ class ftp
                 $find = sys::first(explode('.', $file['name']));
 
                 if (preg_match('/' . $str . '/i', $find)) {
-                    $aFind[] = array('dir' => $dir, 'info' => $file['info'], 'file' => $file['name'], 'find' => sys::find($file['name'], $str));
+                    $aFind[] = ['dir' => $dir, 'info' => $file['info'], 'file' => $file['name'], 'find' => sys::find($file['name'], $str)];
                 }
             }
         }
@@ -465,8 +465,8 @@ class ftp
 
         $aLine = explode("\n", $data);
 
-        $actions = array('i' => 'загрузка', 'o' => 'скачивание', 'd' => 'удаление');
-        $acticon = array('i' => '<i class="fa fa-upload"></i>', 'o' => '<i class="fa fa-download"></i>', 'd' => '<i class="fa fa-times"></i>');
+        $actions = ['i' => 'загрузка', 'o' => 'скачивание', 'd' => 'удаление'];
+        $acticon = ['i' => '<i class="fa fa-upload"></i>', 'o' => '<i class="fa fa-download"></i>', 'd' => '<i class="fa fa-times"></i>'];
 
         unset($aLine[count($aLine) - 1]);
 
@@ -490,7 +490,7 @@ class ftp
             $html->pack('logs');
         }
 
-        return isset($html->arr['logs']) ? $html->arr['logs'] : 'Список логов отсутствует';
+        return $html->arr['logs'] ?? 'Список логов отсутствует';
     }
 
     private function path($path)
@@ -516,7 +516,7 @@ class ftp
 
     private function cti($chmod)
     {
-        $intchmod = array('-' => '0', 'r' => '4', 'w' => '2', 'x' => '1');
+        $intchmod = ['-' => '0', 'r' => '4', 'w' => '2', 'x' => '1'];
 
         $chmod = substr(strtr($chmod, $intchmod), 1);
 

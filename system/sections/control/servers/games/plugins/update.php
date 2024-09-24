@@ -36,7 +36,7 @@ if (!$sql->num()) {
 // Проверка установки обновления плагина
 $sql->query('SELECT `id` FROM `control_plugins_install` WHERE `server`="' . $sid . '" AND `plugin`="' . $pid . '" AND `upd`="' . $plugin['id'] . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(array('e' => 'Данный плагин уже обновлен'));
+    sys::outjs(['e' => 'Данный плагин уже обновлен']);
 }
 
 // Данные обновления
@@ -60,7 +60,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 // Директория игр. сервера
@@ -98,7 +98,7 @@ $sql->query('UPDATE `control_plugins_install` set `upd`="' . $plugin['id'] . '",
 $mcache->delete('server_plugins_' . $id);
 
 if ($plugin['cfg']) {
-    sys::outjs(array('s' => 'cfg'), $nmch);
+    sys::outjs(['s' => 'cfg'], $nmch);
 }
 
-sys::outjs(array('s' => 'ok'), $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

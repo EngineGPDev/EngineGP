@@ -15,7 +15,7 @@ if (!defined('EGP')) {
 
 if ($go) {
     // Подразделы
-    $aSub = array('fullcopy', 'create', 'recfull', 'recpart', 'remove', 'check');
+    $aSub = ['fullcopy', 'create', 'recfull', 'recpart', 'remove', 'check'];
 
     // Если выбран подраздел
     if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
@@ -24,7 +24,7 @@ if ($go) {
         }
 
         if ($server['status'] != 'off' and $url['subsection'] != 'remove') {
-            sys::outjs(array('e' => 'Игровой сервер должен быть выключен'), $nmch);
+            sys::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
         }
 
         $sql->query('SELECT `address`, `passwd` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
@@ -33,7 +33,7 @@ if ($go) {
         include(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(array('e' => sys::text('error', 'ssh')), $nmch);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
         }
 
         include(SEC . 'control/servers/games/copy/' . $url['subsection'] . '.php');
@@ -84,8 +84,8 @@ if ($mcache->get('ctrl_server_copy_' . $sid) != '') {
     $html->set('id', $id);
     $html->set('server', $sid);
 
-    $html->set('list', isset($html->arr['list']) ? $html->arr['list'] : '');
-    $html->set('copy', isset($html->arr['copy']) ? $html->arr['copy'] : 'Резервные копии отсутствуют.');
+    $html->set('list', $html->arr['list'] ?? '');
+    $html->set('copy', $html->arr['copy'] ?? 'Резервные копии отсутствуют.');
 
     $html->pack('main');
 

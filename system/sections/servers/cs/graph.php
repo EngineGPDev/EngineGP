@@ -19,9 +19,9 @@ if ($go) {
 
     $nmch = 'server_graph_full_' . $id;
 
-    $time = isset($url['time']) ? $url['time'] : 'day';
+    $time = $url['time'] ?? 'day';
 
-    if (!in_array($time, array('day', 'week', 'month'))) {
+    if (!in_array($time, ['day', 'week', 'month'])) {
         $time = 'day';
     }
 

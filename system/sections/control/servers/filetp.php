@@ -41,15 +41,15 @@ if (end($frouter) == 'noaccess.php') {
     // Путь для файлового менеджера
     $dir = '/';
 
-    $aData = array(
+    $aData = [
         'root' => $dir,
         'host' => $ip,
         'login' => $server['uid'],
-        'passwd' => $server['ftp_passwd']
-    );
+        'passwd' => $server['ftp_passwd'],
+    ];
 
     if ($go) {
-        if (isset($url['action']) and in_array($url['action'], array('on', 'off', 'change', 'logs'))) {
+        if (isset($url['action']) and in_array($url['action'], ['on', 'off', 'change', 'logs'])) {
             $sql->query('SELECT `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `control` WHERE `id`="' . $id . '" LIMIT 1');
             $unit = array_merge($unit, $sql->get());
 
@@ -71,7 +71,7 @@ if (end($frouter) == 'noaccess.php') {
                         sys::out('Не удалось соединиться с ftp-сервером.');
                     }
 
-                    sys::outjs(array('e' => 'Не удалось соединиться с ftp-сервером.'));
+                    sys::outjs(['e' => 'Не удалось соединиться с ftp-сервером.']);
                 }
 
                 sys::out();

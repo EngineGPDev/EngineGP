@@ -49,7 +49,7 @@ class scan extends scans
             return $mcache->get($nmch);
         }
 
-        $out = array();
+        $out = [];
 
         $out['time'] = 'Арендован до: ' . date('d.m.Y - H:i', $server['time']);
 
@@ -96,7 +96,7 @@ class scan extends scans
                 $html->pack('list');
             }
 
-            $out['players'] = isset($html->arr['list']) ? $html->arr['list'] : '';
+            $out['players'] = $html->arr['list'] ?? '';
         }
 
         $sql->query('UPDATE `servers` set '
@@ -117,7 +117,7 @@ class scan extends scans
     public static function players($aPlayrs)
     {
         $i = 1;
-        $aData = array();
+        $aData = [];
 
         foreach ($aPlayrs as $n => $player) {
             $aData[$i]['i'] = $i;

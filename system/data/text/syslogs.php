@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$text = array(
+$text = [
     'reinstall' => 'Переустановка игрового сервера.',
     'update' => 'Обновление игрового сервера.',
     'recovery' => 'Восстановление игрового сервера.',
@@ -21,4 +21,4 @@ $text = array(
     'change_slots' => 'Изменение количества слот.',
     'change_plan' => 'Изменение тарифного плана.',
     'change_unit' => 'Изменение локации.',
-);
+];

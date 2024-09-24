@@ -13,7 +13,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$aAction = array('script', 'sqlpasswd', 'proftpd', 'proftpd_modules', 'proftpd_sql', 'proftpd_passwd', 'proftpd_sqldump', 'rclocal', 'nginx', 'mysqlaptconfig', 'endinstall');
+$aAction = ['script', 'sqlpasswd', 'proftpd', 'proftpd_modules', 'proftpd_sql', 'proftpd_passwd', 'proftpd_sqldump', 'rclocal', 'nginx', 'mysqlaptconfig', 'endinstall'];
 
 if (!isset($url['action']) || !in_array($url['action'], $aAction)) {
     include(ENG . '404.php');
@@ -73,7 +73,7 @@ switch ($url['action']) {
         $unit = $sql->get();
 
         $data = file_get_contents(DATA . 'control/proftpd_passwd.txt');
-        $tmp = sys::temp(str_replace(array('[passwd]', '[passwd_ftp]'), array($unit['sql_passwd'], sys::passwd()), $data));
+        $tmp = sys::temp(str_replace(['[passwd]', '[passwd_ftp]'], [$unit['sql_passwd'], sys::passwd()], $data));
 
         break;
 
