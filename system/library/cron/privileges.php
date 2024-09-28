@@ -31,7 +31,7 @@ class privileges extends cron
 
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $servers[4] . '" LIMIT 1');
         if (!$sql->num()) {
-            return '������: UNIT#' . $servers[4] . ' �� ������.';
+            return 'Ошибка: UNIT#' . $servers[4] . ' не найден.';
         }
 
         $unit = $sql->get();
@@ -57,9 +57,9 @@ class privileges extends cron
 
         include(LIB . 'ssh.php');
 
-        // �������� ssh ���������� �� � ��������
+        // Открываем ssh соединение на сервере
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return '������: UNIT#' . $server['unit'] . ' �� ������� ������� �����.';
+            return 'Ошибка: UNIT#' . $server['unit'] . ' не удалось установить соединение.';
         }
 
         $time = $start_point - 172800;
@@ -102,7 +102,7 @@ class privileges extends cron
             $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"" . $cmd . "\"\015'");
 
             foreach ($aMail as $mail) {
-                sys::mail('������� ����������', sys::text('mail', 'success_privilege'), $mail);
+                sys::mail('Успешная привилегия', sys::text('mail', 'success_privilege'), $mail);
             }
 
             echo 'server#' . $id . ' (' . $game . ') -> add privileges ' . PHP_EOL;
