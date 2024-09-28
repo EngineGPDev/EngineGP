@@ -1,7 +1,4 @@
 {
-  "name": "enginegpdev/enginegp",
-  "description": "EngineGP is a panel for managing game servers and hosting.",
-  "version": "4.0.0-dev",
   "license": "MIT",
   "authors": [
     {
