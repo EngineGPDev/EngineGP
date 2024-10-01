@@ -169,22 +169,12 @@ if ($auth) {
         $html->unitall('servers', 'all', 0, 1);
     }
 
-    // Проверка наличия игрового сервера
-    $servers = $sql->query('SELECT `id` FROM `control` WHERE `user`="' . $user['id'] . '" LIMIT 1');
-
-    if ($sql->num()) {
-        $html->unitall('control', 'all', 1);
-    } else {
-        $html->unitall('control', 'all', 0);
-    }
-
     $html->unitall('auth', 'all', 1, 1);
     $html->unitall('admin', 'all', $user['group'] == 'admin', 1);
     $html->unitall('support', 'all', $user['group'] == 'support', 1);
 } else {
     $html->unitall('auth', 'all', 0, 1);
     $html->unitall('servers', 'all', 0, 1);
-    $html->unitall('control', 'all', 0, 1);
     $html->unitall('admin', 'all', 0, 1);
     $html->unitall('support', 'all', 0, 1);
 }

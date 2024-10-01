@@ -1,3 +1,0 @@
-/root/iptables_block
-
-exit 0

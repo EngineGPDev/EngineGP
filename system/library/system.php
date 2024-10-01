@@ -1151,7 +1151,7 @@ class sys
         return $name;
     }
 
-    public static function reset_mcache($nmch, $id, $data = [], $ctrl = false)
+    public static function reset_mcache($nmch, $id, $data = [])
     {
         global $mcache;
 
@@ -1162,7 +1162,7 @@ class sys
             'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">',
         ];
 
-        $cache = $ctrl ? sys::buttons($id, $data['status'], $data['game'], $ctrl) : sys::buttons($id, $data['status'], $data['game']);
+        $cache = sys::buttons($id, $data['status'], $data['game']);
 
         if (isset($data['players']) && is_array($data['players'])) {
             $cache['players'] = $data['players'];
@@ -1272,7 +1272,7 @@ class sys
         return $cfg['http'].'template/images/status/none.jpg';
     }
 
-    public static function buttons($id, $status, $game = false, $ctrl = false)
+    public static function buttons($id, $status, $game = false)
     {
         global $html;
 
@@ -1282,34 +1282,23 @@ class sys
 
         $other = in_array($game, ['samp', 'crmp', 'mta', 'mc', 'rust']);
 
-        $dir = $ctrl ? 'control/servers' : 'servers';
-
         if (in_array($status, ['working', 'change', 'start', 'restart'])) {
-            $html->get('stop', 'sections/' . $dir . '/buttons');
+            $html->get('stop', 'sections/servers/buttons');
 
             $html->set('id', $id);
-            if ($ctrl) {
-                $html->set('ctrl', $ctrl);
-            }
 
             $html->pack('buttons');
 
-            $html->get('restart', 'sections/' . $dir . '/buttons');
+            $html->get('restart', 'sections/servers/buttons');
 
             $html->set('id', $id);
-            if ($ctrl) {
-                $html->set('ctrl', $ctrl);
-            }
 
             $html->pack('buttons');
 
             if (!$other) {
-                $html->get('change', 'sections/' . $dir . '/buttons');
+                $html->get('change', 'sections/servers/buttons');
 
                 $html->set('id', $id);
-                if ($ctrl) {
-                    $html->set('ctrl', $ctrl);
-                }
 
                 $html->pack('buttons');
             }
@@ -1318,31 +1307,22 @@ class sys
         }
 
         if ($status == 'off') {
-            $html->get('start', 'sections/' . $dir . '/buttons');
+            $html->get('start', 'sections/servers/buttons');
 
             $html->set('id', $id);
-            if ($ctrl) {
-                $html->set('ctrl', $ctrl);
-            }
 
             $html->pack('buttons');
 
-            $html->get('reinstall', 'sections/' . $dir . '/buttons');
+            $html->get('reinstall', 'sections/servers/buttons');
 
             $html->set('id', $id);
-            if ($ctrl) {
-                $html->set('ctrl', $ctrl);
-            }
 
             $html->pack('buttons');
 
             if (!$other) {
-                $html->get('update', 'sections/' . $dir . '/buttons');
+                $html->get('update', 'sections/servers/buttons');
 
                 $html->set('id', $id);
-                if ($ctrl) {
-                    $html->set('ctrl', $ctrl);
-                }
 
                 $html->pack('buttons');
             }
@@ -1350,7 +1330,7 @@ class sys
             return $html->arr['buttons'];
         }
 
-        $html->get('other', 'sections/' . $dir . '/buttons');
+        $html->get('other', 'sections/servers/buttons');
         $html->pack('buttons');
 
         return $html->arr['buttons'];

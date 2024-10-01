@@ -21,7 +21,6 @@ $aRoute = [
     'tarifs',
     'addons',
     'servers',
-    'control',
     'hosting',
     'web',
     'promo',
