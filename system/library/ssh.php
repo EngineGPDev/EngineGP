@@ -25,8 +25,12 @@ class ssh
 
     public function auth($passwd, $address)
     {
-        if ($this->connect($address) and $this->auth_pwd('root', $passwd)) {
-            return true;
+        try {
+            if ($this->connect($address) and $this->auth_pwd('root', $passwd)) {
+                return true;
+            }
+        } catch (\phpseclib3\Exception\UnableToConnectException $e) {
+            return false;
         }
 
         return false;
