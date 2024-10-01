@@ -190,12 +190,10 @@ $aEdits = [
 ];
 
 if (isset($aEditslist)) {
-    $dir = isset($ctrlmod) ? 'control/' : '';
-
     // Генерация общего списка редактируемых файлов
     if (isset($aEdits[$server['game']]['all']['files'])) {
         foreach ($aEdits[$server['game']]['all']['files'] as $file) {
-            $html->get('edits_list', 'sections/' . $dir . 'servers/games/settings');
+            $html->get('edits_list', 'sections/servers/games/settings');
             $html->set('id', $id);
             $html->set('name', $file);
             $html->set('desc', $aEdits[$server['game']]['all']['desc'][$file]);

@@ -595,7 +595,7 @@ class games
         return $tarif;
     }
 
-    public static function maplist($id, $unit, $folder, $map, $go, $mcache = '', $ctrl = false)
+    public static function maplist($id, $unit, $folder, $map, $go, $mcache = '')
     {
         global $user, $sql;
 
@@ -618,11 +618,9 @@ class games
         if ($go) {
             $map = str_replace('|', '/', urldecode($map));
 
-            $sqlq = $ctrl ? 'control_' : '';
-
             // Проверка наличия выбранной карты
             if (in_array($map, $aMaps)) {
-                $sql->query('UPDATE `' . $sqlq . 'servers` set `map_start`="' . $map . '" WHERE `id`="' . $id . '" LIMIT 1');
+                $sql->query('UPDATE `servers` set `map_start`="' . $map . '" WHERE `id`="' . $id . '" LIMIT 1');
             }
 
             sys::outjs(['s' => 'ok'], $mcache);

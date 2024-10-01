@@ -95,46 +95,7 @@ $cfg = [
     'fpsplus' => 100, // Прибавление fps к параметру "sys_ticrate" при старте (пример: 1000+100 | итог: sys_ticrate 1100)
     'pingboost' => 3, // Значение pingboost по умолчанию (1,2,3 | 0 = без pingboost)
     'change_pingboost' => false, // Смена pingboost клиентом (true = разрешено / false = запрещено)
-    'cpu_route' => true, // Активация (EngineGP CPU ROUTE) автораспределения игровых серверов по ядрам/потокам | false - выключена
-    'cpu_first' => true, // Запретить использовать первый поток cpu (значение имеет вес при 2х и более потоках) | РЕКОМЕНДУЕМОЕ ЗНАЧЕНИЕ: true
     'crontabs' => 3, // Количество заданий crontab на 1 игровой сервер
-
-    // Услуга "Контроль"
-    'control_delete' => 10, // через сколько дней удалять услугу
-    'control_time' => [30, 90], // периоды аренды
-    'control_limit' => [ // лимит / цена
-        1 => 50,
-        5 => 100,
-        10 => 150,
-        20 => 250,
-    ],
-    'control_server' => 'http://games.enginegp.ru/', // головной сервер, путь к архивам
-    'control_packs' => [
-        'cs' => [
-            '6153' => 'Build 6153',
-            '5787' => 'Build 5787',
-            'rehlds' => 'ReHLDS',
-        ],
-        'cssold' => [
-            'cssold' => 'Стандарт',
-        ],
-        'css' => [
-            'default' => 'Стандарт',
-        ],
-        'csgo' => [
-            'default' => 'Стандарт',
-        ],
-    ],
-    'control_install' => [
-        'cs' => 'pack="6153", `map_start`="de_dust2", `fps`="1100"',
-        'cssold' => 'pack="cssold", `map_start`="de_dust2", `fps`="1000",`tickrate`="100"',
-        'css' => 'pack="default", `map_start`="de_dust2", `tickrate`="100"',
-        'csgo' => 'pack="default", `map_start`="de_dust2", `tickrate`="128"',
-    ],
-    'control_steamcmd' => [
-        'css' => 232330,
-        'csgo' => 740,
-    ],
 
     // Задержка в возможности повторной переустановки сервера (минуты)
     'reinstall' => [
