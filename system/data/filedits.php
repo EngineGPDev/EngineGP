@@ -197,24 +197,18 @@ if (isset($aEditslist)) {
             $html->set('id', $id);
             $html->set('name', $file);
             $html->set('desc', $aEdits[$server['game']]['all']['desc'][$file]);
-
-            if (isset($ctrlmod)) {
-                $html->set('server', $sid);
-            }
             $html->pack('edits');
         }
     }
 
-    if (!isset($ctrlmod)) {
-        // Генерация списка редактируемых файлов по тарифу
-        if (isset($aEdits[$server['game']][$tarif['name']]['files'])) {
-            foreach ($aEdits[$server['game']][$tarif['name']]['files'] as $file) {
-                $html->get('edits_list', 'sections/servers/games/settings');
-                $html->set('id', $id);
-                $html->set('name', $file);
-                $html->set('desc', $aEdits[$server['game']][$tarif['name']]['desc'][$file]);
-                $html->pack('edits');
-            }
+    // Генерация списка редактируемых файлов по тарифу
+    if (isset($aEdits[$server['game']][$tarif['name']]['files'])) {
+        foreach ($aEdits[$server['game']][$tarif['name']]['files'] as $file) {
+            $html->get('edits_list', 'sections/servers/games/settings');
+            $html->set('id', $id);
+            $html->set('name', $file);
+            $html->set('desc', $aEdits[$server['game']][$tarif['name']]['desc'][$file]);
+            $html->pack('edits');
         }
     }
 }
