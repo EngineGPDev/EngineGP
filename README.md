@@ -44,6 +44,5 @@ chmod +x ./Autoinstall/install.sh
 ## Official sources
 - [Website](https://www.enginegp.com) - official website
 - [Documentation](https://docs.enginegp.com) - official documentation
-- [MantisBT](https://bugs.enginegp.com) - official bugtracker
 - [Telegram](https://t.me/enginegpdev) - telegram channel
 - [VKontakte](https://vk.com/enginegp) - vkontakte group
