@@ -9,6 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -44,28 +47,70 @@ $go = array_key_exists('go', $url);
 $page = array_key_exists('page', $url) ? sys::int($url['page']) : 1;
 $route = $route == '' ? 'index' : $route;
 
-session_start();
-
 $auth = false;
+$user = [];
 
-// Проверка сессии на авторизацию
-if (isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
+// Получение токена из куки
+$refreshToken = $_COOKIE['refresh_token'] ?? null;
 
-    $sql->query('SELECT `id`, `login`, `balance`, `group`, `level`, `time` FROM `users` WHERE `id`="' . $userId . '" LIMIT 1');
-    if ($sql->num()) {
-        $user = $sql->get();
+// Порог обновления токена
+$refreshThreshold = 86400 * 7;
 
-        // Обновление активности
-        if ($user['time'] + 10 < $start_point) {
-            $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
+if ($refreshToken) {
+    try {
+        // Проверка токена
+        $decodedJwt = JWT::decode($refreshToken, new Key($_ENV['JWT_KEY'], 'HS256'));
+
+        // Токен валиден
+        $user['id'] = $decodedJwt->id;
+
+        // Если токен истекает менее чем через 7 дней, создаём новый
+        if ($decodedJwt->exp - $start_point < $refreshThreshold) {
+            $payload = [
+                'id' => $user['id'],
+                'iat' => $start_point,
+                'exp' => $start_point + 86400 * 30,
+            ];
+
+            // Генерация нового токена
+            $refreshToken = JWT::encode($payload, $_ENV['JWT_KEY'], 'HS256');
+
+            // Обновление куки с новым токеном
+            setcookie('refresh_token', $refreshToken, [
+                'expires' => $start_point + 86400 * 30,
+                'path' => '/',
+                'domain' => $_SERVER['HTTP_HOST'],
+                'samesite' => 'Strict',
+            ]);
         }
 
-        // Проверка принадлежности к группе admin
-        if ($user['group'] === "admin") {
-            $auth = true;
+        // Получение информации о пользователе из базы данных
+        $sql->query('SELECT `id`, `login`, `balance`, `group`, `level`, `time` FROM `users` WHERE `id`="' . $user['id'] . '" LIMIT 1');
+        if ($sql->num()) {
+            $user = $sql->get();
+
+            // Обновление активности
+            if ($user['time'] + 10 < $start_point) {
+                $sql->query('UPDATE `users` set `time`="' . $start_point . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
+            }
+
+            // Проверка принадлежности к группе admin
+            if ($user['group'] === "admin") {
+                $auth = true;
+            }
         }
+    } catch (Exception $e) {
+        // Если токен недействителен, удаляем куку
+        setcookie('refresh_token', '', [
+            'expires' => $start_point - 3600,
+            'path' => '/',
+            'domain' => $_SERVER['HTTP_HOST'],
+            'samesite' => 'Strict',
+        ]);
     }
+} else {
+    // Токен не передан
+    $user['id'] = null;
 }
 
 if (!$auth) {
