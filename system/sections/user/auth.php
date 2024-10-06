@@ -9,6 +9,9 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -130,10 +133,25 @@ if ($go) {
     // Логирование ip
     $sql->query('INSERT INTO `auth` set `user`="' . $user['id'] . '", `ip`="' . $uip . '", `date`="' . $start_point . '", `browser`="' . sys::hb64($_SERVER['HTTP_USER_AGENT']) . '"');
 
-    // Запись сессии пользователя
-    $_SESSION['user_id'] = $user['id'];
+    // Вход успешен, создаем JWT токен
+    $payload = [
+        'id' => $user['id'],
+        'iat' => $start_point,
+        'exp' => $start_point + 86400 * 30,
+    ];
+    
+    // Генерация JWT токена
+    $refreshToken = JWT::encode($payload, $_ENV['JWT_KEY'], 'HS256');
 
-    // Выхлоп удачной авторизации
+    // Установка токена в куки
+    setcookie('refresh_token', $refreshToken, [
+        'expires' => $start_point + 86400 * 30,
+        'path' => '/',
+        'domain' => $_SERVER['HTTP_HOST'],
+        'samesite' => 'Strict',
+    ]);
+    
+    // // Выхлоп удачной авторизации
     sys::outjs(['s' => 'ok'], $nmch);
 }
 

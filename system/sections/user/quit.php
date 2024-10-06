@@ -16,7 +16,12 @@ if (!defined('EGP')) {
 // Проверка на авторизацию
 sys::noauth($auth, $go);
 
-session_unset();
+setcookie('refresh_token', '', [
+    'expires' => $start_point - 3600,
+    'path' => '/',
+    'domain' => $_SERVER['HTTP_HOST'],
+    'samesite' => 'Strict',
+]);
 
 // Обновление активности
 $sql->query('UPDATE `users` set `time`="' . ($start_point - 10) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
