@@ -83,7 +83,7 @@ class server_delete extends cron
         include(LIB . 'games/games.php');
 
         // Очистка правил FireWall
-        games::iptables($server['id'], 'remove', null, null, null, false, $ssh);
+        games::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
 
         // Очистка правил FireWall GEO
         if ($server['ddos']) {

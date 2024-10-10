@@ -28,7 +28,7 @@ if (isset($url['action'])) {
         $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['e' => sys::text('servers', 'firewall')], $nmch);
         $snw = isset($_POST['subnetwork']) ? true : false;
 
-        sys::outjs(games::iptables($id, $url['action'], $address, explode(':', $server['address']), $server['unit'], $snw), $nmch);
+        sys::outjs(games::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
     }
 }
 

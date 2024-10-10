@@ -747,7 +747,7 @@ class games
         sys::outjs(['info' => $info], $mcache);
     }
 
-    public static function iptables($id, $action, $source, $dest, $unit, $snw = false, $ssh = false)
+    public static function iptables($id, $action, $source, $ip, $port, $unit, $snw = false, $ssh = false)
     {
         global $cfg, $sql, $start_point;
 
@@ -784,11 +784,11 @@ class games
                     return ['s' => 'ok'];
                 }
 
-                $sql->query('INSERT INTO `firewall` set `sip`="' . $source . '", `dest`="' . $dest[0] . ':' . $dest[1] . '", `server`="' . $id . '", `time`="' . $start_point . '"');
+                $sql->query('INSERT INTO `firewall` set `sip`="' . $source . '", `dest`="' . $ip . ':' . $port . '", `server`="' . $id . '", `time`="' . $start_point . '"');
 
                 $line = $sql->id();
 
-                $rule = 'iptables -I INPUT -s ' . $source . ' -p udp -d ' . $dest[0] . ' --dport ' . $dest[1] . ' -j DROP;';
+                $rule = 'iptables -I INPUT -s ' . $source . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;';
 
                 $ssh->set($rule . ' echo -e "#' . $line . ';\n' . $rule . '" >> /root/' . $cfg['iptables']);
 
@@ -827,7 +827,7 @@ class games
 
                 $firewall = $sql->get();
 
-                $ssh->set('iptables -D INPUT -s ' . $firewall['sip'] . ' -p udp -d ' . $dest[0] . ' --dport ' . $dest[1] . ' -j DROP;'
+                $ssh->set('iptables -D INPUT -s ' . $firewall['sip'] . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;'
                     . 'sed "`nl ' . $cfg['iptables'] . ' | grep \"#' . $firewall['id'] . '\" | awk \'{print $1","$1+1}\'`d" ' . $cfg['iptables'] . ' > ' . $cfg['iptables'] . '_temp; cat ' . $cfg['iptables'] . '_temp > ' . $cfg['iptables'] . '; rm ' . $cfg['iptables'] . '_temp');
 
                 $sql->query('DELETE FROM `firewall` WHERE `id`="' . $firewall['id'] . '" LIMIT 1');
