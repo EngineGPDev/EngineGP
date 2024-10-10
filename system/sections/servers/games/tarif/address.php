@@ -66,7 +66,7 @@ if ($go) {
     $port = explode(':', $server['address']);
 
     // Очистка правил FireWall
-    games::iptables($server['id'], 'remove', null, null, null, false, $ssh);
+    games::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
 
     // Запись логов
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(

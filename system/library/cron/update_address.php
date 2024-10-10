@@ -36,7 +36,7 @@ class update_address extends cron
                 include(LIB . 'games/games.php');
 
                 // Очистка правил FireWall
-                games::iptables($add_buy['server'], 'remove', null, null, $server['unit'], false);
+                games::iptables($add_buy['server'], 'remove', null, null, null, $server['unit'], false);
 
                 $sql->query('UPDATE `servers` set `address`="' . (sys::first(explode(':', $unit['address']))) . ':' . $server['port'] . '" WHERE `id`="' . $add_buy['server'] . '" LIMIT 1');
 
