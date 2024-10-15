@@ -16,7 +16,7 @@
     "filp/whoops": "^2.16",
     "monolog/monolog": "^2.9",
     "phpseclib/phpseclib": "^3.0",
-    "austinb/gameq": "^3.1",
+    "enginegp/gameq": "^3.1",
     "szymach/c-pchart": "^3.0",
     "firebase/php-jwt": "^6.10"
   }
