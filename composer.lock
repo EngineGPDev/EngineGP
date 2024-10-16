@@ -4,104 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d69944996e6356002a0ef06dff1b2f2e",
+    "content-hash": "10f1911bed3146cd33b24c13d82e1c96",
     "packages": [
-        {
-            "name": "austinb/gameq",
-            "version": "v3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Austinb/GameQ.git",
-                "reference": "44e7906661ae90c68d77005f42cbbf151caea478"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Austinb/GameQ/zipball/44e7906661ae90c68d77005f42cbbf151caea478",
-                "reference": "44e7906661ae90c68d77005f42cbbf151caea478",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bz2": "*",
-                "ext-xml": "*",
-                "php": ">=5.6.40"
-            },
-            "require-dev": {
-                "corneltek/getoptionkit": "~2",
-                "ext-curl": "*",
-                "phpmd/phpmd": "@stable",
-                "phpunit/php-invoker": "*",
-                "phpunit/phpunit": "^5.7 | ^6.0 | ^7.0 | ^8.0 | ^9.0",
-                "squizlabs/php_codesniffer": "3.*@stable"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "GameQ\\": "src/GameQ/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Austin Bischoff",
-                    "email": "austin.bischoff@gmail.com",
-                    "homepage": "https://github.com/Austinb",
-                    "role": "Packagist/Composer Maintainer, Developer"
-                },
-                {
-                    "name": "Christoph Kretzschmar",
-                    "email": "blackskyliner@googlemail.com",
-                    "homepage": "https://github.com/Blackskyliner",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Marcel Bößendörfer",
-                    "email": "m.boessendoerfer@marbis.net",
-                    "homepage": "https://github.com/nitrado",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Alexander Hambalgo",
-                    "homepage": "http://balgo.users.sourceforge.net/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Holger",
-                    "homepage": "http://icet33.users.sourceforge.net/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Weidenbach",
-                    "homepage": "http://sebastianwe.users.sourceforge.net/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Patrick Henninger",
-                    "email": "privat@skyraptor.eu",
-                    "homepage": "https://skyraptor.eu",
-                    "role": "Developer"
-                }
-            ],
-            "description": "GameQ Gameserver Library",
-            "keywords": [
-                "gameq",
-                "serverstatus"
-            ],
-            "support": {
-                "issues": "https://github.com/Austinb/GameQ/issues",
-                "source": "https://github.com/Austinb/GameQ/v3",
-                "wiki": "https://github.com/Austinb/GameQ/wiki"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VAU2KADATP5PU",
-                    "type": "custom"
-                }
-            ],
-            "time": "2022-08-28T16:06:34+00:00"
-        },
         {
             "name": "doctrine/deprecations",
             "version": "1.1.3",
@@ -293,6 +197,108 @@
                 }
             ],
             "time": "2023-06-01T07:04:22+00:00"
+        },
+        {
+            "name": "enginegp/gameq",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EngineGPDev/GameQ.git",
+                "reference": "9e77234683bac67c3f46bde0fb160cbad7eb1d21"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EngineGPDev/GameQ/zipball/9e77234683bac67c3f46bde0fb160cbad7eb1d21",
+                "reference": "9e77234683bac67c3f46bde0fb160cbad7eb1d21",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bz2": "*",
+                "ext-xml": "*",
+                "php": ">=5.6.40"
+            },
+            "require-dev": {
+                "corneltek/getoptionkit": "~2",
+                "ext-curl": "*",
+                "phpmd/phpmd": "@stable",
+                "phpunit/php-invoker": "*",
+                "phpunit/phpunit": "^5.7 | ^6.0 | ^7.0 | ^8.0 | ^9.0",
+                "squizlabs/php_codesniffer": "3.*@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GameQ\\": "src/GameQ/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Austin Bischoff",
+                    "email": "austin.bischoff@gmail.com",
+                    "homepage": "https://github.com/Austinb",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Christoph Kretzschmar",
+                    "email": "blackskyliner@googlemail.com",
+                    "homepage": "https://github.com/Blackskyliner",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Marcel Bößendörfer",
+                    "email": "m.boessendoerfer@marbis.net",
+                    "homepage": "https://github.com/nitrado",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexander Hambalgo",
+                    "homepage": "http://balgo.users.sourceforge.net/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Holger",
+                    "homepage": "http://icet33.users.sourceforge.net/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Weidenbach",
+                    "homepage": "http://sebastianwe.users.sourceforge.net/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Patrick Henninger",
+                    "email": "privat@skyraptor.eu",
+                    "homepage": "https://skyraptor.eu",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sergei Solovev",
+                    "email": "inbox@seansolovev.ru",
+                    "homepage": "https://github.com/SeAnSolovev",
+                    "role": "Packagist/Composer Maintainer, Developer"
+                }
+            ],
+            "description": "GameQ Gameserver Library",
+            "keywords": [
+                "gameq",
+                "serverstatus"
+            ],
+            "support": {
+                "issues": "https://github.com/EngineGPDev/GameQ/issues",
+                "source": "https://github.com/EngineGPDev/GameQ/v3",
+                "wiki": "https://github.com/Austinb/GameQ/wiki"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VAU2KADATP5PU",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-10-12T17:48:50+00:00"
         },
         {
             "name": "filp/whoops",
