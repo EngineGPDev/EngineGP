@@ -172,8 +172,8 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
         $part = null;
 
         // Реферал
-        if (isset($_SESSION['referrer'])) {
-            $part = ', `part`="' . sys::int($_SESSION['referrer']) . '"';
+        if (isset($_COOKIE['referrer'])) {
+            $part = ', `part`="' . sys::int($_COOKIE['referrer']) . '"';
         }
 
         // Запись данных в базу

@@ -49,7 +49,7 @@ $route = $route == '' ? 'index' : $route;
 
 // Реферал
 if (isset($_GET['account'])) {
-    $_SESSION['referrer'] = sys::int($_GET['account']);
+    setcookie('referrer', sys::int($_GET['account']), time() + (10 * 86400), "/", $_SERVER['HTTP_HOST'], false, true);
 }
 
 $auth = false;
