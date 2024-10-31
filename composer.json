@@ -19,6 +19,6 @@
     "enginegp/gameq": "^3.1",
     "szymach/c-pchart": "^3.0",
     "firebase/php-jwt": "^6.10",
-    "yoomoney/yookassa-sdk-php": "^2.11"
+    "yoomoney/yookassa-sdk-php": "^3.7"
   }
 }
