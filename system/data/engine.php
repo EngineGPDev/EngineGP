@@ -35,6 +35,8 @@ $aRoute = [
     'api_v1',
     'monitoring',
     'partners',
+    'Yookassa',
+    'YookassaHandler',
 ];
 
 // Массив регулярных выражений

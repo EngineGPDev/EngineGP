@@ -24,6 +24,7 @@
                         <option value="unitpay">UnitPay</option>
                         <option value="webmoney">WebMoney</option>
                         <option value="freekassa">FreeKassa</option>
+                        <option value="yookassa">YooKassa</option>
                     </select>
                 </td>
                 <td class="col-10">
@@ -116,6 +117,22 @@
                         .then(response => response.text())
                         .then(data => {
                             location.href = `http://www.free-kassa.ru/merchant/cash.php?m=[freekassa]&o=1&us_user=[id]&lang=ru&pay=Пополнение счета&oa=${sum}&s=${data}`;
+                        });
+                    break;
+                case 'yookassa':
+                    // Получаем ссылку на платежный шлюз
+                    const url = `${home}Yookassa?user=[id]&amount=${sum}`;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.payLink) {
+                                location.href = data.payLink;
+                            } else {
+                                bootbox.dialog('Ошибка платёжной системы', [{
+                                    label: "OK",
+                                    className: "btn-small btn-primary",
+                                }]);
+                            }
                         });
                     break;
                 default:

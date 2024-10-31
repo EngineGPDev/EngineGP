@@ -18,6 +18,7 @@
     "phpseclib/phpseclib": "^3.0",
     "enginegp/gameq": "^3.1",
     "szymach/c-pchart": "^3.0",
-    "firebase/php-jwt": "^6.10"
+    "firebase/php-jwt": "^6.10",
+    "yoomoney/yookassa-sdk-php": "^2.11"
   }
 }
