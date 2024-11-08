@@ -59,7 +59,7 @@ if ($go) {
 
     $output = $ssh->get($command);
 
-    sys::out(htmlspecialchars($output, ENT_QUOTES, ''));
+    sys::out(htmlspecialchars($output, ENT_QUOTES | ENT_SUBSTITUTE, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
