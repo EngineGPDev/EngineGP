@@ -70,7 +70,7 @@ $tarif = $sql->get();
 $dir = $tarif['install'] . $server['uid'] . '/';
 
 // Установка файлов на сервер
-$ssh->set('cd ' . $dir . ' && screen -dmS update_' . $start_point . ' sudo -u server' . $server['uid'] . ' sh -c "wget --no-check-certificate ' . $cfg['plugins'] . 'update/' . $plugin['id'] . '.zip && unzip -o ' . $plugin['id'] . '.zip; rm ' . $plugin['id'] . '.zip"');
+$ssh->set('cd ' . $dir . ' && tmux new-session -ds update_' . $start_point . ' sudo -u server' . $server['uid'] . ' sh -c "wget --no-check-certificate ' . $cfg['plugins'] . 'update/' . $plugin['id'] . '.zip && unzip -o ' . $plugin['id'] . '.zip; rm ' . $plugin['id'] . '.zip"');
 
 // Удаление файлов
 $sql->query('SELECT `file` FROM `plugins_delete` WHERE `update`="' . $plugin['id'] . '"');

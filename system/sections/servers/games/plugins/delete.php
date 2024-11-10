@@ -54,7 +54,7 @@ if ($plugin['upd']) {
 }
 
 // Удаление и установка файлов
-$ssh->set('cd ' . $dir . ' && screen -dmS delete_upd_' . $start_point . ' '
+$ssh->set('cd ' . $dir . ' && tmux new-session -ds delete_upd_' . $start_point . ' '
     . 'sudo -u server' . $server['uid'] . ' sh -c "'
     . 'wget --no-check-certificate ' . $cfg['plugins'] . 'delete/' . $frm . '.rm && '
     . 'chmod 755 ' . $frm . '.rm; ./' . $frm . '.rm; rm ' . $frm . '.rm"');

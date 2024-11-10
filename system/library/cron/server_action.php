@@ -49,7 +49,7 @@ class server_action extends cron
             $aCmd = explode("\n", base64_decode($cron['commands']));
 
             foreach ($aCmd as $cmd) {
-                $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . sys::cmd($cmd) . '"\015\'; sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
+                $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "' . sys::cmd($cmd) . '" C-m');
             }
 
             return null;

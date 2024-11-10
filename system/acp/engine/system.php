@@ -25,9 +25,9 @@ if ($go) {
         }
 
         if ($url['service'] == 'unit') {
-            $ssh->set('screen -dmS reboot reboot');
+            $ssh->set('tmux new-session -ds reboot reboot');
         } else {
-            $ssh->set('screen -dmS sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
+            $ssh->set('tmux new-session -ds sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
         }
 
         sys::outjs(['s' => 'ok']);

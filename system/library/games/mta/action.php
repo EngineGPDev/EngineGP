@@ -50,7 +50,7 @@ class action extends actions
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe;');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Временный файл
         $temp = sys::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/mods/deathmatch/mtaserver.conf')));
@@ -77,7 +77,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p mods/deathmatch/oldstart;' // Создание папки логов
             . 'cat mods/deathmatch/logs/server.log >> mods/deathmatch/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm mods/deathmatch/logs/server.log; rm mods/deathmatch/logs/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':servers mods/deathmatch/mtaserver.conf start.sh;' // Обновление владельца файлов
-            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' tmux new-session -ds s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');

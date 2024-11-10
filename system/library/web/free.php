@@ -229,8 +229,8 @@ class web
             . 'mkdir -p ' . $install . ';' // Создание директории
             . 'useradd -d ' . $install . ' -g web -u ' . $uid . ' web' . $uid . ';' // Создание пользователя услуги на локации
             . 'chown -R web' . $uid . ':999 ' . $install . ';' // Изменение владельца и группы директории
-            . 'cd ' . $install . ' && sudo -u web' . $uid . ' screen -dmS i_w_' . $uid . ' sh -c "cp -r ' . $path . '/. .; ' . $chmod . '";' // Копирование файлов услуги
-            . 'screen -dmS apache_reload_' . $uid . ' service apache2 reload;' // Перезагрузить конфигурации апач
+            . 'cd ' . $install . ' && sudo -u web' . $uid . ' tmux new-session -ds i_w_' . $uid . ' sh -c "cp -r ' . $path . '/. .; ' . $chmod . '";' // Копирование файлов услуги
+            . 'tmux new-session -ds apache_reload_' . $uid . ' service apache2 reload;' // Перезагрузить конфигурации апач
             . $sql_q); // sql запросы
 
         $aData['passwd'] ??= '';
@@ -300,7 +300,7 @@ class web
         $chmod = $aWebChmod[$aData['type']] ?? '';
 
         $ssh->set($cat
-            . 'cd ' . $install . ' && sudo -u web' . $web['uid'] . ' screen -dmS u_w_' . $web['uid'] . ' sh -c "YES | cp -rf ' . $path . '/. .; ' . $chmod . '";'
+            . 'cd ' . $install . ' && sudo -u web' . $web['uid'] . ' tmux new-session -ds u_w_' . $web['uid'] . ' sh -c "YES | cp -rf ' . $path . '/. .; ' . $chmod . '";'
             . $sql_q); // sql запрос
 
         $sql->query('UPDATE `web` set `update`="' . $start_point . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
@@ -334,7 +334,7 @@ class web
         $delete = '';
 
         if ($web['domain'] != '') {
-            $delete = 'screen -dmS r_w_' . $web['uid'] . ' rm -r ' . $aWebUnit['install'][$aWebUnit['unit'][$aData['type']]][$aData['type']] . $web['domain'] . ';';
+            $delete = 'tmux new-session -ds r_w_' . $web['uid'] . ' rm -r ' . $aWebUnit['install'][$aWebUnit['unit'][$aData['type']]][$aData['type']] . $web['domain'] . ';';
         }
 
         $ip = sys::first(explode(':', $unit['address']));
@@ -364,7 +364,7 @@ class web
         $ssh->set('rm /etc/apache2/sites-enabled/' . $web['domain'] . ';' // Удаление настроек апач
             . $delete // Удаление файлов
             . 'userdel web' . $web['uid'] . ';' // Удаление пользователя
-            . 'screen -dmS apache_reload_' . $web['uid'] . ' service apache2 reload;' // Перезагрузить конфигурации апач
+            . 'tmux new-session -ds apache_reload_' . $web['uid'] . ' service apache2 reload;' // Перезагрузить конфигурации апач
             . $sql_q); // sql запрос
 
         $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');

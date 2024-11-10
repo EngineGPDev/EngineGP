@@ -37,7 +37,7 @@ if ($go) {
 
     $filecmd = $dir . 'egpconsole.log';
 
-    $command = 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X hardcopy -h ' . $filecmd . ' && cat ' . $filecmd;
+    $command = 'sudo -u server' . $server['uid'] . ' tmux capture-pane -t s_' . $server['uid'] . ' \; save-buffer ' . $filecmd . ' && cat ' . $filecmd;
 
     $output = $ssh->get($command);
 

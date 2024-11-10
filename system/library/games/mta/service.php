@@ -271,7 +271,7 @@ class service
         $ssh->set('mkdir ' . $install . ';' // Создание директории
             . 'useradd -s /bin/false -d ' . $install . ' -g servers -u ' . $uid . ' server' . $uid . ';' // Создание пользователя сервера на локации
             . 'chown server' . $uid . ':servers ' . $install . ';' // Изменение владельца и группы директории
-            . 'cd ' . $install . ' && sudo -u server' . $uid . ' screen -dmS i_' . $uid . ' sh -c "cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
+            . 'cd ' . $install . ' && sudo -u server' . $uid . ' tmux new-session -ds i_' . $uid . ' sh -c "cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 777 {} \;;'
             . 'chmod 500 ' . params::$aFileGame[$server['mta']] . '"');

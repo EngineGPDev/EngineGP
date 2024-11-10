@@ -48,10 +48,10 @@ if ($go) {
         if (isset($url['action']) and $url['action'] == 'ban') {
             // Если включен amxbans/csbans
             if ($aData['amxbans']) {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"amx_ban 0 " . $aData['value'] . " EGP\"\015'");
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"fb_ban 0 " . $aData['value'] . " EGP\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"amx_ban 0 " . $aData['value'] . " EGP\" C-m");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"fb_ban 0 " . $aData['value'] . " EGP\" C-m");
             } else {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"banid 0.0 " . $aData['value'] . " kick\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"banid 0.0 " . $aData['value'] . " kick\" C-m");
             }
 
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' banned.cfg | awk \'{print $3}\'');
@@ -69,11 +69,11 @@ if ($go) {
 
             // Если включен amxbans/csbans
             if ($aData['amxbans']) {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"amx_unban " . $aData['value'] . "\"\015'");
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"fb_unban " . $aData['value'] . "\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"amx_unban " . $aData['value'] . "\" C-m");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"fb_unban " . $aData['value'] . "\" C-m");
             } else {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"removeid " . $aData['value'] . "\"\015'");
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"writeid\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"removeid " . $aData['value'] . "\" C-m");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"writeid\" C-m");
             }
 
             sys::outjs(['s' => 'ok'], $nmch);
@@ -92,10 +92,10 @@ if ($go) {
         if (isset($url['action']) and $url['action'] == 'ban') {
             // Если включен amxbans/csbans
             if ($aData['amxbans']) {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"amx_ban 0 " . $aData['value'] . " EGP\"\015'");
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"fb_ban 0 " . $aData['value'] . " EGP\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"amx_ban 0 " . $aData['value'] . " EGP\" C-m");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"fb_ban 0 " . $aData['value'] . " EGP\" C-m");
             } else {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"addip 0.0 " . $aData['value'] . " EGP\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"addip 0.0 " . $aData['value'] . " EGP\" C-m");
             }
 
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' listip.cfg | awk \'{print $3}\'');
@@ -113,11 +113,11 @@ if ($go) {
 
             // Если включен amxbans/csbans
             if ($aData['amxbans']) {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"amx_unban " . $aData['value'] . "\"\015'");
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"fb_unban " . $aData['value'] . "\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"amx_unban " . $aData['value'] . "\" C-m");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"fb_unban " . $aData['value'] . "\" C-m");
             } else {
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"removeip " . $aData['value'] . "\"\015'");
-                $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"writeip\"\015'");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"removeip " . $aData['value'] . "\" C-m");
+                $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"writeip\" C-m");
             }
 
             sys::outjs(['s' => 'ok'], $nmch);

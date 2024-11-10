@@ -26,7 +26,7 @@ if ($id) {
 
         switch ($url['service']) {
             case 'unit':
-                $ssh->set('screen -dmS reboot reboot');
+                $ssh->set('tmux new-session -ds reboot reboot');
                 break;
 
             case 'geo':
@@ -42,7 +42,7 @@ if ($id) {
                 break;
 
             default:
-                $ssh->set('screen -dmS sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
+                $ssh->set('tmux new-session -ds sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
         }
 
         sys::outjs(['s' => 'ok']);

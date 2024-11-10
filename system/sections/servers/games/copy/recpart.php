@@ -35,7 +35,7 @@ if ($copy['pack'] != $server['pack']) {
     sys::outjs(['e' => 'Для восстановления необходимо установить сборку: ' . $aPack[$copy['pack']] . '.'], $nmch);
 }
 
-$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && screen -dmS rec_' . $server['uid'] . ' sh -c "'
+$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds rec_' . $server['uid'] . ' sh -c "'
     . 'cp /copy/' . $copy['name'] . '.tar . && tar -xf ' . $copy['name'] . '.tar; rm ' . $copy['name'] . '.tar;'
     . 'find . -type d -exec chmod 700 {} \;;'
     . 'find . -type f -exec chmod 600 {} \;;'

@@ -35,7 +35,7 @@ class actions
         $server_address = $server['address'] . ':' . $server['port'];
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="off", `online`="0", `players`="", `stop`="0" WHERE `id`="' . $id . '" LIMIT 1');
@@ -91,7 +91,7 @@ class actions
             }
 
             // Отправка команды changelevel
-            $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
+            $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "changelevel ' . sys::cmd($map) . '" C-m');
 
             // Обновление информации в базе
             $sql->query('UPDATE `servers` set `status`="change" WHERE `id`="' . $id . '" LIMIT 1');
@@ -154,7 +154,7 @@ class actions
         $server_address = $server['address'] . ':' . $server['port'];
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Директория сборки
         $path = $tarif['path'] . $server['pack'];
@@ -165,7 +165,7 @@ class actions
         $ssh->set('rm -r ' . $install . ';' // Удаление директории игрового сервера
             . 'mkdir ' . $install . ';' // Создание директории
             . 'chown server' . $server['uid'] . ':servers ' . $install . ';' // Изменение владельца и группы директории
-            . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS r_' . $server['uid'] . ' sh -c "'
+            . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' tmux new-session -ds r_' . $server['uid'] . ' sh -c "'
             . 'cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
@@ -236,7 +236,7 @@ class actions
         $server_address = $server['address'] . ':' . $server['port'];
 
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Директория обновлений сборки
         $path = $tarif['update'] . $server['pack'];
@@ -244,7 +244,7 @@ class actions
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' screen -dmS u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
+        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' tmux new-session -ds u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
             . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');

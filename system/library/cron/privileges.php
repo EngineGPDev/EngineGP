@@ -99,7 +99,7 @@ class privileges extends cron
             $cmd = $game == 'cs' ? 'amx_reloadadmins' : 'sm_reloadadmins';
 
             $ssh->set('chown server' . $server['uid'] . ':servers ' . $file);
-            $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"" . $cmd . "\"\015'");
+            $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"" . $cmd . "\" C-m");
 
             foreach ($aMail as $mail) {
                 sys::mail('Успешная привилегия', sys::text('mail', 'success_privilege'), $mail);

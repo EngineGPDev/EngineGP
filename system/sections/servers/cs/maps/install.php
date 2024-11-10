@@ -64,7 +64,7 @@ foreach ($in_aMaps as $mid => $sel) {
         $cp = 'cp /path/maps/' . $server['game'] . '/' . sys::map($map['name']) . '.* ' . $dir . 'maps/;'
             . 'cd /path/maps/' . $server['game'] . '/' . sys::map($map['name']) . '/ && cp -r * ' . $dir;
 
-        $ssh->set('sudo -u server' . $server['uid'] . ' screen -dmS mc' . $start_point . $id . ' sh -c \'' . $cp . '\'');
+        $ssh->set('sudo -u server' . $server['uid'] . ' tmux new-session -ds mc' . $start_point . $id . ' sh -c \'' . $cp . '\'');
     }
 }
 

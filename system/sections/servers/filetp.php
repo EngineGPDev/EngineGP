@@ -117,7 +117,7 @@ if (end($frouter) == 'noaccess.php') {
                         . 'INSERT INTO quotalimits set name=\'' . $server['uid'] . '\', quota_type=\'user\', per_session=\'false\', limit_type=\'hard\', bytes_in_avail=\'' . $bytes . '\';'
                         . 'INSERT INTO quotatallies set name=\'' . $server['uid'] . '\', quota_type=\'user\', bytes_in_used=\'' . $used . '\'';
 
-                    $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
+                    $ssh->set('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
                     $sql->query('UPDATE `servers` SET `ftp`="1", `ftp_on`="1", `ftp_passwd`="' . $server['ftp_passwd'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
@@ -135,7 +135,7 @@ if (end($frouter) == 'noaccess.php') {
 
                     $qSql = "UPDATE users set password='" . $passwd . "' WHERE username='" . $server['uid'] . "' LIMIT 1";
 
-                    $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e ' . '"' . $qSql . '"');
+                    $ssh->set('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e ' . '"' . $qSql . '"');
 
                     $sql->query('UPDATE `servers` SET `ftp_passwd`="' . $passwd . '" WHERE `id`="' . $id . '" LIMIT 1');
 
@@ -153,7 +153,7 @@ if (end($frouter) == 'noaccess.php') {
                         . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
                         . 'DELETE FROM quotatallies WHERE name=\'' . $server['uid'] . '\'';
 
-                    $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
+                    $ssh->set('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
                     $sql->query('UPDATE `servers` SET `ftp`="0" WHERE `id`="' . $id . '" LIMIT 1');
 

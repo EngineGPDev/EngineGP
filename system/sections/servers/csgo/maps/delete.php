@@ -81,7 +81,7 @@ foreach ($in_aMaps as $name => $sel) {
             $rm .= sys::map($flrm) . ' ';
         }
 
-        $ssh->set('sudo -u server' . $server['uid'] . ' screen -dmS md' . $start_point . $id . ' sh -c \'rm ' . trim($rm) . '\'');
+        $ssh->set('sudo -u server' . $server['uid'] . ' tmux new-session -ds md' . $start_point . $id . ' sh -c \'rm ' . trim($rm) . '\'');
     }
 }
 

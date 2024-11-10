@@ -103,7 +103,7 @@ if ($upd) {
 $dir = $tarif['install'] . $server['uid'] . '/';
 
 // Установка файлов на сервер
-$ssh->set('cd ' . $dir . ' && screen -dmS install_' . $start_point . ' sudo -u server' . $server['uid'] . ' sh -c "'
+$ssh->set('cd ' . $dir . ' && tmux new-session -ds install_' . $start_point . ' sudo -u server' . $server['uid'] . ' sh -c "'
     . 'wget --no-check-certificate ' . $cfg['plugins'] . 'install/' . $fzip . '.zip && unzip -o ' . $fzip . '.zip; rm ' . $fzip . '.zip;'
     . 'find . -type d -exec chmod 700 {} \;;'
     . 'find . -type f -exec chmod 600 {} \;;'
