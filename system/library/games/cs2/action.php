@@ -50,7 +50,7 @@ class action extends actions
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Проверка наличия .steam
         $checkLinkCommand = 'ls -la' . $tarif['install'] . $server['uid'];
@@ -117,7 +117,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p game/csgo/oldstart;' // Создание папки логов
             . 'cat game/csgo/console.log >> game/csgo/oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm game/csgo/console.log; rm game/csgo/oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':servers start.sh;' // Обновление владельца файла start.sh
-            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' screen -dmS s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' tmux new-session -ds s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
@@ -179,7 +179,7 @@ class action extends actions
             }
 
             // Отправка команды changelevel
-            $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval ' . "'stuff \"changelevel " . sys::cmd($map) . "\"\015'");
+            $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "changelevel ' . sys::cmd($map) . '" C-m');
 
             // Обновление информации в базе
             $sql->query('UPDATE `servers` set `status`="change" WHERE `id`="' . $id . '" LIMIT 1');
@@ -254,7 +254,7 @@ class action extends actions
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . 'screen -dmS u_' . $server['uid'] . ' sh -c "'
+        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . 'tmux new-session -ds u_' . $server['uid'] . ' sh -c "'
             . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 730 +quit;'
             . 'cd ' . $install . ';'
             . 'chown -R server' . $server['uid'] . ':servers .;'

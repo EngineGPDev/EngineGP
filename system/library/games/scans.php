@@ -144,7 +144,7 @@ class scans
 
             // Убить процессы
             $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-                . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+                . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server'  . $server['uid']);
 
             if ($server['ftp']) {
                 $ssh->set("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");

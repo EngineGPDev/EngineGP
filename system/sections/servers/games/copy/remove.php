@@ -26,7 +26,7 @@ if (!$copy['status']) {
     sys::outjs(['e' => 'Дождитесь создания резервной копии.'], $nmch);
 }
 
-$ssh->set('screen -dmS rem_copy_' . $cid . ' rm /copy/' . $copy['name'] . '.tar');
+$ssh->set('tmux new-session -ds rem_copy_' . $cid . ' rm /copy/' . $copy['name'] . '.tar');
 
 $sql->query('DELETE FROM `copy` WHERE `id`="' . $cid . '" LIMIT 1');
 

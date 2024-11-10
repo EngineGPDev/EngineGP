@@ -52,7 +52,7 @@ foreach ($aSel as $name) {
 
 $name_copy = md5($start_point . $id . $server['game']);
 
-$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && screen -dmS copy_' . $server['uid'] . ' sh -c "tar -cf ' . $name_copy . '.tar ' . $copy . '; mv ' . $name_copy . '.tar /copy"');
+$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds copy_' . $server['uid'] . ' sh -c "tar -cf ' . $name_copy . '.tar ' . $copy . '; mv ' . $name_copy . '.tar /copy"');
 
 $sql->query('SELECT `plugin`, `upd` FROM `plugins_install` WHERE `server`="' . $id . '"');
 while ($plugin = $sql->get()) {

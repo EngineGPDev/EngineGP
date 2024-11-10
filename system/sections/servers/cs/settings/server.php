@@ -59,7 +59,7 @@ if ($go) {
 
     unlink($temp);
 
-    $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "exec server.cfg"\015\';');
+    $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "stuff "exec server.cfg"" C-m');
 
     sys::outjs(['s' => 'ok'], $nmch);
 }

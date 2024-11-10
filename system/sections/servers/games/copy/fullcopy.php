@@ -20,7 +20,7 @@ if ($sql->num()) {
 
 $name_copy = md5($start_point . $id . $server['game']);
 
-$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && screen -dmS copy_' . $server['uid'] . ' sh -c "tar -cf ' . $name_copy . '.tar ' . params::$section_copy[$server['game']]['CopyFull'] . '; mv ' . $name_copy . '.tar /copy"');
+$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds copy_' . $server['uid'] . ' sh -c "tar -cf ' . $name_copy . '.tar ' . params::$section_copy[$server['game']]['CopyFull'] . '; mv ' . $name_copy . '.tar /copy"');
 
 $plugins = '';
 

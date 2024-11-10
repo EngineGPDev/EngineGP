@@ -47,15 +47,14 @@ if ($go) {
 
     $filecmd = $dir . 'egpconsole.log';
 
+    // Отправка команд в консоль
     if ($command) {
-        // Команда для отправки команды в screen
-        $ssh->set('sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff "' . $command . '"\015\';'
-            . 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X eval \'stuff \015\'');
+        $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "' . $command . '" C-m');
 
         sys::outjs(['s' => 'ok']);
     }
 
-    $command = 'sudo -u server' . $server['uid'] . ' screen -p 0 -S s_' . $server['uid'] . ' -X hardcopy -h ' . $filecmd . ' && cat ' . $filecmd;
+    $command = 'sudo -u server' . $server['uid'] . ' tmux capture-pane -t s_' . $server['uid'] . ' \; save-buffer ' . $filecmd . ' && cat ' . $filecmd;
 
     $output = $ssh->get($command);
 

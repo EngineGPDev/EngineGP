@@ -53,12 +53,12 @@ class server_delete extends cron
 
         // Убить процессы
         $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
-            . 'lsof -i@:' . $server_address . ' | awk ' . "'{print $2}'" . ' | xargs`; sudo -u server' . $server['uid'] . ' screen -wipe');
+            . 'lsof -i@:' . $server_address . ' | awk ' . "'{print $2}'" . ' | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        $copys = 'screen -dmS r_copy_' . $server['uid'] . ' sh -c "';
+        $copys = 'tmux new-session -ds r_copy_' . $server['uid'] . ' sh -c "';
 
         $scopy = $sql->query('SELECT `id`, `name` FROM `copy` WHERE `server`="' . $server['id'] . '"');
         while ($copy = $sql->get($scopy)) {
@@ -70,7 +70,7 @@ class server_delete extends cron
         $copys .= '";';
 
         $ssh->set($copys // Удаление резервных копий
-            . 'screen -dmS r_' . $server['uid'] . ' sh -c "rm -r ' . $install . ';' // Удаление директории сервера
+            . 'tmux new-session -ds r_' . $server['uid'] . ' sh -c "rm -r ' . $install . ';' // Удаление директории сервера
             . 'userdel server' . $server['uid'] . '"'); // Удаление пользователя сервера c локации
 
         // Удаление ftp доступа
@@ -78,7 +78,7 @@ class server_delete extends cron
             . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
             . 'DELETE FROM quotatallies WHERE name=\'' . $server['uid'] . '\'';
 
-        $ssh->set('screen -dmS ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
+        $ssh->set('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
         include(LIB . 'games/games.php');
 

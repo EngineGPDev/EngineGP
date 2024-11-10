@@ -91,7 +91,7 @@ if ($go) {
 
     $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
 
-    $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \"amx_reloadadmins\"\015'");
+    $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"amx_reloadadmins\" C-m");
 
     sys::outjs(['s' => 'ok'], $nmch);
 }

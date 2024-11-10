@@ -68,13 +68,13 @@ class threads extends cron
         $cmd = '';
 
         foreach ($threads as $thread) {
-            foreach ($thread as $screen => $servers) {
-                $cmd .= 'sudo -u www-data screen -dmS scan_' . (sys::first(explode(' ', $servers))) . '_' . $screen . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+            foreach ($thread as $tmux => $servers) {
+                $cmd .= 'sudo -u www-data tmux new-session -ds scan_' . (sys::first(explode(' ', $servers))) . '_' . $tmux . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
             }
         }
 
         $start_point = $_SERVER['REQUEST_TIME'];
-        exec('screen -dmS threads_' . date('His', $start_point) . ' sh -c "' . $cmd . '"');
+        exec('tmux new-session -ds threads_' . date('His', $start_point) . ' sh -c "' . $cmd . '"');
 
         return null;
     }

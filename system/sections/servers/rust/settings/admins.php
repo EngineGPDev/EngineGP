@@ -86,7 +86,7 @@ if ($go) {
 
     $ssh->set('chown server' . $server['uid'] . ':servers ' . $tarif['install'] . $server['uid'] . '/game/csgo/addons/sourcemod/configs/admins_simple.ini');
 
-    $ssh->set("sudo -u server" . $server['uid'] . " screen -p 0 -S s_" . $server['uid'] . " -X eval 'stuff \" sm_reloadadmins\"\015'");
+    $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \" sm_reloadadmins\" C-m");
 
     sys::outjs(['s' => 'ok'], $nmch);
 }
