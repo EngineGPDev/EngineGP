@@ -619,6 +619,10 @@ class sys
 
         $data = $SxGeo->getCityFull($address);
 
+        if ($data === false || !isset($data['country']['name_ru'])) {
+            return 'не определена';
+        }
+
         return $data['country']['name_ru'] != '' ? $data['country']['name_ru'] : 'не определена';
     }
 
