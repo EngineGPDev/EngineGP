@@ -22,7 +22,12 @@ while ($aBro = $sql->get($qBro)) {
     $browser = base64_decode($aBro['browser']);
 
     $cData = $SxGeo->getCityFull($aBro['ip']);
-    $ico = sys::country($cData['country']['iso']);
+
+    if ($cData && isset($cData['country']['iso'])) {
+        $ico = sys::country($cData['country']['iso']);
+    } else {
+        $ico = sys::country('none');
+    }
 
     $html->get('list', 'sections/user/lk/auth');
 
