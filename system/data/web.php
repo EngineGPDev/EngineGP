@@ -528,17 +528,17 @@ $aWebSQL = [
 $aWebdbConf = [
     'csbans' => [
         'file' => '/include/db.config.inc.php',
-        'chmod' => 0o644,
+        'chmod' => 0644,
     ],
 
     'csstats' => [
         'file' => '/include/config.php',
-        'chmod' => 0o644,
+        'chmod' => 0644,
     ],
 
     'sourcebans' => [
         'file' => '/config.php',
-        'chmod' => 0o644,
+        'chmod' => 0644,
     ],
 ];
 
