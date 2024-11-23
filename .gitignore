@@ -2,5 +2,6 @@
 .vscode
 .env
 *.log
+.php-cs-fixer.cache
 vendor
 composer.phar
