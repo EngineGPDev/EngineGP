@@ -139,7 +139,7 @@ if ($go) {
         'iat' => $start_point,
         'exp' => $start_point + 86400 * 30,
     ];
-    
+
     // Генерация JWT токена
     $refreshToken = JWT::encode($payload, $_ENV['JWT_KEY'], 'HS256');
 
@@ -150,7 +150,7 @@ if ($go) {
         'domain' => $_SERVER['HTTP_HOST'],
         'samesite' => 'Strict',
     ]);
-    
+
     // // Выхлоп удачной авторизации
     sys::outjs(['s' => 'ok'], $nmch);
 }

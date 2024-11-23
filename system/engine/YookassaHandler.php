@@ -34,17 +34,17 @@ if (isset($data['event']) && $data['event'] === 'payment.succeeded') {
 
     if ($cfg['part']) {
         $part_sum = round($amount / 100 * $cfg['part_proc'], 2);
-    
+
         $sql->query('SELECT `balance`, `part_money` FROM `users` WHERE `id`="' . $user['part'] . '" LIMIT 1');
         if ($sql->num()) {
             $part = $sql->get();
-    
+
             if ($cfg['part_money']) {
                 $sql->query('UPDATE `users` set `part_money`="' . ($part['part_money'] + $part_sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
             } else {
                 $sql->query('UPDATE `users` set `balance`="' . ($part['balance'] + $part_sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
             }
-    
+
             $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
                 sys::text('logs', 'part'),
                 ['part' => $user['part'], 'money' => $part_sum]
