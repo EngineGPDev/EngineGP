@@ -3,7 +3,7 @@
 ## Version support
 | Version | Branch     | Status   |
 | ------- | ---------- | -------- |
-| 4.x     | main       | Snapshot     |
+| 4.x     | main       | Snapshot |
 | 4.x     | beta       | Beta     |
 ## Requirements
 - **PHP:** 7.4 and above.
