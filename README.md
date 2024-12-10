@@ -1,5 +1,10 @@
 ## About The Project
 **EngineGP** is an open source control panel with an MIT license. EngineGP was originally written in php 5.5 in ~2014, without using frameworks. The code is gradually being updated and refined to meet new standards. EngineGP allows you to both manage personal game servers and organize game hosting.
+## Version support
+| Version | Branch     | Status   |
+| ------- | ---------- | -------- |
+| 4.x     | main       | Snapshot     |
+| 4.x     | beta       | Beta     |
 ## Requirements
 - **PHP:** 7.4 and above.
 - **PHP Extensions:** `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`, `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-gmp`, `php-gz2`
