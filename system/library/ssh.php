@@ -15,6 +15,7 @@ if (!defined('EGP')) {
 
 use phpseclib3\Net\SSH2;
 use phpseclib3\Net\SFTP;
+use phpseclib3\Exception\UnableToConnectException;
 
 class ssh
 {
@@ -29,7 +30,7 @@ class ssh
             if ($this->connect($address) and $this->auth_pwd('root', $passwd)) {
                 return true;
             }
-        } catch (\phpseclib3\Exception\UnableToConnectException $e) {
+        } catch (UnableToConnectException $e) {
             return false;
         }
 
