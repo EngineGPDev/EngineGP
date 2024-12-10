@@ -2,7 +2,7 @@
 **EngineGP** is an open source control panel with an MIT license. EngineGP was originally written in php 5.5 in ~2014, without using frameworks. The code is gradually being updated and refined to meet new standards. EngineGP allows you to both manage personal game servers and organize game hosting.
 ## Requirements
 - **PHP:** 7.4 and above.
-- **PHP Extensions:** `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`, `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-ssh2`
+- **PHP Extensions:** `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`, `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-gmp`, `php-gz2`
 - **Database:** MySQL 5.7 and above or MariaDB 10.5 and above.
 - **Web Server:** Apache 2.4 or Nginx.
 ## Libraries and Dependencies
@@ -18,7 +18,7 @@
 - **Multi Theft Auto**
 - **Minecraft Java**
 - **RUST**
-## Automatic installation
+## Automatic installation on GitHub: [Autoinstall](https://github.com/EngineGPDev/Autoinstall)
 **Update indexes and packages**
 ```bash
 apt -y update && apt -y upgrade
