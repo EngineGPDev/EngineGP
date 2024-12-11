@@ -10,6 +10,8 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
+use Symfony\Component\Dotenv\Dotenv;
+
 header('Content-Type: text/html; charset=utf-8');
 header('X-Powered-By: EngineGP - Control panel');
 date_default_timezone_set('Europe/Moscow');
@@ -21,7 +23,7 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 require(__DIR__ . '/vendor/autoload.php');
 
 // Загружаем .env
-$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/.env');
 
 if ($_ENV['RUN_MODE'] === 'dev') {
