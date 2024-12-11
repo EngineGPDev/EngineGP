@@ -10,13 +10,20 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
+use Whoops\Run;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\PlainTextHandler;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Подключение filp/whoops
-$whoops = new \Whoops\Run();
-$prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
+$whoops = new Run();
+$prettyPageHandler = new PrettyPageHandler();
 foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
     foreach ($secrets as $secret) {
         $prettyPageHandler->blacklist($key, $secret);
@@ -24,9 +31,9 @@ foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
 }
 $whoops->pushHandler($prettyPageHandler);
 // логи в файл
-$loggingInFile = new \Whoops\Handler\PlainTextHandler();
+$loggingInFile = new PlainTextHandler();
 $loggingInFile->loggerOnly(true);
-$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/cron.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$loggingInFile->setLogger((new Logger('EngineGP', [(new StreamHandler(ROOT . '/logs/cron.log'))->setFormatter((new LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 $whoops->register();
 

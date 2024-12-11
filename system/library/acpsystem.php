@@ -13,6 +13,8 @@
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -737,8 +739,8 @@ class sys
 
     public static function logMessage($message, $logFile = 'enginegp_info', $context = [])
     {
-        $logger = new \Monolog\Logger('EngineGP');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler(ROOT . '/logs/' . $logFile . '.log'));
+        $logger = new Logger('EngineGP');
+        $logger->pushHandler(new StreamHandler(ROOT . '/logs/' . $logFile . '.log'));
         $logger->info($message, $context);
     }
 }

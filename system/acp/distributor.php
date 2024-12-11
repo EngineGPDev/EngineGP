@@ -12,14 +12,21 @@
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Whoops\Run;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\PlainTextHandler;
+use Monolog\Logger;
+use Monolog\Handler\BrowserConsoleHandler;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Подключение filp/whoops
-$whoops = new \Whoops\Run();
-$prettyPageHandler = new \Whoops\Handler\PrettyPageHandler();
+$whoops = new Run();
+$prettyPageHandler = new PrettyPageHandler();
 foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
     foreach ($secrets as $secret) {
         $prettyPageHandler->blacklist($key, $secret);
@@ -27,14 +34,14 @@ foreach ($cfg['whoops']['blacklist'] as $key => $secrets) {
 }
 $whoops->pushHandler($prettyPageHandler);
 // Логи в консоль браузера
-$loggingInConsole = new \Whoops\Handler\PlainTextHandler();
+$loggingInConsole = new PlainTextHandler();
 $loggingInConsole->loggerOnly(true);
-$loggingInConsole->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\BrowserConsoleHandler())->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$loggingInConsole->setLogger((new Logger('EngineGP', [(new BrowserConsoleHandler())->setFormatter((new LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInConsole);
 // Логи в файл
-$loggingInFile = new \Whoops\Handler\PlainTextHandler();
+$loggingInFile = new PlainTextHandler();
 $loggingInFile->loggerOnly(true);
-$loggingInFile->setLogger((new \Monolog\Logger('EngineGP', [(new \Monolog\Handler\StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new \Monolog\Formatter\LineFormatter(null, null, true)))])));
+$loggingInFile->setLogger((new Logger('EngineGP', [(new StreamHandler(ROOT . '/logs/enginegp.log'))->setFormatter((new LineFormatter(null, null, true)))])));
 $whoops->pushHandler($loggingInFile);
 $whoops->register();
 

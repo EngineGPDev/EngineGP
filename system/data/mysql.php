@@ -10,12 +10,14 @@
  * @license   https://github.com/EngineGPDev/EngineGP/blob/main/LICENSE MIT License
  */
 
+use Symfony\Component\Dotenv\Dotenv;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Загружаем .env
-$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv = new Dotenv();
 $dotenv->load(ROOT.'.env');
 
 define('USER_DATABASE', $_ENV['DB_USERNAME']);
