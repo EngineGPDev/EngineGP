@@ -6,7 +6,7 @@
 | 4.x     | main       | Snapshot |
 | 4.x     | beta       | Beta     |
 ## Requirements
-- **PHP:** 7.4 and above.
+- **PHP:** 7.4, 8.0, 8.1, 8.2
 - **PHP Extensions:** `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`, `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-gmp`, `php-gz2`
 - **Database:** MySQL 5.7 and above or MariaDB 10.5 and above.
 - **Web Server:** Apache 2.4 or Nginx.
