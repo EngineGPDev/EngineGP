@@ -1,5 +1,5 @@
 ## About The Project
-**EngineGP** is an open source control panel with an MIT license. EngineGP was originally written in php 5.5 in ~2014, without using frameworks. The code is gradually being updated and refined to meet new standards. EngineGP allows you to both manage personal game servers and organize game hosting.
+**EngineGP** is an open source control panel with an Apache License, Version 2.0. EngineGP was originally written in php 5.5 in ~2014, without using frameworks. The code is gradually being updated and refined to meet new standards. EngineGP allows you to both manage personal game servers and organize game hosting.
 ## Version support
 | Version | Branch     | Status   |
 | ------- | ---------- | -------- |
