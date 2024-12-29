@@ -24,9 +24,7 @@ class server_delete extends cron
 {
     public function __construct()
     {
-        global $cfg, $sql, $argv;
-
-        $start_point = $_SERVER['REQUEST_TIME'];
+        global $cfg, $sql, $argv, $start_point;
 
         $sql->query('SELECT `id`, `uid`, `user`, `unit`, `tarif`, `game`, `slots`, `address`, `port`, `ddos` FROM `servers` WHERE `id`="' . $argv[3] . '" AND `user`="-1" LIMIT 1');
 

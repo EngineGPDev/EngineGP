@@ -66,7 +66,7 @@ class privileges extends cron
 
         // Открываем ssh соединение на сервере
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return 'Ошибка: UNIT#' . $server['unit'] . ' не удалось установить соединение.';
+            return 'Ошибка: UNIT #' . $server['unit'] . ' не удалось установить соединение.';
         }
 
         $time = $start_point - 172800;
@@ -112,7 +112,7 @@ class privileges extends cron
                 sys::mail('Успешная привилегия', sys::text('mail', 'success_privilege'), $mail);
             }
 
-            echo 'server#' . $id . ' (' . $game . ') -> add privileges ' . PHP_EOL;
+            echo 'server #' . $id . ' (' . $game . ') -> add privileges ' . PHP_EOL;
         }
 
         return null;
