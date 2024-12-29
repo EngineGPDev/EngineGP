@@ -24,7 +24,7 @@ class threads extends cron
 {
     public function __construct()
     {
-        global $sql, $cfg, $argv;
+        global $sql, $cfg, $argv, $start_point;
 
         $aUnit = [];
         $sql->query('SELECT `id` FROM `units` ORDER BY `id` ASC');
@@ -76,11 +76,10 @@ class threads extends cron
 
         foreach ($threads as $thread) {
             foreach ($thread as $tmux => $servers) {
-                $cmd .= 'sudo -u www-data tmux new-session -ds scan_' . (sys::first(explode(' ', $servers))) . '_' . $tmux . ' taskset -c ' . $cfg['cron_taskset'] . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+                $cmd .= 'sudo -u www-data tmux new-session -ds scan_' . (sys::first(explode(' ', $servers))) . '_' . $tmux . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
             }
         }
 
-        $start_point = $_SERVER['REQUEST_TIME'];
         exec('tmux new-session -ds threads_' . date('His', $start_point) . ' sh -c "' . $cmd . '"');
 
         return null;
