@@ -31,6 +31,10 @@ class notice_server_overdue extends cron
             $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . $server['user'] . '" LIMIT 1');
             $user = $sql->get();
 
+            if (!$user) {
+                exit;
+            }            
+
             $server_address = $server['address'] . ':' . $server['port'];
 
             if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), ['site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address]), $user['mail'])) {
