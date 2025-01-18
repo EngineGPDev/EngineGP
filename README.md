@@ -3,8 +3,8 @@
 ## Version support
 | Version | Branch     | Status   |
 | ------- | ---------- | -------- |
-| 4.x     | main       | Snapshot |
-| 4.x     | beta       | Beta     |
+| 4.x     | main       | snapshot |
+| 4.x     | beta       | beta.4   |
 ## Requirements
 - **PHP:** 7.4, 8.0, 8.1, 8.2
 - **PHP Extensions:** `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`, `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-gmp`, `php-gz2`
