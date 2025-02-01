@@ -55,11 +55,11 @@ class ssh
 
         // SSH2
         $this->conn = new SSH2($host, $port);
-        $this->conn->setTimeout(180);
+        $this->conn->setTimeout(10);
 
         // SFTP
         $this->sftp = new SFTP($host, $port);
-        $this->sftp->setTimeout(180);
+        $this->sftp->setTimeout(10);
 
         return $this->conn && $this->sftp;
     }
