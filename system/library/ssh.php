@@ -23,6 +23,8 @@ if (!defined('EGP')) {
 use phpseclib3\Net\SSH2;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Exception\UnableToConnectException;
+use phpseclib3\Exception\ConnectionClosedException;
+use phpseclib3\Exception\TimeoutException;
 
 class ssh
 {
@@ -34,10 +36,10 @@ class ssh
     public function auth($passwd, $address)
     {
         try {
-            if ($this->connect($address) and $this->auth_pwd('root', $passwd)) {
+            if ($this->connect($address) && $this->auth_pwd('root', $passwd)) {
                 return true;
             }
-        } catch (UnableToConnectException $e) {
+        } catch (UnableToConnectException | ConnectionClosedException | TimeoutException $e) {
             return false;
         }
 
