@@ -41,7 +41,7 @@ if ($go) {
     }
 
     $aData = [
-        'verPanel' => '4.0.0-beta.5',
+        'verPanel' => '4.0.0-snapshot',
         'cpu' => '0%',
         'ram' => '0%',
         'hdd' => '0%',
