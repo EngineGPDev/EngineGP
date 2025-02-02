@@ -231,7 +231,7 @@ function update_info(id, go = false) {
         if (go)
             setTimeout(function () {
                 update_info(id, true)
-            }, 3000);
+            }, 30000);
 
         return false;
     }
@@ -263,7 +263,7 @@ function update_info(id, go = false) {
         if (go)
             setTimeout(function () {
                 update_info(id, true)
-            }, 2000);
+            }, 20000);
     });
 }
 
@@ -273,6 +273,6 @@ function update_status(id, go = false) {
         if (go)
             setTimeout(function () {
                 update_status(id, true)
-            }, 2000);
+            }, 20000);
     });
 }
