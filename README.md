@@ -44,8 +44,6 @@ chmod +x ./Autoinstall/install.sh
 ```bash
 ./Autoinstall/install.sh
 ```
-## Contributors
-- [belomaxorka](https://github.com/belomaxorka)
 ## Official sources
 - [Website](https://www.enginegp.com) - official website
 - [Documentation](https://docs.enginegp.com) - official documentation
