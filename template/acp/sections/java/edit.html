@@ -1,0 +1,29 @@
+<form action="[acp]java/id/[id]/go" method="POST" id="java">
+    <table class="inputs inputs-max">
+        <tbody>
+        <tr>
+            <td class="w5p text-right">Локация:</td>
+            <td class="w15p">
+                <select name="unit">[unit]</select>
+            </td>
+            <td class="w5p text-right">Название:</td>
+            <td class="w15p"><input name="name" placeholder="Введите название" type="text" value="[name]"></td>
+        </tr>
+        <tr>
+            <td class="w5p text-right">Исполняемый файл/команда:</td>
+            <td class="w15p"><input name="executable_file" placeholder="Введите полный путь к исполняему файлу или команду" type="text" value="[executable_file]"></td>
+            <td class="w5p text-right">Статус:</td>
+            <td class="w15p">
+                <select name="status">[status]</select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" class="text-center">
+                <button class="btn btn-green" onclick="loading(1)">Сохранить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<script type="text/javascript" src="[js]java.js"></script>
