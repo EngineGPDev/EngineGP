@@ -409,6 +409,20 @@ CREATE TABLE `help_upload` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `java_versions`
+--
+
+CREATE TABLE `java_versions` (
+  `id` int(11) NOT NULL,
+  `unit` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `executable_file` varchar(512) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `logs`
 --
 
@@ -873,7 +887,8 @@ CREATE TABLE `servers` (
   `autorestart` tinyint(1) NOT NULL DEFAULT 0,
   `sms` tinyint(1) NOT NULL DEFAULT 0,
   `mail` tinyint(1) NOT NULL DEFAULT 0,
-  `ddos` tinyint(1) NOT NULL DEFAULT 0
+  `ddos` tinyint(1) NOT NULL DEFAULT 0,
+  `java_version` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1261,6 +1276,12 @@ ALTER TABLE `help_upload`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `java_versions`
+--
+ALTER TABLE `java_versions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `logs`
 --
 ALTER TABLE `logs`
@@ -1640,6 +1661,12 @@ ALTER TABLE `help_dialogs`
 -- AUTO_INCREMENT для таблицы `help_upload`
 --
 ALTER TABLE `help_upload`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `java_versions`
+--
+ALTER TABLE `java_versions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
