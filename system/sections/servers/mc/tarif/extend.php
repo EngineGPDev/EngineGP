@@ -37,23 +37,22 @@ if (!$cfg['settlement_period']) {
 
 }
 
-$ram = $server['slots_fix'] ? $server['ram'] : $server['ram'] / $server['slots'];
-
 $aData['promo'] = $_POST['promo'] ?? '';
 $aData['address'] = $_POST['address'] ?? false;
 $aData['server'] = $id;
 $aData['user'] = $server['user'];
 $aData['tarif'] = $server['tarif'];
-$aData['ram'] = $ram;
+$aData['ram'] = $server['ram'];
 $aData['slots'] = $server['slots'];
 
 // Цена за выделенный адрес
 $add_sum = tarifs::address_add_sum($aData['address'], $server);
 
 $aPrice = explode(':', $tarif['price']);
+$aRam = explode(':', $tarif['ram']);
 
 // Цена за 30 дней 1 слота
-$price = $aPrice[array_search($ram, explode(':', $tarif['ram']))];
+$price = $aPrice[array_search($server['ram'], $aRam)];
 
 // Если расчетный период
 if ($cfg['settlement_period']) {
