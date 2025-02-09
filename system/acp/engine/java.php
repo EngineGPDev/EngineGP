@@ -25,8 +25,6 @@ $info = '<i class="fa-brands fa-java"></i> Управление версиями
 $aSection = [
     'index',
     'add',
-    'loading',
-    'stats',
     'delete',
 ];
 
