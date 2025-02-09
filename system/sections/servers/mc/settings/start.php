@@ -22,7 +22,7 @@ if (!defined('EGP')) {
 
 $html->nav('Параметры запуска');
 
-$sql->query('SELECT `uid`, `slots`, `slots_start`, `autorestart` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+$sql->query('SELECT `uid`, `unit`, `slots`, `slots_start`, `java_version` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
 include(LIB . 'games/games.php');
@@ -42,6 +42,13 @@ if ($go and $url['save']) {
 
             $mcache->delete('server_settings_' . $id);
             sys::outjs(['s' => 'ok'], $nmch);
+        case 'java_version':
+            if ($value != $server['java_version']) {
+                $sql->query('UPDATE `servers` set `java_version`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
+            }
+        
+            $mcache->delete('server_settings_' . $id);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 
@@ -52,13 +59,20 @@ for ($slot = 2; $slot <= $server['slots']; $slot += 1) {
     $slots .= '<option value="' . $slot . '">' . $slot . ' шт.</option>';
 }
 
-// Авторестарт при зависании
-$autorestart = $server['autorestart'] ? '<option value="1">Включен</option><option value="0">Выключен</option>' : '<option value="0">Выключен</option><option value="1">Включен</option>';
+$javaVersion = '<option value="0">Native</option>';
+
+$sql->query('SELECT `id`, `unit`, `name`, `status` FROM `java_versions` ORDER BY `id` ASC');
+
+while ($javaVersions = $sql->get()) {
+    if ($javaVersions['unit'] == $server['unit'] && $javaVersions['status'] == true) {
+        $javaVersion .= '<option value="' . $javaVersions['id'] . '">' . $javaVersions['name'] . '</option>';
+    }
+}
 
 $html->get('start', 'sections/servers/' . $server['game'] . '/settings');
 
 $html->set('id', $id);
-$html->set('autorestart', $autorestart);
 $html->set('slots', str_replace('"' . $server['slots_start'] . '"', '"' . $server['slots_start'] . '" selected="select"', $slots));
+$html->set('java_version', str_replace('"' . $server['java_version'] . '"', '"' . $server['java_version'] . '" selected="select"', $javaVersion));
 
 $html->pack('start');

@@ -39,6 +39,7 @@ $aRoute = [
     'letter',
     'logs',
     'cashback',
+    'java',
 ];
 
 // Массив регулярных выражений

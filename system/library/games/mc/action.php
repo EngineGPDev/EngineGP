@@ -28,7 +28,7 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
-        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `ram`, `cpu`, `time_start` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
+        $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `address`, `port`, `slots_start`, `name`, `ram`, `cpu`, `time_start`, `java_version` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -68,8 +68,19 @@ class action extends actions
 
         unlink($temp);
 
+        $java = 'java';
+
+        if ($server['java_version'] != 0) {
+            $sql->query('SELECT `executable_file` FROM `java_versions` WHERE `id`="' . $server['java_version'] . '" LIMIT 1');
+            $javaVersion = $sql->get();
+
+            if ($javaVersion) {
+                $java = $javaVersion['executable_file'];
+            }
+        }
+
         // Параметры запуска
-        $bash = 'java -Xmx' . $server['ram'] . 'M -Xms' . $server['ram'] . 'M -jar start.jar nogui';
+        $bash = $java . ' -Xms' . $server['ram'] . 'M -Xmx' . $server['ram'] . 'M -jar start.jar nogui';
 
         // Временный файл
         $temp = sys::temp($bash);
@@ -83,7 +94,7 @@ class action extends actions
             . 'sudo -u server' . $server['uid'] . ' mkdir -p oldstart;' // Создание папки логов
             . 'cat console.log >> oldstart/' . date('d.m.Y_H:i:s', $server['time_start']) . '.log; rm console.log; rm oldstart/01.01.1970_03:00:00.log;'  // Перемещение лога предыдущего запуска
             . 'chown server' . $server['uid'] . ':servers server.properties start.sh;' // Обновление владельца файлов
-            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' tmux new-session -ds s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
+            . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] + '512' . 'M sudo -u server' . $server['uid'] . ' tmux new-session -ds s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игровго сервера
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="' . $type . '", `online`="0", `players`="", `time_start`="' . $start_point . '", `stop`="1" WHERE `id`="' . $id . '" LIMIT 1');
