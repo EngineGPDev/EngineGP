@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +29,7 @@ if ($go) {
     $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : $tarif['name'];
-    $aData['unit'] = isset($_POST['unit']) ? sys::int($_POST['unit']) : $tarif['unit'];
+    $aData['unit'] = isset($_POST['unit']) ? AdminSystem::int($_POST['unit']) : $tarif['unit'];
     $aData['game'] = isset($_POST['game']) ? trim($_POST['game']) : $tarif['game'];
     $aData['slots'] = isset($_POST['slots']) ? trim($_POST['slots']) : $tarif['slots'];
     $aData['posts'] = isset($_POST['posts']) ? trim($_POST['posts']) : $tarif['posts'];
@@ -41,9 +43,9 @@ if ($go) {
     $aData['ram'] = isset($_POST['ram']) ? trim($_POST['ram']) : $tarif['ram'];
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : $tarif['time'];
     $aData['timext'] = isset($_POST['timext']) ? trim($_POST['timext']) : $tarif['timext'];
-    $aData['test'] = isset($_POST['test']) ? sys::int($_POST['test']) : $tarif['test'];
-    $aData['tests'] = isset($_POST['tests']) ? sys::int($_POST['tests']) : $tarif['tests'];
-    $aData['discount'] = isset($_POST['discount']) ? sys::int($_POST['discount']) : $tarif['discount'];
+    $aData['test'] = isset($_POST['test']) ? AdminSystem::int($_POST['test']) : $tarif['test'];
+    $aData['tests'] = isset($_POST['tests']) ? AdminSystem::int($_POST['tests']) : $tarif['tests'];
+    $aData['discount'] = isset($_POST['discount']) ? AdminSystem::int($_POST['discount']) : $tarif['discount'];
     $aData['map'] = isset($_POST['map']) ? trim($_POST['map']) : $tarif['map'];
     $aData['ftp'] = $_POST['ftp'] ?? $tarif['ftp'];
     $aData['plugins'] = $_POST['plugins'] ?? $tarif['plugins'];
@@ -52,69 +54,69 @@ if ($go) {
     $aData['copy'] = $_POST['copy'] ?? $tarif['copy'];
     $aData['web'] = $_POST['web'] ?? $tarif['web'];
     $aData['plugins_install'] = isset($_POST['plugins_install']) ? trim($_POST['plugins_install']) : $tarif['plugins_install'];
-    $aData['hdd'] = isset($_POST['hdd']) ? sys::int($_POST['hdd']) : $tarif['hdd'];
-    $aData['autostop'] = isset($_POST['autostop']) ? sys::int($_POST['autostop']) : $tarif['autostop'];
+    $aData['hdd'] = isset($_POST['hdd']) ? AdminSystem::int($_POST['hdd']) : $tarif['hdd'];
+    $aData['autostop'] = isset($_POST['autostop']) ? AdminSystem::int($_POST['autostop']) : $tarif['autostop'];
     $aData['price'] = isset($_POST['price']) ? trim($_POST['price']) : $tarif['price'];
     $aData['cpu'] = isset($_POST['cpu']) ? trim($_POST['cpu']) : $tarif['cpu'];
     $aData['ip'] = isset($_POST['ip']) ? trim($_POST['ip']) : $tarif['ip'];
-    $aData['show'] = isset($_POST['show']) ? sys::int($_POST['show']) : $tarif['show'];
-    $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $tarif['sort'];
+    $aData['show'] = isset($_POST['show']) ? AdminSystem::int($_POST['show']) : $tarif['show'];
+    $aData['sort'] = isset($_POST['sort']) ? AdminSystem::int($_POST['sort']) : $tarif['sort'];
 
     if ($aData['name'] == '') {
-        sys::outjs(['e' => 'Необходимо указать название']);
+        AdminSystem::outjs(['e' => 'Необходимо указать название']);
     }
 
     $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $aData['unit'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(['e' => 'Необходимо указать локацию']);
+        AdminSystem::outjs(['e' => 'Необходимо указать локацию']);
     }
 
     if (!in_array($aData['game'], ['cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc'])) {
-        sys::outjs(['e' => 'Необходимо указать игру']);
+        AdminSystem::outjs(['e' => 'Необходимо указать игру']);
     }
 
     $aSlots = explode('-', $aData['slots']);
 
     if (!isset($aSlots[0]) || !isset($aSlots[1])) {
-        sys::outjs(['e' => 'Необходимо указать слоты']);
+        AdminSystem::outjs(['e' => 'Необходимо указать слоты']);
     }
 
     $aSlots[0] = trim($aSlots[0]);
     $aSlots[1] = trim($aSlots[1]);
 
-    $aData['slots_min'] = $aSlots[0] > 1 ? $aSlots[0] : sys::outjs(['e' => 'Неправильно указаны слоты']);
-    $aData['slots_max'] = $aSlots[1] >= $aSlots[0] ? $aSlots[1] : sys::outjs(['e' => 'Неправильно указаны слоты']);
+    $aData['slots_min'] = $aSlots[0] > 1 ? $aSlots[0] : AdminSystem::outjs(['e' => 'Неправильно указаны слоты']);
+    $aData['slots_max'] = $aSlots[1] >= $aSlots[0] ? $aSlots[1] : AdminSystem::outjs(['e' => 'Неправильно указаны слоты']);
 
     $aPorts = explode('-', $aData['posts']);
 
     if (!isset($aPorts[0]) || !isset($aPorts[1])) {
-        sys::outjs(['e' => 'Необходимо указать порты']);
+        AdminSystem::outjs(['e' => 'Необходимо указать порты']);
     }
 
     $aPorts[0] = trim($aPorts[0]);
     $aPorts[1] = trim($aPorts[1]);
 
-    $aData['port_min'] = $aPorts[0] > 1 ? $aPorts[0] : sys::outjs(['e' => 'Неправильно указаны порты']);
-    $aData['port_max'] = $aPorts[1] >= $aPorts[0] ? $aPorts[1] : sys::outjs(['e' => 'Неправильно указаны порты']);
+    $aData['port_min'] = $aPorts[0] > 1 ? $aPorts[0] : AdminSystem::outjs(['e' => 'Неправильно указаны порты']);
+    $aData['port_max'] = $aPorts[1] >= $aPorts[0] ? $aPorts[1] : AdminSystem::outjs(['e' => 'Неправильно указаны порты']);
 
     if ($aData['hostname'] == '') {
-        sys::outjs(['e' => 'Необходимо указать название сервера']);
+        AdminSystem::outjs(['e' => 'Необходимо указать название сервера']);
     }
 
     if ($aData['path'] == '') {
-        sys::outjs(['e' => 'Необходимо указать путь до сборок']);
+        AdminSystem::outjs(['e' => 'Необходимо указать путь до сборок']);
     }
 
     if ($aData['install'] == '') {
-        sys::outjs(['e' => 'Необходимо указать путь для установки серверов']);
+        AdminSystem::outjs(['e' => 'Необходимо указать путь для установки серверов']);
     }
 
     if ($aData['update'] == '' and !in_array($aData['game'], ['css', 'csgo', 'cs2', 'rust'])) {
-        sys::outjs(['e' => 'Необходимо указать путь до обновления сборки']);
+        AdminSystem::outjs(['e' => 'Необходимо указать путь до обновления сборки']);
     }
 
     if (substr($aData['path'], -1) != '/' || substr($aData['install'], -1) != '/' || (substr($aData['update'], -1) != '/' and !in_array($aData['game'], ['css', 'csgo']))) {
-        sys::outjs(['e' => 'Пути должны заканчиваться символом "/"']);
+        AdminSystem::outjs(['e' => 'Пути должны заканчиваться символом "/"']);
     }
 
     $int = [
@@ -125,7 +127,7 @@ if ($go) {
 
     foreach ($int as $name => $input) {
         if ($aData[$input] == '') {
-            sys::outjs(['e' => 'Необходимо указать поле "' . $name . '"']);
+            AdminSystem::outjs(['e' => 'Необходимо указать поле "' . $name . '"']);
         }
     }
 
@@ -147,10 +149,10 @@ if ($go) {
     }
 
     if (!count($packs)) {
-        sys::outjs(['e' => 'Необходимо указать минимум одну сборку']);
+        AdminSystem::outjs(['e' => 'Необходимо указать минимум одну сборку']);
     }
 
-    $aData['packs'] = sys::b64js($packs);
+    $aData['packs'] = AdminSystem::b64js($packs);
 
     $aIp = explode(':', $aData['ip']);
 
@@ -159,7 +161,7 @@ if ($go) {
     foreach ($aIp as $ip) {
         $ip = trim($ip);
 
-        if (sys::valid($ip, 'ip')) {
+        if (AdminSystem::valid($ip, 'ip')) {
             continue;
         }
 
@@ -210,7 +212,7 @@ if ($go) {
         $plugins[$name] = $list;
     }
 
-    $aData['plugins_install'] = count($plugins) ? sys::b64js($plugins) : '';
+    $aData['plugins_install'] = count($plugins) ? AdminSystem::b64js($plugins) : '';
 
     $aTime = explode(':', $aData['time']);
 
@@ -323,7 +325,7 @@ if ($go) {
     switch ($aData['game']) {
         case 'cs':
             if (count(explode(':', $aData['fps'])) != count(explode(':', $aData['price']))) {
-                sys::outjs(['e' => 'Неправильно указано поле "Цена"']);
+                AdminSystem::outjs(['e' => 'Неправильно указано поле "Цена"']);
             }
 
             break;
@@ -334,7 +336,7 @@ if ($go) {
             $aprice = explode(':', $aData['price']);
 
             if ((count($afps) * count($atick)) != count($aprice)) {
-                sys::outjs(['e' => 'Неправильно указано поле "Цена"']);
+                AdminSystem::outjs(['e' => 'Неправильно указано поле "Цена"']);
             }
 
             $price = [];
@@ -349,7 +351,7 @@ if ($go) {
                 }
             }
 
-            $aData['price'] = sys::b64js($price);
+            $aData['price'] = AdminSystem::b64js($price);
 
             break;
 
@@ -357,14 +359,14 @@ if ($go) {
         case 'csgo':
         case 'cs2':
             if (count(explode(':', $aData['tickrate'])) != count(explode(':', $aData['price']))) {
-                sys::outjs(['e' => 'Неправильно указано поле "Цена"']);
+                AdminSystem::outjs(['e' => 'Неправильно указано поле "Цена"']);
             }
 
             break;
 
         case 'mc':
             if (count(explode(':', $aData['ram'])) != count(explode(':', $aData['price']))) {
-                sys::outjs(['e' => 'Неправильно указано поле "Цена"']);
+                AdminSystem::outjs(['e' => 'Неправильно указано поле "Цена"']);
             }
 
     }
@@ -412,7 +414,7 @@ if ($go) {
         . '`show`="' . $aData['show'] . '",'
         . '`sort`="' . $aData['sort'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $games = '<option value="cs">Counter-Strike: 1.6</option><option value="cssold">Counter-Strike: Source v34</option><option value="css">Counter-Strike: Source</option>'
@@ -439,7 +441,7 @@ $html->get('tarif', 'sections/tarifs');
 if ($tarif['game'] == 'cssold') {
     $sprice = '';
 
-    $aPrice = sys::b64djs($tarif['price']);
+    $aPrice = AdminSystem::b64djs($tarif['price']);
 
     foreach ($aPrice as $price) {
         $sprice .= $price . ':';
@@ -471,7 +473,7 @@ foreach (['ftp', 'plugins', 'console', 'stats', 'copy', 'web'] as $section) {
 
 $packs = '';
 
-$aPacks = sys::b64djs($tarif['packs']);
+$aPacks = AdminSystem::b64djs($tarif['packs']);
 
 foreach ($aPacks as $name => $fullname) {
     $packs .= '"' . $name . '":"' . $fullname . '",';
@@ -483,7 +485,7 @@ $html->set('packs', $packs);
 
 $plugins = '';
 
-$aPlugins = sys::b64djs($tarif['plugins_install']);
+$aPlugins = AdminSystem::b64djs($tarif['plugins_install']);
 
 if (is_array($aPlugins)) {
     foreach ($aPlugins as $pack => $list) {

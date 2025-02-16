@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -23,7 +25,7 @@ if (!defined('EGP')) {
 if (isset($url['delete'])) {
     $sql->query('DELETE FROM `signup` WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $list = '';
@@ -34,7 +36,7 @@ while ($sign = $sql->get()) {
     $list .= '<td>' . $sign['id'] . '</td>';
     $list .= '<td>' . $sign['mail'] . '</td>';
     $list .= '<td>' . $sign['key'] . '</td>';
-    $list .= '<td>' . sys::today($sign['date']) . '</td>';
+    $list .= '<td>' . AdminSystem::today($sign['date']) . '</td>';
     $list .= '<td><a href="#" onclick="return users_delete_signup(\'' . $sign['id'] . '\')" class="text-red">Удалить</a></td>';
     $list .= '</tr>';
 }

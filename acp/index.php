@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
 use Symfony\Component\Dotenv\Dotenv;
 
 header('Content-Type: text/html; charset=utf-8');
@@ -70,9 +71,8 @@ include(DATA . 'acpengine.php');
 // Библиотеки
 include(LIB . 'sql.php');
 include(LIB . 'html.php');
-include(LIB . 'acpsystem.php');
 
-$uip = sys::ip();
+$uip = AdminSystem::ip();
 
 // Распределитель
 include(ACP . 'distributor.php');

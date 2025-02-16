@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -23,4 +25,4 @@ if (!defined('EGP')) {
 $sql->query('DELETE FROM `promo` WHERE `id`="' . $id . '" LIMIT 1');
 $sql->query('DELETE FROM `promo_use` WHERE `promo`="' . $id . '" LIMIT 1');
 
-sys::outjs(['s' => 'ok']);
+AdminSystem::outjs(['s' => 'ok']);

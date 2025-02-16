@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,10 +27,10 @@ $types = ['cfg', 'txt', 'ini', 'js'];
 
 if (isset($url['get'])) {
     if ($url['get'] == 'cat') {
-        $game = $url['game'] ?? sys::out();
+        $game = $url['game'] ?? AdminSystem::out();
 
         if (!in_array($game, $aGames)) {
-            sys::out();
+            AdminSystem::out();
         }
 
         $cats = '';
@@ -38,7 +40,7 @@ if (isset($url['get'])) {
             $cats .= '<option value="' . $cat['id'] . '">' . $cat['name'] . '</option>';
         }
 
-        sys::out($cats);
+        AdminSystem::out($cats);
     }
 }
 
@@ -77,15 +79,15 @@ if ($go) {
     $aData['cfg'] = 0;
 
     if ($aData['name'] == '') {
-        sys::outjs(['e' => 'Необходимо указать название']);
+        AdminSystem::outjs(['e' => 'Необходимо указать название']);
     }
 
-    if (sys::strlen($aData['name']) > 50) {
-        sys::outjs(['e' => 'Длина названия не должна превышать 50 символов.']);
+    if (AdminSystem::strlen($aData['name']) > 50) {
+        AdminSystem::outjs(['e' => 'Длина названия не должна превышать 50 символов.']);
     }
 
     if (!in_array($aData['game'], $aGames)) {
-        sys::outjs(['e' => 'Необходимо выбрать игру']);
+        AdminSystem::outjs(['e' => 'Необходимо выбрать игру']);
     }
 
     include(LIB . 'zip.php');
@@ -109,7 +111,7 @@ if ($go) {
         if (!move_uploaded_file($_FILES['file']['tmp_name'], FILES . 'plugins/install/' . $id . '.zip')) {
             $sql->query('DELETE FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 
-            sys::outjs(['e' => 'Неудалось загрузить архив']);
+            AdminSystem::outjs(['e' => 'Неудалось загрузить архив']);
         }
 
         $zip = new ZipArchive();
@@ -119,7 +121,7 @@ if ($go) {
 
             unlink(FILES . 'plugins/install/' . $id . '.zip');
 
-            sys::outjs(['e' => 'Неудалось открыть архив']);
+            AdminSystem::outjs(['e' => 'Неудалось открыть архив']);
         }
 
         $count = $zip->numFiles;
@@ -151,7 +153,7 @@ if ($go) {
         if (!move_uploaded_file($_FILES['new_file']['tmp_name'], FILES . 'plugins/install/u' . $aData['update'] . '.zip')) {
             $sql->query('DELETE FROM `plugins_update` WHERE `id`="' . $aData['update'] . '" LIMIT 1');
 
-            sys::outjs(['e' => 'Неудалось загрузить архив']);
+            AdminSystem::outjs(['e' => 'Неудалось загрузить архив']);
         }
 
         if (!move_uploaded_file($_FILES['upd_file']['tmp_name'], FILES . 'plugins/update/' . $aData['update'] . '.zip')) {
@@ -159,7 +161,7 @@ if ($go) {
 
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
 
-            sys::outjs(['e' => 'Неудалось загрузить архив обновления']);
+            AdminSystem::outjs(['e' => 'Неудалось загрузить архив обновления']);
         }
 
         $zip = new ZipArchive();
@@ -170,7 +172,7 @@ if ($go) {
             unlink(FILES . 'plugins/install/u' . $aData['update'] . '.zip');
             unlink(FILES . 'plugins/update/' . $aData['update'] . '.zip');
 
-            sys::outjs(['e' => 'Неудалось открыть архив']);
+            AdminSystem::outjs(['e' => 'Неудалось открыть архив']);
         }
 
         $count = $zip->numFiles;
@@ -381,7 +383,7 @@ if ($go) {
                 . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
     }
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $html->get('addpl', 'sections/addons');
