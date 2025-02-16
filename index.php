@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-use Symfony\Component\Dotenv\Dotenv;
 use EngineGP\System;
+use Symfony\Component\Dotenv\Dotenv;
 
 header('Content-Type: text/html; charset=utf-8');
 header('X-Powered-By: EngineGP - Control panel');
