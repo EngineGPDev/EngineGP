@@ -16,16 +16,18 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-sys::auth();
+System::auth();
 
 // Генерация новой капчи
 if (isset($url['captcha'])) {
-    sys::captcha('signup', $uip);
+    System::captcha('signup', $uip);
 }
 
 $aData = [];
@@ -46,26 +48,26 @@ if ($go) {
     $nmch = 'go_signup_' . $uip;
 
     if ($mcache->get($nmch)) {
-        sys::outjs(['e' => sys::text('other', 'mcache')], $nmch);
+        System::outjs(['e' => System::text('other', 'mcache')], $nmch);
     }
 
     $mcache->set($nmch, 1, false, 15);
 
     // Проверка капчи
-    if (!isset($_POST['captcha']) || sys::captcha_check('signup', $uip, $_POST['captcha'])) {
-        sys::outjs(['e' => sys::text('other', 'captcha')], $nmch);
+    if (!isset($_POST['captcha']) || System::captcha_check('signup', $uip, $_POST['captcha'])) {
+        System::outjs(['e' => System::text('other', 'captcha')], $nmch);
     }
 
     // Проверка входных данных
     foreach ($aData as $input => $val) {
         // Если не заполнено поле
         if ($val == '') {
-            sys::outjs(['e' => sys::text('input', 'all')], $nmch);
+            System::outjs(['e' => System::text('input', 'all')], $nmch);
         }
 
         // Проверка данных на валидность
-        if (sys::valid($val, 'other', $aValid[$input])) {
-            sys::outjs(['e' => sys::text('input', $input . '_valid')], $nmch);
+        if (System::valid($val, 'other', $aValid[$input])) {
+            System::outjs(['e' => System::text('input', $input . '_valid')], $nmch);
         }
     }
 
@@ -73,25 +75,25 @@ if ($go) {
     if (isset($aData['login'])) {
         $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aData['login'] . '" LIMIT 1');
         if ($sql->num()) {
-            sys::outjs(['e' => sys::text('input', 'login_use')], $nmch);
+            System::outjs(['e' => System::text('input', 'login_use')], $nmch);
         }
     }
 
     if (!isset($aData['mail'])) {
-        sys::outjs(['e' => sys::text('input', 'mail_valid')], $nmch);
+        System::outjs(['e' => System::text('input', 'mail_valid')], $nmch);
     }
 
     // Проверка почты на занятость
     $sql->query('SELECT `id` FROM `users` WHERE `mail`="' . $aData['mail'] . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(['e' => sys::text('input', 'mail_use')], $nmch);
+        System::outjs(['e' => System::text('input', 'mail_use')], $nmch);
     }
 
     // Проверка телефона на занятость
     if (isset($aData['phone'])) {
         $sql->query('SELECT `id` FROM `users` WHERE `phone`="' . $aData['phone'] . '" LIMIT 1');
         if ($sql->num()) {
-            sys::outjs(['e' => sys::text('input', 'phone_use')], $nmch);
+            System::outjs(['e' => System::text('input', 'phone_use')], $nmch);
         }
     }
 
@@ -99,7 +101,7 @@ if ($go) {
     if (isset($aData['contacts'])) {
         $sql->query('SELECT `id` FROM `users` WHERE `contacts`="' . $aData['contacts'] . '" LIMIT 1');
         if ($sql->num()) {
-            sys::outjs(['e' => sys::text('input', 'use_contacts')], $nmch);
+            System::outjs(['e' => System::text('input', 'use_contacts')], $nmch);
         }
     }
 
@@ -110,10 +112,10 @@ if ($go) {
         $sql->query('UPDATE `signup` set `date`="' . $start_point . '" WHERE `id`="' . $signup['id'] . '" LIMIT 1');
 
         // Повторная отправка письма на почту
-        sys::mail(
+        System::mail(
             'Регистрация',
-            sys::updtext(
-                sys::text('mail', 'signup'),
+            System::updtext(
+                System::text('mail', 'signup'),
                 [
                     'site' => $cfg['name'],
                     'url' => $cfg['http'] . 'user/section/signup/confirm/' . $signup['key'],
@@ -121,33 +123,33 @@ if ($go) {
             ),
             $aData['mail']
         );
-        sys::outjs(['s' => sys::text('output', 'remail'), 'mail' => sys::mail_domain($aData['mail'])], $nmch);
+        System::outjs(['s' => System::text('output', 'remail'), 'mail' => System::mail_domain($aData['mail'])], $nmch);
     }
 
     // Генерация ключа
-    $key = sys::key('signup_' . $uip);
+    $key = System::key('signup_' . $uip);
 
-    $data = sys::b64js($aData);
+    $data = System::b64js($aData);
 
     // Запись данных в базу
     $sql->query('INSERT INTO `signup` set `mail`="' . $aData['mail'] . '", `key`="' . $key . '", `data`="' . $data . '", `date`="' . $start_point . '"');
 
     // Отправка сообщения на почту
-    if (sys::mail('Регистрация', sys::updtext(sys::text('mail', 'signup'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/signup/confirm/' . $key]), $aData['mail'])) {
-        sys::outjs(['s' => sys::text('output', 'mail'), 'mail' => sys::mail_domain($aData['mail'])], $nmch);
+    if (System::mail('Регистрация', System::updtext(System::text('mail', 'signup'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/signup/confirm/' . $key]), $aData['mail'])) {
+        System::outjs(['s' => System::text('output', 'mail'), 'mail' => System::mail_domain($aData['mail'])], $nmch);
     }
 
     // Выхлоп: не удалось отправить письмо
-    sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
+    System::outjs(['e' => System::text('error', 'mail')], $nmch);
 }
 
 // Завершение регистрации
-if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
+if (isset($url['confirm']) && !System::valid($url['confirm'], 'md5')) {
     $sql->query('SELECT `id`, `data` FROM `signup` WHERE `key`="' . $url['confirm'] . '" LIMIT 1');
     if ($sql->num()) {
         $signup = $sql->get();
 
-        $aData = sys::b64djs($signup['data']);
+        $aData = System::b64djs($signup['data']);
 
         foreach ($aSignup['input'] as $name => $add) {
             $aNData[$name] = $aData[$name] ?? '';
@@ -160,7 +162,7 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
             $lchar = false;
 
             while (1) {
-                $aNData['login'] = sys::login($aNData['mail'], $lchar);
+                $aNData['login'] = System::login($aNData['mail'], $lchar);
 
                 $sql->query('SELECT `id` FROM `users` WHERE `login`="' . $aNData['login'] . '" LIMIT 1');
                 if (!$sql->num()) {
@@ -173,20 +175,20 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
 
         // Если регистрация без указания пароля
         if (empty($aNData['passwd'])) {
-            $aNData['passwd'] = sys::passwd(10);
+            $aNData['passwd'] = System::passwd(10);
         }
 
         $part = null;
 
         // Реферал
         if (isset($_COOKIE['referrer'])) {
-            $part = ', `part`="' . sys::int($_COOKIE['referrer']) . '"';
+            $part = ', `part`="' . System::int($_COOKIE['referrer']) . '"';
         }
 
         // Запись данных в базу
         $sql->query('INSERT INTO `users` set '
             . '`login`="' . $aNData['login'] . '",'
-            . '`passwd`="' . sys::passwdkey($aNData['passwd']) . '",'
+            . '`passwd`="' . System::passwdkey($aNData['passwd']) . '",'
             . '`mail`="' . $aNData['mail'] . '",'
             . '`name`="' . $aNData['name'] . '",'
             . '`lastname`="' . $aNData['lastname'] . '",'
@@ -198,15 +200,15 @@ if (isset($url['confirm']) && !sys::valid($url['confirm'], 'md5')) {
         $sql->query('DELETE FROM `signup` WHERE `id`="' . $signup['id'] . '" LIMIT 1');
 
         // Отправка сообщения на почту
-        if (sys::mail('Завершение регистрации', sys::updtext(sys::text('mail', 'signup_end'), ['site' => $cfg['name'], 'login' => $aNData['login'], 'passwd' => $aNData['passwd']]), $aNData['mail'])) {
-            sys::outhtml(sys::text('output', 'signup'), 5, 'http://' . sys::mail_domain($aNData['mail']));
+        if (System::mail('Завершение регистрации', System::updtext(System::text('mail', 'signup_end'), ['site' => $cfg['name'], 'login' => $aNData['login'], 'passwd' => $aNData['passwd']]), $aNData['mail'])) {
+            System::outhtml(System::text('output', 'signup'), 5, 'http://' . System::mail_domain($aNData['mail']));
         }
 
         // Выхлоп: не удалось отправить письмо
-        sys::outjs(['e' => sys::text('error', 'mail')], $nmch);
+        System::outjs(['e' => System::text('error', 'mail')], $nmch);
     }
 
-    sys::outhtml(sys::text('error', 'signup'), 5);
+    System::outhtml(System::text('error', 'signup'), 5);
 }
 
 // Генерация формы

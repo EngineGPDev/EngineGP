@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -35,7 +37,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -45,11 +47,11 @@ $dir = $tarif['install'] . $server['uid'] . '/game/csgo/';
 
 // Проверить наличие свободного места
 $ssh->set('cd ' . $dir . ' && du -ms');
-$hdd = ceil(sys::int($ssh->get()) / ($server['hdd'] / 100));
+$hdd = ceil(System::int($ssh->get()) / ($server['hdd'] / 100));
 $hdd = $hdd > 100 ? 100 : $hdd;
 
 if ($hdd == 100) {
-    sys::outjs(['e' => 'Невозможно выполнить установку, нет свободного места'], $nmch);
+    System::outjs(['e' => 'Невозможно выполнить установку, нет свободного места'], $nmch);
 }
 
 // Массив переданных карт
@@ -58,7 +60,7 @@ $in_aMaps = $_POST['maps'] ?? [];
 // Обработка выборки
 foreach ($in_aMaps as $mid => $sel) {
     if ($sel) {
-        $map = sys::int($mid);
+        $map = System::int($mid);
 
         // Проверка наличия карты
         $sql->query('SELECT `id`, `name` FROM `maps` WHERE `id`="' . $map . '" AND `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" LIMIT 1');
@@ -68,11 +70,11 @@ foreach ($in_aMaps as $mid => $sel) {
 
         $map = $sql->get();
 
-        $cp = 'cp /path/maps/' . $server['game'] . '/' . sys::map($map['name']) . '.* ' . $dir . 'maps/;'
-            . 'cd /path/maps/' . $server['game'] . '/' . sys::map($map['name']) . '/ && cp -r * ' . $dir;
+        $cp = 'cp /path/maps/' . $server['game'] . '/' . System::map($map['name']) . '.* ' . $dir . 'maps/;'
+            . 'cd /path/maps/' . $server['game'] . '/' . System::map($map['name']) . '/ && cp -r * ' . $dir;
 
         $ssh->set('sudo -u server' . $server['uid'] . ' tmux new-session -ds mc' . $start_point . $id . ' sh -c \'' . $cp . '\'');
     }
 }
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

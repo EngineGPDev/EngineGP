@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,7 +26,7 @@ if (!$go) {
     exit();
 }
 
-$pid = isset($url['plugin']) ? sys::int($url['plugin']) : exit;
+$pid = isset($url['plugin']) ? System::int($url['plugin']) : exit;
 
 $sql->query('SELECT `id` FROM `plugins_update` WHERE `plugin`="' . $pid . '" ORDER BY `id` DESC LIMIT 1');
 
@@ -43,7 +45,7 @@ if (!$sql->num()) {
 // Проверка установки обновления плагина
 $sql->query('SELECT `id` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '" AND `upd`="' . $plugin['id'] . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(['e' => 'Данный плагин уже обновлен']);
+    System::outjs(['e' => 'Данный плагин уже обновлен']);
 }
 
 // Данные обновления
@@ -67,7 +69,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -108,7 +110,7 @@ $sql->query('UPDATE `plugins_install` set `upd`="' . $plugin['id'] . '", `time`=
 $mcache->delete('server_plugins_' . $id);
 
 if ($plugin['cfg']) {
-    sys::outjs(['s' => 'cfg'], $nmch);
+    System::outjs(['s' => 'cfg'], $nmch);
 }
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

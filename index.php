@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
 use Symfony\Component\Dotenv\Dotenv;
 
 header('Content-Type: text/html; charset=utf-8');
@@ -70,9 +71,8 @@ include(DATA . 'params.php');
 // Библиотеки
 include(LIB . 'sql.php');
 include(LIB . 'html.php');
-include(LIB . 'system.php');
 
-$uip = sys::ip();
+$uip = System::ip();
 
 // Распределитель
 include(SYS . 'distributor.php');

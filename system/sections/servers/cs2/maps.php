@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,7 +34,7 @@ $aSub = ['install', 'delete', 'list', 'listing', 'search'];
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $html->nav('Карты', $cfg['http'] . 'servers/id/' . $id . '/section/maps');
 
-    $nmch = sys::rep_act('server_maps_go_' . $id, 10);
+    $nmch = System::rep_act('server_maps_go_' . $id, 10);
 
     include(SEC . 'servers/' . $server['game'] . '/maps/' . $url['subsection'] . '.php');
 } else {
@@ -48,10 +50,10 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
         if ($go) {
-            sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+            System::outjs(['e' => System::text('error', 'ssh')], $nmch);
         }
 
-        sys::back($cfg['http'] . 'servers/id/' . $id);
+        System::back($cfg['http'] . 'servers/id/' . $id);
     }
 
     $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -83,7 +85,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         $name = end($aName);
 
         $html->get('map_server', 'sections/servers/cs2/maps');
-        $html->set('img', sys::img($name, $server['game']));
+        $html->set('img', System::img($name, $server['game']));
         $html->set('map', $mapjs);
         $html->set('name', $name);
 

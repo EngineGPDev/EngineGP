@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,7 +26,7 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
+$uid = isset($url['uid']) ? System::int($url['uid']) : System::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86400 || $server['test']) {
     exit;
@@ -32,7 +34,7 @@ if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86
 
 $sql->query('SELECT `id`, `unit`, `packs`, `fps`, `tickrate`, `price` FROM `tarifs` WHERE `unit`="' . $uid . '" AND `game`="' . $server['game'] . '" AND `name`="' . $tarif['name'] . '" AND `id`!="' . $server['tarif'] . '" AND `show`="1" ORDER BY `unit`');
 if (!$sql->num()) {
-    sys::outjs(['e' => 'Не найден подходящий тариф.'], $nmch);
+    System::outjs(['e' => 'Не найден подходящий тариф.'], $nmch);
 }
 
 $oldTarif = $tarif;
@@ -42,17 +44,17 @@ $tarif = $sql->get();
 $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $oldUnit = $sql->get();
 
-$aPriceold = sys::b64djs($oldTarif['price']);
+$aPriceold = System::b64djs($oldTarif['price']);
 
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
 if (!$sql->num()) {
-    sys::outjs(['e' => 'Выбранная локация не доступна.'], $nmch);
+    System::outjs(['e' => 'Выбранная локация не доступна.'], $nmch);
 }
 
-$aPrice = sys::b64djs($tarif['price']);
+$aPrice = System::b64djs($tarif['price']);
 
 if (!array_key_exists($server['tickrate'] . '_' . $server['fps'], $aPrice)) {
-    sys::outjs(['e' => 'Не найден подходящий тарифный план.'], $nmch);
+    System::outjs(['e' => 'Не найден подходящий тарифный план.'], $nmch);
 }
 
 // Цена за 1 день (при новом тарифном плане)

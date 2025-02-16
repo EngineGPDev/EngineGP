@@ -16,12 +16,14 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-sys::noauth();
+System::noauth();
 
 $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $user['id'] . '" AND `help`="0" LIMIT 1');
 if (!$sql->num()) {

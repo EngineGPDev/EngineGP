@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
 use YooKassa\Client;
 
 if (!defined('EGP')) {
@@ -32,7 +33,7 @@ $amount = floatval($_GET['amount']);
 // Проверяем, валиден ли userId
 $sql->query('SELECT `id`, `balance`, `part` FROM `users` WHERE `id`="' . $userId . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::out('bad user');
+    System::out('bad user');
 }
 
 $user = $sql->get();
@@ -59,8 +60,8 @@ try {
     );
 
     if ($payment->getStatus() === 'pending') {
-        sys::outjs(['payLink' => $payment->getConfirmation()->getConfirmationUrl()]);
+        System::outjs(['payLink' => $payment->getConfirmation()->getConfirmationUrl()]);
     }
 } catch (\Exception $e) {
-    sys::outjs(['Error' => $e->getMessage()]);
+    System::outjs(['Error' => $e->getMessage()]);
 }

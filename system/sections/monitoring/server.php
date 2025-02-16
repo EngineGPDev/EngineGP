@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404');
     exit();
@@ -65,7 +67,7 @@ $sql->query('SELECT `key` FROM graph WHERE server = "' . $id . '" LIMIT 1');
 if (!$sql->num()) {
 
     // Генерируем ключ
-    $key = md5($id . sys::key('graph'));
+    $key = md5($id . System::key('graph'));
 
     // Добавляем в DB
     $sql->query('INSERT INTO graph SET `server` = "' . $id . '", `key` = "' . $key . '", `time` = 0');
@@ -88,7 +90,7 @@ $html->set('online', $server['online']);
 $html->set('players', base64_decode($server['players']));
 $html->set('unit', $unit['name']);
 $html->set('tarif', $tarif['name']);
-$html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img'));
+$html->set('img', System::status($server['status'], $server['game'], $server['map'], 'img'));
 $html->set('pack', $aPacks[$server['pack']]);
 $html->set('create', date("d.m.Y H:m", $server['date']));
 $html->pack('main');

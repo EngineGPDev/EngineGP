@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,10 +34,10 @@ if (isset($url['action'])) {
 
     // Добавление / удаление правил
     if ($go && in_array($url['action'], ['block', 'unblock'])) {
-        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['e' => sys::text('servers', 'firewall')], $nmch);
+        $address = isset($_POST['address']) ? trim($_POST['address']) : System::outjs(['e' => System::text('servers', 'firewall')], $nmch);
         $snw = isset($_POST['subnetwork']) ? true : false;
 
-        sys::outjs(games::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
+        System::outjs(games::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
     }
 }
 

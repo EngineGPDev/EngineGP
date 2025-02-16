@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -46,9 +48,9 @@ class api
         }
 
         $tarif = $sql->get();
-        $packs = sys::b64djs($tarif['packs']);
+        $packs = System::b64djs($tarif['packs']);
 
-        $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server['time']);
+        $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . System::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . System::date('min', $server['time']);
 
         return [
             'id' => $id,
@@ -60,11 +62,11 @@ class api
             'slots' => $server['slots_start'],
             'online' => $server['online'],
             'players' => $server['players'],
-            'status' => sys::status($server['status'], $server['game'], $server['map']),
-            'img' => sys::status($server['status'], $server['game'], $server['map'], 'img'),
+            'status' => System::status($server['status'], $server['game'], $server['map']),
+            'img' => System::status($server['status'], $server['game'], $server['map'], 'img'),
             'time_end' => $time_end,
-            'time' => sys::today($server['time']),
-            'date' => sys::today($server['date']),
+            'time' => System::today($server['time']),
+            'date' => System::today($server['date']),
             'pack' => $packs[$server['pack']],
         ];
     }

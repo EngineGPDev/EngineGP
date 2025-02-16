@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,22 +26,22 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$plan = isset($url['plan']) ? sys::int($url['plan']) : sys::outjs(['e' => 'Переданые не все данные'], $nmch);
+$plan = isset($url['plan']) ? System::int($url['plan']) : System::outjs(['e' => 'Переданые не все данные'], $nmch);
 
 $aPrice = explode(':', $tarif['price']);
 $aTICK = explode(':', $tarif['tickrate']);
 
 // Проверка плана
 if (array_search($plan, $aTICK) === false) {
-    sys::outjs(['e' => 'Переданы неверные данные'], $nmch);
+    System::outjs(['e' => 'Переданы неверные данные'], $nmch);
 }
 
 if ($plan == $server['tickrate']) {
-    sys::outjs(['e' => 'Смысла в этой операции нет'], $nmch);
+    System::outjs(['e' => 'Смысла в этой операции нет'], $nmch);
 }
 
 if (!tarif::price($tarif['price'])) {
-    sys::outjs(['e' => 'Чтобы изменить тариф, перейдите в настройки запуска'], $nmch);
+    System::outjs(['e' => 'Чтобы изменить тариф, перейдите в настройки запуска'], $nmch);
 }
 
 if ($server['time'] < $start_point + 86400) {
@@ -65,7 +67,7 @@ if ($server['time'] < $start_point + 86400) {
 
 // Выполнение смена тарифного плана
 if ($go) {
-    sys::benefitblock($id, $nmch);
+    System::benefitblock($id, $nmch);
 
     $sql->query('UPDATE `servers` set `time`="' . $time . '", `tickrate`="' . $plan . '" WHERE `id`="' . $id . '" LIMIT 1');
 
@@ -76,10 +78,10 @@ if ($go) {
     }
 
     // Запись логов
-    $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_plan') . '", `time`="' . $start_point . '"');
+    $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . System::text('syslogs', 'change_plan') . '", `time`="' . $start_point . '"');
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 // Выхлоп информации
-sys::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'], $nmch);
+System::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')'], $nmch);

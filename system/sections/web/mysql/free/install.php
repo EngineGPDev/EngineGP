@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -23,7 +25,7 @@ if (!defined('EGP')) {
 // Установка
 if ($go) {
     if (!$aWeb[$server['game']][$url['subsection']]) {
-        sys::outjs(['e' => 'Дополнительная услуга недоступна для установки.'], $nmch);
+        System::outjs(['e' => 'Дополнительная услуга недоступна для установки.'], $nmch);
     }
 
     // Проверка на наличие уже установленной выбранной услуги
@@ -42,7 +44,7 @@ if ($go) {
     }
 
     if ($sql->num()) {
-        sys::outjs(['s' => 'ok'], $nmch);
+        System::outjs(['s' => 'ok'], $nmch);
     }
 
     include(LIB . 'ssh.php');
@@ -62,28 +64,28 @@ if ($go) {
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs(['e' => sys::text('ssh', 'error')], $nmch);
+        System::outjs(['e' => System::text('ssh', 'error')], $nmch);
     }
 
     if (isset($_POST['passwd'])) {
         // Если не указан пароль сгенерировать
         if ($_POST['passwd'] == '') {
-            $passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
+            $passwd = System::passwd($aWebParam[$url['subsection']]['passwd']);
         } else {
             // Проверка длинны пароля
             if (!isset($_POST['passwd'][5]) || isset($_POST['passwd'][16])) {
-                sys::outjs(['e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'], $nmch);
+                System::outjs(['e' => 'Необходимо указать пароль длинной не менее 6-и символов и не более 16-и.'], $nmch);
             }
 
             // Проверка валидности пароля
-            if (sys::valid($_POST['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/")) {
-                sys::outjs(['e' => 'Пароль должен состоять из букв a-z и цифр.'], $nmch);
+            if (System::valid($_POST['passwd'], 'other', "/^[A-Za-z0-9]{6,16}$/")) {
+                System::outjs(['e' => 'Пароль должен состоять из букв a-z и цифр.'], $nmch);
             }
 
             $passwd = $_POST['passwd'];
         }
     } else {
-        $passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
+        $passwd = System::passwd($aWebParam[$url['subsection']]['passwd']);
     }
 
     $sql->query('INSERT INTO `web` set `type`="' . $url['subsection'] . '", `server`="' . $id . '", `user`="' . $server['user'] . '", `unit`="' . $server['unit'] . '", `config`=""');
@@ -106,7 +108,7 @@ if ($go) {
         . '`login`="' . $login . '", `date`="' . $start_point . '" '
         . 'WHERE `id`="' . $wid . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 $html->nav('Установка ' . $aWebname[$url['subsection']]);

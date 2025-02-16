@@ -16,16 +16,18 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$pid = isset($url['plugin']) ? sys::int($url['plugin']) : sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+$pid = isset($url['plugin']) ? System::int($url['plugin']) : System::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 
 $sql->query('SELECT `id`, `upd` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '" LIMIT 1');
 
 if (!$sql->num()) {
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 }
 
 $install = $sql->get();
@@ -38,7 +40,7 @@ if ($install['upd']) {
 }
 
 if (!$sql->num()) {
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 }
 
 $plugin = $sql->get();

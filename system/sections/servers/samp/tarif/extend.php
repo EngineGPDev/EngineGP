@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,11 +30,11 @@ $aData = [];
 
 // Если не расчетный период
 if (!$cfg['settlement_period']) {
-    $aData['time'] = isset($_POST['time']) ? sys::int($_POST['time']) : sys::outjs(['e' => 'Переданы не все данные'], $nmch);
+    $aData['time'] = isset($_POST['time']) ? System::int($_POST['time']) : System::outjs(['e' => 'Переданы не все данные'], $nmch);
 
     // Проверка периода
     if (!in_array($aData['time'], explode(':', $tarif['timext']))) {
-        sys::outjs(['e' => 'Переданы неверные данные'], $nmch);
+        System::outjs(['e' => 'Переданы неверные данные'], $nmch);
     }
 
 }

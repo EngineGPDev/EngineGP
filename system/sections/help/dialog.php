@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,7 +28,7 @@ if (isset($url['action']) and in_array($url['action'], ['reply', 'remove', 'read
 }
 
 if (!$id) {
-    sys::back($cfg['http'] . 'help/section/open');
+    System::back($cfg['http'] . 'help/section/open');
 }
 
 if (in_array($user['group'], ['admin', 'support'])) {
@@ -36,7 +38,7 @@ if (in_array($user['group'], ['admin', 'support'])) {
 }
 
 if (!$sql->num()) {
-    sys::back($cfg['http'] . 'help/section/open');
+    System::back($cfg['http'] . 'help/section/open');
 }
 
 $help = $sql->get();
@@ -62,7 +64,7 @@ $dialogs = $sql->query('SELECT `id`, `user`, `text`, `img`, `time` FROM `help_di
 while ($dialog = $sql->get($dialogs)) {
     unset($html->arr['attachment']);
 
-    $images = sys::b64djs($dialog['img']);
+    $images = System::b64djs($dialog['img']);
 
     if (is_array($images)) {
         foreach ($images as $img) {
@@ -144,9 +146,9 @@ while ($dialog = $sql->get($dialogs)) {
     $html->set('text', $dialog['text']);
 
     if ($tHelp) {
-        $html->set('time', $dialog['time'] < ($start_point - 600) ? sys::today($dialog['time']) : help::ago($dialog['time']));
+        $html->set('time', $dialog['time'] < ($start_point - 600) ? System::today($dialog['time']) : help::ago($dialog['time']));
     } else {
-        $html->set('time', sys::today($dialog['time']) . ' ' . help::ago($dialog['time'], true));
+        $html->set('time', System::today($dialog['time']) . ' ' . help::ago($dialog['time'], true));
     }
 
     if (isset($html->arr['attachment'])) {
@@ -173,7 +175,7 @@ $status = [
 ];
 
 if (isset($url['ajax'])) {
-    sys::outjs(['dialog' => ($html->arr['dialog'] ?? ''), 'status' => ($help['close'] ? 'Вопрос решен' : $status[$help['status']])]);
+    System::outjs(['dialog' => ($html->arr['dialog'] ?? ''), 'status' => ($help['close'] ? 'Вопрос решен' : $status[$help['status']])]);
 }
 
 // Краткая информация вопроса
@@ -201,7 +203,7 @@ switch ($help['type']) {
 $html->get('dialog', 'sections/help');
 
 $html->set('id', $id);
-$html->set('date', sys::today($help['date']));
+$html->set('date', System::today($help['date']));
 $html->set('status', $help['close'] ? 'Вопрос решен' : $status[$help['status']]);
 $html->set('service', $service);
 $html->set('dialog', $html->arr['dialog'] ?? '');

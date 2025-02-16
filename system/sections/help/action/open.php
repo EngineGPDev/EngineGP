@@ -16,12 +16,14 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 if ($user['group'] == 'support' and $user['level'] < 2) {
-    sys::outjs(['e' => 'У вас нет доступа к данному действию.']);
+    System::outjs(['e' => 'У вас нет доступа к данному действию.']);
 }
 
 if ($id) {
@@ -31,7 +33,7 @@ if ($id) {
         $sql->query('UPDATE `help` set `close`="0", `time`="' . $start_point . '" WHERE `id`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
     }
 
-    sys::outjs(['s' => 'ok']);
+    System::outjs(['s' => 'ok']);
 }
 
-sys::outjs(['e' => 'Вопрос не найден в базе.']);
+System::outjs(['e' => 'Вопрос не найден в базе.']);

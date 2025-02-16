@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,7 +27,7 @@ if ($go) {
     $sql->query('SELECT `id`, `aid`, `time` FROM `address_buy` WHERE `server`="' . $id . '" LIMIT 1');
 
     if (!$sql->num()) {
-        sys::outjs(['s' => 'ok'], $nmch);
+        System::outjs(['s' => 'ok'], $nmch);
     }
 
     $add = $sql->get();
@@ -36,7 +38,7 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $add['price']) {
-        sys::outjs(['e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
+        System::outjs(['e' => 'У вас не хватает ' . (round($add['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     // Списание средств с баланса пользователя
@@ -49,10 +51,10 @@ if ($go) {
     $sql->query('UPDATE `address_buy` set `time`="' . ($add['time'] + 2592000) . '" WHERE `id`="' . $add['id'] . '" LIMIT 1');
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
-        sys::text('logs', 'extend_address'),
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
+        System::text('logs', 'extend_address'),
         ['money' => $add['price'], 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $add['price'] . '"');
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }

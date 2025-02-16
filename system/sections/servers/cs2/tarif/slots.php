@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+use EngineGP\System;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -26,10 +27,10 @@ if (!isset($nmch)) {
 
 // Если фикс. значение слот
 if ($tarif['slots_min'] == $tarif['slots_max']) {
-    sys::outjs(['e' => 'На данном тарифе нельзя изменить количество слот.'], $nmch);
+    System::outjs(['e' => 'На данном тарифе нельзя изменить количество слот.'], $nmch);
 }
 
-$slots = isset($url['slots']) ? sys::int($url['slots']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
+$slots = isset($url['slots']) ? System::int($url['slots']) : System::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 $aPrice = explode(':', $tarif['price']);
 $aTICK = explode(':', $tarif['tickrate']);

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -38,7 +40,7 @@ class tarif extends tarifs
         }
 
         $html->set('id', $sid);
-        $html->set('time', sys::date('min', $server['time']));
+        $html->set('time', System::date('min', $server['time']));
         $html->set('options', '<option value="0">Выберите период продления</option>' . $options);
         $html->set('slots', $server['slots']);
         $html->set('info', $server['tickrate'] . ' TickRate / ' . $server['fps'] . ' FPS');
@@ -56,7 +58,7 @@ class tarif extends tarifs
 
         tarifs::extend_address($server['game'], $sid);
 
-        $aPrice = sys::b64djs($tarif['price']);
+        $aPrice = System::b64djs($tarif['price']);
 
         $sum = $tarif['slots'] ? $aPrice[$server['tickrate'] . '_' . $server['fps']] : $aPrice[$server['tickrate'] . '_' . $server['fps']] * $server['slots'];
 
@@ -70,7 +72,7 @@ class tarif extends tarifs
         }
 
         $html->set('id', $sid);
-        $html->set('time', sys::date('min', $server['time']));
+        $html->set('time', System::date('min', $server['time']));
         $html->set('date', $server['time'] > $start_point ? 'Сервер продлен до: ' . date('d.m.Y', $server['time']) : 'Текущая дата: ' . date('d.m.Y', $start_point));
         $html->set('options', '<option value="0">Выберите период продления</option>' . $options);
         $html->set('slots', $server['slots']);
@@ -98,7 +100,7 @@ class tarif extends tarifs
 
         $options = '';
 
-        $aPrice = sys::b64djs($tarif['price']);
+        $aPrice = System::b64djs($tarif['price']);
 
         unset($aPrice[$server['tickrate'] . '_' . $server['fps']]);
 
@@ -147,7 +149,7 @@ class tarif extends tarifs
         $options = '<option value="0">Выберите новую локацию</option>';
 
         while ($tarif = $sql->get($tarifs)) {
-            if (!array_key_exists($server['tickrate'] . '_' . $server['fps'], sys::b64djs($tarif['price']))) {
+            if (!array_key_exists($server['tickrate'] . '_' . $server['fps'], System::b64djs($tarif['price']))) {
                 continue;
             }
 
@@ -187,7 +189,7 @@ class tarif extends tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(['e' => sys::text('error', 'ssh')]);
+            System::outjs(['e' => System::text('error', 'ssh')]);
         }
 
         // Директория сборки
@@ -223,7 +225,7 @@ class tarif extends tarifs
         // Запись установленных плагинов
         if ($tarif['plugins']) {
             // Массив идентификаторов плагинов
-            $aPlugins = sys::b64js($tarif['plugins_install']);
+            $aPlugins = System::b64js($tarif['plugins_install']);
 
             if (isset($aPlugins[$tarif['pack']])) {
                 $plugins = explode(',', $aPlugins[$tarif['pack']]);
@@ -241,7 +243,7 @@ class tarif extends tarifs
 
     public static function price($plan)
     {
-        $aPrice = array_values(sys::b64djs($plan));
+        $aPrice = array_values(System::b64djs($plan));
 
         $check = $aPrice[0];
 

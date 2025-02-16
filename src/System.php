@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+namespace EngineGP;
+
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
@@ -26,7 +28,7 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-class sys
+class System
 {
     public static function url($all = true)
     {
@@ -201,7 +203,7 @@ class sys
 
         if (!$use || $server['time'] < $start_point || in_array($server['status'], ['install', 'reinstall', 'update', 'recovery', 'blocked'])) {
             if ($go) {
-                sys::out('Раздел недоступен');
+                System::out('Раздел недоступен');
             }
 
             if (!$use) {
@@ -446,7 +448,7 @@ class sys
     public static function login($mail, $lchar)
     {
         if (!$lchar) {
-            return str_replace(['.', '_', '+', '-'], '', sys::first(explode('@', $mail)));
+            return str_replace(['.', '_', '+', '-'], '', System::first(explode('@', $mail)));
         }
 
         $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
@@ -503,7 +505,7 @@ class sys
 
         if ($auth) {
             if ($go) {
-                sys::outjs(['e' => sys::text('output', 'auth')]);
+                System::outjs(['e' => System::text('output', 'auth')]);
             }
 
             $link = 'user/section/lk';
@@ -520,7 +522,7 @@ class sys
 
         if (!$auth) {
             if ($go) {
-                sys::outjs(['e' => sys::text('output', 'noauth')]);
+                System::outjs(['e' => System::text('output', 'noauth')]);
             }
 
             $link = 'user/section/auth';
@@ -589,19 +591,19 @@ class sys
         $text = '';
 
         if ($days > 0) {
-            $text .= sys::date_decl($days, $adata[$lenght]['days']);
+            $text .= System::date_decl($days, $adata[$lenght]['days']);
         }
 
         if ($days < 1 and $hours > 0) {
-            $text .= ' ' . sys::date_decl($hours, $adata[$lenght]['hours']);
+            $text .= ' ' . System::date_decl($hours, $adata[$lenght]['hours']);
         }
 
         if ($days < 1 and $minutes > 0) {
-            $text .= ' ' . sys::date_decl($minutes, $adata[$lenght]['minutes']);
+            $text .= ' ' . System::date_decl($minutes, $adata[$lenght]['minutes']);
         }
 
         if ($days < 1 and $seconds > 0) {
-            $text .= ' ' . sys::date_decl($seconds, $adata[$lenght]['seconds']);
+            $text .= ' ' . System::date_decl($seconds, $adata[$lenght]['seconds']);
         }
 
         return $text;
@@ -617,7 +619,7 @@ class sys
             $expr[2] = $expr[1];
         }
 
-        $i = sys::int($digit) % 100;
+        $i = System::int($digit) % 100;
 
         if ($onlyword) {
             $digit = '';
@@ -655,7 +657,7 @@ class sys
             return 'Сегодня ' . date('- H:i', $time);
         }
 
-        $yesterday_first = sys::int(sys::first(explode('.', $today))) - 1;
+        $yesterday_first = System::int(System::first(explode('.', $today))) - 1;
         $yesterday_full = date('m.Y', $time);
 
         if ($day == $yesterday_first . '.' . $yesterday_full and !$yesterday_first) {
@@ -1038,7 +1040,7 @@ class sys
     {
         global $cfg, $html;
 
-        $aNum = sys::page_list($ceil, $actnum);
+        $aNum = System::page_list($ceil, $actnum);
 
         $pages = '';
 
@@ -1107,9 +1109,9 @@ class sys
 
     public static function ip()
     {
-        $ip = sys::ipproxy();
+        $ip = System::ipproxy();
 
-        if (sys::valid($ip, 'ip')) {
+        if (System::valid($ip, 'ip')) {
             return $_SERVER['REMOTE_ADDR'];
         }
 
@@ -1152,7 +1154,7 @@ class sys
         }
 
         if ($mcache->get($name)) {
-            sys::outjs(['e' => sys::text('other', 'mcache')]);
+            System::outjs(['e' => System::text('other', 'mcache')]);
         }
 
         $mcache->set($name, true, false, $time);
@@ -1166,12 +1168,12 @@ class sys
 
         $cache = [
             'name' => $data['name'],
-            'status' => sys::status($data['status'], $data['game']),
+            'status' => System::status($data['status'], $data['game']),
             'online' => $data['online'],
-            'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">',
+            'image' => '<img src="' . System::status($data['status'], $data['game'], '', 'img') . '">',
         ];
 
-        $cache = sys::buttons($id, $data['status'], $data['game']);
+        $cache = System::buttons($id, $data['status'], $data['game']);
 
         if (isset($data['players']) && is_array($data['players'])) {
             $cache['players'] = $data['players'];
@@ -1193,7 +1195,7 @@ class sys
                         $map = $game;
                     }
 
-                    return sys::img($map, $game);
+                    return System::img($map, $game);
                 }
 
                 return 'Карта: ' . ($map == '' ? '-' : $map);
@@ -1396,7 +1398,7 @@ class sys
             $info = $sql->get();
 
             if ($info['benefit'] > $start_point) {
-                sys::outjs(['e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])], $nmch);
+                System::outjs(['e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])], $nmch);
             }
         }
 

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,7 +26,7 @@ if ($go) {
     include(LIB . 'games/' . $server['game'] . '/rcon.php');
 
     if (isset($url['action']) and in_array($url['action'], ['kick', 'kill'])) {
-        $player = $_POST['player'] ?? sys::outjs(['e' => 'Необходимо выбрать игрока.']);
+        $player = $_POST['player'] ?? System::outjs(['e' => 'Необходимо выбрать игрока.']);
 
         if ($url['action'] == 'kick') {
             rcon::cmd(array_merge($server, ['id' => $id]), 'kickid "' . $player . '" "EGP Panel"');
@@ -32,7 +34,7 @@ if ($go) {
             rcon::cmd(array_merge($server, ['id' => $id]), 'sm_slay "' . $player . '"');
         }
 
-        sys::outjs(['s' => 'ok']);
+        System::outjs(['s' => 'ok']);
     }
 
     include(LIB . 'geo.php');
@@ -56,7 +58,7 @@ if ($go) {
         $html->pack('players');
     }
 
-    sys::outjs(['s' => $html->arr['players'] ?? '']);
+    System::outjs(['s' => $html->arr['players'] ?? '']);
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);
