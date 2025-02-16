@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,7 +30,7 @@ if ($id) {
 
     if (isset($url['service']) and in_array($url['service'], ['nginx', 'mysql', 'unit', 'geo', 'ungeo'])) {
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(['e' => 'Не удалось создать связь с локацией']);
+            AdminSystem::outjs(['e' => 'Не удалось создать связь с локацией']);
         }
 
         switch ($url['service']) {
@@ -52,7 +54,7 @@ if ($id) {
                 $ssh->set('tmux new-session -ds sr_' . $url['service'] . ' service ' . $url['service'] . ' restart');
         }
 
-        sys::outjs(['s' => 'ok']);
+        AdminSystem::outjs(['s' => 'ok']);
     }
 
     $aData = [
@@ -66,25 +68,25 @@ if ($id) {
     ];
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs($aData);
+        AdminSystem::outjs($aData);
     }
 
     $aData['ssh'] = '<i class="fa fa-retweet pointer" id="units_restart(\'unit\')" onclick="return units_restart(\'' . $id . '\', \'unit\')"></i>';
 
     $stat_ram = $ssh->get('echo `cat /proc/meminfo | grep MemTotal | awk \'{print $2}\'; cat /proc/meminfo | grep MemFree | awk \'{print $2}\'; cat /proc/meminfo | grep Buffers | awk \'{print $2}\'; cat /proc/meminfo | grep Cached | grep -v SwapCached | awk \'{print $2}\'`');
-    $aData['ram'] = ceil(sys::ram_load($stat_ram)) . '%';
+    $aData['ram'] = ceil(AdminSystem::ram_load($stat_ram)) . '%';
 
     $aData['hdd'] = $ssh->get('df -P / | awk \'{print $5}\' | tail -1');
 
-    $aData['nginx'] = sys::status($ssh->get('service nginx status')) ? 'Работает' : '<a href="#" onclick="return units_restart(\'' . $id . '\', \'nginx\')">Поднять</a>';
-    $aData['mysql'] = sys::status($ssh->get('service mysql status')) ? 'Работает' : '<a href="#" onclick="return units_restart\'' . $id . '\', (\'mysql\')">Поднять</a>';
+    $aData['nginx'] = AdminSystem::status($ssh->get('service nginx status')) ? 'Работает' : '<a href="#" onclick="return units_restart(\'' . $id . '\', \'nginx\')">Поднять</a>';
+    $aData['mysql'] = AdminSystem::status($ssh->get('service mysql status')) ? 'Работает' : '<a href="#" onclick="return units_restart\'' . $id . '\', (\'mysql\')">Поднять</a>';
 
     $time = ceil($ssh->get('cat /proc/uptime | awk \'{print $1}\''));
-    $aData['uptime'] = sys::uptime_load($time);
+    $aData['uptime'] = AdminSystem::uptime_load($time);
 
-    $aData['cpu'] = sys::cpu_load($ssh->get('echo "`ps -A -o pcpu | tail -n+2 | paste -sd+ | bc | awk \'{print $0}\'` `cat /proc/cpuinfo | grep processor | wc -l | awk \'{print $1}\'`"')) . '%';
+    $aData['cpu'] = AdminSystem::cpu_load($ssh->get('echo "`ps -A -o pcpu | tail -n+2 | paste -sd+ | bc | awk \'{print $0}\'` `cat /proc/cpuinfo | grep processor | wc -l | awk \'{print $1}\'`"')) . '%';
 
-    sys::outjs($aData);
+    AdminSystem::outjs($aData);
 }
 
 $loads = '';

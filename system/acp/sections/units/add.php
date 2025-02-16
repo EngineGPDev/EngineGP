@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,7 +30,7 @@ if ($go) {
     $aData['passwd'] = isset($_POST['passwd']) ? trim($_POST['passwd']) : '';
     $aData['sql_login'] = isset($_POST['sql_login']) ? trim($_POST['sql_login']) : '';
     $aData['sql_passwd'] = isset($_POST['sql_passwd']) ? trim($_POST['sql_passwd']) : '';
-    $aData['sql_port'] = isset($_POST['sql_port']) ? sys::int($_POST['sql_port']) : 3306;
+    $aData['sql_port'] = isset($_POST['sql_port']) ? AdminSystem::int($_POST['sql_port']) : 3306;
     $aData['sql_ftp'] = isset($_POST['sql_ftp']) ? trim($_POST['sql_ftp']) : '';
     $aData['cs'] = isset($_POST['cs']) ? trim($_POST['cs']) : 0;
     $aData['cssold'] = $_POST['cssold'] ?? 0;
@@ -40,10 +42,10 @@ if ($go) {
     $aData['crmp'] = $_POST['crmp'] ?? 0;
     $aData['mta'] = $_POST['mta'] ?? 0;
     $aData['mc'] = $_POST['mc'] ?? 0;
-    $aData['ram'] = isset($_POST['ram']) ? sys::int($_POST['ram']) : 0;
-    $aData['test'] = isset($_POST['test']) ? sys::int($_POST['test']) : 0;
+    $aData['ram'] = isset($_POST['ram']) ? AdminSystem::int($_POST['ram']) : 0;
+    $aData['test'] = isset($_POST['test']) ? AdminSystem::int($_POST['test']) : 0;
     $aData['show'] = $_POST['show'] ?? 0;
-    $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : 0;
+    $aData['sort'] = isset($_POST['sort']) ? AdminSystem::int($_POST['sort']) : 0;
     $aData['domain'] = isset($_POST['domain']) ? trim($_POST['domain']) : '';
 
     foreach (['cs', 'cssold', 'css', 'csgo', 'cs2', 'rust', 'samp', 'crmp', 'mta', 'mc'] as $game) {
@@ -51,13 +53,13 @@ if ($go) {
     }
 
     if (in_array('', $aData)) {
-        sys::outjs(['e' => 'Необходимо заполнить все поля']);
+        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($aData['passwd'], $aData['address'])) {
-        sys::outjs(['e' => 'Не удалось создать связь с локацией']);
+        AdminSystem::outjs(['e' => 'Не удалось создать связь с локацией']);
     }
 
     $sql->query('INSERT INTO `units` set '
@@ -84,7 +86,7 @@ if ($go) {
         . '`sort`="' . $aData['sort'] . '",'
         . '`domain`="' . $aData['domain'] . '"');
 
-    sys::outjs(['s' => $sql->id()]);
+    AdminSystem::outjs(['s' => $sql->id()]);
 }
 
 $html->get('add', 'sections/units');

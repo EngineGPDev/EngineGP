@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -43,15 +45,15 @@ if ($id) {
     $url_search = '';
 
     if (isset($url['search']) and in_array($url['search'], ['unit', 'tarif'])) {
-        $select = 'WHERE `' . $url['search'] . '`="' . sys::int($url[$url['search']]) . '" AND `user`!="-1"';
+        $select = 'WHERE `' . $url['search'] . '`="' . AdminSystem::int($url[$url['search']]) . '" AND `user`!="-1"';
         $url_search = '/search/' . $url['search'] . '/' . $url['search'] . '/' . $url[$url['search']];
     }
 
     $sql->query('SELECT `id` FROM `servers` ' . $select . ' AND `game`="samp"');
 
-    $aPage = sys::page($page, $sql->num(), 20);
+    $aPage = AdminSystem::page($page, $sql->num(), 20);
 
-    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/servers/section/samp' . $url_search);
+    AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/servers/section/samp' . $url_search);
 
     $servers = $sql->query('SELECT `id`, `unit`, `tarif`, `user`, `address`, `game`, `status`, `slots`, `name`, `time` FROM `servers` ' . $select . ' AND `game`="samp" ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
     while ($server = $sql->get($servers)) {

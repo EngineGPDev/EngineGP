@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,17 +29,17 @@ if ($go) {
     $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : htmlspecialchars_decode($wiki['name']);
-    $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $wiki['sort'];
+    $aData['sort'] = isset($_POST['sort']) ? AdminSystem::int($_POST['sort']) : $wiki['sort'];
 
     if (in_array('', $aData)) {
-        sys::outjs(['e' => 'Необходимо заполнить все поля']);
+        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $sql->query('UPDATE `wiki_category` set '
         . '`name`="' . htmlspecialchars($aData['name']) . '",'
         . '`sort`="' . $aData['sort'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $html->get('cat', 'sections/wiki');

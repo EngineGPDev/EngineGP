@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -49,9 +51,9 @@ if ($id) {
 
     $sql->query('SELECT `id` FROM `users`');
 
-    $aPage = sys::page($page, $sql->num(), 20);
+    $aPage = AdminSystem::page($page, $sql->num(), 20);
 
-    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users' . $sort_page);
+    AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users' . $sort_page);
 
     $sql->query('SELECT `id`, `login`, `mail`, `balance`, `group` FROM `users` ' . $sort_sql . ' LIMIT ' . $aPage['num'] . ', 20');
     while ($us = $sql->get()) {

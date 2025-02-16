@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -39,8 +41,8 @@ if ($go) {
     $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : $plugin['name'];
-    $aData['cat'] = isset($_POST['category']) ? sys::int($_POST['category']) : $plugin['cat'];
-    $aData['status'] = isset($_POST['status']) ? sys::int($_POST['status']) : $plugin['status'];
+    $aData['cat'] = isset($_POST['category']) ? AdminSystem::int($_POST['category']) : $plugin['cat'];
+    $aData['status'] = isset($_POST['status']) ? AdminSystem::int($_POST['status']) : $plugin['status'];
     $aData['packs'] = isset($_POST['packs']) ? trim($_POST['packs']) : $plugin['packs'];
     $aData['desc'] = isset($_POST['desc']) ? trim($_POST['desc']) : $plugin['desc'];
     $aData['info'] = isset($_POST['info']) ? trim($_POST['info']) : $plugin['info'];
@@ -48,9 +50,9 @@ if ($go) {
     $aData['incompatible'] = isset($_POST['incompatible']) ? trim($_POST['incompatible']) : $plugin['incompatible'];
     $aData['choice'] = isset($_POST['choice']) ? trim($_POST['choice']) : $plugin['choice'];
     $aData['required'] = isset($_POST['required']) ? trim($_POST['required']) : $plugin['required'];
-    $aData['update'] = isset($_POST['update']) ? sys::int($_POST['update']) : $plugin['update'];
-    $aData['delete'] = isset($_POST['delete']) ? sys::int($_POST['delete']) : $plugin['delete'];
-    $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : $plugin['sort'];
+    $aData['update'] = isset($_POST['update']) ? AdminSystem::int($_POST['update']) : $plugin['update'];
+    $aData['delete'] = isset($_POST['delete']) ? AdminSystem::int($_POST['delete']) : $plugin['delete'];
+    $aData['sort'] = isset($_POST['sort']) ? AdminSystem::int($_POST['sort']) : $plugin['sort'];
     $aData['price'] = isset($_POST['price']) ? ceil($_POST['price']) : $plugin['price'];
 
     $aData['config_files_file'] = $_POST['config_files_file'] ?? [];
@@ -68,7 +70,7 @@ if ($go) {
     $aData['cfg'] = 0;
 
     if ($aData['name'] == '') {
-        sys::outjs(['e' => 'Необходимо указать название']);
+        AdminSystem::outjs(['e' => 'Необходимо указать название']);
     }
 
     $aPacks = explode(':', $aData['packs']);
@@ -235,7 +237,7 @@ if ($go) {
         . '`price`="' . $aData['price'] . '",'
         . '`packs`="' . $aData['packs'] . '" WHERE `id`="' . $id . '"');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $html->get('plugin', 'sections/addons');

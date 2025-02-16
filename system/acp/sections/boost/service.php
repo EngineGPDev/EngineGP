@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,9 +30,9 @@ $list = '';
 
 $sql->query('SELECT `id` FROM `boost` WHERE `site`="' . $section . '"');
 
-$aPage = sys::page($page, $sql->num(), 40);
+$aPage = AdminSystem::page($page, $sql->num(), 40);
 
-sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/boost/section/' . $section);
+AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/boost/section/' . $section);
 
 $sql->query('SELECT * FROM `boost` WHERE `site`="' . $section . '" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 40');
 while ($log = $sql->get()) {
