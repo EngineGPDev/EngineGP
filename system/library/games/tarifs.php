@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -39,7 +41,7 @@ class tarifs
 
         $html->get('extend_address', 'sections/servers/games/tarif');
         $html->set('address', $ip_buy['ip'] . ':' . params::$aDefPort[$game]);
-        $html->set('iptime', sys::date('max', $ip_buy['time']));
+        $html->set('iptime', System::date('max', $ip_buy['time']));
         $html->set('ipprice', $ip_buy['price']);
         $html->set('cur', $cfg['currency']);
         $html->pack('extend_address');
@@ -54,7 +56,7 @@ class tarifs
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $sUnit = $sql->get();
 
-        if (sys::first(explode(':', $sUnit['address'])) != sys::first(explode(':', $server['address']))) {
+        if (System::first(explode(':', $sUnit['address'])) != System::first(explode(':', $server['address']))) {
             if ($cfg['buy_address'][$server['game']]) {
                 tarif::address_extend($server['address'], $sid);
             }
@@ -113,7 +115,7 @@ class tarifs
 
         $html->get('address_extend', 'sections/servers/games/tarif');
         $html->set('address', $address);
-        $html->set('time', sys::date('max', $add['time']));
+        $html->set('time', System::date('max', $add['time']));
         $html->set('price', $add['price']);
         $html->set('cur', $cfg['currency']);
         $html->pack('main');
@@ -129,12 +131,12 @@ class tarifs
             return 0;
         }
 
-        $ip = sys::first(explode(':', $server['address']));
+        $ip = System::first(explode(':', $server['address']));
 
         $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        if ($address and sys::first(explode(':', $unit['address'])) != $ip) {
+        if ($address and System::first(explode(':', $unit['address'])) != $ip) {
             $sql->query('SELECT `price` FROM `address` WHERE `ip`="' . $ip . '" LIMIT 1');
 
             if ($sql->num()) {
@@ -214,7 +216,7 @@ class tarifs
 
         // Проверка ssh соединения с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
+            System::outjs(['e' => System::text('error', 'ssh')], $mcache);
         }
 
         // Убить процессы
@@ -256,7 +258,7 @@ class tarifs
         $panel = $sql->get();
 
         if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-            sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
+            System::outjs(['e' => System::text('error', 'ssh')], $mcache);
         }
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');

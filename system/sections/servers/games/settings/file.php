@@ -16,18 +16,20 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Редактируемый файл
-$file = $url['file'] ?? sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+$file = $url['file'] ?? System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 
 include(DATA . 'filedits.php');
 
 // Проверка наличия в конфиге
 if (!in_array($file, $aEdits[$server['game']]['all']['files']) && !in_array($file, $aEdits[$server['game']][$tarif['name']]['files'])) {
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 $html->nav('Редактирование файла: ' . $file);
@@ -42,10 +44,10 @@ include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
     }
 
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 // Полный путь файла
@@ -53,7 +55,7 @@ $path = $tarif['install'] . $server['uid'] . '/' . $aEdits[$server['game']]['all
 if ($go) {
     $data = $_POST['data'] ?? '';
 
-    $temp = sys::temp($data);
+    $temp = System::temp($data);
 
     // Отправление файла на сервер
     $ssh->setfile($temp, $path);
@@ -64,7 +66,7 @@ if ($go) {
 
     unlink($temp);
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $path . '; cat ' . $path . '"');

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,7 +27,7 @@ if (!$go) {
 }
 
 if ($user['group'] != 'admin') {
-    sys::outjs(['i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'], $nmch);
+    System::outjs(['i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'], $nmch);
 }
 
 // Проверка на наличие установленной услуги
@@ -44,19 +46,19 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    sys::outjs(['i' => 'Дополнительная услуга не установлена.'], $nmch);
+    System::outjs(['i' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
 
 // Удаление вирт. хостинга
-$result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], ['login' => $web['login']])), true);
+$result = json_decode(file_get_contents(System::updtext($aWebUnit['isp']['account']['delete'], ['login' => $web['login']])), true);
 
 if (!isset($result['result']) || strtolower($result['result']) != 'ok') {
-    sys::outjs(['e' => 'Не удалось удалить виртуальный хостинг.'], $nmch);
+    System::outjs(['e' => 'Не удалось удалить виртуальный хостинг.'], $nmch);
 }
 
 // Обновление данных
 $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

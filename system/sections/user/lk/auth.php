@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -31,16 +33,16 @@ while ($aBro = $sql->get($qBro)) {
     $cData = $SxGeo->getCityFull($aBro['ip']);
 
     if ($cData && isset($cData['country']['iso'])) {
-        $ico = sys::country($cData['country']['iso']);
+        $ico = System::country($cData['country']['iso']);
     } else {
-        $ico = sys::country('none');
+        $ico = System::country('none');
     }
 
     $html->get('list', 'sections/user/lk/auth');
 
     $html->set('ip', $aBro['ip']);
-    $html->set('date', sys::today($aBro['date'], true));
-    $html->set('browser', sys::browser($browser));
+    $html->set('date', System::today($aBro['date'], true));
+    $html->set('browser', System::browser($browser));
     $html->set('more', $browser);
     $html->set('flag', $ico);
     $html->set('country', empty($cData['country']['name_ru']) ? 'Не определена' : $cData['country']['name_ru']);

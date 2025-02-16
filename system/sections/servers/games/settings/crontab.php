@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,16 +34,16 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
     }
 
     // Удаление задания
     if (isset($url['action']) and $url['action'] == 'delete') {
-        $task = isset($_POST['task']) ? sys::int($_POST['task']) : sys::outjs(['s' => 'ok'], $nmch);
+        $task = isset($_POST['task']) ? System::int($_POST['task']) : System::outjs(['s' => 'ok'], $nmch);
 
         $sql->query('SELECT `cron` FROM `crontab` WHERE `id`="' . $task . '" AND `server`="' . $id . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
         }
 
         $cron = $sql->get();
@@ -52,13 +54,13 @@ if ($go) {
 
         $sql->query('DELETE FROM `crontab` WHERE `id`="' . $task . '" LIMIT 1');
 
-        sys::outjs(['s' => 'ok'], $nmch);
+        System::outjs(['s' => 'ok'], $nmch);
     }
 
     // Добавление задания
     $sql->query('SELECT `id` FROM `crontab` WHERE `server`="' . $id . '" LIMIT 5');
     if ($sql->num() == $cfg['crontabs']) {
-        sys::outjs(['e' => sys::text('servers', 'crontab')], $nmch);
+        System::outjs(['e' => System::text('servers', 'crontab')], $nmch);
     }
 
     $data = [];
@@ -91,7 +93,7 @@ if ($go) {
 
     $sql->query('UPDATE `crontab` set `server`="' . $id . '", `task`="' . $data['task'] . '", `cron`="' . $cron_rule . '", `week`="' . $week . '", `time`="' . $time . '", `commands`="' . $data['commands'] . '" WHERE `id`="' . $cid . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 $aTask = [

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,12 +26,12 @@ if (!$go) {
     exit;
 }
 
-$pid = isset($url['plugin']) ? sys::int($url['plugin']) : exit;
+$pid = isset($url['plugin']) ? System::int($url['plugin']) : exit;
 
 // Проверка установки плагина
 $sql->query('SELECT `id`, `upd` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::outjs(['e' => 'Данный плагин не установлен']);
+    System::outjs(['e' => 'Данный плагин не установлен']);
 }
 
 $plugin = $sql->get();
@@ -42,7 +44,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -101,8 +103,8 @@ if ($sql->num()) {
     if ($sql->num()) {
         $plugin = $sql->get();
 
-        sys::outjs(['i' => $ins['install'], 'pname' => $plugin['name']], $nmch);
+        System::outjs(['i' => $ins['install'], 'pname' => $plugin['name']], $nmch);
     }
 }
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

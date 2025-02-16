@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,9 +26,9 @@ $html->nav('Список новостей');
 
 $sql->query('SELECT `id` FROM `news`');
 
-$aPage = sys::page($page, $sql->num(), $cfg['news_page']);
+$aPage = System::page($page, $sql->num(), $cfg['news_page']);
 
-sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'news');
+System::page_gen($aPage['ceil'], $page, $aPage['page'], 'news');
 
 $sql->query('SELECT `id`, `name`, `text`, `views`, `tags`, `date` FROM `news` ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', ' . $cfg['news_page']);
 while ($news = $sql->get()) {
@@ -35,8 +37,8 @@ while ($news = $sql->get()) {
     $html->set('name', htmlspecialchars_decode($news['name']));
     $html->set('text', htmlspecialchars_decode($news['text']));
     $html->set('views', $news['views']);
-    $html->set('tags', sys::tags($news['tags']));
-    $html->set('date', sys::today($news['date']));
+    $html->set('tags', System::tags($news['tags']));
+    $html->set('date', System::today($news['date']));
     $html->pack('news');
 }
 

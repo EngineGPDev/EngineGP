@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
 use Symfony\Component\Dotenv\Dotenv;
 
 if (!defined('EGP')) {
@@ -67,7 +68,7 @@ include(LIB . 'ssh.php');
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(['e' => sys::text('error', 'ssh')], $name_mcache);
+    System::outjs(['e' => System::text('error', 'ssh')], $name_mcache);
 }
 
 // Директория дополнительной услуги
@@ -76,7 +77,7 @@ $install = $aWebUnit['install'][$aWebUnit['unit'][$url['subsection']]][$url['sub
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::outjs(['e' => sys::text('error', 'ssh')], $name_mcache);
+    System::outjs(['e' => System::text('error', 'ssh')], $name_mcache);
 }
 
 $arSel = ['$adm_login', '$adm_pass', '$wmr_on', '$purse', '$secret_key', '$to', '$vk', '$skype'];
@@ -135,12 +136,12 @@ if ($go) {
         $data .= "\n" . preg_replace($str_search, $str_replace, $val);
     }
 
-    $temp = sys::temp($data);
+    $temp = System::temp($data);
 
     $ssh->setfile($temp, $install . '/core/cfg.php');
     $ssh->set('chmod 0644' . ' ' . $install . '/core/cfg.php');
 
-    sys::outjs(['s' => 'ok'], $name_mcache);
+    System::outjs(['s' => 'ok'], $name_mcache);
 }
 
 foreach ($conf as $str) {
@@ -162,7 +163,7 @@ foreach ($conf as $str) {
 
 $webmoney = $aData['$wmr_on'] == 'on' ? '<option value="on">Включено</option><option value="off">Выключено</option>' : '<option value="off">Выключено</option><option value="on">Включено</option>';
 
-sys::outjs([
+System::outjs([
     's' => 'ok',
     'bp_login' => $aData['$adm_login'],
     'bp_passwd' => $aData['$adm_pass'],

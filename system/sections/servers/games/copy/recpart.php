@@ -16,30 +16,32 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$cid = isset($url['cid']) ? sys::int($url['cid']) : sys::outjs(['e' => 'Выбранная копия не найдена.'], $nmch);
+$cid = isset($url['cid']) ? System::int($url['cid']) : System::outjs(['e' => 'Выбранная копия не найдена.'], $nmch);
 
 $sql->query('SELECT `id`, `pack`, `name`, `plugins`, `date`, `status` FROM `copy` WHERE `id`="' . $cid . '" AND `user`="' . $server['user'] . '_' . $server['unit'] . '" AND `game`="' . $server['game'] . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::outjs(['e' => 'Выбранная копия не найдена.'], $nmch);
+    System::outjs(['e' => 'Выбранная копия не найдена.'], $nmch);
 }
 
 $copy = $sql->get();
 
 if (!$copy['status']) {
-    sys::outjs(['e' => 'Дождитесь создания резервной копии.'], $nmch);
+    System::outjs(['e' => 'Дождитесь создания резервной копии.'], $nmch);
 }
 
 if ($copy['pack'] != $server['pack']) {
     $sql->query('SELECT `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = array_merge($tarif, $sql->get());
 
-    $aPack = sys::b64djs($tarif['packs'], true);
+    $aPack = System::b64djs($tarif['packs'], true);
 
-    sys::outjs(['e' => 'Для восстановления необходимо установить сборку: ' . $aPack[$copy['pack']] . '.'], $nmch);
+    System::outjs(['e' => 'Для восстановления необходимо установить сборку: ' . $aPack[$copy['pack']] . '.'], $nmch);
 }
 
 $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds rec_' . $server['uid'] . ' sh -c "'
@@ -69,4 +71,4 @@ $mcache->delete('server_plugins_' . $id);
 
 $sql->query('UPDATE `servers` set `status`="recovery" WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

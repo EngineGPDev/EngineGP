@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -49,10 +51,10 @@ if ($type) {
     }
 
     // Массив для построения страниц
-    $aPage = sys::page($page, $all, 60);
+    $aPage = System::page($page, $all, 60);
 
     // Генерация массива ($html->arr['pages']) страниц
-    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'servers/id/' . $id . '/section/maps/subsection/list/type/' . $type);
+    System::page_gen($aPage['ceil'], $page, $aPage['page'], 'servers/id/' . $id . '/section/maps/subsection/list/type/' . $type);
 
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" ' . $qsql . ' ORDER BY `name` ASC LIMIT ' . $aPage['num'] . ', 30');
 } else {
@@ -66,10 +68,10 @@ if ($type) {
     }
 
     // Массив для построения страниц
-    $aPage = sys::page($page, $all, 30);
+    $aPage = System::page($page, $all, 30);
 
     // Генерация массива ($html->arr['pages']) страниц
-    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'servers/id/' . $id . '/section/maps/subsection/list');
+    System::page_gen($aPage['ceil'], $page, $aPage['page'], 'servers/id/' . $id . '/section/maps/subsection/list');
 
     $sql->query('SELECT `id`, `name` FROM `maps` WHERE `unit`="' . $server['unit'] . '" AND `game`="' . $server['game'] . '" ORDER BY `name` ASC LIMIT ' . $aPage['num'] . ', 30');
 }
@@ -84,7 +86,7 @@ while ($map = $sql->get()) {
 
     $html->get('map_install', 'sections/servers/games/maps');
     $html->set('id', $map['id']);
-    $html->set('img', sys::img($map['name'], $server['game']));
+    $html->set('img', System::img($map['name'], $server['game']));
     $html->set('name', $map['name']);
     $html->pack('maps');
 }

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -40,18 +42,18 @@ if (isset($url['maps'])) {
 
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
+    $value = isset($url['value']) ? System::int($url['value']) : System::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'map':
-            $map = isset($url['value']) ? trim($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
+            $map = isset($url['value']) ? trim($url['value']) : System::outjs(['s' => 'ok'], $nmch);
 
             if ($map != $server['map_start']) {
                 games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/csgo/maps', $map, true, $nmch);
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'vac':
@@ -60,7 +62,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'mod':
@@ -69,7 +71,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'slots':
@@ -81,7 +83,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'autorestart':
@@ -90,7 +92,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'tickrate':
@@ -99,24 +101,24 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // no break
         case 'fastdl':
             include(LIB . 'ssh.php');
 
             if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+                System::outjs(['e' => System::text('error', 'ssh')], $nmch);
             }
 
             if ($value) {
-                $fastdl = 'sv_downloadurl "http://' . sys::first(explode(':', $unit['address'])) . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
+                $fastdl = 'sv_downloadurl "http://' . System::first(explode(':', $unit['address'])) . ':8080/fast_' . $server['uid'] . '"' . PHP_EOL
                     . 'sv_consistency 1' . PHP_EOL
                     . 'sv_allowupload 1' . PHP_EOL
                     . 'sv_allowdownload 1';
 
                 // Временый файл
-                $temp = sys::temp($fastdl);
+                $temp = System::temp($fastdl);
 
                 $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/csgo/cfg/fastdl.cfg');
                 $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/csgo/cfg/fastdl.cfg');
@@ -135,7 +137,7 @@ if ($go and $url['save']) {
             $sql->query('UPDATE `servers` set `fastdl`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
     }
 }
 

@@ -16,13 +16,15 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 $sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" AND `info`="' . params::$section_copy[$server['game']]['CopyFull'] . '" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(['e' => 'Для создания новой копии необходимо удалить старую.'], $nmch);
+    System::outjs(['e' => 'Для создания новой копии необходимо удалить старую.'], $nmch);
 }
 
 $name_copy = md5($start_point . $id . $server['game']);
@@ -41,4 +43,4 @@ $sql->query('INSERT INTO `copy` set `user`="' . $server['user'] . '_' . $server[
 // Очистка кеша
 $mcache->delete('server_copy_' . $id);
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

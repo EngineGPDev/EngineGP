@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -64,9 +66,9 @@ class rcon
             $aData = array_values(array_diff(explode(' ', $line), ['', ' ']));
 
             $steamid = trim($aData[1]);
-            $ip = trim(sys::first(explode(':', $aData[6])));
+            $ip = trim(System::first(explode(':', $aData[6])));
 
-            if (sys::valid($steamid, 'steamid') || sys::valid($ip, 'ip')) {
+            if (System::valid($steamid, 'steamid') || System::valid($ip, 'ip')) {
                 continue;
             }
 
@@ -98,7 +100,7 @@ class rcon
         $unit = $sql->get();
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            sys::outjs(['e' => sys::text('error', 'ssh')]);
+            System::outjs(['e' => System::text('error', 'ssh')]);
         }
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -109,7 +111,7 @@ class rcon
         $rcon = trim(end($get));
 
         if (!isset($rcon[0])) {
-            sys::outjs(['r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'], $nmch);
+            System::outjs(['r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'], $nmch);
         }
 
         return $rcon;
@@ -120,7 +122,7 @@ class rcon
         global $SxGeo;
 
         $cData = $SxGeo->getCityFull($ip);
-        $ico = sys::country($cData['country']['iso']);
+        $ico = System::country($cData['country']['iso']);
 
         return ['ico' => $ico, 'name' => empty($cData['country']['name_ru']) ? 'Не определена' : $cData['country']['name_ru']];
     }

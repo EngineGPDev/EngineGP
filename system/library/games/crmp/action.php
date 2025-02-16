@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -41,7 +43,7 @@ class action extends actions
 
         // Проверка ssh соедниения пу с локацией
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return ['e' => sys::text('error', 'ssh')];
+            return ['e' => System::text('error', 'ssh')];
         }
 
         $ip = $ssh->getInternalIp();
@@ -60,7 +62,7 @@ class action extends actions
             . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Временный файл
-        $temp = sys::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.cfg')));
+        $temp = System::temp(action::config($ip, $port, $server['slots_start'], $ssh->get('cat ' . $tarif['install'] . '/' . $server['uid'] . '/server.cfg')));
 
         // Обновление файла server.cfg
         $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.cfg');
@@ -72,7 +74,7 @@ class action extends actions
         $bash = './samp03svr-cr';
 
         // Временный файл
-        $temp = sys::temp($bash);
+        $temp = System::temp($bash);
 
         // Обновление файла start.sh
         $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
@@ -94,8 +96,8 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
-        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
+        System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
         return ['s' => 'ok'];
     }

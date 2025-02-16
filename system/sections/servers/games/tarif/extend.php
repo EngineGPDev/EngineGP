@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -46,7 +48,7 @@ if (is_array($promo)) {
 if ($go) {
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
+        System::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     // Списание средств с баланса пользователя
@@ -70,8 +72,8 @@ if ($go) {
 
     // Запись логов
     if (!is_array($promo)) {
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
-            sys::text('logs', 'extend_server'),
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
+            System::text('logs', 'extend_server'),
             ['days' => $days,
                     'money' => $sum,
                     'id' => $id]
@@ -79,16 +81,16 @@ if ($go) {
     } else {
         $sql->query('UPDATE `servers` set `benefit`="' . $time . '" WHERE `id`="' . $id . '" LIMIT 1');
         $sql->query('INSERT INTO `promo_use` set `promo`="' . $promo['id'] . '", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
-            sys::text('logs', 'extend_server_promo'),
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
+            System::text('logs', 'extend_server_promo'),
             ['days' => $days,
                     'money' => $sum,
                     'promo' => $promo['cod'], 'id' => $id]
         ) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $sum . '"');
     }
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 // Выхлоп цены
-sys::outjs(['s' => $sum]);
+System::outjs(['s' => $sum]);

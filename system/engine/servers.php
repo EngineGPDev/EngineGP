@@ -16,19 +16,21 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-sys::noauth();
+System::noauth();
 
 if (!$id and $user['group'] == 'user') {
     $servers = $sql->query('SELECT `id` FROM `servers` WHERE `user`="' . $user['id'] . '" LIMIT 1');
     $owners = $sql->query('SELECT `id` FROM `owners` WHERE `user`="' . $user['id'] . '" LIMIT 1');
 
     if (!$sql->num($servers) and !$sql->num($owners)) {
-        sys::back($cfg['http'] . 'services');
+        System::back($cfg['http'] . 'services');
     } // Если нет игровых серверов отправить на страницу аренды
 }
 
@@ -41,7 +43,7 @@ $title = 'Управление игровыми серверами';
 // Подключение раздела
 if (in_array($section, ['action', 'scan', 'index', 'console', 'settings', 'plugins', 'maps', 'owners', 'filetp', 'tarif', 'copy', 'graph', 'web', 'boost', 'rcon'])) {
     if (!$id) {
-        sys::back($cfg['http'] . 'servers');
+        System::back($cfg['http'] . 'servers');
     }
 
     if ($user['group'] == 'admin' || ($user['group'] == 'support' and $user['level'])) {
@@ -52,20 +54,20 @@ if (in_array($section, ['action', 'scan', 'index', 'console', 'settings', 'plugi
                 if (!$sql->num()) {
                     $sql->query('SELECT `rights` FROM `owners` WHERE `server`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
                     if (!$sql->num()) {
-                        sys::back($cfg['http'] . 'servers');
+                        System::back($cfg['http'] . 'servers');
                     }
 
                     $owner = $sql->get();
 
-                    $rights = sys::b64djs($owner['rights']);
+                    $rights = System::b64djs($owner['rights']);
 
                     if ($section == 'action') {
                         if (!isset($rights[$url['action']]) || !$rights[$url['action']]) {
-                            sys::outjs(['e' => 'У вас нет доступа к данному серверу']);
+                            System::outjs(['e' => 'У вас нет доступа к данному серверу']);
                         }
                     } else {
                         if (!in_array($section, ['index', 'scan']) and (!isset($rights[$section]) || !$rights[$section])) {
-                            sys::back($cfg['http'] . 'servers');
+                            System::back($cfg['http'] . 'servers');
                         }
                     }
                 }
@@ -78,20 +80,20 @@ if (in_array($section, ['action', 'scan', 'index', 'console', 'settings', 'plugi
         if (!$sql->num()) {
             $sql->query('SELECT `rights` FROM `owners` WHERE `server`="' . $id . '" AND `user`="' . $user['id'] . '" LIMIT 1');
             if (!$sql->num()) {
-                sys::back($cfg['http'] . 'servers');
+                System::back($cfg['http'] . 'servers');
             }
 
             $owner = $sql->get();
 
-            $rights = sys::b64djs($owner['rights']);
+            $rights = System::b64djs($owner['rights']);
 
             if ($section == 'action') {
                 if (!isset($rights[$url['action']]) || !$rights[$url['action']]) {
-                    sys::outjs(['e' => sys::text('error', 'ser_owner')]);
+                    System::outjs(['e' => System::text('error', 'ser_owner')]);
                 }
             } else {
                 if (!in_array($section, ['index', 'scan']) and (!isset($rights[$section]) || !$rights[$section])) {
-                    sys::back($cfg['http'] . 'servers/id/' . $owner['server']);
+                    System::back($cfg['http'] . 'servers/id/' . $owner['server']);
                 }
             }
 
@@ -100,7 +102,7 @@ if (in_array($section, ['action', 'scan', 'index', 'console', 'settings', 'plugi
     }
 
     if (!$sql->num()) {
-        sys::back($cfg['http'] . 'servers');
+        System::back($cfg['http'] . 'servers');
     } // Если нет игрового сервера отправить на страницу списка
 
     $html->nav($title, $cfg['http'] . 'servers');
@@ -109,7 +111,7 @@ if (in_array($section, ['action', 'scan', 'index', 'console', 'settings', 'plugi
     if ($file_section) {
         include(SEC . 'servers/' . $section . '.php');
     } else {
-        sys::back($cfg['http'] . 'servers/id/' . $id);
+        System::back($cfg['http'] . 'servers/id/' . $id);
     }
 
 } else {

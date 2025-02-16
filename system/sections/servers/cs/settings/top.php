@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -29,7 +31,7 @@ $tarif = $sql->get();
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 // Удаление файла csstats.dat
@@ -38,5 +40,5 @@ $ssh->set('rm ' . $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/
 if (in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
     shell_exec('php cron.php ' . $cfg['cron_key'] . ' server_action restart cs ' . $id);
 
-    sys::outjs(['s' => 'ok']);
+    System::outjs(['s' => 'ok']);
 }

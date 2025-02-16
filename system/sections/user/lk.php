@@ -16,16 +16,18 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-sys::noauth();
+System::noauth();
 
 // Генерация пароля
 if (isset($url['passwd'])) {
-    sys::out(sys::passwd(10));
+    System::out(System::passwd(10));
 }
 
 $aTitle = [

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,7 +28,7 @@ include(LIB . 'games/' . $server['game'] . '/tarif.php');
 
 // Выполнение операции
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
-    $nmch = sys::rep_act('server_tarif_go_' . $id, 10);
+    $nmch = System::rep_act('server_tarif_go_' . $id, 10);
 
     if (file_exists(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php')) {
         include(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php');
