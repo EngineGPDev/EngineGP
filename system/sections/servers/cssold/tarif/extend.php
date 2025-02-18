@@ -18,6 +18,7 @@
 
 use EngineGP\System;
 use EngineGP\Model\Game;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -67,9 +68,9 @@ $sum = Game::define_sum($tarif['discount'], $price, $server['slots'], $aData['ti
 
 // Если расчетный период
 if ($cfg['settlement_period']) {
-    $aData['time'] = Game::define_period('extend', params::$aDayMonth, $server['time']);
+    $aData['time'] = Game::define_period('extend', Parameters::$aDayMonth, $server['time']);
 }
 
-$days = params::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : Game::parse_day($aData['time'], true);
+$days = Parameters::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : Game::parse_day($aData['time'], true);
 
 include(SEC . 'servers/games/tarif/extend.php');

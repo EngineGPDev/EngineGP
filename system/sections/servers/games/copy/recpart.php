@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -48,7 +49,7 @@ $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds
     . 'cp /copy/' . $copy['name'] . '.tar . && tar -xf ' . $copy['name'] . '.tar; rm ' . $copy['name'] . '.tar;'
     . 'find . -type d -exec chmod 700 {} \;;'
     . 'find . -type f -exec chmod 600 {} \;;'
-    . 'chmod 500 ' . params::$aFileGame[$server['game']] . ';'
+    . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . ';'
     . 'chown -R servers' . $server['uid'] . ':servers ."');
 
 // Установка плагинов (имитирование)

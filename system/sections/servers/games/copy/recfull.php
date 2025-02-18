@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -44,7 +45,7 @@ if ($copy['pack'] != $server['pack']) {
     System::outjs(['e' => 'Для восстановления необходимо установить сборку: ' . $aPack[$copy['pack']] . '.'], $nmch);
 }
 
-if (params::$section_copy[$server['game']]['CopyFull'] == $copy['info']) {
+if (Parameters::$section_copy[$server['game']]['CopyFull'] == $copy['info']) {
     $rm = 'rm -r ' . $copy['info'];
 } else {
     $rm = '';
@@ -52,8 +53,8 @@ if (params::$section_copy[$server['game']]['CopyFull'] == $copy['info']) {
     $aInfo = explode(', ', $copy['info']);
 
     foreach ($aInfo as $name) {
-        $rm .= isset(params::$section_copy[$server['game']]['aCopyDir'][$name]) ? 'rm -r ' . params::$section_copy[$server['game']]['aCopyDir'][$name] . ' ' : '';
-        $rm .= isset(params::$section_copy[$server['game']]['aCopyFile'][$name]) ? 'rm ' . params::$section_copy[$server['game']]['aCopyFile'][$name] . ' ' : '';
+        $rm .= isset(Parameters::$section_copy[$server['game']]['aCopyDir'][$name]) ? 'rm -r ' . Parameters::$section_copy[$server['game']]['aCopyDir'][$name] . ' ' : '';
+        $rm .= isset(Parameters::$section_copy[$server['game']]['aCopyFile'][$name]) ? 'rm ' . Parameters::$section_copy[$server['game']]['aCopyFile'][$name] . ' ' : '';
     }
 
 }
@@ -62,7 +63,7 @@ $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds
     . $rm . '; cp /copy/' . $copy['name'] . '.tar . && tar -xf ' . $copy['name'] . '.tar; rm ' . $copy['name'] . '.tar;'
     . 'find . -type d -exec chmod 700 {} \;;'
     . 'find . -type f -exec chmod 600 {} \;;'
-    . 'chmod 500 ' . params::$aFileGame[$server['game']] . ';'
+    . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . ';'
     . 'chown -R servers' . $server['uid'] . ':servers ."');
 
 // Удаление плагинов

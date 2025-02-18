@@ -71,7 +71,6 @@ $task = $argv[2];
 
 include(DATA . 'engine.php');
 include(DATA . 'mysql.php');
-include(DATA . 'params.php');
 
 // Библиотеки
 include(LIB . 'sql.php');

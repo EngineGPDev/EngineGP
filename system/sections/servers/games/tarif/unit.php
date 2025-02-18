@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -46,7 +47,7 @@ if ($go) {
         $aIp = explode(':', $tarif['ip']);
 
         $ip = false;
-        $port = params::$aDefPort[$server['game']];
+        $port = Parameters::$aDefPort[$server['game']];
 
         // Проверка наличия свободного адреса
         foreach ($aIp as $adr) {

@@ -18,6 +18,7 @@
 
 use EngineGP\System;
 use EngineGP\Model\Game;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -68,7 +69,7 @@ if ($go) {
 
     // Обновление информации
     $sql->query('UPDATE `address` set `buy`="1" WHERE `id`="' . $aid . '" LIMIT 1');
-    $sql->query('UPDATE `servers` set `address`="' . $add['ip'] . ':' . params::$aDefPort[$server['game']] . '" WHERE `id`="' . $id . '" LIMIT 1');
+    $sql->query('UPDATE `servers` set `address`="' . $add['ip'] . ':' . Parameters::$aDefPort[$server['game']] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
     $sql->query('INSERT INTO `address_buy` set `aid`="' . $aid . '", `server`="' . $id . '", `time`="' . ($start_point + 2592000) . '"');
 

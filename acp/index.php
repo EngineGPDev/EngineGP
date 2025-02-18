@@ -65,7 +65,6 @@ $mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключени�
 // Настройки
 include(DATA . 'config.php');
 include(DATA . 'mysql.php');
-include(DATA . 'params.php');
 include(DATA . 'acpengine.php');
 
 // Библиотеки

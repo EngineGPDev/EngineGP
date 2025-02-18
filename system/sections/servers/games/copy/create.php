@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -36,7 +37,7 @@ $aSel = [];
 
 $aData = $_POST['copy'] ?? System::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
 
-foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
+foreach (Parameters::$section_copy[$server['game']]['aCopy'] as $name => $info) {
     if (!isset($aData['\'' . $name . '\''])) {
         continue;
     }
@@ -53,8 +54,8 @@ $info = '';
 $plugins = '';
 
 foreach ($aSel as $name) {
-    $copy .= isset(params::$section_copy[$server['game']]['aCopyDir'][$name]) ? params::$section_copy[$server['game']]['aCopyDir'][$name] . ' ' : '';
-    $copy .= isset(params::$section_copy[$server['game']]['aCopyFile'][$name]) ? params::$section_copy[$server['game']]['aCopyFile'][$name] . ' ' : '';
+    $copy .= isset(Parameters::$section_copy[$server['game']]['aCopyDir'][$name]) ? Parameters::$section_copy[$server['game']]['aCopyDir'][$name] . ' ' : '';
+    $copy .= isset(Parameters::$section_copy[$server['game']]['aCopyFile'][$name]) ? Parameters::$section_copy[$server['game']]['aCopyFile'][$name] . ' ' : '';
 
     $info .= $name . ', ';
 }
