@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Api;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -39,7 +40,6 @@ $api = $sql->get();
 $id = $api['server'];
 
 include(LIB . 'games/games.php');
-include(LIB . 'api.php');
 
 if (in_array($action, ['start', 'restart', 'stop', 'change', 'reinstall', 'update'])) {
     $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
@@ -52,16 +52,16 @@ if (in_array($action, ['start', 'restart', 'stop', 'change', 'reinstall', 'updat
 
 switch ($action) {
     case 'data':
-        System::outjs(api::data($id));
+        System::outjs(Api::data($id));
 
         // no break
     case 'load':
-        System::outjs(api::load($id));
+        System::outjs(Api::load($id));
 
         // no break
     case 'console':
         $cmd = $url['command'] ?? false;
-        System::outjs(api::console($id, $cmd));
+        System::outjs(Api::console($id, $cmd));
 }
 
 System::outjs(['e' => 'Метод не найден']);
