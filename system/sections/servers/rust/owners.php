@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -160,10 +161,6 @@ if ($cache != '') {
 } else {
     $owners = $sql->query('SELECT `id`, `user`, `rights`, `time` FROM `owners` WHERE `server`="' . $id . '" AND `time`>"' . $start_point . '" ORDER BY `id` ASC LIMIT 5');
 
-    if ($sql->num()) {
-        include(LIB . 'games/games.php');
-    }
-
     while ($owner = $sql->get($owners)) {
         $sql->query('SELECT `login` FROM `users` WHERE `id`="' . $owner['user'] . '" LIMIT 1');
         if (!$sql->num()) {
@@ -172,7 +169,7 @@ if ($cache != '') {
 
         $uowner = $sql->get();
 
-        $rights = games::owners(System::b64djs($owner['rights']));
+        $rights = Game::owners(System::b64djs($owner['rights']));
 
         $html->get('owners_list', 'sections/servers/games');
 

@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -251,7 +252,7 @@ class tarifs
         $sql->query('UPDATE `servers` SET `ftp`="0" WHERE `id`="' . $server['id'] . '" LIMIT 1');
 
         // Очистка правил FireWall
-        games::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
+        Game::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
 
         // Удаление заданий из crontab
         $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');

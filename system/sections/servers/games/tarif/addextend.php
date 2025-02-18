@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -45,7 +46,7 @@ if ($go) {
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $add['price']) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
     // Реф. система
-    games::part($user['id'], $add['price']);
+    Game::part($user['id'], $add['price']);
 
     // Обновление информации
     $sql->query('UPDATE `address_buy` set `time`="' . ($add['time'] + 2592000) . '" WHERE `id`="' . $add['id'] . '" LIMIT 1');

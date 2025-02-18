@@ -19,6 +19,7 @@
 namespace EngineGP\Model;
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -58,7 +59,7 @@ class Api
             'id' => $id,
             'address' => $server['address'] . ':' . $server['port'],
             'unit' => $unit['name'],
-            'tarif' => games::info_tarif($server['game'], $tarif['name'], ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]),
+            'tarif' => Game::info_tarif($server['game'], $tarif['name'], ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]),
             'game' => $server['game'],
             'name' => $server['name'],
             'slots' => $server['slots_start'],

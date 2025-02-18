@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -77,9 +78,7 @@ class action extends actions
         // Проверка наличия стартовой карты
         $ssh->set('cd ' . $tarif['install'] . $server['uid'] . '/csgo/maps/ && du -ah | grep -e "\.bsp$" | awk \'{print $2}\'');
 
-        include_once(LIB . 'games/games.php');
-
-        if (games::map($server['map_start'], $ssh->get())) {
+        if (Game::map($server['map_start'], $ssh->get())) {
             return ['e' => System::updtext(System::text('servers', 'nomap'), ['map' => $server['map_start'] . '.bsp'])];
         }
 
@@ -151,8 +150,6 @@ class action extends actions
 
         include(LIB . 'ssh.php');
 
-        include(LIB . 'games/games.php');
-
         $sql->query('SELECT `uid`, `unit`, `game`, `tarif`, `online`, `players`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
@@ -181,7 +178,7 @@ class action extends actions
             $map = str_replace('|', '/', $map);
 
             // Проверка наличия выбранной карты
-            if (games::map($map, $aMaps)) {
+            if (Game::map($map, $aMaps)) {
                 return ['e' => System::updtext(System::text('servers', 'change'), ['map' => $map . '.bsp'])];
             }
 

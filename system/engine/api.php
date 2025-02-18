@@ -39,8 +39,6 @@ $api = $sql->get();
 
 $id = $api['server'];
 
-include(LIB . 'games/games.php');
-
 if (in_array($action, ['start', 'restart', 'stop', 'change', 'reinstall', 'update'])) {
     $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
     if (!$sql->num()) {

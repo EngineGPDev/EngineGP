@@ -16,13 +16,15 @@
  * limitations under the License.
  */
 
+namespace EngineGP\Model;
+
 use EngineGP\System;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-class games
+class Game
 {
     public static function parse_day($days, $lower = false)
     {
@@ -278,10 +280,10 @@ class games
 
         $aTime = explode(':', $aTarif['time']);
 
-        $time = games::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
+        $time = Game::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
 
         if ($aTarif['test'] and $aUnit['test']) {
-            $time .= '<option value="test">Тестовый период ' . games::parse_day($aTarif['test']) . '</option>';
+            $time .= '<option value="test">Тестовый период ' . Game::parse_day($aTarif['test']) . '</option>';
         }
 
         $data = [
@@ -314,20 +316,20 @@ class games
                 if ($data[0] == '+') {
                     // Если значение в процентах
                     if (substr($data[1], -1) == '%') {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Наценка ' . $data[1] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Наценка ' . $data[1] . ')</option>';
                     } else {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Наценка ' . System::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Наценка ' . System::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
                     }
                 } else {
                     // Если значение в процентах
                     if (substr($data[1], -1) == '%') {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Скидка ' . $data[1] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Скидка ' . $data[1] . ')</option>';
                     } else {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Скидка ' . System::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Скидка ' . System::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
                     }
                 }
             } else {
-                $time .= '<option value="' . $value . '">' . games::parse_day($value) . '</option>';
+                $time .= '<option value="' . $value . '">' . Game::parse_day($value) . '</option>';
             }
         }
 
@@ -577,7 +579,7 @@ class games
         $days = intval($promo['value']);
 
         if (!$go) {
-            System::outjs(['days' => games::parse_day($days)]);
+            System::outjs(['days' => Game::parse_day($days)]);
         }
 
         return ['id' => $promo['id'], 'cod' => $cod, 'days' => $days];

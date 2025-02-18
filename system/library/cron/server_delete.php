@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\Model\Game;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -85,10 +87,8 @@ class server_delete extends cron
 
         $ssh->set('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
-        include(LIB . 'games/games.php');
-
         // Очистка правил FireWall
-        games::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
+        Game::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
 
         // Очистка правил FireWall GEO
         if ($server['ddos']) {

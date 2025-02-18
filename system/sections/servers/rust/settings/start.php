@@ -31,7 +31,6 @@ $unit = $sql->get();
 $sql->query('SELECT `install`, `tickrate`, `price` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-include(LIB . 'games/games.php');
 include(LIB . 'games/tarifs.php');
 include(LIB . 'games/' . $server['game'] . '/tarif.php');
 

@@ -17,12 +17,12 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-include(LIB . 'games/games.php');
 include(LIB . 'games/tarifs.php');
 include(LIB . 'games/' . $server['game'] . '/tarif.php');
 
@@ -51,7 +51,7 @@ $html->pack('main');
 if ($cfg['settlement_period']) {
     tarif::extend_sp($server, $tarif, $id);
 } else {
-    $options = games::parse_time($tarif['discount'], $server['tarif'], explode(':', $tarif['timext']), 'extend');
+    $options = Game::parse_time($tarif['discount'], $server['tarif'], explode(':', $tarif['timext']), 'extend');
 
     tarif::extend($options, $server, $tarif['name'], $id);
 }

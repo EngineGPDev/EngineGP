@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -31,13 +32,12 @@ $unit = $sql->get();
 $sql->query('SELECT `install`, `tickrate`, `price` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-include(LIB . 'games/games.php');
 include(LIB . 'games/tarifs.php');
 include(LIB . 'games/' . $server['game'] . '/tarif.php');
 
 // Вывод списка карт
 if (isset($url['maps'])) {
-    games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $server['map_start'], false);
+    Game::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $server['map_start'], false);
 }
 
 // Сохранение
@@ -49,7 +49,7 @@ if ($go and $url['save']) {
             $map = isset($url['value']) ? trim($url['value']) : System::outjs(['s' => 'ok'], $nmch);
 
             if ($map != $server['map_start']) {
-                games::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $map, true, $nmch);
+                Game::maplist($id, $unit, $tarif['install'] . $server['uid'] . '/cstrike/maps', $map, true, $nmch);
             }
 
             $mcache->delete('server_settings_' . $id);

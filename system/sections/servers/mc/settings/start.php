@@ -27,8 +27,6 @@ $html->nav('Параметры запуска');
 $sql->query('SELECT `uid`, `unit`, `slots`, `slots_start`, `java_version` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
-include(LIB . 'games/games.php');
-
 // Сохранение
 if ($go and $url['save']) {
     $value = isset($url['value']) ? System::int($url['value']) : System::outjs(['s' => 'ok'], $nmch);

@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -25,11 +26,9 @@ if (!defined('EGP')) {
 $html->nav('Блокировка на оборудовании');
 
 if (isset($url['action'])) {
-    include(LIB . 'games/games.php');
-
     // Получение информации адреса
     if ($url['action'] == 'info') {
-        games::iptables_whois($nmch);
+        Game::iptables_whois($nmch);
     }
 
     // Добавление / удаление правил
@@ -37,7 +36,7 @@ if (isset($url['action'])) {
         $address = isset($_POST['address']) ? trim($_POST['address']) : System::outjs(['e' => System::text('servers', 'firewall')], $nmch);
         $snw = isset($_POST['subnetwork']) ? true : false;
 
-        System::outjs(games::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
+        System::outjs(Game::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
     }
 }
 
