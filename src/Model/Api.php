@@ -16,13 +16,15 @@
  * limitations under the License.
  */
 
+namespace EngineGP\Model;
+
 use EngineGP\System;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-class api
+class Api
 {
     public static function data($id)
     {
