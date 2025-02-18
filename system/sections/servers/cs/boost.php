@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -81,10 +82,8 @@ if ($go) {
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-    include(LIB . 'games/games.php');
-
     // Реф. система
-    games::part($user['id'], $sum);
+    Game::part($user['id'], $sum);
 
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
         System::text('logs', 'buy_boost'),

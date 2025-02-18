@@ -17,12 +17,11 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
-
-include(LIB . 'games/games.php');
 
 // Обработка заказа
 if ($go) {
@@ -96,16 +95,16 @@ if ($sql->num()) {
             }
 
             System::outjs([
-                'sum' => games::define_sum($tarif['discount'], $tarif['price'], $aGet['slots'], $aGet['time']),
+                'sum' => Game::define_sum($tarif['discount'], $tarif['price'], $aGet['slots'], $aGet['time']),
             ]);
         }
 
         // Выхлоп цены с учетом промо-кода
         if ($url['get'] == 'promo') {
-            games::define_promo(
+            Game::define_promo(
                 $url['cod'],
                 $tarif['discount'],
-                games::define_sum($tarif['discount'], $tarif['price'], $aGet['slots'], $aGet['time']),
+                Game::define_sum($tarif['discount'], $tarif['price'], $aGet['slots'], $aGet['time']),
                 $aGet
             );
         }
@@ -121,7 +120,7 @@ if ($sql->num()) {
     if ($sql->num()) {
         $select_tarif = $sql->get();
 
-        $aTarif = games::parse_tarif($select_tarif, $select_unit);
+        $aTarif = Game::parse_tarif($select_tarif, $select_unit);
 
         if (isset($url['get'])) {
             // Выхлоп при выборе локации

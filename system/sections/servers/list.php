@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -63,8 +64,6 @@ if (is_array($mcache->get('aut_' . $user['id'])) and $mcache->get('nser_' . $use
     $mcache->set('nser_' . $user['id'], $n, false, 60);
 }
 
-include(LIB . 'games/games.php');
-
 $sql->query('SELECT '
     . '`id`,'
     . '`unit`,'
@@ -100,7 +99,7 @@ while ($server = $sql->get()) {
     $html->set('unit', $aUnits[$server['unit']]['name']);
     $html->set(
         'tarif',
-        games::info_tarif(
+        Game::info_tarif(
             $server['game'],
             $aTarifs[$server['tarif']]['name'],
             ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]

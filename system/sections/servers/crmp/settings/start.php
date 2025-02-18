@@ -25,8 +25,6 @@ if (!defined('EGP')) {
 $sql->query('SELECT `uid`, `slots`, `slots_start`, `autorestart` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
-include(LIB . 'games/games.php');
-
 // Сохранение
 if ($go and $url['save']) {
     $value = isset($url['value']) ? System::int($url['value']) : System::outjs(['s' => 'ok'], $nmch);

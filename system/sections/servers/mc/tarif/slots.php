@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -150,7 +151,7 @@ if ($go) {
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
     // Реф. система
-    games::part($user['id'], $sum);
+    Game::part($user['id'], $sum);
 
     $start = $server['slots_start'] == $server['slots'] ? ', `slots_start`="' . $slots_new . '"' : '';
 

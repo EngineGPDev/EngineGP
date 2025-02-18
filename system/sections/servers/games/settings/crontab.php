@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -82,14 +83,12 @@ if ($go) {
     $sql->query('INSERT INTO `crontab` set `server`="' . $id . '"');
     $cid = $sql->id();
 
-    include(LIB . 'games/games.php');
-
-    $cron_rule = games::crontab($id, $cid, $data);
+    $cron_rule = Game::crontab($id, $cid, $data);
 
     $ssh->set('(crontab -l; echo "' . $cron_rule . '") | crontab -');
 
-    $time = games::crontab_time($data['allhour'], $data['hour'], $data['minute']);
-    $week = games::crontab_week($data['week']);
+    $time = Game::crontab_time($data['allhour'], $data['hour'], $data['minute']);
+    $week = Game::crontab_week($data['week']);
 
     $sql->query('UPDATE `crontab` set `server`="' . $id . '", `task`="' . $data['task'] . '", `cron`="' . $cron_rule . '", `week`="' . $week . '", `time`="' . $time . '", `commands`="' . $data['commands'] . '" WHERE `id`="' . $cid . '" LIMIT 1');
 

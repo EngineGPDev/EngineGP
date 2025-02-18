@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -63,7 +64,7 @@ if ($go) {
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $add['price']) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
     // Реф. система
-    games::part($user['id'], $add['price']);
+    Game::part($user['id'], $add['price']);
 
     // Обновление информации
     $sql->query('UPDATE `address` set `buy`="1" WHERE `id`="' . $aid . '" LIMIT 1');
@@ -75,7 +76,7 @@ if ($go) {
     $port = explode(':', $server['address']);
 
     // Очистка правил FireWall
-    games::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
+    Game::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
 
     // Запись логов
     $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(

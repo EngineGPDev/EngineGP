@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -58,13 +59,13 @@ if ($cfg['settlement_period']) {
 }
 
 // Цена аренды
-$sum = games::define_sum($tarif['discount'], $price, $server['slots'], $aData['time'], 'extend') + $add_sum;
+$sum = Game::define_sum($tarif['discount'], $price, $server['slots'], $aData['time'], 'extend') + $add_sum;
 
 // Если расчетный период
 if ($cfg['settlement_period']) {
-    $aData['time'] = games::define_period('extend', params::$aDayMonth, $server['time']);
+    $aData['time'] = Game::define_period('extend', params::$aDayMonth, $server['time']);
 }
 
-$days = params::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : games::parse_day($aData['time'], true);
+$days = params::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : Game::parse_day($aData['time'], true);
 
 include(SEC . 'servers/games/tarif/extend.php');

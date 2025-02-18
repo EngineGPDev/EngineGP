@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -26,7 +27,7 @@ $promo = false;
 
 // Цена аренды за выбранный период (promo -> с учетом промо-кода)
 if (isset($url['promo']) || $aData['promo'] != '') {
-    $promo = games::define_promo(
+    $promo = Game::define_promo(
         $aData['promo'],
         $tarif['discount'],
         $sum,
@@ -55,7 +56,7 @@ if ($go) {
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
     // Реф. система
-    games::part($user['id'], $sum);
+    Game::part($user['id'], $sum);
 
     $status = $server['status'] == 'overdue' ? '`status`="off",' : '';
 

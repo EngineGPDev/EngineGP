@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -135,15 +136,15 @@ class service
         // Определение суммы
         if ($cfg['settlement_period']) {
             // Цена аренды за расчетный период
-            $sum = games::define_sum($tarif['discount'], $price, $aData['slots'], $start_point);
+            $sum = Game::define_sum($tarif['discount'], $price, $aData['slots'], $start_point);
 
-            $aData['time'] = games::define_period('buy', params::$aDayMonth);
+            $aData['time'] = Game::define_period('buy', params::$aDayMonth);
         } else {
-            $sum = games::define_sum($tarif['discount'], $price, $aData['slots'], $aData['time']);
+            $sum = Game::define_sum($tarif['discount'], $price, $aData['slots'], $aData['time']);
         }
 
         // Проверка промо-кода
-        $promo = games::define_promo(
+        $promo = Game::define_promo(
             $aData['promo'],
             $tarif['discount'],
             $sum,
@@ -222,9 +223,9 @@ class service
         }
 
         if ($test) {
-            $aData['time'] = games::time($start_point, $tarif['test']);
+            $aData['time'] = Game::time($start_point, $tarif['test']);
         } else {
-            $aData['time'] = games::time($start_point, $days);
+            $aData['time'] = Game::time($start_point, $days);
         }
 
         // Массив данных
@@ -356,15 +357,15 @@ class service
             $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server_test'), ['id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="0"');
         } else {
             // Реф. система
-            games::part($user['id'], $aSDATA['sum']);
+            Game::part($user['id'], $aSDATA['sum']);
 
             // Запись логов
             if (!is_array($aSDATA['promo'])) {
-                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server'), ['days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
+                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server'), ['days' => Game::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             } else {
                 $sql->query('UPDATE `servers` set `benefit`="' . $aSDATA['time'] . '" WHERE `id`="' . $id . '" LIMIT 1');
                 $sql->query('INSERT INTO `promo_use` set `promo`="' . $aSDATA['promo']['id'] . '", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server_promo'), ['days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
+                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server_promo'), ['days' => Game::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             }
         }
 

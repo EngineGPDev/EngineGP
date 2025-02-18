@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -269,12 +270,10 @@ class web
         $web = $sql->get($stack);
 
         // Проверка времени последнего обновления
-        include(LIB . 'games/games.php');
-
         $upd = $web['update'] + 86400;
 
         if ($upd > $start_point) {
-            System::outjs(['e' => 'Для повторного обновления должно пройти: ' . games::date('max', $upd)]);
+            System::outjs(['e' => 'Для повторного обновления должно пройти: ' . Game::date('max', $upd)]);
         }
 
         include(LIB . 'ssh.php');

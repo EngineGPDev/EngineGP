@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -42,10 +43,8 @@ class update_address extends cron
                 $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
                 $unit = $sql->get();
 
-                include(LIB . 'games/games.php');
-
                 // Очистка правил FireWall
-                games::iptables($add_buy['server'], 'remove', null, null, null, $server['unit'], false);
+                Game::iptables($add_buy['server'], 'remove', null, null, null, $server['unit'], false);
 
                 $sql->query('UPDATE `servers` set `address`="' . (System::first(explode(':', $unit['address']))) . ':' . $server['port'] . '" WHERE `id`="' . $add_buy['server'] . '" LIMIT 1');
 

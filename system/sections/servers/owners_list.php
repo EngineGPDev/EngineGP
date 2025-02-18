@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -107,7 +108,7 @@ while ($owner = $sql->get($owners)) {
         $html->set('unit', $aUnits[$server['unit']]['name']);
         $html->set(
             'tarif',
-            games::info_tarif(
+            Game::info_tarif(
                 $server['game'],
                 $aTarifs[$server['tarif']]['name'],
                 ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]

@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -32,14 +33,13 @@ $html->pack('types');
 $type = false;
 
 include(DATA . 'maps.php');
-include(LIB . 'games/games.php');
 
 if (isset($url['type']) and array_key_exists($url['type'], $aFindMap[$server['game']])) {
     $type = $url['type'];
 }
 
 if ($type) {
-    $qsql = games::mapsql($aFindMap[$server['game']][$type]);
+    $qsql = Game::mapsql($aFindMap[$server['game']][$type]);
 
     $all = $mcache->get('maps_' . $server['game'] . '_' . $type);
 
