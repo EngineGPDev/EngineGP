@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\User;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -56,7 +57,6 @@ $aGroup = [
 ];
 
 include(LIB . 'help.php');
-include(LIB . 'users.php');
 
 $aSender = [];
 
@@ -142,7 +142,7 @@ while ($dialog = $sql->get($dialogs)) {
     $html->set('uid', $dialog['user']);
     $html->set('help', $id);
     $html->set('home', $cfg['http']);
-    $html->set('ava', users::ava($dialog['user']));
+    $html->set('ava', User::ava($dialog['user']));
     $html->set('text', $dialog['text']);
 
     if ($tHelp) {

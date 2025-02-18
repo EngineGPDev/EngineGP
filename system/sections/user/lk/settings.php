@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\User;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -66,7 +67,7 @@ if (isset($url['action']) and in_array($url['action'], ['upload', 'news', 'help'
 $html->get('settings', 'sections/user/lk');
 
 $html->set('id', $user['id']);
-$html->set('ava', users::ava($user['id']));
+$html->set('ava', User::ava($user['id']));
 
 if ($user['notice_news']) {
     $html->unit('notice_news', true);
