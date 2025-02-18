@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -61,7 +62,7 @@ if ($mcache->get('server_copy_' . $id) != '') {
     $html->arr['main'] = $mcache->get('server_copy_' . $id);
 } else {
     // Построение списка создания копии
-    foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
+    foreach (Parameters::$section_copy[$server['game']]['aCopy'] as $name => $info) {
         $html->get('list', 'sections/servers/games/copy');
 
         $html->set('name', $name);

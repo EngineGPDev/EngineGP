@@ -17,6 +17,7 @@
  */
 
 use EngineGP\AdminSystem;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -103,7 +104,7 @@ while ($logs = $sql->get()) {
     $money_buy += $logs['money'];
 }
 
-$time = (params::$aDayMonth[date('n', $start_point)] - date('j', $start_point)) * 86400;
+$time = (Parameters::$aDayMonth[date('n', $start_point)] - date('j', $start_point)) * 86400;
 
 $sql->query('SELECT `money` FROM `logs` WHERE `user`="' . $us['id'] . '" AND (`type`="buy" OR `type`="extend") AND `date`>"' . ($start_point - $time) . '"');
 while ($logs = $sql->get()) {
@@ -119,7 +120,7 @@ foreach ($us as $i => $val) {
 $html->set('time', $us['time'] < $start_point - 600 ? AdminSystem::today($us['time']) : AdminSystem::ago($us['time']));
 $html->set('date', AdminSystem::today($us['date']));
 
-$html->set('month', mb_strtolower(params::$aNameMonth[AdminSystem::int(date('n', $start_point))], 'UTF-8'));
+$html->set('month', mb_strtolower(Parameters::$aNameMonth[AdminSystem::int(date('n', $start_point))], 'UTF-8'));
 $html->set('money_all', $money_all);
 $html->set('money_buy', $money_buy);
 $html->set('money_extend', $money_all - $money_buy);

@@ -306,11 +306,11 @@ class Game
 
         $time = '';
 
-        $arr = isset(params::$disconunt['service'][$tarif]) ? $tarif : 'time';
+        $arr = isset(Parameters::$disconunt['service'][$tarif]) ? $tarif : 'time';
 
         foreach ($aTime as $value) {
-            if (array_key_exists($value, params::$disconunt['service'][$arr][$type]) and $discount) {
-                $data = explode(':', params::$disconunt['service'][$arr][$type][$value]);
+            if (array_key_exists($value, Parameters::$disconunt['service'][$arr][$type]) and $discount) {
+                $data = explode(':', Parameters::$disconunt['service'][$arr][$type][$value]);
 
                 // Если наценка
                 if ($data[0] == '+') {
@@ -368,7 +368,7 @@ class Game
             $day = $type == 'extend' ? date('d', $time) : date('d', $start_point);
             $month = $type == 'extend' ? date('n', $time) : date('n', $start_point);
 
-            $period = params::$aDayMonth[$month] + 1 - $day;
+            $period = Parameters::$aDayMonth[$month] + 1 - $day;
 
             $new_month_sum = 0;
 
@@ -376,12 +376,12 @@ class Game
                 $new_month_sum = ceil($price * $slots);
             }
 
-            $sum = params::$aDayMonth[$month] == $period ? $price * $slots : floor($price * $slots / 30 * $period) + $new_month_sum;
+            $sum = Parameters::$aDayMonth[$month] == $period ? $price * $slots : floor($price * $slots / 30 * $period) + $new_month_sum;
         } else {
             $sum = floor($price * $slots / 30 * $time);
 
-            if (array_key_exists($time, params::$disconunt['service']['time'][$type]) and $discount) {
-                $data = explode(':', params::$disconunt['service']['time'][$type][$time]);
+            if (array_key_exists($time, Parameters::$disconunt['service']['time'][$type]) and $discount) {
+                $data = explode(':', Parameters::$disconunt['service']['time'][$type][$time]);
 
                 // Если наценка
                 if ($data[0] == '+') {
@@ -545,8 +545,8 @@ class Game
         if ($promo['discount']) {
             // Если не суммировать скидки
             if (!$cfg['promo_discount']) {
-                if (array_key_exists($data['time'], params::$disconunt['service']['time'][$type]) and $discount) {
-                    $data = explode(':', params::$disconunt['service']['time'][$type][$data['time']]);
+                if (array_key_exists($data['time'], Parameters::$disconunt['service']['time'][$type]) and $discount) {
+                    $data = explode(':', Parameters::$disconunt['service']['time'][$type][$data['time']]);
 
                     // Если скидка
                     if ($data[0] == '-') {

@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -33,8 +34,8 @@ $aData = [];
 $aData['server'] = System::int($url['server']);
 $aData['type'] = $url['subsection'];
 $aData['user'] = $server['user'];
-$aData['file'] = params::$aDirGame[$server['game']] . '/addons/sourcemod/configs/databases.cfg';
-$aData['cfg'] = params::$aDirGame[$server['game']] . '/cfg/server.cfg';
+$aData['file'] = Parameters::$aDirGame[$server['game']] . '/addons/sourcemod/configs/databases.cfg';
+$aData['cfg'] = Parameters::$aDirGame[$server['game']] . '/cfg/server.cfg';
 
 $aData['orcfg'] = [];
 $aData['orsql'] = [];

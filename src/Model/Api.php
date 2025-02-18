@@ -19,7 +19,6 @@
 namespace EngineGP\Model;
 
 use EngineGP\System;
-use EngineGP\Model\Game;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));

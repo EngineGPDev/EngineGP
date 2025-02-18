@@ -16,11 +16,13 @@
  * limitations under the License.
  */
 
+namespace EngineGP\Model;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-class params
+class Parameters
 {
     // Скидки / Наценки
     public static $disconunt = [

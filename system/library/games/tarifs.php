@@ -18,6 +18,7 @@
 
 use EngineGP\System;
 use EngineGP\Model\Game;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -41,7 +42,7 @@ class tarifs
         $ip_buy = array_merge($ip_buy, $sql->get());
 
         $html->get('extend_address', 'sections/servers/games/tarif');
-        $html->set('address', $ip_buy['ip'] . ':' . params::$aDefPort[$game]);
+        $html->set('address', $ip_buy['ip'] . ':' . Parameters::$aDefPort[$game]);
         $html->set('iptime', System::date('max', $ip_buy['time']));
         $html->set('ipprice', $ip_buy['price']);
         $html->set('cur', $cfg['currency']);
@@ -73,7 +74,7 @@ class tarifs
         }
 
         while ($ip = $sql->get()) {
-            $options .= '<option value="' . $ip['id'] . '">' . $ip['ip'] . ':' . params::$aDefPort[$server['game']] . '</option>';
+            $options .= '<option value="' . $ip['id'] . '">' . $ip['ip'] . ':' . Parameters::$aDefPort[$server['game']] . '</option>';
         }
 
         $html->get('address', 'sections/servers/games/tarif');

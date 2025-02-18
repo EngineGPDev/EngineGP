@@ -18,6 +18,7 @@
 
 use EngineGP\System;
 use EngineGP\Model\Game;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -139,7 +140,7 @@ class service
             // Цена аренды за расчетный период
             $sum = Game::define_sum($tarif['discount'], $price, $aData['slots'], $start_point);
 
-            $aData['time'] = Game::define_period('buy', params::$aDayMonth);
+            $aData['time'] = Game::define_period('buy', Parameters::$aDayMonth);
         } else {
             $sum = Game::define_sum($tarif['discount'], $price, $aData['slots'], $aData['time']);
         }
@@ -179,7 +180,7 @@ class service
             $aIp = explode(':', $tarif['ip']);
 
             $ip = false;
-            $port = params::$aDefPort['rust'];
+            $port = Parameters::$aDefPort['rust'];
 
             // Проверка наличия свободного адреса
             foreach ($aIp as $adr) {
@@ -332,7 +333,7 @@ class service
             . 'cd ' . $install . ' && sudo -u server' . $uid . ' tmux new-session -ds i_' . $uid . ' sh -c "cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . params::$aFileGame['rust'] . '"');
+            . 'chmod 500 ' . Parameters::$aFileGame['rust'] . '"');
 
         // Запись данных нового сервера
         $sql->query('UPDATE `servers` set

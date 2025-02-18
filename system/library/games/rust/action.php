@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -130,7 +131,7 @@ class action extends actions
             . 'chown -R server' . $server['uid'] . ':servers .;'
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
+            . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . '"');
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '" WHERE `id`="' . $id . '" LIMIT 1');

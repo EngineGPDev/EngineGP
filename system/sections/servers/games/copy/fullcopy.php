@@ -17,19 +17,20 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" AND `info`="' . params::$section_copy[$server['game']]['CopyFull'] . '" LIMIT 1');
+$sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" AND `info`="' . Parameters::$section_copy[$server['game']]['CopyFull'] . '" LIMIT 1');
 if ($sql->num()) {
     System::outjs(['e' => 'Для создания новой копии необходимо удалить старую.'], $nmch);
 }
 
 $name_copy = md5($start_point . $id . $server['game']);
 
-$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds copy_' . $server['uid'] . ' sh -c "tar -cf ' . $name_copy . '.tar ' . params::$section_copy[$server['game']]['CopyFull'] . '; mv ' . $name_copy . '.tar /copy"');
+$ssh->set('cd ' . $tarif['install'] . $server['uid'] . ' && tmux new-session -ds copy_' . $server['uid'] . ' sh -c "tar -cf ' . $name_copy . '.tar ' . Parameters::$section_copy[$server['game']]['CopyFull'] . '; mv ' . $name_copy . '.tar /copy"');
 
 $plugins = '';
 
@@ -38,7 +39,7 @@ while ($plugin = $sql->get()) {
     $plugins .= $plugin['plugin'] . '.' . $plugin['upd'] . ',';
 }
 
-$sql->query('INSERT INTO `copy` set `user`="' . $server['user'] . '_' . $server['unit'] . '", `game`="' . $server['game'] . '", `server`="' . $id . '", `pack`="' . $server['pack'] . '", `name`="' . $name_copy . '", `info`="' . params::$section_copy[$server['game']]['CopyFull'] . '",  `plugins`="' . substr($plugins, 0, -1) . '", `date`="' . $start_point . '", `status`="0"');
+$sql->query('INSERT INTO `copy` set `user`="' . $server['user'] . '_' . $server['unit'] . '", `game`="' . $server['game'] . '", `server`="' . $id . '", `pack`="' . $server['pack'] . '", `name`="' . $name_copy . '", `info`="' . Parameters::$section_copy[$server['game']]['CopyFull'] . '",  `plugins`="' . substr($plugins, 0, -1) . '", `date`="' . $start_point . '", `status`="0"');
 
 // Очистка кеша
 $mcache->delete('server_copy_' . $id);

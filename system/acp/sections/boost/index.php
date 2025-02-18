@@ -17,6 +17,7 @@
  */
 
 use EngineGP\AdminSystem;
+use EngineGP\Model\Parameters;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -64,7 +65,7 @@ if (!is_array($aData)) {
 
     $now = $start_point - (date('d', $start_point) * 86400);
 
-    $old = $start_point - (params::$aDayMonth[$month] * 86400);
+    $old = $start_point - (Parameters::$aDayMonth[$month] * 86400);
 
     $sql->query('SELECT SUM(`circles`), SUM(`money`) FROM `boost` WHERE `date`>="' . $old . '" AND date<"' . $now . '"');
     $data = $sql->get();
@@ -85,8 +86,8 @@ $html->get('index', 'sections/boost');
 
 $html->set('list', $list);
 
-$html->set('month_old', params::$aNameMonth[$month]);
-$html->set('month_now', params::$aNameMonth[date('n', $start_point)]);
+$html->set('month_old', Parameters::$aNameMonth[$month]);
+$html->set('month_now', Parameters::$aNameMonth[date('n', $start_point)]);
 
 $html->set('all_num', $aData['all_num']);
 $html->set('all_sum', $aData['all_sum']);
