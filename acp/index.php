@@ -17,6 +17,7 @@
  */
 
 use EngineGP\AdminSystem;
+use EngineGP\View\Html;
 use Symfony\Component\Dotenv\Dotenv;
 
 header('Content-Type: text/html; charset=utf-8');
@@ -57,10 +58,14 @@ define('LIB', SYS . 'library/');
 define('ENG', SYS . 'acp/engine/');
 define('SEC', SYS . 'acp/sections/');
 
+// Declaring variables
 $start_point = $_SERVER['REQUEST_TIME'];
-
 $mcache = new Memcache();
-$mcache->connect('127.0.0.1', 11211) or exit('Ошибка подключения Memcache');
+$html = new Html();
+$uip = AdminSystem::ip();
+
+// Connecting to memcache
+$mcache->connect('127.0.0.1', 11211) or exit('Error connecting to Memcache server.');
 
 // Настройки
 include(DATA . 'config.php');
@@ -69,9 +74,6 @@ include(DATA . 'acpengine.php');
 
 // Библиотеки
 include(LIB . 'sql.php');
-include(LIB . 'html.php');
-
-$uip = AdminSystem::ip();
 
 // Распределитель
 include(ACP . 'distributor.php');
