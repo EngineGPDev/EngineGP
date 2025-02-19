@@ -16,11 +16,13 @@
  * limitations under the License.
  */
 
+namespace EngineGP\Model;
+
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
-class smtp
+class MailTransport
 {
     public function send($mailTo, $subject, $message)
     {
