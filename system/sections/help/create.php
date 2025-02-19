@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\View\Help;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -94,10 +95,8 @@ if ($go) {
         System::outjs(['e' => 'Длина сообщения не должна быть менее 10 и не превышать 1000 символов.'], $nmch);
     }
 
-    include(LIB . 'help.php');
-
     // Обработка сообщения
-    $aData['text'] = help::text($aData['text']);
+    $aData['text'] = Help::text($aData['text']);
 
     // Проверка изображений
     if (is_array($aData['images']) and count($aData['images'])) {
