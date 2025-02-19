@@ -24,10 +24,6 @@ use Symfony\Component\Mime\Email;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-if (!defined('EGP')) {
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
-}
-
 class System
 {
     public static function url($all = true)
