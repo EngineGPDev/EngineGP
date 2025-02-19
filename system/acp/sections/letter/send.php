@@ -17,6 +17,7 @@
  */
 
 use EngineGP\AdminSystem;
+use EngineGP\Model\MailTransport;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -40,8 +41,6 @@ if (!is_array($aData['users']) || !count($aData['users'])) {
 
 $noletter = '';
 
-include(LIB . 'smtp.php');
-
 foreach ($aData['users'] as $id => $cheked) {
     if ($cheked != 'on') {
         continue;
@@ -58,7 +57,7 @@ foreach ($aData['users'] as $id => $cheked) {
         $tpl
     );
 
-    $smtp = new smtp();
+    $smtp = new MailTransport();
 
     if (!$smtp->send($us['mail'], strip_tags($aData['title']), $text)) {
         $noletter .= '<p>' . $us['mail'] . '</p>';
