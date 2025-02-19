@@ -17,6 +17,7 @@
  */
 
 use EngineGP\AdminSystem;
+use EngineGP\Infrastructure\GeoIP\SxGeo;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -31,8 +32,6 @@ $sql->query('SELECT `id` FROM `users` WHERE `time`>"' . ($start_point - 180) . '
 $aPage = AdminSystem::page($page, $sql->num(), 20);
 
 AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users/section');
-
-include(LIB . 'geo.php');
 
 $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 

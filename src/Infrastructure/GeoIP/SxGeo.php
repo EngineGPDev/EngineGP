@@ -16,9 +16,7 @@
  * limitations under the License.
  */
 
-if (!defined('EGP')) {
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
-}
+namespace EngineGP\Infrastructure\GeoIP;
 
 define('SXGEO_FILE', 0);
 define('SXGEO_MEMORY', 1);

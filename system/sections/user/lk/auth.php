@@ -17,12 +17,12 @@
  */
 
 use EngineGP\System;
+use EngineGP\Infrastructure\GeoIP\SxGeo;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-include(LIB . 'geo.php');
 $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
 // Генерация списка авторизаций

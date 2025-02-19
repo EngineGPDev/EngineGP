@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Infrastructure\GeoIP\SxGeo;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -126,8 +127,6 @@ if (isset($url['action']) and in_array($url['action'], ['on', 'off', 'on_code', 
             if (System::valid($address, 'ip')) {
                 System::outjs(['e' => 'Указанный адрес имеет неверный формат.']);
             }
-
-            include(LIB . 'geo.php');
 
             $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 

@@ -19,6 +19,7 @@
 namespace EngineGP\Model;
 
 use EngineGP\System;
+use EngineGP\Infrastructure\GeoIP\SxGeo;
 
 class Game
 {
@@ -729,8 +730,6 @@ class Game
         if (System::valid($address, 'ip')) {
             System::outjs(['e' => System::text('servers', 'firewall')], $mcache);
         }
-
-        include(LIB . 'geo.php');
 
         $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 

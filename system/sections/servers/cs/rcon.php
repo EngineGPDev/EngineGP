@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Infrastructure\GeoIP\SxGeo;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -37,7 +38,6 @@ if ($go) {
         System::outjs(['s' => 'ok']);
     }
 
-    include(LIB . 'geo.php');
     $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
     $aPlayers = rcon::players(rcon::cmd(array_merge($server, ['id' => $id])));
