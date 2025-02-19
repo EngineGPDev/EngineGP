@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Model\Ftp;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -83,9 +84,7 @@ if (end($frouter) == 'noaccess.php') {
                 System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
             }
         } else {
-            include(LIB . 'ftp.php');
-
-            $ftp = new ftp();
+            $ftp = new Ftp();
 
             // Проверка соединения с ftp сервером
             if (!$ftp->auth($aData['host'], $aData['login'], $aData['passwd'])) {
@@ -213,9 +212,7 @@ if (end($frouter) == 'noaccess.php') {
                     $logs = $mcache->get('filetp_logs_' . $id);
 
                     if (!$logs) {
-                        include(LIB . 'ftp.php');
-
-                        $ftp = new ftp();
+                        $ftp = new Ftp();
 
                         $logs = $ftp->logs($ssh->get('cat /var/log/proftpd/xferlog | grep "/' . $server['uid'] . '/" | awk \'{print $2"\\\"$3"\\\"$4"\\\"$5"\\\"$7"\\\"$8"\\\"$9"\\\"$12}\' | tail -50'), $server['uid']);
 
