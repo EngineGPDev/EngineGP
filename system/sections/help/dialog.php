@@ -18,6 +18,7 @@
 
 use EngineGP\System;
 use EngineGP\Model\User;
+use EngineGP\View\Help;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -55,8 +56,6 @@ $aGroup = [
     'support' => 'Техническая поддержка',
     'user' => 'Клиент',
 ];
-
-include(LIB . 'help.php');
 
 $aSender = [];
 
@@ -146,9 +145,9 @@ while ($dialog = $sql->get($dialogs)) {
     $html->set('text', $dialog['text']);
 
     if ($tHelp) {
-        $html->set('time', $dialog['time'] < ($start_point - 600) ? System::today($dialog['time']) : help::ago($dialog['time']));
+        $html->set('time', $dialog['time'] < ($start_point - 600) ? System::today($dialog['time']) : Help::ago($dialog['time']));
     } else {
-        $html->set('time', System::today($dialog['time']) . ' ' . help::ago($dialog['time'], true));
+        $html->set('time', System::today($dialog['time']) . ' ' . Help::ago($dialog['time'], true));
     }
 
     if (isset($html->arr['attachment'])) {

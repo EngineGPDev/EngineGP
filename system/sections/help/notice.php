@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\View\Help;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -56,14 +57,12 @@ if (strip_tags($msg['text'], '<br>,<p>') != $msg['text']) {
     System::outjs(['reply' => '']);
 }
 
-include(LIB . 'help.php');
-
 $html->get('notice', 'sections/help');
 
 $html->set('id', $help['id']);
 $html->set('home', $cfg['http']);
 $html->set('text', $msg['text']);
-$html->set('ago', help::ago($msg['time']));
+$html->set('ago', Help::ago($msg['time']));
 
 $html->pack('notice');
 
