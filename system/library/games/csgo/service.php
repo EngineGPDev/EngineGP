@@ -19,6 +19,7 @@
 use EngineGP\System;
 use EngineGP\Model\Game;
 use EngineGP\Model\Parameters;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -267,20 +268,15 @@ class service
     {
         global $cfg, $sql, $user, $start_point;
 
-        include(LIB . 'ssh.php');
-
         // Массив данных локации (адрес,пароль)
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $aSDATA['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        // Проверка ssh соединения с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            System::outjs(['e' => System::text('error', 'ssh')]);
-        }
-
         // Массив данных тарифа (путь сборки,путь установки)
         $sql->query('SELECT `path`, `install`, `hostname` FROM `tarifs` WHERE `id`="' . $aSDATA['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
+
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
         // Получение идентификаторов игрового сервера
         $sql->query('INSERT INTO `servers` set uid="1"');
@@ -293,7 +289,7 @@ class service
         // Директория игрового сервера
         $install = $tarif['install'] . $uid;
 
-        $ssh->set('mkdir ' . $install . ';' // Создание директории
+        $sshClient->execute('mkdir ' . $install . ';' // Создание директории
             . 'useradd -s /bin/false -d ' . $install . ' -g servers -u ' . $uid . ' server' . $uid . ';' // Создание пользователя сервера на локации
             . 'chown server' . $uid . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u server' . $uid . ' tmux new-session -ds i_' . $uid . ' sh -c "cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
@@ -370,6 +366,8 @@ class service
                 $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server_promo'), ['days' => Game::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             }
         }
+
+        $sshClient->disconnect();
 
         return $id;
     }

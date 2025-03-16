@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
 use xPaw\SourceQuery\SourceQuery;
 
 if (!defined('EGP')) {
@@ -95,25 +96,23 @@ class rcon
     {
         global $cfg, $sql, $user, $nmch;
 
-        include(LIB . 'ssh.php');
-
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
-
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            System::outjs(['e' => System::text('error', 'ssh')]);
-        }
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        $ssh->set('cat ' . $tarif['install'] . '/' . $server['uid'] . '/cstrike/cfg/server.cfg | grep rcon_password');
-        $get = explode(' ', str_replace('"', '', trim($ssh->get())));
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+
+        $output = $sshClient->execute('cat ' . $tarif['install'] . '/' . $server['uid'] . '/cstrike/cfg/server.cfg | grep rcon_password');
+        $get = explode(' ', str_replace('"', '', trim($output)));
         $rcon = trim(end($get));
 
         if (!isset($rcon[0])) {
             System::outjs(['r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'], $nmch);
         }
+
+        $sshClient->disconnect();
 
         return $rcon;
     }
