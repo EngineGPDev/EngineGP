@@ -17,6 +17,7 @@
  */
 
 use EngineGP\System;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -190,10 +191,7 @@ class tarif extends tarifs
     {
         global $ssh, $sql, $user, $start_point;
 
-        // Проверка ssh соединения с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            System::outjs(['e' => System::text('error', 'ssh')]);
-        }
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
         // Директория сборки
         $path = $tarif['path'] . $tarif['pack'];
@@ -204,7 +202,7 @@ class tarif extends tarifs
         // Пользователь сервера
         $uS = 'server' . $server['uid'];
 
-        $ssh->set('mkdir ' . $install . ';' // Создание директории
+        $sshClient->execude('mkdir ' . $install . ';' // Создание директории
             . 'useradd -d ' . $install . ' -g servers -u ' . $server['uid'] . ' ' . $uS . ';' // Создание пользователя сервера на локации
             . 'chown ' . $uS . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' tmux new-session -ds i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
@@ -240,6 +238,8 @@ class tarif extends tarifs
                 }
             }
         }
+
+        $sshClient->disconnect();
 
         return null;
     }
