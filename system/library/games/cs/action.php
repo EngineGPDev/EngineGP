@@ -19,7 +19,7 @@
 use EngineGP\System;
 use EngineGP\Infrastructure\RemoteAccess\SshClient;
 use EngineGP\Infrastructure\RemoteAccess\SftpClient;
-use EngineGP\Infrastructure\Network\InternalIPFetcher;
+use EngineGP\Infrastructure\Network\InternalIpFetcher;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
