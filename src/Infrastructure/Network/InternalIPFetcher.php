@@ -35,7 +35,7 @@ class InternalIpFetcher
     /**
      * Receives IPv4.
      *
-     * @return string|null
+     * @return string
      * @throws \Exception
      */
     public function getInternalIp(): string
