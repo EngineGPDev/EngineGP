@@ -25,7 +25,6 @@ use EngineGP\Infrastructure\RemoteAccess\SshClient;
  */
 class InternalIpFetcher
 {
-    private array $alternativeInterfaces = ['enp3s0', 'enp0s31f6', 'enp0s3', 'ens3', 'eth0'];
     private SshClient $sshClient;
 
     public function __construct(SshClient $sshClient)
@@ -33,14 +32,21 @@ class InternalIpFetcher
         $this->sshClient = $sshClient;
     }
 
-    public function getInternalIp()
+    /**
+     * Receives IPv4.
+     *
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getInternalIp(): string
     {
-        foreach ($this->alternativeInterfaces as $interface) {
-            $command = "ip addr show $interface 2>/dev/null | grep 'inet ' | awk '{print \$2}' | cut -d/ -f1";
-            $internalIP = $this->sshClient->execute($command, false);
-            if (!empty(trim($internalIP))) {
-                return trim($internalIP);
-            }
+        $command = "ip -o -4 addr show | awk '\$2 != \"lo\" {split(\$4, a, \"/\"); print a[1]}'";
+        $internalIP = $this->sshClient->execute($command, false);
+
+        if (empty(trim($internalIP))) {
+            throw new \Exception("Failed to retrieve internal IP");
         }
+
+        return $internalIP;
     }
 }
