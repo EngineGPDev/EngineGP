@@ -40,10 +40,10 @@ class InternalIpFetcher
      */
     public function getInternalIp(): string
     {
-        $command = "ip -o -4 addr show | awk '\$2 != \"lo\" {split(\$4, a, \"/\"); print a[1]}'";
-        $internalIP = $this->sshClient->execute($command, false);
+        $command = "ip -o -4 addr show | awk '\$2 != \"lo\" {split(\$4, a, \"/\"); print a[1]}' | head -n 1";
+        $internalIP = trim($this->sshClient->execute($command, false));
 
-        if (empty(trim($internalIP))) {
+        if (empty($internalIP)) {
             throw new \Exception("Failed to retrieve internal IP");
         }
 
