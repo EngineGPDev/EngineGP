@@ -633,28 +633,6 @@ class AdminSystem
         return $data['country']['name_ru'] != '' ? $data['country']['name_ru'] : 'не определена';
     }
 
-    public static function ipproxy()
-    {
-        global $_SERVER;
-
-        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            return $_SERVER['HTTP_CF_CONNECTING_IP'];
-        }
-
-        return null;
-    }
-
-    public static function ip()
-    {
-        $ip = AdminSystem::ipproxy();
-
-        if (AdminSystem::valid($ip, 'ip')) {
-            return $_SERVER['REMOTE_ADDR'];
-        }
-
-        return $ip;
-    }
-
     public static function status($data)
     {
         if (strpos($data, 'is running') || strpos($data, '(running)')) {
