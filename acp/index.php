@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
+use EngineGP\System;
 use EngineGP\View\Html;
 use Symfony\Component\Dotenv\Dotenv;
 
@@ -62,7 +62,7 @@ define('SEC', SYS . 'acp/sections/');
 $start_point = $_SERVER['REQUEST_TIME'];
 $mcache = new Memcache();
 $html = new Html();
-$uip = AdminSystem::ip();
+$uip = System::ip();
 
 // Connecting to memcache
 $mcache->connect('127.0.0.1', 11211) or exit('Error connecting to Memcache server.');
