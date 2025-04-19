@@ -9,18 +9,18 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0 || ^8.1 || ^8.2",
+    "php": "^7.4 || ^8.0",
     "ext-memcache": "*",
     "symfony/dotenv": "^5.4",
     "symfony/mailer": "^5.4",
-    "filp/whoops": "^2.16",
-    "monolog/monolog": "^2.9",
+    "filp/whoops": "^2.18",
+    "monolog/monolog": "^2.10",
     "phpseclib/phpseclib": "^3.0",
     "enginegp/gameq": "^3.1",
     "szymach/c-pchart": "^3.0",
     "firebase/php-jwt": "^6.10",
-    "yoomoney/yookassa-sdk-php": "^2.11",
-    "altorouter/altorouter": "^2.0.3"
+    "yoomoney/yookassa-sdk-php": "^2.12",
+    "altorouter/altorouter": "^2.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.64"
