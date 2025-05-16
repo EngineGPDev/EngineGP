@@ -34,8 +34,9 @@ if ($go) {
     $tarif = $sql->get();
 
     if (isset($server['status']) && $server['status'] == 'off') {
-        sys::out(sys::text('servers', 'off'));
+        System::out(System::text('servers', 'off'));
     }
+
     $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
     $dir = $tarif['install'] . $server['uid'] . '/';

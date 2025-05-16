@@ -29,6 +29,17 @@ if ($go) {
 
     $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
+    $aData = [
+        'verPanel' => '4.0.0-snapshot',
+        'cpu' => '0%',
+        'ram' => '0%',
+        'hdd' => '0%',
+        'nginx' => 'error',
+        'mysql' => 'error',
+        'uptime' => 'error',
+        'ssh' => 'error',
+    ];
+
     try {
         $sshClient->connect();
 
