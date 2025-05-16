@@ -14,7 +14,7 @@ It allows managing personal game servers or organizing a full-fledged hosting pl
 | Version | Branch               | Status   |
 | ------- | -------------------- | -------- |
 | 4.x     | `main`               | snapshot |
-| 4.x     | `pre-release/v4.x.x` | beta.4   |
+| 4.x     | `pre-release/v4.0.0` | beta.4   |
 <!--
 | 4.x     | `release/v4.x.x`     | stable   |
 | 3.x     | `develop/v3.x.x`     | LTS      |
@@ -102,7 +102,7 @@ chmod +x ./Autoinstall/install.sh
 | Версия | Ветка                | Статус     |
 | ------ | -------------------- | ---------- |
 | 4.x    | `main`               | snapshot   |
-| 4.x    | `pre-release/v4.x.x` | beta.4     |
+| 4.x    | `pre-release/v4.0.0` | beta.4     |
 <!--
 | 4.x    | `release/v4.x.x`     | стабильная |
 | 3.x    | `develop/v3.x.x`     | LTS        |
