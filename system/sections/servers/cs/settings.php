@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,7 +32,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $html->nav('Настройки', $cfg['http'] . 'servers/id/' . $id . '/section/settings');
 
     if ($go) {
-        $nmch = System::rep_act('server_settings_go_' . $id, 10);
+        $nmch = sys::rep_act('server_settings_go_' . $id, 10);
     }
 
     if (in_array($url['subsection'], $aRouteSub['settings'])) {
@@ -55,7 +53,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
         include(DATA . 'filedits.php');
 
         // Построение списка доступных сборок
-        $aPacks = System::b64djs($tarif['packs']);
+        $aPacks = sys::b64djs($tarif['packs']);
 
         $packs = '<option value="' . $server['pack'] . '">' . $aPacks[$server['pack']] . '</option>';
         unset($aPacks[$server['pack']]);

@@ -16,14 +16,12 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 if ($user['group'] != 'admin') {
-    System::outjs(['e' => 'У вас нет доступа к данному действию.']);
+    sys::outjs(['e' => 'У вас нет доступа к данному действию.']);
 }
 
 if ($id) {
@@ -31,7 +29,7 @@ if ($id) {
 
     $dialogs = $sql->query('SELECT `id`, `img` FROM `help_dialogs` WHERE `help`="' . $id . '"');
     while ($dialog = $sql->get($dialogs)) {
-        $aImg = System::b64djs($dialog['img']);
+        $aImg = sys::b64djs($dialog['img']);
 
         foreach ($aImg as $img) {
             $sql->query('DELETE FROM `help_upload` WHERE `name`="' . $img . '" LIMIT 1');
@@ -45,7 +43,7 @@ if ($id) {
         $sql->query('DELETE FROM `help_dialogs` WHERE `id`="' . $dialog['id'] . '" LIMIT 1');
     }
 
-    System::outjs(['s' => 'ok']);
+    sys::outjs(['s' => 'ok']);
 }
 
-System::outjs(['e' => 'Вопрос не найден в базе.']);
+sys::outjs(['e' => 'Вопрос не найден в базе.']);

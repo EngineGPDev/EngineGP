@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Whoops\Run;
@@ -53,13 +52,13 @@ $whoops->pushHandler($loggingInFile);
 $whoops->register();
 
 // Парсинг адреса
-$url = is_array(AdminSystem::url()) ? AdminSystem::url() : [];
-$route = AdminSystem::url(false);
+$url = is_array(sys::url()) ? sys::url() : [];
+$route = sys::url(false);
 $section = $url['section'] ?? false;
 
-$id = array_key_exists('id', $url) ? AdminSystem::int($url['id']) : false;
+$id = array_key_exists('id', $url) ? sys::int($url['id']) : false;
 $go = array_key_exists('go', $url);
-$page = array_key_exists('page', $url) ? AdminSystem::int($url['page']) : 1;
+$page = array_key_exists('page', $url) ? sys::int($url['page']) : 1;
 $route = $route == '' ? 'index' : $route;
 
 $auth = false;

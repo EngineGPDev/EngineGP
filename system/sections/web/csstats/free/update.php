@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -45,16 +42,18 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    System::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
 
 // Проверка времени последнего обновления
+include(LIB . 'games/games.php');
+
 $upd = $web['update'] + 86400;
 
 if ($upd > $start_point) {
-    System::outjs(['e' => 'Для повторного обновления должно пройти: ' . Game::date('max', $upd)]);
+    sys::outjs(['e' => 'Для повторного обновления должно пройти: ' . games::date('max', $upd)]);
 }
 
 include(LIB . 'ssh.php');
@@ -70,7 +69,7 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 $install = $aWebUnit['install'][$aWebUnit['unit'][$url['subsection']]][$url['subsection']] . $web['domain'];
@@ -82,4 +81,4 @@ $ssh->set('cat ' . $install . '/include/db.config.inc.php > ' . $path . '/includ
 
 $sql->query('UPDATE `web` set `update`="' . $start_point . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

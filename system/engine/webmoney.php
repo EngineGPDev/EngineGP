@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,20 +32,20 @@ $check = strtoupper(hash('sha256', $_POST['LMI_PAYEE_PURSE']
     . $_POST['LMI_PAYER_WM']));
 
 if ($_POST['LMI_HASH'] != $check) {
-    System::out('bad hash');
+    sys::out('bad hash');
 }
 
 if (!isset($_POST['LMI_PAYMENT_AMOUNT'])) {
-    System::out('bad amount');
+    sys::out('bad amount');
 }
 
 $sum = round($_POST['LMI_PAYMENT_AMOUNT'], 2);
 
 // Оплата по ключу
-if (!System::valid($_POST['us_user'], 'md5')) {
+if (!sys::valid($_POST['us_user'], 'md5')) {
     $sql->query('SELECT `id`, `server`, `price` FROM `privileges_buy` WHERE `key`="' . $_POST['us_user'] . '" LIMIT 1');
     if (!$sql->num()) {
-        System::out('bad key');
+        sys::out('bad key');
     }
 
     $privilege = $sql->get();
@@ -55,19 +53,19 @@ if (!System::valid($_POST['us_user'], 'md5')) {
     $money = round($sum * $cfg['curinrub'], 2);
 
     if ($money < $privilege['price']) {
-        System::out('bad sum');
+        sys::out('bad sum');
     }
 
     $sql->query('SELECT `user` FROM `servers` WHERE `id`="' . $privilege['server'] . '" LIMIT 1');
     if (!$sql->num()) {
-        System::out('bad server');
+        sys::out('bad server');
     }
 
     $server = $sql->get();
 
     $sql->query('SELECT `id`, `balance`, `part_money` FROM `users` WHERE `id`="' . $server['user'] . '" LIMIT 1');
     if (!$sql->num()) {
-        System::out('bad owner');
+        sys::out('bad owner');
     }
 
     $user = $sql->get();
@@ -78,21 +76,21 @@ if (!System::valid($_POST['us_user'], 'md5')) {
         $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] + $money) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
     }
 
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
-        System::text('logs', 'profit'),
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+        sys::text('logs', 'profit'),
         ['server' => $privilege['server'], 'money' => $money]
     ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $money . '"');
 
     $sql->query('UPDATE `privileges_buy` set `status`="1" WHERE `id`="' . $privilege['id'] . '" LIMIT 1');
 
-    System::out('success');
+    sys::out('success');
 }
 
 $user = intval($_POST['us_user']);
 
 $sql->query('SELECT `id`, `balance`, `part` FROM `users` WHERE `id`="' . $user . '" LIMIT 1');
 if (!$sql->num()) {
-    System::out('bad user');
+    sys::out('bad user');
 }
 
 $user = $sql->get();
@@ -112,8 +110,8 @@ if ($cfg['part']) {
             $sql->query('UPDATE `users` set `balance`="' . ($part['balance'] + $part_sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
         }
 
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . System::updtext(
-            System::text('logs', 'part'),
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
+            sys::text('logs', 'part'),
             ['part' => $uid, 'money' => $part_sum]
         ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $part_sum . '"');
     }
@@ -123,4 +121,4 @@ $sql->query('UPDATE `users` set `balance`="' . $money . '" WHERE `id`="' . $user
 
 $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="Пополнение баланса на сумму: ' . $sum . ' ' . $cfg['currency'] . '", `date`="' . $start_point . '", `type`="replenish", `money`="' . $sum . '"');
 
-System::out('success');
+sys::out('success');

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,10 +24,10 @@ if (!defined('EGP')) {
 if ($go) {
     $aData = [];
 
-    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : System::outjs(['e' => 'Необходимо указать адрес.'], $name_mcache);
-    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : System::outjs(['e' => 'Необходимо выбрать домен.'], $name_mcache);
-    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : System::outjs(['e' => 'Необходимо выбрать шаблон.'], $name_mcache);
-    $aData['passwd'] = $_POST['passwd'] ?? System::passwd($aWebParam[$url['subsection']]['passwd']);
+    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(['e' => 'Необходимо указать адрес.'], $name_mcache);
+    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(['e' => 'Необходимо выбрать домен.'], $name_mcache);
+    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(['e' => 'Необходимо выбрать шаблон.'], $name_mcache);
+    $aData['passwd'] = $_POST['passwd'] ?? sys::passwd($aWebParam[$url['subsection']]['passwd']);
 
     $aData['type'] = $url['subsection'];
     $aData['server'] = array_merge($server, ['id' => $id]);
@@ -38,7 +36,7 @@ if ($go) {
     $us = $sql->get();
 
     if ($us['contacts'] == '') {
-        System::outjs(['e' => 'Укажите в профиле контактную информацию']);
+        sys::outjs(['e' => 'Укажите в профиле контактную информацию']);
     }
 
     if (strpos($us['contacts'], 'ttp', 1)) {

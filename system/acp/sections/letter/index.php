@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,7 +30,7 @@ while ($us = $sql->get()) {
     $list .= '<td><label for="letter_' . $us['id'] . '">' . $us['login'] . ' / ' . $us['lastname'] . ' ' . $us['name'] . ' ' . $us['patronymic'] . '</label></td>';
     $list .= '<td>' . $us['mail'] . '</td>';
     $list .= '<td class="text-center">' . $us['balance'] . ' ' . $cfg['currency'] . '</td>';
-    $list .= '<td class="text-right">' . AdminSystem::today($us['time']) . '</td>';
+    $list .= '<td class="text-right">' . sys::today($us['time']) . '</td>';
     $list .= '</tr>';
 }
 

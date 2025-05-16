@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -33,10 +31,10 @@ if (!isset($ssh)) {
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/maps');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/maps');
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -68,7 +66,7 @@ if ($go and isset($url['gen'])) {
         $list .= $map . "\n";
     }
 
-    System::outjs(['s' => $list], $nmch);
+    sys::outjs(['s' => $list], $nmch);
 }
 
 $aFiles = [
@@ -84,7 +82,7 @@ if ($go and isset($url['file'])) {
 
     $data = $_POST['data'] ?? '';
 
-    $temp = System::temp($data);
+    $temp = sys::temp($data);
 
     // Отправление файла на сервер
     $ssh->setfile($temp, $dir . $aFiles[$url['file']]);
@@ -95,7 +93,7 @@ if ($go and isset($url['file'])) {
 
     unlink($temp);
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $dir . $aFiles['mapcycle'] . '; cat ' . $dir . $aFiles['mapcycle'] . '"');

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +25,7 @@ $qLog = $sql->query('SELECT `text`, `date` FROM `logs` WHERE `user`="' . $user['
 while ($aLog = $sql->get($qLog)) {
     $html->get('list', 'sections/user/lk/logs');
     $html->set('text', $aLog['text']);
-    $html->set('date', System::today($aLog['date'], true));
+    $html->set('date', sys::today($aLog['date'], true));
     $html->pack('logs');
 }
 

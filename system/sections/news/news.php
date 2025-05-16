@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -48,7 +46,7 @@ $html->set('id', $news['id']);
 $html->set('name', htmlspecialchars_decode($news['name']));
 $html->set('text', $text);
 $html->set('views', $news['views']);
-$html->set('tags', System::tags($news['tags']));
-$html->set('date', System::today($news['date']));
+$html->set('tags', sys::tags($news['tags']));
+$html->set('date', sys::today($news['date']));
 
 $html->pack('main');

@@ -16,15 +16,17 @@
  * limitations under the License.
  */
 
-namespace EngineGP;
-
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-class AdminSystem
+if (!defined('EGP')) {
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
+
+class sys
 {
     public static function url($all = true)
     {
@@ -260,7 +262,7 @@ class AdminSystem
     {
         global $cfg, $html;
 
-        $aNum = AdminSystem::page_list($ceil, $actnum);
+        $aNum = sys::page_list($ceil, $actnum);
 
         $pages = '';
 
@@ -338,10 +340,10 @@ class AdminSystem
         $no = ceil($no);
 
         if ($brackets) {
-            return '(' . $no . ' ' . AdminSystem::parse_ago($no, $phrase[$i]) . ' назад)';
+            return '(' . $no . ' ' . sys::parse_ago($no, $phrase[$i]) . ' назад)';
         }
 
-        return $no . ' ' . AdminSystem::parse_ago($no, $phrase[$i]) . ' назад';
+        return $no . ' ' . sys::parse_ago($no, $phrase[$i]) . ' назад';
     }
 
     private static function parse_ago($number, $titles)
@@ -384,19 +386,19 @@ class AdminSystem
         $text = '';
 
         if ($days > 0) {
-            $text .= AdminSystem::date_decl($days, $adata[$lenght]['days']);
+            $text .= sys::date_decl($days, $adata[$lenght]['days']);
         }
 
         if ($days < 1 and $hours > 0) {
-            $text .= ' ' . AdminSystem::date_decl($hours, $adata[$lenght]['hours']);
+            $text .= ' ' . sys::date_decl($hours, $adata[$lenght]['hours']);
         }
 
         if ($days < 1 and $minutes > 0) {
-            $text .= ' ' . AdminSystem::date_decl($minutes, $adata[$lenght]['minutes']);
+            $text .= ' ' . sys::date_decl($minutes, $adata[$lenght]['minutes']);
         }
 
         if ($days < 1 and $seconds > 0) {
-            $text .= ' ' . AdminSystem::date_decl($seconds, $adata[$lenght]['seconds']);
+            $text .= ' ' . sys::date_decl($seconds, $adata[$lenght]['seconds']);
         }
 
         return $text;
@@ -412,7 +414,7 @@ class AdminSystem
             $expr[2] = $expr[1];
         }
 
-        $i = AdminSystem::int($digit) % 100;
+        $i = sys::int($digit) % 100;
 
         if ($onlyword) {
             $digit = '';
@@ -450,7 +452,7 @@ class AdminSystem
             return 'Сегодня ' . date('- H:i', $time);
         }
 
-        $yesterday_first = AdminSystem::int(AdminSystem::first(explode('.', $today))) - 1;
+        $yesterday_first = sys::int(sys::first(explode('.', $today))) - 1;
         $yesterday_full = date('m.Y', $time);
 
         if ($day == $yesterday_first . '.' . $yesterday_full and !$yesterday_first) {
@@ -568,14 +570,14 @@ class AdminSystem
         $time = explode(' ', $time);
 
         if (count($time) != 2) {
-            AdminSystem::outjs(['e' => 'Указанная дата неправильная.']);
+            sys::outjs(['e' => 'Указанная дата неправильная.']);
         }
 
         $aDate = explode('/', $time[0]);
         $aTime = explode(':', $time[1]);
 
         if (!isset($aDate[1], $aDate[0], $aDate[2]) || !checkdate($aDate[1], $aDate[0], $aDate[2])) {
-            AdminSystem::outjs(['e' => 'Указанная дата неправильная.']);
+            sys::outjs(['e' => 'Указанная дата неправильная.']);
         }
 
         return mktime($aTime[0], $aTime[1], 0, $aDate[1], $aDate[0], $aDate[2]);
@@ -620,7 +622,7 @@ class AdminSystem
     {
         global $SxGeo;
 
-        if (AdminSystem::valid($address, 'ip')) {
+        if (sys::valid($address, 'ip')) {
             return 'не определена';
         }
 
@@ -631,6 +633,28 @@ class AdminSystem
         }
 
         return $data['country']['name_ru'] != '' ? $data['country']['name_ru'] : 'не определена';
+    }
+
+    public static function ipproxy()
+    {
+        global $_SERVER;
+
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            return $_SERVER['HTTP_CF_CONNECTING_IP'];
+        }
+
+        return null;
+    }
+
+    public static function ip()
+    {
+        $ip = sys::ipproxy();
+
+        if (sys::valid($ip, 'ip')) {
+            return $_SERVER['REMOTE_ADDR'];
+        }
+
+        return $ip;
     }
 
     public static function status($data)

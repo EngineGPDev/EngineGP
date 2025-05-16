@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -42,7 +40,7 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    System::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
@@ -60,14 +58,14 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('ssh', 'error')], $nmch);
+    sys::outjs(['e' => sys::text('ssh', 'error')], $nmch);
 }
 
-$passwd = System::passwd($aWebParam[$url['subsection']]['passwd']);
+$passwd = sys::passwd($aWebParam[$url['subsection']]['passwd']);
 
 $ssh->set('mysql --login-path=local -e "SET PASSWORD FOR  \'' . $web['login'] . '\'@\'%\' = PASSWORD(\'' . $passwd . '\');"');
 
 // Обновление данных
 $sql->query('UPDATE `web` set `passwd`="' . $passwd . '" WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

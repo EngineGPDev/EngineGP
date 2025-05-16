@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404');
     exit();
@@ -35,7 +33,7 @@ $i = 0;
 
 // Получаем значение пагинации
 if (isset($url['page'])) {
-    $page = System::clean($url['page'], "int");
+    $page = sys::clean($url['page'], "int");
 } else {
     $page = 1;
 }
@@ -65,10 +63,10 @@ if ($type) {
     }
 
     // Массив для построения страниц
-    $aPage = System::page($page, $all, 30);
+    $aPage = sys::page($page, $all, 30);
 
     // Генерация массива ($html->arr['pages']) страниц
-    System::page_gen($aPage['ceil'], $page, $aPage['page'], 'monitoring/type/' . $type);
+    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'monitoring/type/' . $type);
 } else {
 
     // SQL запрос для выборки
@@ -89,10 +87,10 @@ if ($type) {
     }
 
     // Массив для построения страниц
-    $aPage = System::page($page, $all, 30);
+    $aPage = sys::page($page, $all, 30);
 
     // Генерация массива ($html->arr['pages']) страниц
-    System::page_gen($aPage['ceil'], $page, $aPage['page'], 'monitoring');
+    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'monitoring');
 }
 
 // Получаем список серверов

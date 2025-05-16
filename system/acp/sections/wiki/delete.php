@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -29,4 +27,4 @@ if (isset($url['type']) and $url['type'] == 'cat') {
     $sql->query('DELETE FROM `wiki_answer` WHERE `wiki`="' . $id . '" LIMIT 1');
 }
 
-AdminSystem::outjs(['s' => 'ok']);
+sys::outjs(['s' => 'ok']);

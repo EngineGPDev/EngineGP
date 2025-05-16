@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,7 +24,7 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$uid = isset($url['uid']) ? System::int($url['uid']) : System::outjs(['e' => 'Переданы не все данные.'], $nmch);
+$uid = isset($url['uid']) ? sys::int($url['uid']) : sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
 if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86400 || $server['test']) {
     exit;
@@ -34,7 +32,7 @@ if (!$cfg['change_unit'][$server['game']] || $server['time'] < $start_point + 86
 
 $sql->query('SELECT `id`, `unit`, `packs`, `tickrate`, `price` FROM `tarifs` WHERE `unit`="' . $uid . '" AND `game`="' . $server['game'] . '" AND `name`="' . $tarif['name'] . '" AND `id`!="' . $server['tarif'] . '" AND `show`="1" ORDER BY `unit`');
 if (!$sql->num()) {
-    System::outjs(['e' => 'Не найден подходящий тариф.'], $nmch);
+    sys::outjs(['e' => 'Не найден подходящий тариф.'], $nmch);
 }
 
 $oldTarif = $tarif;
@@ -49,14 +47,14 @@ $aTICKold = explode(':', $oldTarif['tickrate']);
 
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $tarif['unit'] . '" AND `show`="1" LIMIT 1');
 if (!$sql->num()) {
-    System::outjs(['e' => 'Выбранная локация не доступна.'], $nmch);
+    sys::outjs(['e' => 'Выбранная локация не доступна.'], $nmch);
 }
 
 $aPrice = explode(':', $tarif['price']);
 $aTICK = explode(':', $tarif['tickrate']);
 
 if (!in_array($server['tickrate'], $aTICK)) {
-    System::outjs(['e' => 'Не найден подходящий тарифный план.'], $nmch);
+    sys::outjs(['e' => 'Не найден подходящий тарифный план.'], $nmch);
 }
 
 // Цена за 1 день (при новом тарифном плане)

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -33,7 +31,7 @@ $tarif = $sql->get();
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 // Чтение файла - oldstart.log

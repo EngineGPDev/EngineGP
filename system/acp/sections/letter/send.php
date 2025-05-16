@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-use EngineGP\Model\MailTransport;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,26 +24,28 @@ set_time_limit(1200);
 
 $aData = [];
 
-$aData['title'] = isset($_POST['title']) ? trim($_POST['title']) : AdminSystem::outjs(['e' => 'Необходимо указать заголовок']);
-$aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : AdminSystem::outjs(['e' => 'Необходимо указать сообщение']);
-$aData['users'] = $_POST['users'] ?? AdminSystem::outjs(['e' => 'Необходимо указать получателей']);
+$aData['title'] = isset($_POST['title']) ? trim($_POST['title']) : sys::outjs(['e' => 'Необходимо указать заголовок']);
+$aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : sys::outjs(['e' => 'Необходимо указать сообщение']);
+$aData['users'] = $_POST['users'] ?? sys::outjs(['e' => 'Необходимо указать получателей']);
 
 if ($aData['title'] == '' || $aData['text'] == '') {
-    AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
+    sys::outjs(['e' => 'Необходимо заполнить все поля']);
 }
 
 if (!is_array($aData['users']) || !count($aData['users'])) {
-    AdminSystem::outjs(['e' => 'Необходимо указать минимум одного получателя']);
+    sys::outjs(['e' => 'Необходимо указать минимум одного получателя']);
 }
 
 $noletter = '';
+
+include(LIB . 'smtp.php');
 
 foreach ($aData['users'] as $id => $cheked) {
     if ($cheked != 'on') {
         continue;
     }
 
-    $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . AdminSystem::int($id) . '" LIMIT 1');
+    $sql->query('SELECT `mail` FROM `users` WHERE `id`="' . sys::int($id) . '" LIMIT 1');
     $us = $sql->get();
 
     $tpl = file_get_contents(DATA . 'mail.ini');
@@ -57,7 +56,7 @@ foreach ($aData['users'] as $id => $cheked) {
         $tpl
     );
 
-    $smtp = new MailTransport();
+    $smtp = new smtp();
 
     if (!$smtp->send($us['mail'], strip_tags($aData['title']), $text)) {
         $noletter .= '<p>' . $us['mail'] . '</p>';
@@ -68,4 +67,4 @@ if ($noletter == '') {
     $noletter = 'отправлено всем.';
 }
 
-AdminSystem::outjs(['s' => $noletter]);
+sys::outjs(['s' => $noletter]);

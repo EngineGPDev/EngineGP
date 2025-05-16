@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,10 +32,10 @@ include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 include(DATA . 'scfg/' . $server['game'] . '.php');
@@ -59,7 +57,7 @@ if ($go) {
     }
 
     // Временый файл
-    $temp = System::temp($config . $config_end);
+    $temp = sys::temp($config . $config_end);
 
     $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/server.cfg');
     $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/server.cfg');
@@ -70,7 +68,7 @@ if ($go) {
 
     $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "exec server.cfg" C-m');
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Чтение файла - server.cfg
@@ -86,7 +84,7 @@ $other = '';
 // Убираем пробелы и генерируем массив
 foreach ($fScfg as $line) {
     // имя квара
-    $cvar = System::first(explode(' ', $line));
+    $cvar = sys::first(explode(' ', $line));
 
     if ($cvar == '') {
         continue;
@@ -103,7 +101,7 @@ foreach ($fScfg as $line) {
         continue;
     }
 
-    $val = System::first(explode(' //', $cvar_value[0][1]));
+    $val = sys::first(explode(' //', $cvar_value[0][1]));
 
     // Добавляем данные в массив
     if (array_key_exists($cvar, $aScfg)) {

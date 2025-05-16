@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Ftp;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,12 +24,12 @@ $sql->query('SELECT `uid`, `unit`, `address`, `game`, `status`, `plugins_use`, `
 $server = $sql->get();
 
 if (!$server['ftp_use']) {
-    System::back($cfg['http'] . 'servers/id/' . $id);
+    sys::back($cfg['http'] . 'servers/id/' . $id);
 }
 
-System::nav($server, $id, 'filetp');
+sys::nav($server, $id, 'filetp');
 
-$frouter = explode('/', System::route($server, 'filetp', $go));
+$frouter = explode('/', sys::route($server, 'filetp', $go));
 
 if (end($frouter) == 'noaccess.php') {
     include(SEC . 'servers/noaccess.php');
@@ -42,7 +39,7 @@ if (end($frouter) == 'noaccess.php') {
 
     $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
     $unit = $sql->get();
-    $ip = System::first(explode(':', $unit['address']));
+    $ip = sys::first(explode(':', $unit['address']));
 
     $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = $sql->get();
@@ -81,22 +78,24 @@ if (end($frouter) == 'noaccess.php') {
 
             // Проверка соединения с ssh сервером
             if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
             }
         } else {
-            $ftp = new Ftp();
+            include(LIB . 'ftp.php');
+
+            $ftp = new ftp();
 
             // Проверка соединения с ftp сервером
             if (!$ftp->auth($aData['host'], $aData['login'], $aData['passwd'])) {
                 if (isset($url['action'])) {
                     if ($url['action'] == 'search') {
-                        System::out('Не удалось соединиться с ftp-сервером.');
+                        sys::out('Не удалось соединиться с ftp-сервером.');
                     }
 
-                    System::outjs(['e' => 'Не удалось соединиться с ftp-сервером.']);
+                    sys::outjs(['e' => 'Не удалось соединиться с ftp-сервером.']);
                 }
 
-                System::out();
+                sys::out();
             }
         }
 
@@ -105,18 +104,18 @@ if (end($frouter) == 'noaccess.php') {
             switch ($url['action']) {
                 case 'on':
                     if ($server['ftp']) {
-                        System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
                     }
 
-                    $used = System::int($ssh->get('cd ' . $tarif['install'] . $server['uid'] . ' && du -b | tail -1'));
+                    $used = sys::int($ssh->get('cd ' . $tarif['install'] . $server['uid'] . ' && du -b | tail -1'));
 
                     if ($used < 1) {
-                        System::back($cfg['http'] . 'help/action/create');
+                        sys::back($cfg['http'] . 'help/action/create');
                     }
 
                     $bytes = $server['hdd'] * 1048576;
 
-                    $server['ftp_passwd'] = isset($server['ftp_passwd'][1]) ? $server['ftp_passwd'] : System::passwd(8);
+                    $server['ftp_passwd'] = isset($server['ftp_passwd'][1]) ? $server['ftp_passwd'] : sys::passwd(8);
 
                     $qSql = 'DELETE FROM users WHERE username=\'' . $server['uid'] . '\';'
                         . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
@@ -131,15 +130,15 @@ if (end($frouter) == 'noaccess.php') {
 
                     $mcache->delete('server_filetp_' . $id);
 
-                    System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
                     // no break
                 case 'change':
                     if (!$server['ftp']) {
-                        System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
                     }
 
-                    $passwd = System::passwd(8);
+                    $passwd = sys::passwd(8);
 
                     $qSql = "UPDATE users set password='" . $passwd . "' WHERE username='" . $server['uid'] . "' LIMIT 1";
 
@@ -149,12 +148,12 @@ if (end($frouter) == 'noaccess.php') {
 
                     $mcache->delete('server_filetp_' . $id);
 
-                    System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
                     // no break
                 case 'off':
                     if (!$server['ftp']) {
-                        System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
                     }
 
                     $qSql = 'DELETE FROM users WHERE username=\'' . $server['uid'] . '\';'
@@ -167,7 +166,7 @@ if (end($frouter) == 'noaccess.php') {
 
                     $mcache->delete('server_filetp_' . $id);
 
-                    System::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
+                    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/filetp');
 
                     // no break
                 case 'rename':
@@ -195,14 +194,14 @@ if (end($frouter) == 'noaccess.php') {
 
                     // no break
                 case 'chmod':
-                    $ftp->chmod(json_decode($_POST['path']), json_decode($_POST['name']), System::int($_POST['chmod']));
+                    $ftp->chmod(json_decode($_POST['path']), json_decode($_POST['name']), sys::int($_POST['chmod']));
 
                     // no break
                 case 'search':
-                    $text = isset($_POST['find']) ? System::first(explode('.', json_decode($_POST['find']))) : System::out();
+                    $text = isset($_POST['find']) ? sys::first(explode('.', json_decode($_POST['find']))) : sys::out();
 
                     if (!isset($text[2])) {
-                        System::out('Для выполнения поиска, необходимо больше данных');
+                        sys::out('Для выполнения поиска, необходимо больше данных');
                     }
 
                     $ftp->search($text, $id);
@@ -212,14 +211,16 @@ if (end($frouter) == 'noaccess.php') {
                     $logs = $mcache->get('filetp_logs_' . $id);
 
                     if (!$logs) {
-                        $ftp = new Ftp();
+                        include(LIB . 'ftp.php');
+
+                        $ftp = new ftp();
 
                         $logs = $ftp->logs($ssh->get('cat /var/log/proftpd/xferlog | grep "/' . $server['uid'] . '/" | awk \'{print $2"\\\"$3"\\\"$4"\\\"$5"\\\"$7"\\\"$8"\\\"$9"\\\"$12}\' | tail -50'), $server['uid']);
 
                         $mcache->set('filetp_logs_' . $id, $logs, false, 300);
                     }
 
-                    System::out($logs);
+                    sys::out($logs);
             }
         }
 
@@ -227,7 +228,7 @@ if (end($frouter) == 'noaccess.php') {
             $_POST['path'] = json_encode($aData['root']);
         }
 
-        System::out($ftp->view($ftp->read(json_decode($_POST['path'])), $id));
+        sys::out($ftp->view($ftp->read(json_decode($_POST['path'])), $id));
     }
 
     if ($mcache->get('server_filetp_' . $id) != '') {

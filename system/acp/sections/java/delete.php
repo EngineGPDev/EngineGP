@@ -16,17 +16,15 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 $sql->query('SELECT `id` FROM `servers` WHERE `java_version`="' . $id . '" LIMIT 1');
 if ($sql->num()) {
-    AdminSystem::outjs(['e' => 'Невозможно удалить версию java, пока она используется игровыми серверами.']);
+    sys::outjs(['e' => 'Невозможно удалить версию java, пока она используется игровыми серверами.']);
 }
 
 $sql->query('DELETE FROM `java_versions` WHERE `id`="' . $id . '" LIMIT 1');
 
-AdminSystem::outjs(['s' => 'ok']);
+sys::outjs(['s' => 'ok']);

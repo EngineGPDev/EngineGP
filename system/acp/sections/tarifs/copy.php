@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -48,7 +46,7 @@ $html->get('copy', 'sections/tarifs');
 if ($tarif['game'] == 'cssold') {
     $sprice = '';
 
-    $aPrice = AdminSystem::b64djs($tarif['price']);
+    $aPrice = sys::b64djs($tarif['price']);
 
     foreach ($aPrice as $price) {
         $sprice .= $price . ':';
@@ -80,7 +78,7 @@ foreach (['ftp', 'plugins', 'console', 'stats', 'copy', 'web'] as $section) {
 
 $packs = '';
 
-$aPacks = AdminSystem::b64djs($tarif['packs']);
+$aPacks = sys::b64djs($tarif['packs']);
 
 foreach ($aPacks as $name => $fullname) {
     $packs .= '"' . $name . '":"' . $fullname . '",';
@@ -92,7 +90,7 @@ $html->set('packs', $packs);
 
 $plugins = '';
 
-$aPlugins = AdminSystem::b64djs($tarif['plugins_install']);
+$aPlugins = sys::b64djs($tarif['plugins_install']);
 
 if (is_array($aPlugins)) {
     foreach ($aPlugins as $pack => $list) {

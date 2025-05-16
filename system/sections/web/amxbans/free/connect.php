@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -30,7 +28,7 @@ include(LIB . 'web/free.php');
 
 $aData = [];
 
-$aData['server'] = System::int($url['server']);
+$aData['server'] = sys::int($url['server']);
 $aData['type'] = $url['subsection'];
 $aData['user'] = $server['user'];
 $aData['file'] = 'cstrike/addons/amxmodx/configs/sql.cfg';

@@ -71,8 +71,10 @@ $task = $argv[2];
 
 include(DATA . 'engine.php');
 include(DATA . 'mysql.php');
+include(DATA . 'params.php');
 
 // Библиотеки
 include(LIB . 'sql.php');
 include(LIB . 'html.php');
+include(LIB . 'system.php');
 include(LIB . 'cron.php');

@@ -16,87 +16,85 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 if ($go) {
-    $nmch = 'privileges' . System::ip();
+    $nmch = 'privileges' . sys::ip();
 
     if ($mcache->get($nmch)) {
-        System::outjs(['e' => System::text('other', 'mcache')], $nmch);
+        sys::outjs(['e' => sys::text('other', 'mcache')], $nmch);
     }
 
     $mcache->set($nmch, 1, false, 10);
 
     $aData = [];
 
-    $aData['address'] = $_POST['address'] ?? System::outjs(['e' => 'Необходимо указать адрес сервера'], $nmch);
-    $aData['type'] = $_POST['type'] ?? System::outjs(['e' => 'Необходимо указать тип авторизации на сервере'], $nmch);
-    $aData['data'] = isset($_POST['data']) ? str_replace('"', '', $_POST['data']) : System::outjs(['e' => 'Необходимо указать данные авторизации'], $nmch);
+    $aData['address'] = $_POST['address'] ?? sys::outjs(['e' => 'Необходимо указать адрес сервера'], $nmch);
+    $aData['type'] = $_POST['type'] ?? sys::outjs(['e' => 'Необходимо указать тип авторизации на сервере'], $nmch);
+    $aData['data'] = isset($_POST['data']) ? str_replace('"', '', $_POST['data']) : sys::outjs(['e' => 'Необходимо указать данные авторизации'], $nmch);
     $aData['passwd'] = $_POST['passwd'] ?? '';
-    $aData['service'] = isset($_POST['service']) ? System::int($_POST['service']) : System::outjs(['e' => 'Необходимо указать услугу'], $nmch);
-    $aData['time'] = isset($_POST['time']) ? System::int($_POST['time']) : System::outjs(['e' => 'Необходимо указать период'], $nmch);
-    $aData['mail'] = $_POST['mail'] ?? System::outjs(['e' => 'Необходимо указать почту'], $nmch);
+    $aData['service'] = isset($_POST['service']) ? sys::int($_POST['service']) : sys::outjs(['e' => 'Необходимо указать услугу'], $nmch);
+    $aData['time'] = isset($_POST['time']) ? sys::int($_POST['time']) : sys::outjs(['e' => 'Необходимо указать период'], $nmch);
+    $aData['mail'] = $_POST['mail'] ?? sys::outjs(['e' => 'Необходимо указать почту'], $nmch);
 
     if (!in_array($aData['type'], ['a', 'ca', 'de'])) {
-        System::outjs(['e' => 'Неправильно передан тип авторизации на сервере'], $nmch);
+        sys::outjs(['e' => 'Неправильно передан тип авторизации на сервере'], $nmch);
     }
 
     switch ($aData['type']) {
         case 'a':
             if ($aData['data'] == '') {
-                System::outjs(['e' => 'Необходимо указать ник'], $nmch);
+                sys::outjs(['e' => 'Необходимо указать ник'], $nmch);
             }
             break;
         case 'ca':
-            if (System::valid($aData['data'], 'steamid') || System::valid($aData['data'], 'steamid3')) {
-                System::outjs(['e' => 'Неправильный формат SteamID'], $nmch);
+            if (sys::valid($aData['data'], 'steamid') || sys::valid($aData['data'], 'steamid3')) {
+                sys::outjs(['e' => 'Неправильный формат SteamID'], $nmch);
             }
             break;
         default:
-            if (System::valid($aData['data'], 'ip')) {
-                System::outjs(['e' => 'Неправильный формат IP'], $nmch);
+            if (sys::valid($aData['data'], 'ip')) {
+                sys::outjs(['e' => 'Неправильный формат IP'], $nmch);
             }
     }
 
-    if (System::valid($aData['address'], 'other', $aValid['address'])) {
-        System::outjs(['e' => 'Адрес игрового сервера имеет неверный формат'], $nmch);
+    if (sys::valid($aData['address'], 'other', $aValid['address'])) {
+        sys::outjs(['e' => 'Адрес игрового сервера имеет неверный формат'], $nmch);
     }
 
     $sql->query('SELECT `id`, `name`, `game` FROM `servers` WHERE `address`="' . $aData['address'] . '" LIMIT 1');
     if (!$sql->num()) {
-        System::outjs(['e' => 'Игровой сервер не найден в базе'], $nmch);
+        sys::outjs(['e' => 'Игровой сервер не найден в базе'], $nmch);
     }
 
     $server = $sql->get();
 
     $sql->query('SELECT `id` FROM `admins_' . $server['game'] . '` WHERE `server`="' . $server['id'] . '" AND `value`="' . htmlspecialchars($aData['data']) . '" LIMIT 1');
     if ($sql->num()) {
-        System::outjs(['e' => 'Привилегия для данного игрока уже установлена, дождитесь её завершения.'], $nmch);
+        sys::outjs(['e' => 'Привилегия для данного игрока уже установлена, дождитесь её завершения.'], $nmch);
     }
 
-    if ($aData['type'] != 'de' and System::valid($aData['passwd'], 'other', $aValid['passwd'])) {
-        System::outjs(['e' => 'Неправильный формат пароля, используйте латинские буквы и цифры от 6 до 20 символов'], $nmch);
+    if ($aData['type'] != 'de' and sys::valid($aData['passwd'], 'other', $aValid['passwd'])) {
+        sys::outjs(['e' => 'Неправильный формат пароля, используйте латинские буквы и цифры от 6 до 20 символов'], $nmch);
     }
 
-    if (System::valid($aData['mail'], 'other', $aValid['mail'])) {
-        System::outjs(['e' => 'Неправильный формат почты'], $nmch);
+    if (sys::valid($aData['mail'], 'other', $aValid['mail'])) {
+        sys::outjs(['e' => 'Неправильный формат почты'], $nmch);
     }
 
     $sql->query('SELECT `flags`, `immunity`, `data` FROM `privileges_list` WHERE `id`="' . $aData['service'] . '" AND `server`="' . $server['id'] . '" LIMIT 1');
     if (!$sql->num()) {
-        System::outjs(['e' => 'Указанная услуга не найдена'], $nmch);
+        sys::outjs(['e' => 'Указанная услуга не найдена'], $nmch);
     }
 
     $privilege = $sql->get();
 
-    $data = System::b64djs($privilege['data']);
+    $data = sys::b64djs($privilege['data']);
 
     if (!array_key_exists($aData['time'], $data)) {
-        System::outjs(['e' => 'Неправильно указан период'], $nmch);
+        sys::outjs(['e' => 'Неправильно указан период'], $nmch);
     }
 
     $price = $data[$aData['time']];
@@ -137,7 +135,7 @@ if ($go) {
         . '`status`="0" LIMIT 1');
 
     if (!$sql->num()) {
-        $key = System::key();
+        $key = sys::key();
 
         $sql->query('INSERT INTO `privileges_buy` set '
             . '`server`="' . $server['id'] . '",'
@@ -162,19 +160,19 @@ if ($go) {
 
     $html->pack('pay');
 
-    System::outjs(['s' => $html->arr['pay']], $nmch);
+    sys::outjs(['s' => $html->arr['pay']], $nmch);
 }
 
 if (isset($url['select'])) {
     if ($url['select'] == 'time') {
-        $service = isset($url['service']) ? System::int($url['service']) : System::out();
+        $service = isset($url['service']) ? sys::int($url['service']) : sys::out();
 
         $sql->query('SELECT  `data` FROM `privileges_list` WHERE `id`="' . $service . '" LIMIT 1');
         $list = $sql->get();
 
         $time = '';
 
-        $data = System::b64djs($list['data']);
+        $data = sys::b64djs($list['data']);
 
         if (isset($data[0])) {
             $time = '<option value="0">Навсегда / ' . $data[0] . ' ' . $cfg['currency'] . '</option>';
@@ -183,34 +181,34 @@ if (isset($url['select'])) {
         }
 
         foreach ($data as $days => $price) {
-            $time .= '<option value="' . $days . '">' . $days . ' ' . System::day($time) . ' / ' . $price . ' ' . $cfg['currency'] . '</option>';
+            $time .= '<option value="' . $days . '">' . $days . ' ' . sys::day($time) . ' / ' . $price . ' ' . $cfg['currency'] . '</option>';
         }
 
-        System::out($time);
+        sys::out($time);
     }
 
-    $address = isset($_POST['address']) ? trim($_POST['address']) : System::outjs(['e' => 'Необходимо указать адрес игрового сервера']);
+    $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['e' => 'Необходимо указать адрес игрового сервера']);
 
-    if (System::valid($address, 'other', $aValid['address'])) {
-        System::outjs(['e' => 'Указанный адрес имеет неверный формат']);
+    if (sys::valid($address, 'other', $aValid['address'])) {
+        sys::outjs(['e' => 'Указанный адрес имеет неверный формат']);
     }
 
     $sql->query('SELECT `id`, `name` FROM `servers` WHERE `address`="' . $address . '" LIMIT 1');
     if (!$sql->num()) {
-        System::outjs(['e' => 'Игровой сервер не найден в базе']);
+        sys::outjs(['e' => 'Игровой сервер не найден в базе']);
     }
 
     $server = $sql->get();
 
     $sql->query('SELECT `active` FROM `privileges` WHERE `server`="' . $server['id'] . '" LIMIT 1');
     if (!$sql->num()) {
-        System::outjs(['e' => 'Игровой сервер не предоставляет услуги']);
+        sys::outjs(['e' => 'Игровой сервер не предоставляет услуги']);
     }
 
     $privilege = $sql->get();
 
     if (!$privilege['active']) {
-        System::outjs(['e' => 'Игровой сервер времено не предоставляет услуги']);
+        sys::outjs(['e' => 'Игровой сервер времено не предоставляет услуги']);
     }
 
     $name = '';
@@ -225,7 +223,7 @@ if (isset($url['select'])) {
 
     $time = '';
 
-    $data = System::b64djs($list['data']);
+    $data = sys::b64djs($list['data']);
 
     if (isset($data[0])) {
         $time = '<option value="0">Навсегда / ' . $data[0] . ' ' . $cfg['currency'] . '</option>';
@@ -234,7 +232,7 @@ if (isset($url['select'])) {
     }
 
     foreach ($data as $days => $price) {
-        $time .= '<option value="' . $days . '">' . $days . ' ' . System::day($time) . ' / ' . $price . ' ' . $cfg['currency'] . '</option>';
+        $time .= '<option value="' . $days . '">' . $days . ' ' . sys::day($time) . ' / ' . $price . ' ' . $cfg['currency'] . '</option>';
     }
 
     $html->get('form', 'sections/services/privileges');
@@ -247,7 +245,7 @@ if (isset($url['select'])) {
 
     $html->pack('form');
 
-    System::outjs(['s' => $html->arr['form']]);
+    sys::outjs(['s' => $html->arr['form']]);
 }
 
 $html->get('index', 'sections/services/privileges');

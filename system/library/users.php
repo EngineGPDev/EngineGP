@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 
-namespace EngineGP\Model;
+if (!defined('EGP')) {
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-class User
+class users
 {
     public static function ava($user)
     {

@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Infrastructure\RemoteAccess\SshClient;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -41,7 +38,7 @@ class tarif extends tarifs
         }
 
         $html->set('id', $sid);
-        $html->set('time', System::date('min', $server['time']));
+        $html->set('time', sys::date('min', $server['time']));
         $html->set('options', '<option value="0">Выберите период продления</option>' . $options);
         $html->set('slots', $server['slots']);
         $html->set('info', $server['tickrate'] . ' TickRate');
@@ -74,7 +71,7 @@ class tarif extends tarifs
         }
 
         $html->set('id', $sid);
-        $html->set('time', System::date('min', $server['time']));
+        $html->set('time', sys::date('min', $server['time']));
         $html->set('date', $server['time'] > $start_point ? 'Сервер продлен до: ' . date('d.m.Y', $server['time']) : 'Текущая дата: ' . date('d.m.Y', $start_point));
         $html->set('options', '<option value="0">Выберите период продления</option>' . $options);
         $html->set('slots', $server['slots']);
@@ -189,7 +186,12 @@ class tarif extends tarifs
 
     public static function unit_new($tarif, $unit, $server, $mcache)
     {
-        global $sql, $user, $start_point;
+        global $ssh, $sql, $user, $start_point;
+
+        // Проверка ssh соединения с локацией
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
+        }
 
         // Директория сборки
         $path = $tarif['path'] . $tarif['pack'];
@@ -200,9 +202,7 @@ class tarif extends tarifs
         // Пользователь сервера
         $uS = 'server' . $server['uid'];
 
-        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
-
-        $sshClient->execute('mkdir ' . $install . ';' // Создание директории
+        $ssh->set('mkdir ' . $install . ';' // Создание директории
             . 'useradd -d ' . $install . ' -g servers -u ' . $server['uid'] . ' ' . $uS . ';' // Создание пользователя сервера на локации
             . 'chown ' . $uS . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u ' . $uS . ' tmux new-session -ds i_' . $server['uid'] . ' cp -r ' . $path . '/. .'); // Копирование файлов сборки для сервера
@@ -226,7 +226,7 @@ class tarif extends tarifs
         // Запись установленных плагинов
         if ($tarif['plugins']) {
             // Массив идентификаторов плагинов
-            $aPlugins = System::b64js($tarif['plugins_install']);
+            $aPlugins = sys::b64js($tarif['plugins_install']);
 
             if (isset($aPlugins[$tarif['pack']])) {
                 $plugins = explode(',', $aPlugins[$tarif['pack']]);
@@ -238,8 +238,6 @@ class tarif extends tarifs
                 }
             }
         }
-
-        $sshClient->disconnect();
 
         return null;
     }

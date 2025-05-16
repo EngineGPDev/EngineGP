@@ -16,17 +16,16 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
+include(LIB . 'games/games.php');
+
 // Обработка заказа
 if ($go) {
     // Проверка на авторизацию
-    System::noauth();
+    sys::noauth();
 
     if ($mcache->get('buy_server')) {
         sleep(1.5);
@@ -38,12 +37,12 @@ if ($go) {
 
     // Входные данные
     $aData = [
-        'unit' => isset($_POST['unit']) ? System::int($_POST['unit']) : 0,
-        'tarif' => isset($_POST['tarif']) ? System::int($_POST['tarif']) : 0,
+        'unit' => isset($_POST['unit']) ? sys::int($_POST['unit']) : 0,
+        'tarif' => isset($_POST['tarif']) ? sys::int($_POST['tarif']) : 0,
         'pack' => $_POST['pack'] ?? '',
-        'ram' => isset($_POST['ram']) ? System::int($_POST['ram']) : 0,
-        'slots' => isset($_POST['slots']) ? System::int($_POST['slots']) : 0,
-        'time' => isset($_POST['time']) ? System::int($_POST['time']) : 30,
+        'ram' => isset($_POST['ram']) ? sys::int($_POST['ram']) : 0,
+        'slots' => isset($_POST['slots']) ? sys::int($_POST['slots']) : 0,
+        'time' => isset($_POST['time']) ? sys::int($_POST['time']) : 30,
         'test' => (isset($_POST['time']) and $_POST['time'] == 'test') ? true : false,
         'promo' => $_POST['promo'] ?? false,
     ];
@@ -54,7 +53,7 @@ if ($go) {
     // Процесс выдачи игрового сервера
     $id = service::install($aSDATA);
 
-    System::outjs(['s' => 'ok', 'id' => $id]);
+    sys::outjs(['s' => 'ok', 'id' => $id]);
 }
 
 include(LIB . 'games/services.php');
@@ -79,10 +78,10 @@ if ($sql->num()) {
 
     if (isset($url['get']) and in_array($url['get'], ['price', 'promo'])) {
         $aGet = [
-            'tarif' => System::int($url['tarif']),
-            'ram' => System::int($url['ram']),
-            'slots' => System::int($url['slots']),
-            'time' => System::int($url['time']),
+            'tarif' => sys::int($url['tarif']),
+            'ram' => sys::int($url['ram']),
+            'slots' => sys::int($url['slots']),
+            'time' => sys::int($url['time']),
             'user' => $user['id'],
         ];
 
@@ -98,20 +97,20 @@ if ($sql->num()) {
         if ($url['get'] == 'price') {
             // Если выбран тестовый период
             if ($url['time'] == 'test') {
-                System::outjs(['sum' => 0]);
+                sys::outjs(['sum' => 0]);
             }
 
-            System::outjs([
-                'sum' => Game::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time']),
+            sys::outjs([
+                'sum' => games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time']),
             ]);
         }
 
         // Выхлоп цены с учетом промо-кода
         if ($url['get'] == 'promo') {
-            Game::define_promo(
+            games::define_promo(
                 $url['cod'],
                 $tarif['discount'],
-                Game::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time']),
+                games::define_sum($tarif['discount'], $price, $aGet['slots'], $aGet['time']),
                 $aGet
             );
         }
@@ -119,7 +118,7 @@ if ($sql->num()) {
 
     // Генерация сборок/слот/периодов
     if (isset($url['get']) and $url['get'] == 'data') {
-        $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `id`="' . System::int($url['tarif']) . '" LIMIT 1');
+        $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `id`="' . sys::int($url['tarif']) . '" LIMIT 1');
     } else {
         $sql->query('SELECT `id`, `name`, `price`, `slots_min`, `slots_max`, `packs`, `ram`, `time`, `test`, `discount` FROM `tarifs` WHERE `game`="' . $section . '" AND `unit`="' . $select_unit['id'] . '" AND `show`="1" ORDER BY `sort` ASC LIMIT 1');
     }
@@ -127,17 +126,17 @@ if ($sql->num()) {
     if ($sql->num()) {
         $select_tarif = $sql->get();
 
-        $aTarif = Game::parse_tarif($select_tarif, $select_unit);
+        $aTarif = games::parse_tarif($select_tarif, $select_unit);
 
         if (isset($url['get'])) {
             // Выхлоп при выборе локации
             if ($url['get'] == 'tarifs') {
-                System::outjs(array_merge(['tarifs' => $tarifs], $aTarif));
+                sys::outjs(array_merge(['tarifs' => $tarifs], $aTarif));
             }
 
             // Выхлоп при выборе тарифа
             if ($url['get'] == 'data') {
-                System::outjs($aTarif);
+                sys::outjs($aTarif);
             }
         }
 

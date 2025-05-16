@@ -16,14 +16,13 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use GameQ\GameQ;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 include(LIB . 'games/scans.php');
+
+use GameQ\GameQ;
 
 class scan extends scans
 {
@@ -62,17 +61,17 @@ class scan extends scans
         $out['time'] = 'Арендован до: ' . date('d.m.Y - H:i', $server['time']);
 
         if ($server['status'] == 'overdue') {
-            $out['time_end'] = 'Удаление через: ' . System::date('min', $server['overdue'] + $cfg['server_delete'] * 86400);
+            $out['time_end'] = 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400);
         } else {
-            $out['time_end'] = 'Осталось: ' . System::date('min', $server['time']);
+            $out['time_end'] = 'Осталось: ' . sys::date('min', $server['time']);
         }
 
         if (!$info || $info['gq_online'] === false) {
             $out['name'] = $server['name'];
-            $out['status'] = System::status($server['status'], $server['game'], $server['map']);
+            $out['status'] = sys::status($server['status'], $server['game'], $server['map']);
             $out['online'] = $server['online'];
-            $out['image'] = '<img src="' . System::status($server['status'], $server['game'], $server['map'], 'img') . '">';
-            $out['buttons'] = System::buttons($id, $server['status'], $server['game']);
+            $out['image'] = '<img src="' . sys::status($server['status'], $server['game'], $server['map'], 'img') . '">';
+            $out['buttons'] = sys::buttons($id, $server['status'], $server['game']);
 
             if ($players_get) {
                 $out['players'] = base64_decode($server['players'] ?? '');
@@ -89,10 +88,10 @@ class scan extends scans
 
         $info['map'] = htmlspecialchars($info['gq_mapname']);
         $out['name'] = htmlspecialchars($info['gq_hostname']);
-        $out['status'] = System::status('working', $server['game'], $info['map']);
-        $out['online'] = System::int($info['gq_numplayers']);
-        $out['image'] = '<img src="' . System::status('working', $server['game'], 'crmp', 'img') . '">';
-        $out['buttons'] = System::buttons($id, 'working', $server['game']);
+        $out['status'] = sys::status('working', $server['game'], $info['map']);
+        $out['online'] = sys::int($info['gq_numplayers']);
+        $out['image'] = '<img src="' . sys::status('working', $server['game'], 'crmp', 'img') . '">';
+        $out['buttons'] = sys::buttons($id, 'working', $server['game']);
         $out['players'] = '';
 
         if ($players_get) {
@@ -133,8 +132,8 @@ class scan extends scans
         foreach ($aPlayrs as $n => $player) {
             $aData[$i]['i'] = $i;
             $aData[$i]['name'] = $player['gq_name'] == '' ? 'Подключается' : htmlspecialchars($player['gq_name']);
-            $aData[$i]['ping'] = System::int($player['gq_ping'] ?? 0);
-            $aData[$i]['score'] = System::int($player['gq_score']);
+            $aData[$i]['ping'] = sys::int($player['gq_ping'] ?? 0);
+            $aData[$i]['score'] = sys::int($player['gq_score']);
 
             $i += 1;
         }

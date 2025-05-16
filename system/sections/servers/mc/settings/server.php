@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,10 +32,10 @@ include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 include(DATA . 'scfg/' . $server['game'] . '.php');
@@ -55,7 +53,7 @@ if ($go) {
     }
 
     // Временый файл
-    $temp = System::temp($config);
+    $temp = sys::temp($config);
 
     $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/server.properties');
     $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/server.properties');
@@ -64,7 +62,7 @@ if ($go) {
 
     unlink($temp);
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Чтение файла - server.properties
@@ -79,7 +77,7 @@ $servercfg = [];
 // Убираем пробелы и генерируем массив
 foreach ($fScfg as $line) {
     // имя квара
-    $cvar = System::first(explode('=', $line));
+    $cvar = sys::first(explode('=', $line));
 
     if ($cvar == '') {
         continue;
@@ -96,7 +94,7 @@ foreach ($fScfg as $line) {
         continue;
     }
 
-    $val = System::first(explode(' //', $cvar_value[0][1]));
+    $val = sys::first(explode(' //', $cvar_value[0][1]));
 
     // Добавляем данные в массив
     if (array_key_exists($cvar, $aScfg)) {

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -33,9 +31,9 @@ if ($id) {
 
     $sql->query('SELECT `id` FROM `promo`');
 
-    $aPage = AdminSystem::page($page, $sql->num(), 20);
+    $aPage = sys::page($page, $sql->num(), 20);
 
-    AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/promo');
+    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/promo');
 
     $promos = $sql->query('SELECT `id`, `cod`, `value`, `discount`, `use`, `extend`, `tarif`, `time` FROM `promo` WHERE `time`<"' . $start_point . '"ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
     while ($promo = $sql->get($promos)) {

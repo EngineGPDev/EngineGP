@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,18 +30,18 @@ $nmch = null;
 
 if (is_array($cache)) {
     if ($go) {
-        AdminSystem::outjs($cache, $nmch);
+        sys::outjs($cache, $nmch);
     }
 
-    AdminSystem::outjs($cache);
+    sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
     if ($go) {
-        AdminSystem::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    AdminSystem::outjs(['e' => '']);
+    sys::outjs(['e' => '']);
 }
 
 if (substr($text, 0, 5) == 'game=') {
@@ -53,7 +51,7 @@ if (substr($text, 0, 5) == 'game=') {
         $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `game`="' . $game . '" ORDER BY `id` ASC');
     }
 } elseif ($text[0] == 'i' and $text[1] == 'd') {
-    $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `id`="' . AdminSystem::int($text) . '" LIMIT 1');
+    $webs = $sql->query('SELECT `id`, `type`, `server`, `user`, `unit`, `domain`, `passwd`, `login`, `date` FROM `web` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 } else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`type` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -68,10 +66,10 @@ if (substr($text, 0, 5) == 'game=') {
 
 if (!$sql->num($webs)) {
     if ($go) {
-        AdminSystem::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    AdminSystem::outjs(['e' => 'По вашему запросу ничего не найдено']);
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
@@ -105,4 +103,4 @@ while ($web = $sql->get($webs)) {
 
 $mcache->set($mkey, ['s' => $list], false, 15);
 
-AdminSystem::outjs(['s' => $list]);
+sys::outjs(['s' => $list]);

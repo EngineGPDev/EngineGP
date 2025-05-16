@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,7 +26,7 @@ if (!$go) {
 
 $aData = [];
 
-$aData['server'] = $_POST['server'] ?? System::outjs(['e' => 'Необходимо выбрать игровой сервер.'], $nmch);
+$aData['server'] = $_POST['server'] ?? sys::outjs(['e' => 'Необходимо выбрать игровой сервер.'], $nmch);
 $aData['type'] = $url['subsection'];
 
 switch ($aWebInstall[$server['game']][$aData['type']]) {
@@ -49,7 +47,7 @@ switch ($aWebInstall[$server['game']][$aData['type']]) {
 }
 
 if (!$sql->num()) {
-    System::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
@@ -75,7 +73,7 @@ foreach ($aData['server'] as $sid) {
     }
 
     if (!$server['ftp']) {
-        System::outjs(['r' => 'Для подключения игрового сервера необходимо включить FileTP.', 'url' => $cfg['http'] . 'servers/id/' . $sid . '/section/filetp'], $nmch);
+        sys::outjs(['r' => 'Для подключения игрового сервера необходимо включить FileTP.', 'url' => $cfg['http'] . 'servers/id/' . $sid . '/section/filetp'], $nmch);
     }
 
     $stack = web::stack($aData, '`login`');
@@ -107,16 +105,16 @@ include(LIB . 'ssh.php');
 $unit = web::unit($aWebUnit, $aData['type'], $web['unit']);
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('ssh', 'error')], $nmch);
+    sys::outjs(['e' => sys::text('ssh', 'error')], $nmch);
 }
 
 // Директория дополнительной услуги
 $install = $aWebUnit['install'][$aWebUnit['unit'][$aData['type']]][$aData['type']] . $web['domain'];
 
-$temp = System::temp($aData['config'] . ');');
+$temp = sys::temp($aData['config'] . ');');
 $ssh->setfile($temp, $install . '/config/servers.config.php');
 $ssh->set('chmod 0644' . ' ' . $install . '/config/servers.config.php');
 
 unlink($temp);
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

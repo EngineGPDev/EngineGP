@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,7 +32,7 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     $aData = [];
@@ -91,7 +89,7 @@ if ($go) {
         }
     }
 
-    $temp = System::temp($usini);
+    $temp = sys::temp($usini);
 
     $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
     $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/cstrike/addons/amxmodx/configs/users.ini');
@@ -102,7 +100,7 @@ if ($go) {
 
     $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"amx_reloadadmins\" C-m");
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Построение списка добавленных админов

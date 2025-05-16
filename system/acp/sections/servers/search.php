@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,24 +30,24 @@ $nmch = null;
 
 if (is_array($cache)) {
     if ($go) {
-        AdminSystem::outjs($cache, $nmch);
+        sys::outjs($cache, $nmch);
     }
 
-    AdminSystem::outjs($cache);
+    sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
     if ($go) {
-        AdminSystem::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    AdminSystem::outjs(['e' => '']);
+    sys::outjs(['e' => '']);
 }
 
 $select = '`id`, `unit`, `tarif`, `user`, `address`, `port`, `game`, `status`, `slots`, `name`, `time` FROM `servers` WHERE `user`!="-1" AND';
 
 if (isset($url['search']) and in_array($url['search'], ['unit', 'tarif'])) {
-    $select .= ' `' . $url['search'] . '`=' . AdminSystem::int($url[$url['search']]) . ' AND';
+    $select .= ' `' . $url['search'] . '`=' . sys::int($url[$url['search']]) . ' AND';
 }
 
 $check = explode('=', $text);
@@ -65,15 +63,15 @@ if (in_array($check[0], ['game', 'unit', 'tarif', 'user', 'status', 'slots'])) {
             break;
 
         case 'unit':
-            $servers = $sql->query('SELECT ' . $select . ' `unit`="' . AdminSystem::int($val) . '" ORDER BY `id` ASC');
+            $servers = $sql->query('SELECT ' . $select . ' `unit`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
 
         case 'tarif':
-            $servers = $sql->query('SELECT ' . $select . ' `tarif`="' . AdminSystem::int($val) . '" ORDER BY `id` ASC');
+            $servers = $sql->query('SELECT ' . $select . ' `tarif`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
 
         case 'user':
-            $servers = $sql->query('SELECT ' . $select . ' `user`="' . AdminSystem::int($val) . '" ORDER BY `id` ASC');
+            $servers = $sql->query('SELECT ' . $select . ' `user`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
 
         case 'status':
@@ -83,11 +81,11 @@ if (in_array($check[0], ['game', 'unit', 'tarif', 'user', 'status', 'slots'])) {
             break;
 
         case 'slots':
-            $servers = $sql->query('SELECT ' . $select . ' `slots`="' . AdminSystem::int($val) . '" ORDER BY `id` ASC');
+            $servers = $sql->query('SELECT ' . $select . ' `slots`="' . sys::int($val) . '" ORDER BY `id` ASC');
             break;
     }
 } elseif ($text[0] == 'i' and $text[1] == 'd') {
-    $servers = $sql->query('SELECT ' . $select . ' `id`="' . AdminSystem::int($text) . '" LIMIT 1');
+    $servers = $sql->query('SELECT ' . $select . ' `id`="' . sys::int($text) . '" LIMIT 1');
 } else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`name` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -102,10 +100,10 @@ if (in_array($check[0], ['game', 'unit', 'tarif', 'user', 'status', 'slots'])) {
 
 if (!$sql->num($servers)) {
     if ($go) {
-        AdminSystem::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    AdminSystem::outjs(['e' => 'По вашему запросу ничего не найдено']);
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $status = [
@@ -154,4 +152,4 @@ while ($server = $sql->get($servers)) {
 
 $mcache->set($mkey, ['s' => $list], false, 15);
 
-AdminSystem::outjs(['s' => $list]);
+sys::outjs(['s' => $list]);

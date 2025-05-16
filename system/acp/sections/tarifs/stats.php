@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-use EngineGP\Model\Parameters;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -82,7 +79,7 @@ $html->get('stats', 'sections/tarifs');
 
 $html->set('list', $list);
 
-$html->set('month', mb_strtolower(Parameters::$aNameMonth[AdminSystem::int(date('n', $start_point))], 'UTF-8'));
+$html->set('month', mb_strtolower(params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
 
 $html->set('all_money', $all_money);
 $html->set('all_money_month', $all_money_month);

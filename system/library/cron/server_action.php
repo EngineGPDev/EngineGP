@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -58,7 +56,7 @@ class server_action extends cron
             $aCmd = explode("\n", base64_decode($cron['commands']));
 
             foreach ($aCmd as $cmd) {
-                $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "' . System::cmd($cmd) . '" C-m');
+                $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "' . sys::cmd($cmd) . '" C-m');
             }
 
             return null;

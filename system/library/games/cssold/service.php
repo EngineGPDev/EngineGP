@@ -16,11 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-use EngineGP\Model\Parameters;
-use EngineGP\Infrastructure\RemoteAccess\SshClient;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,7 +29,7 @@ class service
         // Проверка локации
         $sql->query('SELECT `address`, `test` FROM `units` WHERE `id`="' . $aData['unit'] . '" AND `cssold`="1" AND `show`="1" LIMIT 1');
         if (!$sql->num()) {
-            System::outjs(['e' => 'Локация не найдена.']);
+            sys::outjs(['e' => 'Локация не найдена.']);
         }
 
         $unit = $sql->get();
@@ -42,7 +37,7 @@ class service
         // Проверка тарифа
         $sql->query('SELECT `id` FROM `tarifs` WHERE `id`="' . $aData['tarif'] . '" AND `unit`="' . $aData['unit'] . '" AND `show`="1" LIMIT 1');
         if (!$sql->num()) {
-            System::outjs(['e' => 'Тариф не найден.']);
+            sys::outjs(['e' => 'Тариф не найден.']);
         }
 
         $sql->query('SELECT '
@@ -77,18 +72,18 @@ class service
         $tarif = $sql->get();
 
         // Проверка сборки
-        if (!array_key_exists($aData['pack'], System::b64djs($tarif['packs'], true))) {
-            System::outjs(['e' => 'Сборка не найдена.']);
+        if (!array_key_exists($aData['pack'], sys::b64djs($tarif['packs'], true))) {
+            sys::outjs(['e' => 'Сборка не найдена.']);
         }
 
         // Проверка FPS
         if (!in_array($aData['fps'], explode(':', $tarif['fps']))) {
-            System::outjs(['e' => 'Переданные данные fps неверны.']);
+            sys::outjs(['e' => 'Переданные данные fps неверны.']);
         }
 
         // Проверка TickRate
         if (!in_array($aData['tickrate'], explode(':', $tarif['tickrate']))) {
-            System::outjs(['e' => 'Переданные данные tickrate неверны.']);
+            sys::outjs(['e' => 'Переданные данные tickrate неверны.']);
         }
 
         $test = 0;
@@ -96,7 +91,7 @@ class service
         // Проверка периода на тест
         if ($aData['test']) {
             if (!$tarif['test'] || !$unit['test']) {
-                System::outjs(['e' => 'Тестовый период недоступен.']);
+                sys::outjs(['e' => 'Тестовый период недоступен.']);
             }
 
 
@@ -106,39 +101,39 @@ class service
                 $test_info = $sql->get();
 
                 if (!$cfg['tests']['game'] || $test_info['game'] == 'cssold') {
-                    System::outjs(['e' => 'Тестовый период предоставляется один раз.']);
+                    sys::outjs(['e' => 'Тестовый период предоставляется один раз.']);
                 }
 
                 $sql->query('SELECT `id` FROM `servers` WHERE `user`="' . $user['id'] . '" AND `test`="1" LIMIT 1');
                 if ($sql->num() and !$cfg['tests']['sametime']) {
-                    System::outjs(['e' => 'Чтобы получить тестовый период другой игры, дождитесь окончания текущего.']);
+                    sys::outjs(['e' => 'Чтобы получить тестовый период другой игры, дождитесь окончания текущего.']);
                 }
             }
 
             // Проверка наличия мест на локации
             $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $aData['unit'] . '" AND `test`="1" AND `time`>"' . $start_point . '" LIMIT ' . $unit['test']);
             if ($sql->num() == $unit['test']) {
-                System::outjs(['e' => 'Свободного места для тестового периода нет.']);
+                sys::outjs(['e' => 'Свободного места для тестового периода нет.']);
             }
 
             // Проверка наличия мест для выбранного тарифа
             $sql->query('SELECT `id` FROM `servers` WHERE `tarif`="' . $aData['tarif'] . '" AND `test`="1" AND `time`>"' . $start_point . '" LIMIT ' . $tarif['tests']);
             if ($sql->num() == $tarif['tests']) {
-                System::outjs(['e' => 'Свободного места для тестового периода выбранного тарифа нет.']);
+                sys::outjs(['e' => 'Свободного места для тестового периода выбранного тарифа нет.']);
             }
 
             $test = 1;
         } elseif // Проверка периода
         (!$cfg['settlement_period'] and !in_array($aData['time'], explode(':', $tarif['time']))) {
-            System::outjs(['e' => 'Переданные данные периода неверны.']);
+            sys::outjs(['e' => 'Переданные данные периода неверны.']);
         }
 
         // Проверка слот
         if ($aData['slots'] < $tarif['slots_min'] || $aData['slots'] > $tarif['slots_max']) {
-            System::outjs(['e' => 'Переданные данные слот неверны.']);
+            sys::outjs(['e' => 'Переданные данные слот неверны.']);
         }
 
-        $aPrice = System::b64djs($tarif['price'], true);
+        $aPrice = sys::b64djs($tarif['price'], true);
 
         // Определение цены
         $price = $aPrice[$aData['tickrate'] . '_' . $aData['fps']];
@@ -146,15 +141,15 @@ class service
         // Определение суммы
         if ($cfg['settlement_period']) {
             // Цена аренды за расчетный период
-            $sum = Game::define_sum($tarif['discount'], $price, $aData['slots'], $start_point);
+            $sum = games::define_sum($tarif['discount'], $price, $aData['slots'], $start_point);
 
-            $aData['time'] = Game::define_period('buy', Parameters::$aDayMonth);
+            $aData['time'] = games::define_period('buy', params::$aDayMonth);
         } else {
-            $sum = Game::define_sum($tarif['discount'], $price, $aData['slots'], $aData['time']);
+            $sum = games::define_sum($tarif['discount'], $price, $aData['slots'], $aData['time']);
         }
 
         // Проверка промо-кода
-        $promo = Game::define_promo(
+        $promo = games::define_promo(
             $aData['promo'],
             $tarif['discount'],
             $sum,
@@ -181,7 +176,7 @@ class service
 
         // Проверка баланса
         if ($user['balance'] < $sum) {
-            System::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']]);
+            sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']]);
         }
 
         // Выделенный адрес игрового сервера
@@ -189,7 +184,7 @@ class service
             $aIp = explode(':', $tarif['ip']);
 
             $ip = false;
-            $port = Parameters::$aDefPort['cssold'];
+            $port = params::$aDefPort['cssold'];
 
             // Проверка наличия свободного адреса
             foreach ($aIp as $adr) {
@@ -203,7 +198,7 @@ class service
                 }
             }
         } else {
-            $ip = System::first(explode(':', $unit['address']));
+            $ip = sys::first(explode(':', $unit['address']));
             $port = false;
 
             // Проверка наличия свободных портов для сервера, query и rcon
@@ -230,13 +225,13 @@ class service
         if (!$ip || !$port) {
             $sql->query('UPDATE `tarifs` set `show`="0" WHERE `id`="' . $aData['tarif'] . '" LIMIT 1');
 
-            System::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
+            sys::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
         }
 
         if ($test) {
-            $aData['time'] = Game::time($start_point, $tarif['test']);
+            $aData['time'] = games::time($start_point, $tarif['test']);
         } else {
-            $aData['time'] = Game::time($start_point, $days);
+            $aData['time'] = games::time($start_point, $days);
         }
 
         // Массив данных
@@ -277,9 +272,16 @@ class service
     {
         global $cfg, $sql, $user, $start_point;
 
+        include(LIB . 'ssh.php');
+
         // Массив данных локации (адрес,пароль)
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $aSDATA['unit'] . '" LIMIT 1');
         $unit = $sql->get();
+
+        // Проверка ssh соединения с локацией
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
+        }
 
         // Массив данных тарифа (путь сборки,путь установки)
         $sql->query('SELECT `path`, `install`, `hostname` FROM `tarifs` WHERE `id`="' . $aSDATA['tarif'] . '" LIMIT 1');
@@ -290,21 +292,19 @@ class service
         $id = $sql->id();
         $uid = $id + 1000;
 
-        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
-
         // Директория сборки
         $path = $tarif['path'] . $aSDATA['pack'];
 
         // Директория игрового сервера
         $install = $tarif['install'] . $uid;
 
-        $sshClient->execute('mkdir ' . $install . ';' // Создание директории
+        $ssh->set('mkdir ' . $install . ';' // Создание директории
             . 'useradd -s /bin/false -d ' . $install . ' -g servers -u ' . $uid . ' server' . $uid . ';' // Создание пользователя сервера на локации
             . 'chown server' . $uid . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u server' . $uid . ' tmux new-session -ds i_' . $uid . ' sh -c "cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . Parameters::$aFileGame['cssold'] . '"');
+            . 'chmod 500 ' . params::$aFileGame['cssold'] . '"');
 
         // Запись данных нового сервера
         $sql->query('UPDATE `servers` set
@@ -343,7 +343,7 @@ class service
         // Запись установленных плагинов
         if ($aSDATA['plugins']) {
             // Массив идентификаторов плагинов
-            $aPlugins = System::b64djs($aSDATA['plugins_install']);
+            $aPlugins = sys::b64djs($aSDATA['plugins_install']);
 
             if (isset($aPlugins[$aSDATA['pack']])) {
                 $plugins = explode(',', $aPlugins[$aSDATA['pack']]);
@@ -362,22 +362,20 @@ class service
         // Запись получения тестового периода
         if ($aSDATA['test']) {
             $sql->query('INSERT INTO `tests` set `server`="' . $id . '", `unit`="' . $aSDATA['unit'] . '", `game`="cssold", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-            $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server_test'), ['id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="0"');
+            $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server_test'), ['id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="0"');
         } else {
             // Реф. система
-            Game::part($user['id'], $aSDATA['sum']);
+            games::part($user['id'], $aSDATA['sum']);
 
             // Запись логов
             if (!is_array($aSDATA['promo'])) {
-                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server'), ['days' => Game::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
+                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server'), ['days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             } else {
                 $sql->query('UPDATE `servers` set `benefit`="' . $aSDATA['time'] . '" WHERE `id`="' . $id . '" LIMIT 1');
                 $sql->query('INSERT INTO `promo_use` set `promo`="' . $aSDATA['promo']['id'] . '", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(System::text('logs', 'buy_server_promo'), ['days' => Game::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
+                $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(sys::text('logs', 'buy_server_promo'), ['days' => games::parse_day($aSDATA['days'], true), 'money' => $aSDATA['sum'], 'promo' => $aSDATA['promo']['cod'], 'id' => $id]) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $aSDATA['sum'] . '"');
             }
         }
-
-        $sshClient->disconnect();
 
         return $id;
     }

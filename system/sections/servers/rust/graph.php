@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -61,7 +59,7 @@ if ($mcache->get('server_graph_' . $id) != '') {
     // Если отсутствует ключ, создать
     if (!$sql->num()) {
         // Генерация ключа
-        $key = md5($id . System::key('graph'));
+        $key = md5($id . sys::key('graph'));
 
         $sql->query('INSERT INTO `graph` set `server`="' . $id . '", `key`="' . $key . '", `time`="0"');
     } else {

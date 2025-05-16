@@ -32,7 +32,7 @@ class web_delete extends cron
         if ($web['type'] == 'hosting') {
             include(DATA . 'web.php');
 
-            $result = json_decode(file_get_contents(System::updtext($aWebUnit['isp']['account']['delete'], ['login' => $web['login']])), true);
+            $result = json_decode(file_get_contents(sys::updtext($aWebUnit['isp']['account']['delete'], ['login' => $web['login']])), true);
 
             if (!isset($result['result']) || strtolower($result['result']) != 'ok') {
                 continue;

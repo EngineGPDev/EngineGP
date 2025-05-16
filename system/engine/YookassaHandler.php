@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -54,8 +52,8 @@ if (isset($data['event']) && $data['event'] === 'payment.succeeded') {
                 $sql->query('UPDATE `users` set `balance`="' . ($part['balance'] + $part_sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
             }
 
-            $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . System::updtext(
-                System::text('logs', 'part'),
+            $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
+                sys::text('logs', 'part'),
                 ['part' => $user['part'], 'money' => $part_sum]
             ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $part_sum . '"');
         }
@@ -65,8 +63,8 @@ if (isset($data['event']) && $data['event'] === 'payment.succeeded') {
     $sql->query('INSERT INTO `logs` SET `user`="' . $user['id'] . '", `text`="Пополнение баланса на сумму: ' . $amount . ' RUB", `date`="' . time() . '", `type`="replenish", `money`="' . $amount . '"');
 
     http_response_code(200);
-    System::outjs(['status' => 'ok']);
+    sys::outjs(['status' => 'ok']);
 } else {
     http_response_code(400);
-    System::outjs(['status' => 'ignored']);
+    sys::outjs(['status' => 'ignored']);
 }

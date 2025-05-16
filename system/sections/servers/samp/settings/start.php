@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,9 +23,11 @@ if (!defined('EGP')) {
 $sql->query('SELECT `uid`, `slots`, `slots_start`, `autorestart` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
+include(LIB . 'games/games.php');
+
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? System::int($url['value']) : System::outjs(['s' => 'ok'], $nmch);
+    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'slots':
@@ -39,7 +39,7 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            System::outjs(['s' => 'ok'], $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
     }
 }
 

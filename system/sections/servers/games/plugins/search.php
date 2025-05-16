@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,16 +24,16 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$text = $_POST['text'] ?? System::outjs(['none' => '']);
+$text = $_POST['text'] ?? sys::outjs(['none' => '']);
 
 $mkey = md5($text . $id);
 
 if ($mcache->get($mkey) != '') {
-    System::outjs(['s' => $mcache->get($mkey)]);
+    sys::outjs(['s' => $mcache->get($mkey)]);
 }
 
 if (!isset($text[2])) {
-    System::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
+    sys::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
 }
 
 $sPlugins = [];
@@ -92,12 +90,12 @@ if (!$sql->num($plugins)) {
         if (!$sWord) {
             $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-            System::outjs(['s' => 'По вашему запросу ничего не найдено']);
+            sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
         }
     } else {
         $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-        System::outjs(['s' => 'По вашему запросу ничего не найдено']);
+        sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
     }
 } else {
     $sPlugins[] = $plugins;
@@ -138,7 +136,7 @@ foreach ($sPlugins as $index => $plugins) {
             $install = $sql->get();
 
             $upd = $install['upd'];
-            $time = System::today($install['time']);
+            $time = sys::today($install['time']);
 
             $install = true;
         }
@@ -209,8 +207,8 @@ foreach ($sPlugins as $index => $plugins) {
             $html->set('time', $time);
         }
 
-        $html->set('name', System::find(htmlspecialchars_decode($plugin['name']), $text));
-        $html->set('desc', System::find(htmlspecialchars_decode($plugin['desc']), $text));
+        $html->set('name', sys::find(htmlspecialchars_decode($plugin['name']), $text));
+        $html->set('desc', sys::find(htmlspecialchars_decode($plugin['desc']), $text));
 
         $html->pack('plugins');
     }
@@ -220,4 +218,4 @@ $html->arr['plugins'] ??= '';
 
 $mcache->set($mkey, $html->arr['plugins'], false, 15);
 
-System::outjs(['s' => $html->arr['plugins']], $nmch);
+sys::outjs(['s' => $html->arr['plugins']], $nmch);
