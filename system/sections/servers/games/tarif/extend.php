@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +24,7 @@ $promo = false;
 
 // Цена аренды за выбранный период (promo -> с учетом промо-кода)
 if (isset($url['promo']) || $aData['promo'] != '') {
-    $promo = Game::define_promo(
+    $promo = games::define_promo(
         $aData['promo'],
         $tarif['discount'],
         $sum,
@@ -49,14 +46,14 @@ if (is_array($promo)) {
 if ($go) {
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        System::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
+        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
     }
 
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
     // Реф. система
-    Game::part($user['id'], $sum);
+    games::part($user['id'], $sum);
 
     $status = $server['status'] == 'overdue' ? '`status`="off",' : '';
 
@@ -73,8 +70,8 @@ if ($go) {
 
     // Запись логов
     if (!is_array($promo)) {
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
-            System::text('logs', 'extend_server'),
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+            sys::text('logs', 'extend_server'),
             ['days' => $days,
                     'money' => $sum,
                     'id' => $id]
@@ -82,16 +79,16 @@ if ($go) {
     } else {
         $sql->query('UPDATE `servers` set `benefit`="' . $time . '" WHERE `id`="' . $id . '" LIMIT 1');
         $sql->query('INSERT INTO `promo_use` set `promo`="' . $promo['id'] . '", `user`="' . $user['id'] . '", `time`="' . $start_point . '"');
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
-            System::text('logs', 'extend_server_promo'),
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+            sys::text('logs', 'extend_server_promo'),
             ['days' => $days,
                     'money' => $sum,
                     'promo' => $promo['cod'], 'id' => $id]
         ) . '", `date`="' . $start_point . '", `type`="extend", `money`="' . $sum . '"');
     }
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 // Выхлоп цены
-System::outjs(['s' => $sum]);
+sys::outjs(['s' => $sum]);

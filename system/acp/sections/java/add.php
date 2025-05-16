@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -31,7 +29,7 @@ if ($go) {
     $aData['status'] = $_POST['status'] ?? 1;
 
     if (in_array('', $aData)) {
-        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $sql->query('INSERT INTO `java_versions` set '
@@ -40,7 +38,7 @@ if ($go) {
         . '`executable_file`="' . $aData['executable_file'] . '",'
         . '`status`="' . $aData['status'] . '"');
 
-    AdminSystem::outjs(['s' => $sql->id()]);
+    sys::outjs(['s' => $sql->id()]);
 }
 
 $unit = '<option value="0">Выберите локацию</option>';

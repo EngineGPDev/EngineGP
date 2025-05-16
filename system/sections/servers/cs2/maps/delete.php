@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -36,7 +34,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -69,7 +67,7 @@ foreach ($in_aMaps as $name => $sel) {
             continue;
         }
 
-        $ssh->set('cd /path/maps/' . $server['game'] . '/' . System::map($map) . ' && du -a | grep -iE "\.[a-z]{1,3}$" | awk \'{print $2}\'');
+        $ssh->set('cd /path/maps/' . $server['game'] . '/' . sys::map($map) . ' && du -a | grep -iE "\.[a-z]{1,3}$" | awk \'{print $2}\'');
 
         $aFiles = explode("\n", str_replace('./', '', $ssh->get()));
 
@@ -87,11 +85,11 @@ foreach ($in_aMaps as $name => $sel) {
         $aFlrm = explode(' ', $dir . 'maps/' . $map . '.* ' . trim($files));
 
         foreach ($aFlrm as $flrm) {
-            $rm .= System::map($flrm) . ' ';
+            $rm .= sys::map($flrm) . ' ';
         }
 
         $ssh->set('sudo -u server' . $server['uid'] . ' tmux new-session -ds md' . $start_point . $id . ' sh -c \'rm ' . trim($rm) . '\'');
     }
 }
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

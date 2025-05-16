@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Whoops\Run;
@@ -53,18 +52,18 @@ $whoops->pushHandler($loggingInFile);
 $whoops->register();
 
 // Парсинг адреса
-$url = is_array(System::url()) ? System::url() : [];
-$route = System::url(false);
+$url = is_array(sys::url()) ? sys::url() : [];
+$route = sys::url(false);
 $section = $url['section'] ?? false;
 
-$id = array_key_exists('id', $url) ? System::int($url['id']) : false;
+$id = array_key_exists('id', $url) ? sys::int($url['id']) : false;
 $go = array_key_exists('go', $url);
-$page = array_key_exists('page', $url) ? System::int($url['page']) : 1;
+$page = array_key_exists('page', $url) ? sys::int($url['page']) : 1;
 $route = $route == '' ? 'index' : $route;
 
 // Реферал
 if (isset($_GET['account'])) {
-    setcookie('referrer', System::int($_GET['account']), $start_point + (10 * 86400), "/", $_SERVER['HTTP_HOST'], false, true);
+    setcookie('referrer', sys::int($_GET['account']), $start_point + (10 * 86400), "/", $_SERVER['HTTP_HOST'], false, true);
 }
 
 $auth = false;
@@ -179,8 +178,8 @@ if ($aop == '') {
 // Заготовка выхлопа
 $html->get('all');
 $html->set('title', $title . ' | ' . $cfg['name']);
-$html->set('description', System::head('description'));
-$html->set('keywords', System::head('keywords'));
+$html->set('description', sys::head('description'));
+$html->set('keywords', sys::head('keywords'));
 $html->set('home', $cfg['http']);
 $html->set('js', $cfg['http'] . 'template/js/');
 $html->set('css', $cfg['http'] . 'template/css/');

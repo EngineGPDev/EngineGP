@@ -16,10 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-use EngineGP\Model\Parameters;
-use EngineGP\Infrastructure\GeoIP\SxGeo;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -47,15 +43,17 @@ if ($go) {
 
 $auth_list = '';
 
+include(LIB . 'geo.php');
+
 $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
 $sql->query('SELECT `ip`, `date`, `browser` FROM `auth` WHERE `user`="' . $id . '" ORDER BY `id` DESC LIMIT 15');
 while ($auth_info = $sql->get()) {
     $auth_list .= '<tr>';
-    $auth_list .= '<td>Авторизация через браузер: <b>' . AdminSystem::browser(base64_decode($auth_info['browser'])) . '</b></td>';
+    $auth_list .= '<td>Авторизация через браузер: <b>' . sys::browser(base64_decode($auth_info['browser'])) . '</b></td>';
     $auth_list .= '<td>' . $auth_info['ip'] . '</td>';
-    $auth_list .= '<td>' . AdminSystem::country($auth_info['ip']) . '</td>';
-    $auth_list .= '<td>' . AdminSystem::today($auth_info['date']) . '</td>';
+    $auth_list .= '<td>' . sys::country($auth_info['ip']) . '</td>';
+    $auth_list .= '<td>' . sys::today($auth_info['date']) . '</td>';
     $auth_list .= '</tr>';
 }
 
@@ -65,7 +63,7 @@ $sql->query('SELECT `text`, `date` FROM `logs` WHERE `user`="' . $id . '" ORDER 
 while ($logs_info = $sql->get()) {
     $logs_list .= '<tr>';
     $logs_list .= '<td>' . $logs_info['text'] . '</td>';
-    $logs_list .= '<td>' . AdminSystem::today($logs_info['date']) . '</td>';
+    $logs_list .= '<td>' . sys::today($logs_info['date']) . '</td>';
     $logs_list .= '</tr>';
 }
 
@@ -85,7 +83,7 @@ while ($server_user = $sql->get($servers_user)) {
     $serv_user .= '<td>#' . $server_user['tarif'] . ' ' . $tarif['name'] . '</td>';
     $serv_user .= '<td>' . $status[$server_user['status']] . '</td>';
     $serv_user .= '<td>' . strtoupper($aGname[$server_user['game']]) . '</td>';
-    $serv_user .= '<td>' . $time_end = $server_user['status'] == 'overdue' ? 'Удаление через: ' . AdminSystem::date('min', $server_user['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . AdminSystem::date('min', $server_user['time']) . '</td>';
+    $serv_user .= '<td>' . $time_end = $server_user['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server_user['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server_user['time']) . '</td>';
     $serv_user .= '</tr>';
 }
 
@@ -103,7 +101,7 @@ while ($logs = $sql->get()) {
     $money_buy += $logs['money'];
 }
 
-$time = (Parameters::$aDayMonth[date('n', $start_point)] - date('j', $start_point)) * 86400;
+$time = (params::$aDayMonth[date('n', $start_point)] - date('j', $start_point)) * 86400;
 
 $sql->query('SELECT `money` FROM `logs` WHERE `user`="' . $us['id'] . '" AND (`type`="buy" OR `type`="extend") AND `date`>"' . ($start_point - $time) . '"');
 while ($logs = $sql->get()) {
@@ -116,10 +114,10 @@ foreach ($us as $i => $val) {
     $html->set($i, $val);
 }
 
-$html->set('time', $us['time'] < $start_point - 600 ? AdminSystem::today($us['time']) : AdminSystem::ago($us['time']));
-$html->set('date', AdminSystem::today($us['date']));
+$html->set('time', $us['time'] < $start_point - 600 ? sys::today($us['time']) : sys::ago($us['time']));
+$html->set('date', sys::today($us['date']));
 
-$html->set('month', mb_strtolower(Parameters::$aNameMonth[AdminSystem::int(date('n', $start_point))], 'UTF-8'));
+$html->set('month', mb_strtolower(params::$aNameMonth[sys::int(date('n', $start_point))], 'UTF-8'));
 $html->set('money_all', $money_all);
 $html->set('money_buy', $money_buy);
 $html->set('money_extend', $money_all - $money_buy);

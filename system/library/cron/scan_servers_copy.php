@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -62,7 +60,7 @@ class scan_servers_copy extends cron
                 $sql->query('SELECT `uid` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
                 $server = $sql->get();
 
-                if (!System::int($ssh->get('ps aux | grep copy_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (!sys::int($ssh->get('ps aux | grep copy_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                     $sql->query('UPDATE `copy` set `status`="1" WHERE `id`="' . $copy['id'] . '" LIMIT 1');
                 }
             }

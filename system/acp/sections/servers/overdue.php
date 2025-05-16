@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -51,7 +49,7 @@ if ($id) {
         $list .= '<td>' . $server_address . '</td>';
         $list .= '<td>#' . $server['tarif'] . ' ' . $tarif['name'] . '</td>';
         $list .= '<td class="text-center">Просрочен</td>';
-        $list .= '<td class="text-center">Удаление через: ' . AdminSystem::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) . '</td>';
+        $list .= '<td class="text-center">Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) . '</td>';
         $list .= '<td class="text-center"><a href="#" onclick="return servers_delete(\'' . $server['id'] . '\')" class="text-red">Удалить</a></td>';
         $list .= '</tr>';
     }

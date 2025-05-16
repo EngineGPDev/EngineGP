@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -108,13 +106,13 @@ class plugins
                             }
 
                             if ($options != '') {
-                                System::outjs(['e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options], $mcache);
+                                sys::outjs(['e' => 'Для данного плагина требуется установка одного из родителя', 'required' => true, 'pid' => $pl, 'select' => $options], $mcache);
                             }
                         }
                     }
                 }
 
-                System::outjs(['e' => 'Для данного плагина требуется установка родителя', 'required' => true, 'pid' => $pl, 'pname' => htmlspecialchars_decode($plRequi['name'])], $mcache);
+                sys::outjs(['e' => 'Для данного плагина требуется установка родителя', 'required' => true, 'pid' => $pl, 'pname' => htmlspecialchars_decode($plRequi['name'])], $mcache);
             }
         }
 
@@ -137,7 +135,7 @@ class plugins
                 $sql->query('SELECT `name` FROM `plugins` WHERE `id`="' . $pl . '" LIMIT 1');
                 $plIncomp = $sql->get();
 
-                System::outjs(['e' => 'Данный плагин несовместим с уже установленным плагином', 'pid' => $pl, 'pname' => htmlspecialchars_decode($plIncomp['name'])], $mcache);
+                sys::outjs(['e' => 'Данный плагин несовместим с уже установленным плагином', 'pid' => $pl, 'pname' => htmlspecialchars_decode($plIncomp['name'])], $mcache);
             }
         }
 
@@ -153,7 +151,7 @@ class plugins
             $file = preg_replace($clear['text'], '', $ssh->get('sudo -u server' . $uid . ' cat ' . $dir . $clear['file']));
 
             // Временный файл
-            $temp = System::temp($file);
+            $temp = sys::temp($file);
 
             $ssh->setfile($temp, $dir . $clear['file']);
             $ssh->set('chmod 0644' . ' ' . $dir . $clear['file']);

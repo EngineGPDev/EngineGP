@@ -16,12 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Parameters;
-use EngineGP\Infrastructure\RemoteAccess\SshClient;
-use EngineGP\Infrastructure\RemoteAccess\SftpClient;
-use EngineGP\Infrastructure\Network\InternalIpFetcher;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -40,26 +34,29 @@ class action extends actions
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
+        include(LIB . 'ssh.php');
+
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
-        $sftpClient = new SftpClient($unit['address'], 'root', $unit['passwd']);
-        $internalIpFetcher = new InternalIpFetcher($sshClient);
+        // Проверка SSH соединения с локацией
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return ['e' => sys::text('error', 'ssh')];
+        }
 
-        $ip = $internalIpFetcher->getInternalIp();
+        $ip = $ssh->getInternalIp();
         $port = $server['port'];
         $server_address = $server['address'] . ':' . $server['port'];
 
-        $serverSystemdStatus = trim($sshClient->execute('sudo systemctl show -p ActiveState server' . $server['uid'] . '.scope | awk -F \'=\' \'{print $2}\'', false));
+        $serverSystemdStatus = trim($ssh->get('sudo systemctl show -p ActiveState server' . $server['uid'] . '.scope | awk -F \'=\' \'{print $2}\''));
 
         if ($serverSystemdStatus == 'failed') {
-            $sshClient->execute('sudo systemctl stop server' . $server['uid'] . '.scope');
-            $sshClient->execute('sudo systemctl reset-failed server' . $server['uid'] . '.scope');
+            $ssh->set('sudo systemctl stop server' . $server['uid'] . '.scope');
+            $ssh->set('sudo systemctl reset-failed server' . $server['uid'] . '.scope');
         }
 
         // Убить процессы
-        $sshClient->execute('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
+        $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Определяем identity директорию сервера
@@ -70,14 +67,14 @@ class action extends actions
             . './RustDedicated -batchmode +server.ip ' . $ip . ' +server.port ' . $port . ' +server.queryport ' . $server['port_query'] . ' +rcon.port ' . $server['port_rcon'] . ' +server.tickrate ' . $server['tickrate'] . ' +server.identity ' . $server_identity . ' +server.maxplayers ' . $server['slots_start'];
 
         // Временный файл
-        $temp = System::temp($bash);
+        $temp = sys::temp($bash);
 
         // Обновление файла start.sh
-        $sftpClient->putFile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
-        $sshClient->execute('chmod 0500' . ' ' . $tarif['install'] . $server['uid'] . '/start.sh');
+        $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/start.sh');
+        $ssh->set('chmod 0500' . ' ' . $tarif['install'] . $server['uid'] . '/start.sh');
 
         // Строка запуска
-        $sshClient->execute('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
+        $ssh->set('cd ' . $tarif['install'] . $server['uid'] . ';' // переход в директорию игрового сервера
             . 'chown server' . $server['uid'] . ':servers start.sh;' // Обновление владельца файла start.sh
             . 'sudo systemd-run --unit=server' . $server['uid'] . ' --scope -p CPUQuota=' . $server['cpu'] . '% -p MemoryMax=' . $server['ram'] . 'M sudo -u server' . $server['uid'] . ' tmux new-session -ds s_' . $server['uid'] . ' sh -c "./start.sh"'); // Запуск игрового сервера
 
@@ -89,11 +86,8 @@ class action extends actions
         // Сброс кеша
         actions::clmcache($id);
 
-        System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
-        System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
-
-        $sshClient->disconnect();
-        $sftpClient->disconnect();
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => $type, 'online' => 0]);
 
         return ['s' => 'ok'];
     }
@@ -102,6 +96,8 @@ class action extends actions
     {
         global $cfg, $sql, $user, $start_point;
 
+        include(LIB . 'ssh.php');
+
         $sql->query('SELECT `uid`, `unit`, `tarif`, `game`, `name`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
 
@@ -109,7 +105,7 @@ class action extends actions
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
         if ($update > $start_point and $user['group'] != 'admin') {
-            return ['e' => System::updtext(System::text('servers', 'update'), ['time' => System::date('max', $update)])];
+            return ['e' => sys::updtext(sys::text('servers', 'update'), ['time' => sys::date('max', $update)])];
         }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -118,32 +114,33 @@ class action extends actions
         $sql->query('SELECT `install`, `plugins_install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+        // Проверка ssh соедниения пу с локацией
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            return ['e' => sys::text('error', 'ssh')];
+        }
 
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        $sshClient->execute('cd ' . $cfg['steamcmd'] . ' && ' . 'tmux new-session -ds u_' . $server['uid'] . ' sh -c "'
+        $ssh->set('cd ' . $cfg['steamcmd'] . ' && ' . 'tmux new-session -ds u_' . $server['uid'] . ' sh -c "'
             . './steamcmd.sh +login anonymous +force_install_dir "' . $install . '" +app_update 258550 +quit;'
             . 'cd ' . $install . ';'
             . 'chown -R server' . $server['uid'] . ':servers .;'
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . '"');
+            . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Логирование
-        $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . System::text('syslogs', 'update') . '", `time`="' . $start_point . '"');
+        $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'update') . '", `time`="' . $start_point . '"');
 
         // Сброс кеша
         actions::clmcache($id);
 
-        System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
-        System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
-
-        $sshClient->disconnect();
+        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
+        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
 
         return ['s' => 'ok'];
     }

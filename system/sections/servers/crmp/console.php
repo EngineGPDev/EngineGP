@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -35,11 +33,11 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (isset($server['status']) && $server['status'] == 'off') {
-        System::out(System::text('servers', 'off'));
+        sys::out(sys::text('servers', 'off'));
     }
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        System::out(System::text('error', 'ssh'));
+        sys::out(sys::text('error', 'ssh'));
     }
 
     $dir = $tarif['install'] . $server['uid'] . '/';
@@ -50,7 +48,7 @@ if ($go) {
 
     $output = $ssh->get($command);
 
-    System::out(htmlspecialchars($output, ENT_QUOTES | ENT_SUBSTITUTE, ''));
+    sys::out(htmlspecialchars($output, ENT_QUOTES | ENT_SUBSTITUTE, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

@@ -16,15 +16,17 @@
  * limitations under the License.
  */
 
-namespace EngineGP;
-
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-class System
+if (!defined('EGP')) {
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
+
+class sys
 {
     public static function url($all = true)
     {
@@ -199,7 +201,7 @@ class System
 
         if (!$use || $server['time'] < $start_point || in_array($server['status'], ['install', 'reinstall', 'update', 'recovery', 'blocked'])) {
             if ($go) {
-                System::out('Раздел недоступен');
+                sys::out('Раздел недоступен');
             }
 
             if (!$use) {
@@ -444,7 +446,7 @@ class System
     public static function login($mail, $lchar)
     {
         if (!$lchar) {
-            return str_replace(['.', '_', '+', '-'], '', System::first(explode('@', $mail)));
+            return str_replace(['.', '_', '+', '-'], '', sys::first(explode('@', $mail)));
         }
 
         $list = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwXxYyZz0123456789';
@@ -501,7 +503,7 @@ class System
 
         if ($auth) {
             if ($go) {
-                System::outjs(['e' => System::text('output', 'auth')]);
+                sys::outjs(['e' => sys::text('output', 'auth')]);
             }
 
             $link = 'user/section/lk';
@@ -518,7 +520,7 @@ class System
 
         if (!$auth) {
             if ($go) {
-                System::outjs(['e' => System::text('output', 'noauth')]);
+                sys::outjs(['e' => sys::text('output', 'noauth')]);
             }
 
             $link = 'user/section/auth';
@@ -587,19 +589,19 @@ class System
         $text = '';
 
         if ($days > 0) {
-            $text .= System::date_decl($days, $adata[$lenght]['days']);
+            $text .= sys::date_decl($days, $adata[$lenght]['days']);
         }
 
         if ($days < 1 and $hours > 0) {
-            $text .= ' ' . System::date_decl($hours, $adata[$lenght]['hours']);
+            $text .= ' ' . sys::date_decl($hours, $adata[$lenght]['hours']);
         }
 
         if ($days < 1 and $minutes > 0) {
-            $text .= ' ' . System::date_decl($minutes, $adata[$lenght]['minutes']);
+            $text .= ' ' . sys::date_decl($minutes, $adata[$lenght]['minutes']);
         }
 
         if ($days < 1 and $seconds > 0) {
-            $text .= ' ' . System::date_decl($seconds, $adata[$lenght]['seconds']);
+            $text .= ' ' . sys::date_decl($seconds, $adata[$lenght]['seconds']);
         }
 
         return $text;
@@ -615,7 +617,7 @@ class System
             $expr[2] = $expr[1];
         }
 
-        $i = System::int($digit) % 100;
+        $i = sys::int($digit) % 100;
 
         if ($onlyword) {
             $digit = '';
@@ -653,7 +655,7 @@ class System
             return 'Сегодня ' . date('- H:i', $time);
         }
 
-        $yesterday_first = System::int(System::first(explode('.', $today))) - 1;
+        $yesterday_first = sys::int(sys::first(explode('.', $today))) - 1;
         $yesterday_full = date('m.Y', $time);
 
         if ($day == $yesterday_first . '.' . $yesterday_full and !$yesterday_first) {
@@ -1036,7 +1038,7 @@ class System
     {
         global $cfg, $html;
 
-        $aNum = System::page_list($ceil, $actnum);
+        $aNum = sys::page_list($ceil, $actnum);
 
         $pages = '';
 
@@ -1096,12 +1098,8 @@ class System
     {
         global $_SERVER;
 
-        if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
             return $_SERVER['HTTP_CF_CONNECTING_IP'];
-        }
-
-        if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
-            return $_SERVER['HTTP_X_REAL_IP'];
         }
 
         return null;
@@ -1109,9 +1107,9 @@ class System
 
     public static function ip()
     {
-        $ip = System::ipproxy();
+        $ip = sys::ipproxy();
 
-        if (System::valid($ip, 'ip')) {
+        if (sys::valid($ip, 'ip')) {
             return $_SERVER['REMOTE_ADDR'];
         }
 
@@ -1154,7 +1152,7 @@ class System
         }
 
         if ($mcache->get($name)) {
-            System::outjs(['e' => System::text('other', 'mcache')]);
+            sys::outjs(['e' => sys::text('other', 'mcache')]);
         }
 
         $mcache->set($name, true, false, $time);
@@ -1168,12 +1166,12 @@ class System
 
         $cache = [
             'name' => $data['name'],
-            'status' => System::status($data['status'], $data['game']),
+            'status' => sys::status($data['status'], $data['game']),
             'online' => $data['online'],
-            'image' => '<img src="' . System::status($data['status'], $data['game'], '', 'img') . '">',
+            'image' => '<img src="' . sys::status($data['status'], $data['game'], '', 'img') . '">',
         ];
 
-        $cache = System::buttons($id, $data['status'], $data['game']);
+        $cache = sys::buttons($id, $data['status'], $data['game']);
 
         if (isset($data['players']) && is_array($data['players'])) {
             $cache['players'] = $data['players'];
@@ -1195,7 +1193,7 @@ class System
                         $map = $game;
                     }
 
-                    return System::img($map, $game);
+                    return sys::img($map, $game);
                 }
 
                 return 'Карта: ' . ($map == '' ? '-' : $map);
@@ -1398,7 +1396,7 @@ class System
             $info = $sql->get();
 
             if ($info['benefit'] > $start_point) {
-                System::outjs(['e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])], $nmch);
+                sys::outjs(['e' => 'Операция недоступна до ' . date('d.m.Y - H:i:s', $info['benefit'])], $nmch);
             }
         }
 

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,28 +26,28 @@ if ($go) {
     $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : '';
     $aData['color'] = isset($_POST['color']) ? trim($_POST['color']) : '';
     $aData['type'] = isset($_POST['type']) ? trim($_POST['type']) : '';
-    $aData['unit'] = isset($_POST['unit']) ? AdminSystem::int($_POST['unit']) : '';
-    $aData['server'] = isset($_POST['server']) ? AdminSystem::int($_POST['server']) : '';
+    $aData['unit'] = isset($_POST['unit']) ? sys::int($_POST['unit']) : '';
+    $aData['server'] = isset($_POST['server']) ? sys::int($_POST['server']) : '';
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : '';
 
-    $aData['time'] = AdminSystem::checkdate($aData['time']);
+    $aData['time'] = sys::checkdate($aData['time']);
 
     if ($aData['type'] == 'unit') {
         $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $aData['unit'] . '" LIMIT 1');
         if (!$sql->num()) {
-            AdminSystem::outjs(['e' => 'Указанная локация не найдена']);
+            sys::outjs(['e' => 'Указанная локация не найдена']);
         }
 
         $aData['server'] = 0;
     } elseif ($aData['type'] == 'server') {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
         if (!$sql->num()) {
-            AdminSystem::outjs(['e' => 'Указанный сервер не найден']);
+            sys::outjs(['e' => 'Указанный сервер не найден']);
         }
 
         $aData['unit'] = 0;
     } else {
-        AdminSystem::outjs(['e' => 'Выберите получателя уведомления']);
+        sys::outjs(['e' => 'Выберите получателя уведомления']);
     }
 
     $sql->query('INSERT INTO `notice` set '
@@ -59,7 +57,7 @@ if ($go) {
         . '`color`="' . $aData['color'] . '",'
         . '`time`="' . $aData['time'] . '"');
 
-    AdminSystem::outjs(['s' => 'ok']);
+    sys::outjs(['s' => 'ok']);
 }
 
 $units = '';

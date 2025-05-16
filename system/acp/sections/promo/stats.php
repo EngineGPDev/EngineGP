@@ -16,16 +16,14 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 if (isset($url['delete'])) {
-    $sql->query('DELETE FROM `promo_use` WHERE `id`="' . AdminSystem::int($url['delete']) . '" LIMIT 1');
+    $sql->query('DELETE FROM `promo_use` WHERE `id`="' . sys::int($url['delete']) . '" LIMIT 1');
 
-    AdminSystem::outjs(['s' => 'ok']);
+    sys::outjs(['s' => 'ok']);
 }
 
 $list = '';
@@ -43,7 +41,7 @@ while ($promo_use = $sql->get($all_use)) {
     $list .= '<td><a href="' . $cfg['http'] . 'acp/promo/id/' . $promo_use['id'] . '">' . $promo['cod'] . '</a></td>';
     $list .= '<td class="text-center"><a href="' . $cfg['http'] . 'acp/users/id/' . $promo_use['user'] . '">USER_' . $promo_use['user'] . '</a></td>';
     $list .= '<td>' . $log['text'] . '</td>';
-    $list .= '<td class="text-center">' . AdminSystem::today($promo_use['time']) . '</td>';
+    $list .= '<td class="text-center">' . sys::today($promo_use['time']) . '</td>';
     $list .= '<td class="text-center"><a href="#" onclick="return promo_use_delete(\'' . $promo_use['id'] . '\')" class="text-red">Удалить</a></td>';
     $list .= '</tr>';
 }

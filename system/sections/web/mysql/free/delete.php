@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +25,7 @@ if (!$go) {
 }
 
 if ($user['group'] != 'admin') {
-    System::outjs(['i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'], $nmch);
+    sys::outjs(['i' => 'Чтобы удалить услугу, создайте вопрос выбрав свой сервер с причиной удаления.'], $nmch);
 }
 
 switch ($aWebInstall[$server['game']][$url['subsection']]) {
@@ -48,7 +46,7 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    System::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
+    sys::outjs(['e' => 'Дополнительная услуга не установлена.'], $nmch);
 }
 
 $web = $sql->get();
@@ -66,11 +64,11 @@ if ($aWebUnit['unit'][$url['subsection']] == 'local') {
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 $ssh->set("mysql --login-path=local -e \"DROP DATABASE IF EXISTS " . $web['login'] . "; DROP USER " . $web['login'] . "\"");
 
 $sql->query('DELETE FROM `web` WHERE `id`="' . $web['id'] . '" LIMIT 1');
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

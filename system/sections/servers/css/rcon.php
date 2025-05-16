@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Infrastructure\GeoIP\SxGeo;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +24,7 @@ if ($go) {
     include(LIB . 'games/' . $server['game'] . '/rcon.php');
 
     if (isset($url['action']) and in_array($url['action'], ['kick', 'kill'])) {
-        $player = $_POST['player'] ?? System::outjs(['e' => 'Необходимо выбрать игрока.']);
+        $player = $_POST['player'] ?? sys::outjs(['e' => 'Необходимо выбрать игрока.']);
 
         if ($url['action'] == 'kick') {
             rcon::cmd(array_merge($server, ['id' => $id]), 'kickid "' . $player . '" "EGP Panel"');
@@ -35,9 +32,10 @@ if ($go) {
             rcon::cmd(array_merge($server, ['id' => $id]), 'sm_slay "' . $player . '"');
         }
 
-        System::outjs(['s' => 'ok']);
+        sys::outjs(['s' => 'ok']);
     }
 
+    include(LIB . 'geo.php');
     $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
     $aPlayers = rcon::players(rcon::cmd(array_merge($server, ['id' => $id])));
@@ -58,7 +56,7 @@ if ($go) {
         $html->pack('players');
     }
 
-    System::outjs(['s' => $html->arr['players'] ?? '']);
+    sys::outjs(['s' => $html->arr['players'] ?? '']);
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

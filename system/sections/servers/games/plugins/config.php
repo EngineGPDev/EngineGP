@@ -16,18 +16,16 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-$fid = isset($url['file']) ? System::int($url['file']) : System::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+$fid = isset($url['file']) ? sys::int($url['file']) : sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 
 $sql->query('SELECT `plugin`, `update`, `file` FROM `plugins_config` WHERE `id`="' . $fid . '" LIMIT 1');
 
 if (!$sql->num()) {
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 }
 
 $config = $sql->get();
@@ -35,7 +33,7 @@ $config = $sql->get();
 $sql->query('SELECT `id` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $config['plugin'] . '" LIMIT 1');
 
 if (!$sql->num()) {
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 }
 
 // Если обновленный плагин
@@ -56,10 +54,10 @@ if (!isset($ssh)) {
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
     if ($go) {
-        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -75,7 +73,7 @@ $path = $tarif['install'] . $server['uid'] . '/' . $config['file'];
 if ($go) {
     $data = $_POST['data'] ?? '';
 
-    $temp = System::temp($data);
+    $temp = sys::temp($data);
 
     // Отправление файла на сервер
     $ssh->setfile($temp, $path);
@@ -86,7 +84,7 @@ if ($go) {
 
     unlink($temp);
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "touch ' . $path . '; cat ' . $path . '"');

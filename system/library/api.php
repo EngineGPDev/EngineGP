@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-namespace EngineGP\Model;
+if (!defined('EGP')) {
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-use EngineGP\System;
-
-class Api
+class api
 {
     public static function data($id)
     {
@@ -46,25 +46,25 @@ class Api
         }
 
         $tarif = $sql->get();
-        $packs = System::b64djs($tarif['packs']);
+        $packs = sys::b64djs($tarif['packs']);
 
-        $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . System::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . System::date('min', $server['time']);
+        $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server['time']);
 
         return [
             'id' => $id,
             'address' => $server['address'] . ':' . $server['port'],
             'unit' => $unit['name'],
-            'tarif' => Game::info_tarif($server['game'], $tarif['name'], ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]),
+            'tarif' => games::info_tarif($server['game'], $tarif['name'], ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]),
             'game' => $server['game'],
             'name' => $server['name'],
             'slots' => $server['slots_start'],
             'online' => $server['online'],
             'players' => $server['players'],
-            'status' => System::status($server['status'], $server['game'], $server['map']),
-            'img' => System::status($server['status'], $server['game'], $server['map'], 'img'),
+            'status' => sys::status($server['status'], $server['game'], $server['map']),
+            'img' => sys::status($server['status'], $server['game'], $server['map'], 'img'),
             'time_end' => $time_end,
-            'time' => System::today($server['time']),
-            'date' => System::today($server['date']),
+            'time' => sys::today($server['time']),
+            'date' => sys::today($server['date']),
             'pack' => $packs[$server['pack']],
         ];
     }

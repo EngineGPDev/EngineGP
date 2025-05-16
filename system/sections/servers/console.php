@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,6 +23,6 @@ if (!defined('EGP')) {
 $sql->query('SELECT `unit`, `address`, `game`, `status`, `plugins_use`, `ftp_use`, `console_use`, `stats_use`, `copy_use`, `web_use`, `time` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = $sql->get();
 
-System::nav($server, $id, 'console');
+sys::nav($server, $id, 'console');
 
-include(System::route($server, 'console', $go));
+include(sys::route($server, 'console', $go));

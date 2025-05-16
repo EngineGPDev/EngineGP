@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -52,7 +49,7 @@ if (is_array($mcache->get('aut_' . $user['id'])) and $mcache->get('nser_' . $use
 
             $aTarifs[$server['tarif']] = [
                 'name' => $tarif['name'],
-                'packs' => System::b64djs($tarif['packs']),
+                'packs' => sys::b64djs($tarif['packs']),
             ];
         }
     }
@@ -63,6 +60,8 @@ if (is_array($mcache->get('aut_' . $user['id'])) and $mcache->get('nser_' . $use
     // Запись кол-во серверов в кеш
     $mcache->set('nser_' . $user['id'], $n, false, 60);
 }
+
+include(LIB . 'games/games.php');
 
 $sql->query('SELECT '
     . '`id`,'
@@ -89,9 +88,9 @@ $wait_servers = '';
 $updates_servers = '';
 
 while ($server = $sql->get()) {
-    $btn = System::buttons($server['id'], $server['status'], $server['game']);
+    $btn = sys::buttons($server['id'], $server['status'], $server['game']);
 
-    $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . System::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . System::date('min', $server['time']);
+    $time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server['time']);
 
     $html->get('list', 'sections/servers');
 
@@ -99,7 +98,7 @@ while ($server = $sql->get()) {
     $html->set('unit', $aUnits[$server['unit']]['name']);
     $html->set(
         'tarif',
-        Game::info_tarif(
+        games::info_tarif(
             $server['game'],
             $aTarifs[$server['tarif']]['name'],
             ['fps' => $server['fps'], 'tickrate' => $server['tickrate'], 'ram' => $server['ram']]
@@ -113,11 +112,11 @@ while ($server = $sql->get()) {
     $html->set('online', $server['online']);
     $html->set('name', $server['name']);
     $html->set('fps', $server['fps']);
-    $html->set('status', System::status($server['status'], $server['game'], $server['map']));
-    $html->set('img', System::status($server['status'], $server['game'], $server['map'], 'img', $server['game']));
+    $html->set('status', sys::status($server['status'], $server['game'], $server['map']));
+    $html->set('img', sys::status($server['status'], $server['game'], $server['map'], 'img', $server['game']));
     $html->set('time_end', $time_end);
-    $html->set('time', System::today($server['time']));
-    $html->set('date', System::today($server['date']));
+    $html->set('time', sys::today($server['time']));
+    $html->set('date', sys::today($server['date']));
 
     $html->set('btn', $btn);
 

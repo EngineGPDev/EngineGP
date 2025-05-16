@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -41,7 +39,7 @@ while ($cb = $sql->get($cbs)) {
     $html->set('type', $cb['purse'][0] == 'R' ? '<span class="text-blue">WebMoney</span>' : '<span class="text-orange">Qiwi</span>');
     $html->set('purse', $cb['purse']);
     $html->set('gateway', empty($cfg['part_gateway']) ? 'mm' : 'auto');
-    $html->set('date', AdminSystem::today($cb['date']));
+    $html->set('date', sys::today($cb['date']));
 
     $html->pack('cashback');
 }
@@ -81,7 +79,7 @@ if ($html->arr['main'] == '') {
         $sf_list .= '<td class="text-center">' . $staff['ip'] . '</td>';
         $sf_list .= '<td class="text-center">' . $staff['browser'] . '</td>';
         $sf_list .= '<td class="text-center ' . $online . '</td>';
-        $sf_list .= '<td class="text-right">' . AdminSystem::today($staff['time']) . '</td>';
+        $sf_list .= '<td class="text-right">' . sys::today($staff['time']) . '</td>';
         $sf_list .= '</tr>';
     }
 

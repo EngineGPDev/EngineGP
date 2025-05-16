@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,18 +23,18 @@ if (!defined('EGP')) {
 $nmch = 'server_copy_check_' . $id;
 
 if ($mcache->get($nmch)) {
-    System::outjs(['e' => System::text('other', 'mcache')]);
+    sys::outjs(['e' => sys::text('other', 'mcache')]);
 }
 
 $mcache->set($nmch, true, false, 10);
 
 $copys = $sql->query('SELECT `id` FROM `copy` WHERE `user`="' . $server['user'] . '_' . $server['unit'] . '" AND `status`="0"');
 if (!$sql->num($copys)) {
-    System::outjs(['e' => 'no find'], $nmch);
+    sys::outjs(['e' => 'no find'], $nmch);
 }
 
 while ($copy = $sql->get($copys)) {
-    if (!System::int($ssh->get('ps aux | grep copy_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+    if (!sys::int($ssh->get('ps aux | grep copy_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
         $sql->query('UPDATE `copy` set `status`="1" WHERE `id`="' . $copy['id'] . '" LIMIT 1');
     }
 }
@@ -44,4 +42,4 @@ while ($copy = $sql->get($copys)) {
 // Очистка кеша
 $mcache->delete('server_copy_' . $id);
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

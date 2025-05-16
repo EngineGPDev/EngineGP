@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,7 +32,7 @@ $aSub = ['install', 'delete', 'update', 'plugin', 'config', 'search'];
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
     $html->nav('Плагины', $cfg['http'] . 'servers/id/' . $id . '/section/plugins');
 
-    $nmch = System::rep_act('server_plugins_go_' . $id, 10);
+    $nmch = sys::rep_act('server_plugins_go_' . $id, 10);
 
     include(SEC . 'servers/games/plugins/' . $url['subsection'] . '.php');
 } else {
@@ -166,7 +164,7 @@ if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
             }
 
             $html->set('name', htmlspecialchars_decode($plugin['name']));
-            $html->set('time', System::today($plugin['time']));
+            $html->set('time', sys::today($plugin['time']));
             $html->set('desc', htmlspecialchars_decode($plugin['desc']));
 
             $html->pack('install');

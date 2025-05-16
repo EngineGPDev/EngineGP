@@ -16,19 +16,17 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 $html->nav('Категории вопросов', $cfg['http'] . 'wiki');
 
-$quest = isset($url['question']) ? System::int($url['question']) : System::back($cfg['http'] . 'wiki');
+$quest = isset($url['question']) ? sys::int($url['question']) : sys::back($cfg['http'] . 'wiki');
 
 $sql->query('SELECT `name`, `cat`, `tags` FROM `wiki` WHERE `id`="' . $quest . '" LIMIT 1');
 if (!$sql->num()) {
-    System::back($cfg['http'] . 'wiki');
+    sys::back($cfg['http'] . 'wiki');
 }
 
 $wiki = $sql->get();

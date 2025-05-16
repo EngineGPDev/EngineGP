@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -78,7 +76,7 @@ class threads extends cron
 
         foreach ($threads as $thread) {
             foreach ($thread as $tmux => $servers) {
-                $cmd .= 'sudo -u www-data tmux new-session -ds scan_' . (System::first(explode(' ', $servers))) . '_' . $tmux . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
+                $cmd .= 'sudo -u www-data tmux new-session -ds scan_' . (sys::first(explode(' ', $servers))) . '_' . $tmux . ' sh -c \"cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' ' . $argv[3] . ' ' . $servers . '\"; sleep 1;';
             }
         }
 

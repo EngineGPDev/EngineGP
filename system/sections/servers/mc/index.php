@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -33,9 +31,9 @@ $unit = $sql->get();
 $sql->query('SELECT `name`, `packs` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
 $tarif = $sql->get();
 
-$btn = System::buttons($id, $server['status'], $server['game']);
+$btn = sys::buttons($id, $server['status'], $server['game']);
 
-$time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . System::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . System::date('min', $server['time']);
+$time_end = $server['status'] == 'overdue' ? 'Удаление через: ' . sys::date('min', $server['overdue'] + $cfg['server_delete'] * 86400) : 'Осталось: ' . sys::date('min', $server['time']);
 
 $html->get('index', 'sections/servers/' . $server['game']);
 
@@ -43,7 +41,7 @@ $html->set('id', $id);
 $html->set('unit', $unit['name']);
 $html->set('tarif', $tarif['name'] . ' / ' . $server['ram'] . ' RAM');
 
-$tarif['packs'] = System::b64djs($tarif['packs']);
+$tarif['packs'] = sys::b64djs($tarif['packs']);
 
 $html->set('pack', $tarif['packs'][$server['pack']]);
 $html->set('address', $server['address'] . ':' . $server['port']);
@@ -52,11 +50,11 @@ $html->set('slots', $server['slots_start']);
 $html->set('online', $server['online']);
 $html->set('players', base64_decode($server['players'] ?? ''));
 $html->set('name', $server['name']);
-$html->set('status', System::status($server['status'], $server['game'], $server['map']));
-$html->set('img', System::status($server['status'], $server['game'], 'mc', 'img'));
+$html->set('status', sys::status($server['status'], $server['game'], $server['map']));
+$html->set('img', sys::status($server['status'], $server['game'], 'mc', 'img'));
 $html->set('time_end', $time_end);
-$html->set('time', System::today($server['time']));
-$html->set('date', System::today($server['date']));
+$html->set('time', sys::today($server['time']));
+$html->set('date', sys::today($server['date']));
 
 $html->set('btn', $btn);
 

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -29,14 +27,14 @@ if (!$go || !isset($url['server'])) {
 $key = $url['key'] ?? exit;
 
 if (isset($key[32])) {
-    System::outjs(['e' => 'Длина ключа не должна превышать 32 символа.'], $nmch);
+    sys::outjs(['e' => 'Длина ключа не должна превышать 32 символа.'], $nmch);
 }
 
 include(LIB . 'web/free.php');
 
 $aData = [];
 
-$aData['server'] = System::int($url['server']);
+$aData['server'] = sys::int($url['server']);
 $aData['type'] = $url['subsection'];
 $aData['user'] = $server['user'];
 $aData['file'] = 'cstrike/addons/amxmodx/configs/csstats_mysql.cfg';

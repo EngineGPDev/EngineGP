@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Parameters;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +24,7 @@ if (!$go) {
     exit;
 }
 
-$pid = isset($url['plugin']) ? System::int($url['plugin']) : exit;
+$pid = isset($url['plugin']) ? sys::int($url['plugin']) : exit;
 
 $sql->query('SELECT `name`, `cfg`, `upd`, `incompatible`, `choice`, `required`, `packs`, `price` FROM `plugins` WHERE `id`="' . $pid . '" AND `game`="' . $server['game'] . '" LIMIT 1');
 
@@ -40,7 +37,7 @@ $plugin = $sql->get();
 // Проверка установки плагина
 $sql->query('SELECT `id` FROM `plugins_install` WHERE `server`="' . $id . '" AND `plugin`="' . $pid . '" LIMIT 1');
 if ($sql->num()) {
-    System::outjs(['e' => 'Данный плагин уже установлен']);
+    sys::outjs(['e' => 'Данный плагин уже установлен']);
 }
 
 $upd = false;
@@ -66,7 +63,7 @@ if ($plugin['price']) {
     } else {
         // Проверка баланса
         if ($user['balance'] < $plugin['price']) {
-            System::outjs(['e' => 'У вас не хватает ' . (round($plugin['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
+            sys::outjs(['e' => 'У вас не хватает ' . (round($plugin['price'] - $user['balance'], 2)) . ' ' . $cfg['currency']], $nmch);
         }
     }
 }
@@ -93,7 +90,7 @@ if (!isset($ssh)) {
 }
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+    sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
 }
 
 $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -117,7 +114,7 @@ $ssh->set('cd ' . $dir . ' && tmux new-session -ds install_' . $start_point . ' 
     . 'wget --no-check-certificate ' . $cfg['plugins'] . 'install/' . $fzip . '.zip && unzip -o ' . $fzip . '.zip; rm ' . $fzip . '.zip;'
     . 'find . -type d -exec chmod 700 {} \;;'
     . 'find . -type f -exec chmod 600 {} \;;'
-    . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . '"');
+    . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
 
 // Удаление файлов
 $sql->query('SELECT `file` FROM `plugins_delete` ' . $qsql);
@@ -144,8 +141,8 @@ if (!$buy and $plugin['price']) {
     $sql->query('INSERT INTO `plugins_buy` set `plugin`="' . $pid . '", `key`="' . md5(strip_tags($plugin['name'])) . '", `server`="' . $id . '", `price`="' . $plugin['price'] . '", `time`="' . $start_point . '"');
 
     // Запись логов
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
-        System::text('logs', 'buy_plugin'),
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
+        sys::text('logs', 'buy_plugin'),
         ['plugin' => strip_tags($plugin['name']), 'money' => $plugin['price'], 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="buy", `money`="' . $plugin['price'] . '"');
 }
@@ -157,7 +154,7 @@ $sql->query('INSERT INTO `plugins_install` set `server`="' . $id . '", `plugin`=
 $mcache->delete('server_plugins_' . $id);
 
 if ($plugin['cfg']) {
-    System::outjs(['s' => 'cfg'], $nmch);
+    sys::outjs(['s' => 'cfg'], $nmch);
 }
 
-System::outjs(['s' => 'ok'], $nmch);
+sys::outjs(['s' => 'ok'], $nmch);

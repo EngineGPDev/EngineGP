@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -30,18 +28,18 @@ $cache = $mcache->get($mkey);
 
 if (is_array($cache)) {
     if ($go) {
-        System::outjs($cache, $nmch);
+        sys::outjs($cache, $nmch);
     }
 
-    System::outjs($cache);
+    sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
     if ($go) {
-        System::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    System::outjs(['e' => '']);
+    sys::outjs(['e' => '']);
 }
 
 // Поиск по картам
@@ -54,10 +52,10 @@ if ($text[0] == '^') {
 
 if (!$sql->num()) {
     if ($go) {
-        System::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    System::outjs(['e' => 'По вашему запросу ничего не найдено']);
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $i = 0;
@@ -71,12 +69,12 @@ while ($map = $sql->get()) {
     $html->get('map_search', 'sections/servers/games/maps');
 
     $html->set('id', 's' . $map['id']);
-    $html->set('img', System::img($map['name'], $server['game']));
-    $html->set('name', System::find($map['name'], $text));
+    $html->set('img', sys::img($map['name'], $server['game']));
+    $html->set('name', sys::find($map['name'], $text));
 
     $html->pack('maps');
 }
 
 $mcache->set($mkey, ['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs], false, 15);
 
-System::outjs(['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs]);
+sys::outjs(['maps' => $html->arr['maps'], 'mapsjs' => $mapsjs]);

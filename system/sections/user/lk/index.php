@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -61,7 +59,7 @@ while ($part_info = $sql->get($part_inf)) {
     $part_user .= '<tr>';
     $part_user .= '<td>' . $i++ . '</td>';
     $part_user .= '<td>' . $part_info['login'] . '</td>';
-    $part_user .= '<td>' . System::today($part_info['date'], true) . '</td>';
+    $part_user .= '<td>' . sys::today($part_info['date'], true) . '</td>';
     $part_user .= '<td>' . $servers . '</td>';
     $part_user .= '</tr>';
 }
@@ -80,7 +78,7 @@ $html->set('cur', $cfg['currency']);
 $html->set('wmr', $user['wmr']);
 $html->set('rental', $rental);
 $html->set('extend', $extend);
-$html->set('date', System::today($user['date'], true));
+$html->set('date', sys::today($user['date'], true));
 $html->set('balance', round($user['balance'], 2));
 
 $html->set('part_users', $part_users);

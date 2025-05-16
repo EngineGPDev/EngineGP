@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -35,16 +32,16 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
     }
 
     // Удаление задания
     if (isset($url['action']) and $url['action'] == 'delete') {
-        $task = isset($_POST['task']) ? System::int($_POST['task']) : System::outjs(['s' => 'ok'], $nmch);
+        $task = isset($_POST['task']) ? sys::int($_POST['task']) : sys::outjs(['s' => 'ok'], $nmch);
 
         $sql->query('SELECT `cron` FROM `crontab` WHERE `id`="' . $task . '" AND `server`="' . $id . '" LIMIT 1');
         if (!$sql->num()) {
-            System::outjs(['s' => 'ok'], $nmch);
+            sys::outjs(['s' => 'ok'], $nmch);
         }
 
         $cron = $sql->get();
@@ -55,13 +52,13 @@ if ($go) {
 
         $sql->query('DELETE FROM `crontab` WHERE `id`="' . $task . '" LIMIT 1');
 
-        System::outjs(['s' => 'ok'], $nmch);
+        sys::outjs(['s' => 'ok'], $nmch);
     }
 
     // Добавление задания
     $sql->query('SELECT `id` FROM `crontab` WHERE `server`="' . $id . '" LIMIT 5');
     if ($sql->num() == $cfg['crontabs']) {
-        System::outjs(['e' => System::text('servers', 'crontab')], $nmch);
+        sys::outjs(['e' => sys::text('servers', 'crontab')], $nmch);
     }
 
     $data = [];
@@ -83,16 +80,18 @@ if ($go) {
     $sql->query('INSERT INTO `crontab` set `server`="' . $id . '"');
     $cid = $sql->id();
 
-    $cron_rule = Game::crontab($id, $cid, $data);
+    include(LIB . 'games/games.php');
+
+    $cron_rule = games::crontab($id, $cid, $data);
 
     $ssh->set('(crontab -l; echo "' . $cron_rule . '") | crontab -');
 
-    $time = Game::crontab_time($data['allhour'], $data['hour'], $data['minute']);
-    $week = Game::crontab_week($data['week']);
+    $time = games::crontab_time($data['allhour'], $data['hour'], $data['minute']);
+    $week = games::crontab_week($data['week']);
 
     $sql->query('UPDATE `crontab` set `server`="' . $id . '", `task`="' . $data['task'] . '", `cron`="' . $cron_rule . '", `week`="' . $week . '", `time`="' . $time . '", `commands`="' . $data['commands'] . '" WHERE `id`="' . $cid . '" LIMIT 1');
 
-    System::outjs(['s' => 'ok'], $nmch);
+    sys::outjs(['s' => 'ok'], $nmch);
 }
 
 $aTask = [

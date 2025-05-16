@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -33,9 +31,9 @@ if ($id) {
 
     $sql->query('SELECT `id` FROM `notice`');
 
-    $aPage = AdminSystem::page($page, $sql->num(), 20);
+    $aPage = sys::page($page, $sql->num(), 20);
 
-    AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/notice');
+    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/notice');
 
     $notices = $sql->query('SELECT `id`, `unit`, `server`, `text`, `time` FROM `notice` WHERE `time`<"' . $start_point . '" ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
     while ($notice = $sql->get($notices)) {

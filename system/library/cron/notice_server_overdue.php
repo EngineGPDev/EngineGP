@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -35,11 +33,11 @@ class notice_server_overdue extends cron
 
             if (!$user) {
                 exit;
-            }
+            }            
 
             $server_address = $server['address'] . ':' . $server['port'];
 
-            if (!System::mail('Аренда сервера', System::updtext(System::text('mail', 'notice_server_overdue'), ['site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address]), $user['mail'])) {
+            if (!sys::mail('Аренда сервера', sys::updtext(sys::text('mail', 'notice_server_overdue'), ['site' => $cfg['name'], 'id' => $server['id'], 'address' => $server_address]), $user['mail'])) {
                 continue;
             }
 

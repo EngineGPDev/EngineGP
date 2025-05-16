@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -104,7 +102,7 @@ class mysql
         global $go;
 
         if (isset($go) && $go) {
-            System::outjs(['e' => 'Query: ' . $query . '<br>Error: ' . $error]);
+            sys::outjs(['e' => 'Query: ' . $query . '<br>Error: ' . $error]);
         }
 
         if ($query != '') {

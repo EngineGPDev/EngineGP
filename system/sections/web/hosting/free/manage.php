@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -54,7 +52,7 @@ switch ($aWebInstall[$server['game']][$url['subsection']]) {
 }
 
 if (!$sql->num()) {
-    System::back($cfg['http'] . 'servers/id/' . $id . '/section/web/subsection/' . $url['subsection'] . '/action/install');
+    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/web/subsection/' . $url['subsection'] . '/action/install');
 }
 
 $web = $sql->get();
@@ -68,6 +66,6 @@ $html->set('id', $id);
 $html->set('url', $aWebUnit['isp']['panel']);
 $html->set('login', $web['login']);
 $html->set('passwd', $web['passwd']);
-$html->set('date', System::today($web['date']));
+$html->set('date', sys::today($web['date']));
 
 $html->pack('main');

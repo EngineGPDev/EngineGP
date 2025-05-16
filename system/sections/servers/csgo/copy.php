@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Parameters;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,11 +29,11 @@ if ($go) {
         $nmch = null;
 
         if ($url['subsection'] != 'check') {
-            $nmch = System::rep_act('server_copy_go_' . $id, 10);
+            $nmch = sys::rep_act('server_copy_go_' . $id, 10);
         }
 
         if ($server['status'] != 'off' and $url['subsection'] != 'remove') {
-            System::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
+            sys::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
         }
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
@@ -48,7 +45,7 @@ if ($go) {
         include(LIB . 'ssh.php');
 
         if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            System::outjs(['e' => System::text('error', 'ssh')], $nmch);
+            sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
         }
 
         include(SEC . 'servers/games/copy/' . $url['subsection'] . '.php');
@@ -62,7 +59,7 @@ if ($mcache->get('server_copy_' . $id) != '') {
     $html->arr['main'] = $mcache->get('server_copy_' . $id);
 } else {
     // Построение списка создания копии
-    foreach (Parameters::$section_copy[$server['game']]['aCopy'] as $name => $info) {
+    foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
         $html->get('list', 'sections/servers/games/copy');
 
         $html->set('name', $name);
@@ -79,7 +76,7 @@ if ($mcache->get('server_copy_' . $id) != '') {
         $html->set('id', $copy['id']);
         $html->set('info', $copy['info']);
         $html->set('server', $copy['server']);
-        $html->set('date', System::today($copy['date']));
+        $html->set('date', sys::today($copy['date']));
 
         if ($copy['status']) {
             $html->unit('created', 1);

@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Model\Game;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,17 +23,19 @@ if (!defined('EGP')) {
 $html->nav('Блокировка на оборудовании');
 
 if (isset($url['action'])) {
+    include(LIB . 'games/games.php');
+
     // Получение информации адреса
     if ($url['action'] == 'info') {
-        Game::iptables_whois($nmch);
+        games::iptables_whois($nmch);
     }
 
     // Добавление / удаление правил
     if ($go && in_array($url['action'], ['block', 'unblock'])) {
-        $address = isset($_POST['address']) ? trim($_POST['address']) : System::outjs(['e' => System::text('servers', 'firewall')], $nmch);
+        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['e' => sys::text('servers', 'firewall')], $nmch);
         $snw = isset($_POST['subnetwork']) ? true : false;
 
-        System::outjs(Game::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
+        sys::outjs(games::iptables($id, $url['action'], $address, $server['address'], $server['port'], $server['unit'], $snw), $nmch);
     }
 }
 

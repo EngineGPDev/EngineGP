@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\View\Help;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -30,7 +27,7 @@ if ($user['group'] == 'user') {
 }
 
 if (!$sql->num()) {
-    System::outjs(['empty' => '']);
+    sys::outjs(['empty' => '']);
 }
 
 if ($user['group'] != 'user') {
@@ -38,32 +35,34 @@ if ($user['group'] != 'user') {
     if ($sql->num()) {
         $help = $sql->get();
 
-        System::outjs(['reply' => $help['time']]);
+        sys::outjs(['reply' => $help['time']]);
     }
 
-    System::outjs(['empty' => '']);
+    sys::outjs(['empty' => '']);
 }
 
 $help = $sql->get();
 
 $sql->query('SELECT `text`, `time` FROM `help_dialogs` WHERE `help`="' . $help['id'] . '" AND `user`!="' . $user['id'] . '" AND `time`>"' . ($start_point - 15) . '" ORDER BY `id` DESC LIMIT 1');
 if (!$sql->num()) {
-    System::outjs(['reply' => '']);
+    sys::outjs(['reply' => '']);
 }
 
 $msg = $sql->get();
 
 if (strip_tags($msg['text'], '<br>,<p>') != $msg['text']) {
-    System::outjs(['reply' => '']);
+    sys::outjs(['reply' => '']);
 }
+
+include(LIB . 'help.php');
 
 $html->get('notice', 'sections/help');
 
 $html->set('id', $help['id']);
 $html->set('home', $cfg['http']);
 $html->set('text', $msg['text']);
-$html->set('ago', Help::ago($msg['time']));
+$html->set('ago', help::ago($msg['time']));
 
 $html->pack('notice');
 
-System::outjs(['notice' => $html->arr['notice']]);
+sys::outjs(['notice' => $html->arr['notice']]);

@@ -16,9 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-use EngineGP\Infrastructure\GeoIP\SxGeo;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -29,9 +26,11 @@ $aGroup = ['user' => 'Пользователь', 'support' => 'Тех. подд�
 
 $sql->query('SELECT `id` FROM `users` WHERE `time`>"' . ($start_point - 180) . '"');
 
-$aPage = AdminSystem::page($page, $sql->num(), 20);
+$aPage = sys::page($page, $sql->num(), 20);
 
-AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users/section');
+sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users/section');
+
+include(LIB . 'geo.php');
 
 $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
@@ -41,9 +40,9 @@ while ($us = $sql->get()) {
     $list .= '<td>' . $us['id'] . '</td>';
     $list .= '<td><a href="' . $cfg['http'] . 'acp/users/id/' . $us['id'] . '">' . $us['login'] . '</a></td>';
     $list .= '<td>' . $aGroup[$us['group']] . '</td>';
-    $list .= '<td>' . AdminSystem::browser($us['browser']) . '</td>';
+    $list .= '<td>' . sys::browser($us['browser']) . '</td>';
     $list .= '<td>' . $us['ip'] . '</td>';
-    $list .= '<td>' . AdminSystem::country($us['ip']) . '</td>';
+    $list .= '<td>' . sys::country($us['ip']) . '</td>';
     $list .= '<td><a href="#" onclick="return users_delete(\'' . $us['id'] . '\')" class="text-red">Удалить</a></td>';
     $list .= '</tr>';
 }

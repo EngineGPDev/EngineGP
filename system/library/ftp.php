@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-namespace EngineGP\Model;
+if (!defined('EGP')) {
+    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
+}
 
-use EngineGP\System;
-
-class Ftp
+class ftp
 {
     public $steck = false;
 
@@ -204,7 +204,7 @@ class Ftp
 
                     $html->unit('file', 1);
                     $html->unit('folder');
-                    $html->set('size', System::size($info['size']));
+                    $html->set('size', sys::size($info['size']));
                 }
 
                 $html->set('month', $this->mounthru[$info['month']]);
@@ -221,7 +221,7 @@ class Ftp
     public function mkdir($path, $folders)
     {
         if (!@ftp_chdir($this->steck, $path)) {
-            System::outjs(['e' => 'Ошибка: не удалось создать папку']);
+            sys::outjs(['e' => 'Ошибка: не удалось создать папку']);
         }
 
         $aFolder = explode('/', $folders);
@@ -233,14 +233,14 @@ class Ftp
 
             if (!@ftp_chdir($this->steck, $folder)) {
                 if (!@ftp_mkdir($this->steck, $folder)) {
-                    System::outjs(['e' => 'Ошибка: не удалось создать папку ' . $folder]);
+                    sys::outjs(['e' => 'Ошибка: не удалось создать папку ' . $folder]);
                 }
 
                 @ftp_chdir($this->steck, $folder);
             }
         }
 
-        System::outjs(['s' => 'ok']);
+        sys::outjs(['s' => 'ok']);
     }
 
     public function touch($path, $file, $text)
@@ -264,20 +264,20 @@ class Ftp
         $dir = ($dir == '') ? '/' : $dir;
 
         if (!@ftp_chdir($this->steck, $dir)) {
-            System::outjs(['e' => 'Ошибка: не удалось создать файл']);
+            sys::outjs(['e' => 'Ошибка: не удалось создать файл']);
         }
 
-        $temp = System::temp($text);
+        $temp = sys::temp($text);
 
         if (@ftp_put($this->steck, $file, $temp, FTP_BINARY)) {
             unlink($temp);
 
-            System::outjs(['s' => 'ok']);
+            sys::outjs(['s' => 'ok']);
         }
 
         unlink($temp);
 
-        System::outjs(['e' => 'Ошибка: не удалось создать файл']);
+        sys::outjs(['e' => 'Ошибка: не удалось создать файл']);
     }
 
     public function edit_file($path, $file)
@@ -289,46 +289,46 @@ class Ftp
 
             unlink(TEMP . $name);
 
-            System::outjs(['s' => $data]);
+            sys::outjs(['s' => $data]);
         }
 
-        System::outjs(['e' => 'Не удалось открыть файл']);
+        sys::outjs(['e' => 'Не удалось открыть файл']);
     }
 
     public function rename($path, $oldname, $newname)
     {
         if (@ftp_rename($this->steck, $path . '/' . $oldname, $path . '/' . $newname)) {
-            System::outjs(['s' => 'ok']);
+            sys::outjs(['s' => 'ok']);
         }
 
-        System::outjs(['e' => 'Не удалось сменить имя']);
+        sys::outjs(['e' => 'Не удалось сменить имя']);
     }
 
     public function rmdir($path, $folder)
     {
         if (@ftp_rmdir($this->steck, $path . '/' . $folder)) {
-            System::outjs(['s' => 'ok']);
+            sys::outjs(['s' => 'ok']);
         }
 
-        System::outjs(['e' => 'Ошибка: не удалось удалить папку.']);
+        sys::outjs(['e' => 'Ошибка: не удалось удалить папку.']);
     }
 
     public function rmfile($file)
     {
         if (@ftp_delete($this->steck, $file)) {
-            System::outjs(['s' => 'ok']);
+            sys::outjs(['s' => 'ok']);
         }
 
-        System::outjs(['e' => 'Ошибка: не удалось удалить файл']);
+        sys::outjs(['e' => 'Ошибка: не удалось удалить файл']);
     }
 
     public function chmod($path, $name, $chmod)
     {
         if (ftp_site($this->steck, 'CHMOD 0' . $chmod . ' ' . $path . '/' . $name)) {
-            System::outjs(['s' => 'ok']);
+            sys::outjs(['s' => 'ok']);
         }
 
-        System::outjs(['e' => 'Ошибка: не удалось изменить права.']);
+        sys::outjs(['e' => 'Ошибка: не удалось изменить права.']);
     }
 
     public function search($str, $server)
@@ -343,7 +343,7 @@ class Ftp
             $aData = ftp_rawlist($this->steck, '/', true);
 
             if (!is_array($aData)) {
-                System::out('Ничего не найдено');
+                sys::out('Ничего не найдено');
             }
 
             // Файлы
@@ -400,10 +400,10 @@ class Ftp
         // Поиск
         foreach ($aFile as $dir => $files) {
             foreach ($files as $file) {
-                $find = System::first(explode('.', $file['name']));
+                $find = sys::first(explode('.', $file['name']));
 
                 if (preg_match('/' . $str . '/i', $find)) {
-                    $aFind[] = ['dir' => $dir, 'info' => $file['info'], 'file' => $file['name'], 'find' => System::find($file['name'], $str)];
+                    $aFind[] = ['dir' => $dir, 'info' => $file['info'], 'file' => $file['name'], 'find' => sys::find($file['name'], $str)];
                 }
             }
         }
@@ -449,7 +449,7 @@ class Ftp
 
                 $html->unit('file', 1);
                 $html->unit('folder');
-                $html->set('size', System::size($info[4]));
+                $html->set('size', sys::size($info[4]));
             }
 
             $html->set('month', $this->mounthru[$info[5]]);
@@ -460,10 +460,10 @@ class Ftp
         }
 
         if (isset($html->arr['list'])) {
-            System::out($html->arr['list']);
+            sys::out($html->arr['list']);
         }
 
-        System::out('Ничего не найдено');
+        sys::out('Ничего не найдено');
     }
 
     public function logs($data, $uid)
@@ -489,7 +489,7 @@ class Ftp
             $html->set('time', $aData[2]);
             $html->set('year', $aData[3]);
             $html->set('who', $this->who($aData[4]));
-            $html->set('size', System::size($aData[5]));
+            $html->set('size', sys::size($aData[5]));
             $html->set('file', str_replace('/servers/' . $uid . '/', '', $aData[6]));
             $html->set('action', $actions[$aData[7]]);
             $html->set('acticon', $acticon[$aData[7]]);

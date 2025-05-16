@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -34,7 +32,7 @@ if ($go) {
     $aData['status'] = $_POST['status'] ?? $javaVersions['status'];
 
     if (in_array('', $aData)) {
-        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
+        sys::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $sql->query('UPDATE `java_versions` set '
@@ -43,7 +41,7 @@ if ($go) {
         . '`executable_file`="' . $aData['executable_file'] . '",'
         . '`status`="' . $aData['status'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    AdminSystem::outjs(['s' => $id]);
+    sys::outjs(['s' => $id]);
 }
 
 foreach ($javaVersions as $i => $val) {

@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -49,9 +47,9 @@ if ($id) {
 
     $sql->query('SELECT `id` FROM `tarifs`');
 
-    $aPage = AdminSystem::page($page, $sql->num(), 20);
+    $aPage = sys::page($page, $sql->num(), 20);
 
-    AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/tarif' . $sort_page);
+    sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/tarif' . $sort_page);
 
     $tarifs = $sql->query('SELECT `id`, `unit`, `game`, `name`, `slots_min`, `slots_max`, `port_min`, `port_max` FROM `tarifs` ' . $sort_sql . ' LIMIT ' . $aPage['num'] . ', 20');
     while ($tarif = $sql->get($tarifs)) {

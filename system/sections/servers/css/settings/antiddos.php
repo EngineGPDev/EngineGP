@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -30,20 +28,20 @@ $name_mcache = null;
 
 $sql->query('SELECT `id` FROM `units` WHERE `id`="' . $server['unit'] . '" AND `ddos`="1" LIMIT 1');
 if ($sql->num()) {
-    System::outjs(['e' => 'В данный момент нельзя изменить параметр, т.к. включена защита на всю локацию.'], $name_mcache);
+    sys::outjs(['e' => 'В данный момент нельзя изменить параметр, т.к. включена защита на всю локацию.'], $name_mcache);
 }
 
 $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
 $unit = $sql->get();
 
 if (!isset($url['type']) || !in_array($url['type'], ['0', '1', '2'])) {
-    System::outjs(['e' => 'Неправильно передан параметр.'], $name_mcache);
+    sys::outjs(['e' => 'Неправильно передан параметр.'], $name_mcache);
 }
 
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    System::outjs(['e' => System::text('error', 'ssh', $user['group'])], $name_mcache);
+    sys::outjs(['e' => sys::text('error', 'ssh', $user['group'])], $name_mcache);
 }
 
 $ip = $server['address'];
@@ -53,7 +51,7 @@ $geo = $cfg['iptables'] . '_geo';
 
 if ($url['type'] == 2) {
     if ($server['ddos'] == 2) {
-        System::outjs(['s' => 'ok'], $name_mcache);
+        sys::outjs(['s' => 'ok'], $name_mcache);
     }
 
     $cmd = '';
@@ -70,7 +68,7 @@ if ($url['type'] == 2) {
     $sql->query('UPDATE `servers` set `ddos`="2" WHERE `id`="' . $id . '" LIMIT 1');
 } elseif ($url['type'] == 1) {
     if ($server['ddos'] == 1) {
-        System::outjs(['s' => 'ok'], $name_mcache);
+        sys::outjs(['s' => 'ok'], $name_mcache);
     }
 
     $cmd = '';
@@ -87,7 +85,7 @@ if ($url['type'] == 2) {
     $sql->query('UPDATE `servers` set `ddos`="1" WHERE `id`="' . $id . '" LIMIT 1');
 } else {
     if (!$server['ddos']) {
-        System::outjs(['s' => 'ok'], $name_mcache);
+        sys::outjs(['s' => 'ok'], $name_mcache);
     }
 
     $country = $server['ddos'] == 2 ? 'AM,BY,UA,RU,KZ' : 'UA,RU';
@@ -100,4 +98,4 @@ if ($url['type'] == 2) {
 
 $mcache->delete('server_settings_' . $id);
 
-System::outjs(['s' => 'ok'], $name_mcache);
+sys::outjs(['s' => 'ok'], $name_mcache);

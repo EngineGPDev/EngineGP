@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -33,9 +31,9 @@ if (in_array($user['group'], ['admin', 'support'])) {
     $sql->query('SELECT `id`, `type`, `service`, `date`, `time` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="1"');
 }
 
-$aPage = System::page($page, $sql->num(), 20);
+$aPage = sys::page($page, $sql->num(), 20);
 
-System::page_gen($aPage['ceil'], $page, $aPage['page'], 'help/section/close');
+sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'help/section/close');
 
 if (in_array($user['group'], ['admin', 'support'])) {
     $helps = $sql->query('SELECT `id`, `user`, `type`, `service`, `date`, `time` FROM `help` WHERE `close`="1" ORDER BY `id` DESC LIMIT ' . $aPage['num'] . ', 20');
@@ -92,8 +90,8 @@ while ($help = $sql->get($helps)) {
 
     $html->set('name', $name);
     $html->set('status', 'Вопрос решен');
-    $html->set('date', System::today($help['date']));
-    $html->set('time', System::today($help['time']));
+    $html->set('date', sys::today($help['date']));
+    $html->set('time', sys::today($help['time']));
 
     $html->pack('question');
 }

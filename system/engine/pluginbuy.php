@@ -16,36 +16,34 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 if (!isset($url['plugin']) || !isset($url['ip']) || !isset($url['port'])) {
-    System::out('bad params');
+    sys::out('bad params');
 }
 
 $address = $url['ip'] . ':' . $url['port'];
 
-if (System::valid($address, 'other', $aValid['address'])) {
-    System::out('bad address');
+if (sys::valid($address, 'other', $aValid['address'])) {
+    sys::out('bad address');
 }
 
-if (System::valid($url['plugin'], 'md5')) {
-    System::out('bad plugin');
+if (sys::valid($url['plugin'], 'md5')) {
+    sys::out('bad plugin');
 }
 
 $sql->query('SELECT `id` FROM `servers` WHERE `address`="' . $address . '" LIMIT 1');
 if (!$sql->num()) {
-    System::out('bad server');
+    sys::out('bad server');
 }
 
 $server = $sql->get();
 
 $sql->query('SELECT `id` FROM `plugins_buy` WHERE `key`="' . $url['plugin'] . '" AND `server`="' . $server['id'] . '" LIMIT 1');
 if ($sql->num()) {
-    System::out('true');
+    sys::out('true');
 }
 
-System::out('false');
+sys::out('false');

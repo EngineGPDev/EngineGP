@@ -16,15 +16,13 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 $key = $url['key'] ?? exit;
 
-if (System::valid($key, 'md5')) {
+if (sys::valid($key, 'md5')) {
     exit;
 }
 

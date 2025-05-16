@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\AdminSystem;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,18 +30,18 @@ $nmch = null;
 
 if (is_array($cache)) {
     if ($go) {
-        AdminSystem::outjs($cache, $nmch);
+        sys::outjs($cache, $nmch);
     }
 
-    AdminSystem::outjs($cache);
+    sys::outjs($cache);
 }
 
 if (!isset($text[2])) {
     if ($go) {
-        AdminSystem::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
+        sys::outjs(['e' => 'Для выполнения поиска, необходимо больше данных'], $nmch);
     }
 
-    AdminSystem::outjs(['e' => '']);
+    sys::outjs(['e' => '']);
 }
 
 $check = explode('=', $text);
@@ -53,14 +51,14 @@ if (in_array($check[0], ['server', 'user'])) {
 
     switch ($check[0]) {
         case 'server':
-            $sql->query('SELECT * FROM `boost` WHERE `server`="' . AdminSystem::int($val) . '" ORDER BY `id` DESC');
+            $sql->query('SELECT * FROM `boost` WHERE `server`="' . sys::int($val) . '" ORDER BY `id` DESC');
             break;
 
         case 'user':
-            $sql->query('SELECT * FROM `boost` WHERE `user`="' . AdminSystem::int($val) . '" ORDER BY `id` DESC');
+            $sql->query('SELECT * FROM `boost` WHERE `user`="' . sys::int($val) . '" ORDER BY `id` DESC');
     }
 } elseif ($text[0] == 'i' and $text[1] == 'd') {
-    $sql->query('SELECT * FROM `boost` WHERE `id`="' . AdminSystem::int($text) . '" LIMIT 1');
+    $sql->query('SELECT * FROM `boost` WHERE `id`="' . sys::int($text) . '" LIMIT 1');
 } else {
     $like = '`id` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
         . '`site` LIKE FROM_BASE64(\'' . base64_encode('%' . str_replace('_', '\_', $text) . '%') . '\') OR'
@@ -72,10 +70,10 @@ if (in_array($check[0], ['server', 'user'])) {
 
 if (!$sql->num()) {
     if ($go) {
-        AdminSystem::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
+        sys::outjs(['e' => 'По вашему запросу ничего не найдено'], $nmch);
     }
 
-    AdminSystem::outjs(['e' => 'По вашему запросу ничего не найдено']);
+    sys::outjs(['e' => 'По вашему запросу ничего не найдено']);
 }
 
 $list = '';
@@ -92,4 +90,4 @@ while ($log = $sql->get()) {
 
 $mcache->set($mkey, ['s' => $list], false, 15);
 
-AdminSystem::outjs(['s' => $list]);
+sys::outjs(['s' => $list]);

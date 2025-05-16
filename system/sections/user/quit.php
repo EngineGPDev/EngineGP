@@ -16,14 +16,12 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-System::noauth($auth, $go);
+sys::noauth($auth, $go);
 
 setcookie('refresh_token', '', [
     'expires' => $start_point - 3600,
@@ -35,4 +33,4 @@ setcookie('refresh_token', '', [
 // Обновление активности
 $sql->query('UPDATE `users` set `time`="' . ($start_point - 10) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-System::back($cfg['http']);
+sys::back($cfg['http']);

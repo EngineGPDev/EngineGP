@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -42,7 +40,7 @@ if ($id) {
     $sql->query('SELECT `upd` FROM `plugins` WHERE `id`="' . $id . '" LIMIT 1');
 
     if (!$sql->num()) {
-        System::back($cfg['http'] . 'plugins/game/' . $url['game']);
+        sys::back($cfg['http'] . 'plugins/game/' . $url['game']);
     }
 
     $update = $sql->get();

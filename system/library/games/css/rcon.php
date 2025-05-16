@@ -16,13 +16,11 @@
  * limitations under the License.
  */
 
-use EngineGP\System;
-use EngineGP\Infrastructure\RemoteAccess\SshClient;
-use xPaw\SourceQuery\SourceQuery;
-
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
+
+use xPaw\SourceQuery\SourceQuery;
 
 class rcon
 {
@@ -59,7 +57,7 @@ class rcon
             $start = strpos($line, '"') + 1;
             $end = strrpos($line, '"');
 
-            $userid = System::int(substr($line, 0, $start));
+            $userid = sys::int(substr($line, 0, $start));
 
             $name = htmlspecialchars(substr($line, $start, $end - $start));
 
@@ -68,9 +66,9 @@ class rcon
             $aData = array_values(array_diff(explode(' ', $line), ['', ' ']));
 
             $steamid = trim($aData[0]);
-            $ip = trim(System::first(explode(':', $aData[5])));
+            $ip = trim(sys::first(explode(':', $aData[5])));
 
-            if ((System::valid($steamid, 'steamid') and System::valid($steamid, 'steamid3')) || System::valid($ip, 'ip')) {
+            if ((sys::valid($steamid, 'steamid') and sys::valid($steamid, 'steamid3')) || sys::valid($ip, 'ip')) {
                 continue;
             }
 
@@ -96,23 +94,25 @@ class rcon
     {
         global $cfg, $sql, $user, $nmch;
 
+        include(LIB . 'ssh.php');
+
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
+
+        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+            sys::outjs(['e' => sys::text('error', 'ssh')]);
+        }
 
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
-
-        $output = $sshClient->execute('cat ' . $tarif['install'] . '/' . $server['uid'] . '/cstrike/cfg/server.cfg | grep rcon_password', false);
-        $get = explode(' ', str_replace('"', '', trim($output)));
+        $ssh->set('cat ' . $tarif['install'] . '/' . $server['uid'] . '/cstrike/cfg/server.cfg | grep rcon_password');
+        $get = explode(' ', str_replace('"', '', trim($ssh->get())));
         $rcon = trim(end($get));
 
         if (!isset($rcon[0])) {
-            System::outjs(['r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'], $nmch);
+            sys::outjs(['r' => 'Необходимо установить rcon пароль (rcon_password).', 'url' => $cfg['http'] . 'servers/id/' . $server['id'] . '/section/settings/subsection/server'], $nmch);
         }
-
-        $sshClient->disconnect();
 
         return $rcon;
     }
@@ -122,7 +122,7 @@ class rcon
         global $SxGeo;
 
         $cData = $SxGeo->getCityFull($ip);
-        $ico = System::country($cData['country']['iso']);
+        $ico = sys::country($cData['country']['iso']);
 
         return ['ico' => $ico, 'name' => empty($cData['country']['name_ru']) ? 'Не определена' : $cData['country']['name_ru']];
     }
