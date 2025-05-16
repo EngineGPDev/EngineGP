@@ -19,6 +19,7 @@
 use EngineGP\System;
 use EngineGP\Model\Game;
 use EngineGP\Model\Parameters;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -214,15 +215,12 @@ class tarifs
 
     public static function unit_old($tarif, $unit, $server, $mcache)
     {
-        global $ssh, $sql, $user, $start_point;
+        global $sql, $user, $start_point;
 
-        // Проверка ssh соединения с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            System::outjs(['e' => System::text('error', 'ssh')], $mcache);
-        }
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
         // Убить процессы
-        $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
+        $sshClient->execute('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@:' . $server['address'] . ' | awk ' . "'{print $2}'" . ' | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Директория игрового сервера
@@ -239,7 +237,7 @@ class tarifs
 
         $copys .= '";';
 
-        $ssh->set($copys // Удаление резервных копий
+        $sshClient->execute($copys // Удаление резервных копий
             . 'tmux new-session -ds r_' . $server['uid'] . ' rm -r ' . $install . ';' // Удаление директории сервера
             . 'userdel server' . $server['uid']); // Удаление пользователя сервера c локации
 
@@ -248,26 +246,26 @@ class tarifs
             . 'DELETE FROM quotalimits WHERE name=\'' . $server['uid'] . '\';'
             . 'DELETE FROM quotatallies WHERE name=\'' . $server['uid'] . '\'';
 
-        $ssh->set('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
+        $sshClient->execute('tmux new-session -ds ftp' . $server['uid'] . ' mysql -P ' . $unit['sql_port'] . ' -u' . $unit['sql_login'] . ' -p' . $unit['sql_passwd'] . ' --database ' . $unit['sql_ftp'] . ' -e "' . $qSql . '"');
 
         $sql->query('UPDATE `servers` SET `ftp`="0" WHERE `id`="' . $server['id'] . '" LIMIT 1');
 
         // Очистка правил FireWall
         Game::iptables($server['id'], 'remove', null, null, null, null, false, $ssh);
 
+        $sshClient->disconnect();
+
         // Удаление заданий из crontab
         $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
         $panel = $sql->get();
 
-        if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-            System::outjs(['e' => System::text('error', 'ssh')], $mcache);
-        }
+        $sshClient = new SshClient($panel['address'], 'root', $panel['passwd']);
 
         $crons = $sql->query('SELECT `id`, `cron` FROM `crontab` WHERE `server`="' . $server['id'] . '"');
         while ($cron = $sql->get($crons)) {
             $crontab = preg_quote($cron['cron'], '/');
 
-            $ssh->set('crontab -l | grep -v "' . $crontab . '" | crontab -');
+            $sshClient->execute('crontab -l | grep -v "' . $crontab . '" | crontab -');
 
             $sql->query('DELETE FROM `crontab` WHERE `id`="' . $cron['id'] . '" LIMIT 1');
         }

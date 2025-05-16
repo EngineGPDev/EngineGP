@@ -16,7 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
 use EngineGP\AdminSystem;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
 
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
@@ -59,10 +61,13 @@ if ($go) {
         AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
-    include(LIB . 'ssh.php');
+    $System = new System();
+    $sshClient = new SshClient($aData['address'], 'root', $aData['passwd']);
 
-    if (!$ssh->auth($aData['passwd'], $aData['address'])) {
-        AdminSystem::outjs(['e' => 'Не удалось создать связь с локацией']);
+    try {
+        $sshClient->connect();
+    } catch (\Exception $e) {
+        System::outjs(['e' => System::text('error', 'ssh')], false);
     }
 
     $sql->query('UPDATE `units` set '
