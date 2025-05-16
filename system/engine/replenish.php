@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,7 +27,7 @@ if (!isset($url['response']) and !in_array($url['response'], ['success', 'fail']
 }
 
 if ($url['response'] == 'success') {
-    sys::out(file_get_contents(ROOT . 'success.html'));
+    System::out(file_get_contents(ROOT . 'success.html'));
 } else {
-    sys::out(file_get_contents(ROOT . 'fail.html'));
+    System::out(file_get_contents(ROOT . 'fail.html'));
 }

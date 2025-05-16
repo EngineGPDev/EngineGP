@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -41,7 +43,7 @@ if ($id) {
     }
 
     if ($user['group'] == 'user') {
-        sys::out('У вас нет доступа к данной информации.');
+        System::out('У вас нет доступа к данной информации.');
     }
 
     // Обработка кеша
@@ -61,7 +63,7 @@ if ($id) {
         $read_now = substr($read_now, 0, -2);
     }
 
-    sys::out($read_now);
+    System::out($read_now);
 }
 
-sys::out('Необходимо передать номер вопроса.');
+System::out('Необходимо передать номер вопроса.');

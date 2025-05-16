@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Game;
+use EngineGP\Model\Parameters;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,11 +32,11 @@ $aData = [];
 
 // Если не расчетный период
 if (!$cfg['settlement_period']) {
-    $aData['time'] = isset($_POST['time']) ? sys::int($_POST['time']) : sys::outjs(['e' => 'Переданы не все данные'], $nmch);
+    $aData['time'] = isset($_POST['time']) ? System::int($_POST['time']) : System::outjs(['e' => 'Переданы не все данные'], $nmch);
 
     // Проверка периода
     if (!in_array($aData['time'], explode(':', $tarif['timext']))) {
-        sys::outjs(['e' => 'Переданы неверные данные'], $nmch);
+        System::outjs(['e' => 'Переданы неверные данные'], $nmch);
     }
 
 }
@@ -49,7 +53,7 @@ $aData['slots'] = $server['slots'];
 // Цена за выделенный адрес
 $add_sum = tarifs::address_add_sum($aData['address'], $server);
 
-$aPrice = sys::b64djs($tarif['price']);
+$aPrice = System::b64djs($tarif['price']);
 
 // Цена за 30 дней 1 слота
 $price = $aPrice[$server['tickrate'] . '_' . $server['fps']];
@@ -60,13 +64,13 @@ if ($cfg['settlement_period']) {
 }
 
 // Цена аренды
-$sum = games::define_sum($tarif['discount'], $price, $server['slots'], $aData['time'], 'extend') + $add_sum;
+$sum = Game::define_sum($tarif['discount'], $price, $server['slots'], $aData['time'], 'extend') + $add_sum;
 
 // Если расчетный период
 if ($cfg['settlement_period']) {
-    $aData['time'] = games::define_period('extend', params::$aDayMonth, $server['time']);
+    $aData['time'] = Game::define_period('extend', Parameters::$aDayMonth, $server['time']);
 }
 
-$days = params::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : games::parse_day($aData['time'], true);
+$days = Parameters::$aDayMonth[date('n', $server['time'])] == $aData['time'] ? 'месяц' : Game::parse_day($aData['time'], true);
 
 include(SEC . 'servers/games/tarif/extend.php');

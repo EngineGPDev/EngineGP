@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\View\Help;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,7 +28,7 @@ if ($go) {
 
     // Проверка сессии
     if ($mcache->get($nmch)) {
-        sys::outjs(['e' => $text['mcache']], $nmch);
+        System::outjs(['e' => $text['mcache']], $nmch);
     }
 
     // Создание сессии
@@ -47,18 +50,18 @@ if ($go) {
     // Проверка услуги
     if (count($aData['service']) != 2) {
         if ($aData['service'][0] != 'none') {
-            sys::outjs(['e' => 'Необходимо выбрать услугу связанную с вопросом.'], $nmch);
+            System::outjs(['e' => 'Необходимо выбрать услугу связанную с вопросом.'], $nmch);
         }
 
         $aData['type'] = 'none';
         $aData['service'] = 0;
     } else {
         if (!in_array($aData['service'][0], ['server', 'hosting'])) {
-            sys::outjs(['e' => 'Необходимо выбрать услугу связанную с вопросом.'], $nmch);
+            System::outjs(['e' => 'Необходимо выбрать услугу связанную с вопросом.'], $nmch);
         }
 
         $aData['type'] = $aData['service'][0];
-        $aData['service'] = sys::int($aData['service'][1]);
+        $aData['service'] = System::int($aData['service'][1]);
 
         switch ($aData['type']) {
             case 'server':
@@ -70,39 +73,37 @@ if ($go) {
         }
 
         if (!$sql->num()) {
-            sys::outjs(['e' => 'Выбранная услуга не найдена в базе.'], $nmch);
+            System::outjs(['e' => 'Выбранная услуга не найдена в базе.'], $nmch);
         }
 
         // Защита от дублирования темы вопроса
         $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `type`="' . $aData['type'] . '" AND `service`="' . $aData['service'] . '" AND `close`="0" LIMIT 1');
         if ($sql->num()) {
-            sys::outjs(['e' => 'По выбранной услуге уже есть открытый диалог.'], $nmch);
+            System::outjs(['e' => 'По выбранной услуге уже есть открытый диалог.'], $nmch);
         }
     }
 
     // Проверка заголовка, если указан
     if (!empty($aData['title'])) {
         if (iconv_strlen($aData['title'], 'UTF-8') < 3 || iconv_strlen($aData['title'], 'UTF-8') > 40) {
-            sys::outjs(['e' => 'Длина загловка не должна быть менее 3 и не превышать 40 символов.'], $nmch);
+            System::outjs(['e' => 'Длина загловка не должна быть менее 3 и не превышать 40 символов.'], $nmch);
         }
     }
 
     // Проверка сообщения
     if (iconv_strlen($aData['text'], 'UTF-8') < 10 || iconv_strlen($aData['text'], 'UTF-8') > 1000) {
-        sys::outjs(['e' => 'Длина сообщения не должна быть менее 10 и не превышать 1000 символов.'], $nmch);
+        System::outjs(['e' => 'Длина сообщения не должна быть менее 10 и не превышать 1000 символов.'], $nmch);
     }
 
-    include(LIB . 'help.php');
-
     // Обработка сообщения
-    $aData['text'] = help::text($aData['text']);
+    $aData['text'] = Help::text($aData['text']);
 
     // Проверка изображений
     if (is_array($aData['images']) and count($aData['images'])) {
         foreach ($aData['images'] as $img) {
             $key = explode('.', $img);
 
-            if (!is_array($key) || sys::valid($key[0], 'md5') || !in_array($key[1], ['png', 'gif', 'jpg', 'jpeg', 'bmp'])) {
+            if (!is_array($key) || System::valid($key[0], 'md5') || !in_array($key[1], ['png', 'gif', 'jpg', 'jpeg', 'bmp'])) {
                 continue;
             }
 
@@ -122,7 +123,7 @@ if ($go) {
     // Проверка открытых сообщений
     $sql->query('SELECT `id` FROM `help` WHERE `user`="' . $user['id'] . '" AND `close`="0" LIMIT 3');
     if ($sql->num() == 3) {
-        sys::outjs(['e' => 'У вас уже открыто 3 вопроса, чтобы создать новый необходимо их закрыть.'], $nmch);
+        System::outjs(['e' => 'У вас уже открыто 3 вопроса, чтобы создать новый необходимо их закрыть.'], $nmch);
     }
 
     $sql->query('INSERT INTO `help` set '
@@ -141,10 +142,10 @@ if ($go) {
         . '`help`="' . $help . '",'
         . '`user`="' . $user['id'] . '",'
         . '`text`="' . $aData['text'] . '",'
-        . '`img`="' . sys::b64js($aData['img']) . '",'
+        . '`img`="' . System::b64js($aData['img']) . '",'
         . '`time`="' . $start_point . '"');
 
-    sys::outjs(['s' => $help], $nmch);
+    System::outjs(['s' => $help], $nmch);
 }
 
 $services = '';

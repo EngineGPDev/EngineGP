@@ -16,15 +16,17 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-sys::noauth();
+System::noauth();
 
 if (isset($url['key']) && isset($url['sum'])) {
-    sys::out(md5($cfg['freekassa_id'] . ':' . intval($url['sum']) . ':' . $cfg['freekassa_key_1'] . ':1'));
+    System::out(md5($cfg['freekassa_id'] . ':' . intval($url['sum']) . ':' . $cfg['freekassa_key_1'] . ':1'));
 }
 
 // Генерация списка операций
@@ -32,7 +34,7 @@ $qLog = $sql->query('SELECT `text`, `date` FROM `logs` WHERE `user`="' . $user['
 while ($aLog = $sql->get($qLog)) {
     $html->get('replenish', 'sections/user/lk/logs');
     $html->set('text', $aLog['text']);
-    $html->set('date', sys::today($aLog['date'], true));
+    $html->set('date', System::today($aLog['date'], true));
     $html->pack('logs');
 }
 

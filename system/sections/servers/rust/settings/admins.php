@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -32,7 +34,7 @@ if ($go) {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs(['e' => sys::text('error', 'ssh')], $nmch);
+        System::outjs(['e' => System::text('error', 'ssh')], $nmch);
     }
 
     $aData = [];
@@ -41,7 +43,7 @@ if ($go) {
     $aData['value'] = isset($_POST['value']) && is_array($_POST['value']) ? $_POST['value'] : [];
     $aData['passwd'] = isset($_POST['passwd']) && is_array($_POST['passwd']) ? $_POST['passwd'] : [];
     $aData['flags'] = isset($_POST['flags']) && is_array($_POST['flags']) ? $_POST['flags'] : [];
-    $aData['immunity'] = isset($_POST['immunity']) && is_array($_POST['immunity']) ? sys::int($_POST['immunity']) : [];
+    $aData['immunity'] = isset($_POST['immunity']) && is_array($_POST['immunity']) ? System::int($_POST['immunity']) : [];
     $aData['time'] = isset($_POST['time']) && is_array($_POST['time']) ? $_POST['time'] : [];
     $aData['info'] = isset($_POST['info']) && is_array($_POST['info']) ? $_POST['info'] : [];
 
@@ -84,7 +86,7 @@ if ($go) {
         }
     }
 
-    $temp = sys::temp($usini);
+    $temp = System::temp($usini);
 
     $ssh->setfile($temp, $tarif['install'] . $server['uid'] . '/game/csgo/addons/sourcemod/configs/admins_simple.ini');
     $ssh->set('chmod 0644' . ' ' . $tarif['install'] . $server['uid'] . '/game/csgo/addons/sourcemod/configs/admins_simple.ini');
@@ -95,7 +97,7 @@ if ($go) {
 
     $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \" sm_reloadadmins\" C-m");
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 // Построение списка добавленных админов

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -38,11 +40,11 @@ class notice_help_admin extends cron
             $admin = $sql->get();
 
             if ($help['notice_admin'] != 2) {
-                if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help_admin_new'), ['url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $admin['mail'])) {
+                if (!System::mail('Техническая поддержка', System::updtext(System::text('mail', 'notice_help_admin_new'), ['url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $admin['mail'])) {
                     continue;
                 }
             } else {
-                if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help_admin'), ['url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $admin['mail'])) {
+                if (!System::mail('Техническая поддержка', System::updtext(System::text('mail', 'notice_help_admin'), ['url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $admin['mail'])) {
                     continue;
                 }
             }

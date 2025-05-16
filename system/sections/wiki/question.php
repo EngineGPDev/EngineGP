@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -23,11 +25,11 @@ if (!defined('EGP')) {
 $html->nav('Категории вопросов', $cfg['http'] . 'wiki');
 $html->nav('Часто задаваемые вопросы');
 
-$cat = isset($url['category']) ? sys::int($url['category']) : sys::back($cfg['http'] . 'wiki');
+$cat = isset($url['category']) ? System::int($url['category']) : System::back($cfg['http'] . 'wiki');
 
 $sql->query('SELECT `name` FROM `wiki_category` WHERE `id`="' . $cat . '" LIMIT 1');
 if (!$sql->num()) {
-    sys::back($cfg['http'] . 'wiki');
+    System::back($cfg['http'] . 'wiki');
 }
 
 $category = $sql->get();
@@ -49,7 +51,7 @@ while ($quest = $sql->get()) {
     $html->set('id', $quest['id']);
     $html->set('name', $quest['name']);
     $html->set('tags', $tags != '' ? $tags : 'Теги отсутствуют');
-    $html->set('date', sys::today($quest['date']));
+    $html->set('date', System::today($quest['date']));
 
     $html->pack('question');
 }

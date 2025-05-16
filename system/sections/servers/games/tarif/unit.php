@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Parameters;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -23,14 +26,14 @@ if (!defined('EGP')) {
 // Выполнение операции
 if ($go) {
     if ($server['status'] != 'off') {
-        sys::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
+        System::outjs(['e' => 'Игровой сервер должен быть выключен'], $nmch);
     }
 
-    $pack = $url['pack'] ?? sys::outjs(['e' => 'Переданы не все данные.'], $nmch);
+    $pack = $url['pack'] ?? System::outjs(['e' => 'Переданы не все данные.'], $nmch);
 
     // Проверка сборки
-    if (!array_key_exists($pack, sys::b64djs($tarif['packs'], true))) {
-        sys::outjs(['e' => 'Сборка не найдена.']);
+    if (!array_key_exists($pack, System::b64djs($tarif['packs'], true))) {
+        System::outjs(['e' => 'Сборка не найдена.']);
     }
 
     $sql->query('SELECT `id`, `unit`, `port_min`, `port_max`, `hostname`, `path`, `install`, `map`, `plugins_install`, `hdd`, `autostop`, `ip` FROM `tarifs` WHERE `id`="' . $tarif['id'] . '" LIMIT 1');
@@ -44,7 +47,7 @@ if ($go) {
         $aIp = explode(':', $tarif['ip']);
 
         $ip = false;
-        $port = params::$aDefPort[$server['game']];
+        $port = Parameters::$aDefPort[$server['game']];
 
         // Проверка наличия свободного адреса
         foreach ($aIp as $adr) {
@@ -58,7 +61,7 @@ if ($go) {
             }
         }
     } else {
-        $ip = sys::first(explode(':', $unit['address']));
+        $ip = System::first(explode(':', $unit['address']));
         $port = false;
 
         // Проверка наличия свободного порта
@@ -73,7 +76,7 @@ if ($go) {
     }
 
     if (!$ip || !$port) {
-        sys::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
+        System::outjs(['e' => 'К сожалению нет доступных мест, обратитесь в тех.поддержку.']);
     }
 
     $server['id'] = $id;
@@ -96,14 +99,14 @@ if ($go) {
     tarif::unit_new($tarif, $unit, $server, $nmch);
 
     // Запись логов
-    $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'change_unit') . '", `time`="' . $start_point . '"');
+    $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . System::text('syslogs', 'change_unit') . '", `time`="' . $start_point . '"');
 
-    sys::outjs(['s' => 'ok'], $nmch);
+    System::outjs(['s' => 'ok'], $nmch);
 }
 
 // Генерация списка сборок
 $packs = '';
-$aPack = sys::b64djs($tarif['packs'], true);
+$aPack = System::b64djs($tarif['packs'], true);
 
 if (is_array($aPack)) {
     foreach ($aPack as $index => $name) {
@@ -112,4 +115,4 @@ if (is_array($aPack)) {
 }
 
 // Выхлоп информации
-sys::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . sys::date('min', $time) . ')', 'p' => $packs]);
+System::outjs(['s' => date('d.m.Y - H:i', $time) . ' (' . System::date('min', $time) . ')', 'p' => $packs]);

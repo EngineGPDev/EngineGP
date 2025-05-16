@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,21 +26,21 @@ if ($go) {
     $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : '';
-    $aData['text'] = isset($_POST['text']) ? sys::bbc(trim($_POST['text'])) : '';
-    $aData['cat'] = isset($_POST['cat']) ? sys::int($_POST['cat']) : '';
+    $aData['text'] = isset($_POST['text']) ? AdminSystem::bbc(trim($_POST['text'])) : '';
+    $aData['cat'] = isset($_POST['cat']) ? AdminSystem::int($_POST['cat']) : '';
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : '';
 
     if (in_array('', $aData)) {
-        sys::outjs(['e' => 'Необходимо заполнить все поля']);
+        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
-    if (sys::strlen($aData['tags']) > 100) {
-        sys::outjs(['e' => 'Теги не должен превышать 100 символов.']);
+    if (AdminSystem::strlen($aData['tags']) > 100) {
+        AdminSystem::outjs(['e' => 'Теги не должен превышать 100 символов.']);
     }
 
     $sql->query('SELECT `id` FROM `wiki_category` WHERE `id`="' . $aData['cat'] . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(['e' => 'Указанная категория не найдена']);
+        AdminSystem::outjs(['e' => 'Указанная категория не найдена']);
     }
 
     $sql->query('INSERT INTO `wiki` set '
@@ -54,7 +56,7 @@ if ($go) {
         . '`cat`="' . $aData['cat'] . '",'
         . '`text`="' . htmlspecialchars($aData['text']) . '"');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $cats = '';

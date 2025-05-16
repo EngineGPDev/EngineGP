@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -30,7 +32,7 @@ if ($go) {
     $aData['text'] = isset($_POST['text']) ? trim($_POST['text']) : file_get_contents(FILES . 'pages/' . $page['file']);
 
     if (in_array('', $aData)) {
-        sys::outjs(['e' => 'Необходимо заполнить все поля']);
+        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     $file = fopen(FILES . 'pages/' . $page['file'], "w");
@@ -41,7 +43,7 @@ if ($go) {
 
     $sql->query('UPDATE `pages` set `name`="' . htmlspecialchars($aData['name']) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $html->get('page', 'sections/pages');

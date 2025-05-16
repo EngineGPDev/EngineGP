@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,9 +28,9 @@ $aGroup = ['user' => 'Пользователь', 'support' => 'Тех. подд�
 
 $sql->query('SELECT `id` FROM `users` WHERE `time`<"' . ($start_point - 181) . '"');
 
-$aPage = sys::page($page, $sql->num(), 20);
+$aPage = AdminSystem::page($page, $sql->num(), 20);
 
-sys::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users/section');
+AdminSystem::page_gen($aPage['ceil'], $page, $aPage['page'], 'acp/users/section');
 
 $sql->query('SELECT `id`, `login`, `mail`, `group`, `time` FROM `users` WHERE `time`<"' . ($start_point - 181) . '" ORDER BY `id` ASC LIMIT ' . $aPage['num'] . ', 20');
 while ($us = $sql->get()) {
@@ -37,7 +39,7 @@ while ($us = $sql->get()) {
     $list .= '<td><a href="' . $cfg['http'] . 'acp/users/id/' . $us['id'] . '">' . $us['login'] . '</a></td>';
     $list .= '<td>' . $us['mail'] . '</td>';
     $list .= '<td>' . $aGroup[$us['group']] . '</td>';
-    $list .= '<td>' . sys::today($us['time']) . '</td>';
+    $list .= '<td>' . AdminSystem::today($us['time']) . '</td>';
     $list .= '<td><a href="#" onclick="return users_delete(\'' . $us['id'] . '\')" class="text-red">Удалить</a></td>';
     $list .= '</tr>';
 }
