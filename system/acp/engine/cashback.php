@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
 use Symfony\Component\Dotenv\Dotenv;
 
 if (!defined('EGP')) {
@@ -42,7 +43,7 @@ $nmc = 'cashback_' . $id;
 
 // Проверка сессии
 if ($mcache->get($nmc)) {
-    sys::outjs(['e' => $text['mcache']], $nmc);
+    AdminSystem::outjs(['e' => $text['mcache']], $nmc);
 }
 
 // Создание сессии
@@ -53,7 +54,7 @@ if ($id) {
     $cb = $sql->get();
 
     if (!$cb['status']) {
-        sys::outjs(['e' => 'Данная заявка уже была обработана'], $nmc);
+        AdminSystem::outjs(['e' => 'Данная заявка уже была обработана'], $nmc);
     }
 
     $purse = $cb['purse'][0] == 'R' ? 'webmoney' : 'qiwi';
@@ -69,28 +70,28 @@ if ($id) {
         // Упешный вывод средств
         if (is_array($array) and isset($array['result']) and in_array($array['result']['status'], ['success', 'not_completed '])) {
             $sql->query('UPDATE `cashback` set `status`="0" WHERE `id`="' . $id . '" LIMIT 1');
-            $sql->query('INSERT INTO `logs` set `user`="' . $cb['user'] . '", `text`="' . sys::updtext(
-                sys::text('logs', 'cashback'),
+            $sql->query('INSERT INTO `logs` set `user`="' . $cb['user'] . '", `text`="' . AdminSystem::updtext(
+                AdminSystem::text('logs', 'cashback'),
                 ['purse' => $purse, 'money' => $cb['money']]
             ) . '", `date`="' . $start_point . '", `type`="cashback", `money`="' . $cb['money'] . '"');
 
-            sys::outjs(['s' => 'Запрос на вывод средств был успешно выполнен'], $nmc);
+            AdminSystem::outjs(['s' => 'Запрос на вывод средств был успешно выполнен'], $nmc);
         }
 
         if (!is_array($array)) {
-            sys::outjs(['e' => 'Неудалось выполнить запрос'], $nmc);
+            AdminSystem::outjs(['e' => 'Неудалось выполнить запрос'], $nmc);
         }
 
-        sys::outjs(['e' => $array['error']['message']], $nmc);
+        AdminSystem::outjs(['e' => $array['error']['message']], $nmc);
     }
 
     $sql->query('UPDATE `cashback` set `status`="0" WHERE `id`="' . $id . '" LIMIT 1');
-    $sql->query('INSERT INTO `logs` set `user`="' . $cb['user'] . '", `text`="' . sys::updtext(
-        sys::text('logs', 'cashback'),
+    $sql->query('INSERT INTO `logs` set `user`="' . $cb['user'] . '", `text`="' . AdminSystem::updtext(
+        AdminSystem::text('logs', 'cashback'),
         ['purse' => $purse, 'money' => $cb['money']]
     ) . '", `date`="' . $start_point . '", `type`="cashback", `money`="' . $cb['money'] . '"');
 
-    sys::outjs(['s' => 'Запрос на вывод средств был успешно выполнен в ручном режиме'], $nmc);
+    AdminSystem::outjs(['s' => 'Запрос на вывод средств был успешно выполнен в ручном режиме'], $nmc);
 }
 
-sys::outjs(['e' => 'Не передан идентификатор заявки'], $nmc);
+AdminSystem::outjs(['e' => 'Не передан идентификатор заявки'], $nmc);

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,11 +27,9 @@ $html->nav('Параметры запуска');
 $sql->query('SELECT `uid`, `unit`, `slots`, `slots_start`, `java_version` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
 $server = array_merge($server, $sql->get());
 
-include(LIB . 'games/games.php');
-
 // Сохранение
 if ($go and $url['save']) {
-    $value = isset($url['value']) ? sys::int($url['value']) : sys::outjs(['s' => 'ok'], $nmch);
+    $value = isset($url['value']) ? System::int($url['value']) : System::outjs(['s' => 'ok'], $nmch);
 
     switch ($url['save']) {
         case 'slots':
@@ -41,14 +41,14 @@ if ($go and $url['save']) {
             }
 
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
         case 'java_version':
             if ($value != $server['java_version']) {
                 $sql->query('UPDATE `servers` set `java_version`="' . $value . '" WHERE `id`="' . $id . '" LIMIT 1');
             }
-        
+
             $mcache->delete('server_settings_' . $id);
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
     }
 }
 

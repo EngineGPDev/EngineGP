@@ -49,7 +49,7 @@ if ($go) {
 
     $sshClient->disconnect();
 
-    sys::out(htmlspecialchars($output, ENT_QUOTES | ENT_SUBSTITUTE, ''));
+    System::out(htmlspecialchars($output, ENT_QUOTES | ENT_SUBSTITUTE, ''));
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

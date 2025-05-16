@@ -85,7 +85,7 @@ if ($id) {
 
     $aData['cpu'] = AdminSystem::cpu_load($sshClient->execute('echo "`ps -A -o pcpu | tail -n+2 | paste -sd+ | bc | awk \'{print $0}\'` `cat /proc/cpuinfo | grep processor | wc -l | awk \'{print $1}\'`"', false)) . '%';
 
-    sys::outjs($aData);
+    AdminSystem::outjs($aData);
 }
 
 $loads = '';

@@ -25,11 +25,11 @@ if (!defined('EGP')) {
 }
 
 if (isset($url['get']) and $url['get'] == 'list') {
-    $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::out();
-    $game = $url['game'] ?? sys::out();
+    $unit = isset($url['unit']) ? AdminSystem::int($url['unit']) : AdminSystem::out();
+    $game = $url['game'] ?? AdminSystem::out();
 
     if (!in_array($game, ['cs', 'cssold', 'css', 'csgo', 'cs2'])) {
-        sys::out();
+        AdminSystem::out();
     }
 
     $maps = '';
@@ -44,24 +44,24 @@ if (isset($url['get']) and $url['get'] == 'list') {
 
     $maps = $maps == '' ? 'В базе нет карт' : $all . $maps . $all;
 
-    sys::out($maps);
+    AdminSystem::out($maps);
 }
 
 if ($go) {
-    $unit = isset($url['unit']) ? sys::int($url['unit']) : sys::outjs(['e' => 'Необходимо выбрать локацию']);
-    $game = $url['game'] ?? sys::outjs(['e' => 'Необходимо выбрать игру']);
+    $unit = isset($url['unit']) ? AdminSystem::int($url['unit']) : AdminSystem::outjs(['e' => 'Необходимо выбрать локацию']);
+    $game = $url['game'] ?? AdminSystem::outjs(['e' => 'Необходимо выбрать игру']);
 
     if (!$unit) {
-        sys::outjs(['e' => 'Необходимо выбрать локацию']);
+        AdminSystem::outjs(['e' => 'Необходимо выбрать локацию']);
     }
 
     if (!in_array($game, ['cs', 'cssold', 'css', 'csgo', 'cs2'])) {
-        sys::outjs(['e' => 'Необходимо выбрать игру']);
+        AdminSystem::outjs(['e' => 'Необходимо выбрать игру']);
     }
 
     $sql->query('SELECT `id`, `passwd`, `address` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(['e' => 'Локация не найдена']);
+        AdminSystem::outjs(['e' => 'Локация не найдена']);
     }
 
     $unit = $sql->get();
@@ -90,7 +90,7 @@ if ($go) {
         $sql->query('INSERT INTO `maps` set `unit`="' . $unit['id'] . '", `game`="' . $game . '", `name`="' . $name . '"');
     }
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $units = '';

@@ -55,8 +55,8 @@ class actions
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
-        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
+        System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
+        System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
         $sshClient->disconnect();
 
@@ -102,7 +102,7 @@ class actions
         if ($map) {
             // Проверка наличия выбранной карты
             if (!in_array($map, $aMaps)) {
-                return ['e' => sys::updtext(sys::text('servers', 'change'), ['map' => $map . '.bsp'])];
+                return ['e' => System::updtext(System::text('servers', 'change'), ['map' => $map . '.bsp'])];
             }
 
             // Отправка команды changelevel
@@ -114,8 +114,8 @@ class actions
             // Сброс кеша
             actions::clmcache($id);
 
-            sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])]);
-            sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']]);
+            System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online'], 'players' => base64_decode($server['players'])]);
+            System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'change', 'online' => $server['online']]);
 
             return ['s' => 'ok'];
         }
@@ -127,7 +127,7 @@ class actions
         // Генерация списка карт для выбора
         foreach ($aMaps as $map) {
             $html->get('change_list', 'sections/servers/games');
-            $html->set('img', sys::img($map, $server['game']));
+            $html->set('img', System::img($map, $server['game']));
             $html->set('name', $map);
             $html->set('id', $id);
             $html->pack('maps');
@@ -152,7 +152,7 @@ class actions
         $reinstall = $server['reinstall'] + $cfg['reinstall'][$server['game']] * 60;
 
         if ($reinstall > $start_point && $user['group'] != 'admin') {
-            return ['e' => sys::updtext(sys::text('servers', 'reinstall'), ['time' => sys::date('max', $reinstall)])];
+            return ['e' => System::updtext(System::text('servers', 'reinstall'), ['time' => System::date('max', $reinstall)])];
         }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -187,7 +187,7 @@ class actions
             . 'cp -r ' . $path . '/. .;' // Копирование файлов сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
+            . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . '"');
 
         // Очистка записей в базе
         $sql->query('DELETE FROM `admins_' . $server['game'] . '` WHERE `server`="' . $id . '"'); // Список админов на сервере
@@ -196,7 +196,7 @@ class actions
         // Запись установленных плагинов
         if ($server['plugins_use']) {
             // Массив идентификаторов плагинов
-            $aPlugins = sys::b64djs($tarif['plugins_install']);
+            $aPlugins = System::b64djs($tarif['plugins_install']);
 
             if (isset($aPlugins[$server['pack']])) {
                 $plugins = explode(',', $aPlugins[$server['pack']]);
@@ -213,13 +213,13 @@ class actions
         $sql->query('UPDATE `servers` set `status`="reinstall", `reinstall`="' . $start_point . '", `fastdl`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Логирование
-        $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'reinstall') . '", `time`="' . $start_point . '"');
+        $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . System::text('syslogs', 'reinstall') . '", `time`="' . $start_point . '"');
 
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => '']);
-        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0]);
+        System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => '']);
+        System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0]);
 
         $sshClient->disconnect();
 
@@ -237,7 +237,7 @@ class actions
         $update = $server['update'] + $cfg['update'][$server['game']] * 60;
 
         if ($update > $start_point && $user['group'] != 'admin') {
-            return ['e' => sys::updtext(sys::text('servers', 'update'), ['time' => sys::date('max', $update)])];
+            return ['e' => System::updtext(System::text('servers', 'update'), ['time' => System::date('max', $update)])];
         }
 
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
@@ -268,19 +268,19 @@ class actions
         $sshClient->execute('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' tmux new-session -ds u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
-            . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
+            . 'chmod 500 ' . Parameters::$aFileGame[$server['game']] . '"');
 
         // Обновление информации в базе
         $sql->query('UPDATE `servers` set `status`="update", `update`="' . $start_point . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         // Логирование
-        $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . sys::text('syslogs', 'update') . '", `time`="' . $start_point . '"');
+        $sql->query('INSERT INTO `logs_sys` set `user`="' . $user['id'] . '", `server`="' . $id . '", `text`="' . System::text('syslogs', 'update') . '", `time`="' . $start_point . '"');
 
         // Сброс кеша
         actions::clmcache($id);
 
-        sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
-        sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
+        System::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
+        System::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
 
         $sshClient->disconnect();
 

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -77,4 +79,4 @@ if ($url['type'] == 'plugin') {
     }
 }
 
-sys::outjs(['s' => 'ok']);
+AdminSystem::outjs(['s' => 'ok']);

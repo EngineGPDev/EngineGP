@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -31,7 +33,7 @@ $tarif = $sql->get();
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 // Путь к логам
@@ -39,8 +41,8 @@ $folder = $tarif['install'] . $server['uid'] . '/cstrike/logs';
 
 // Если выбран лог
 if (isset($url['log'])) {
-    if (sys::valid($url['log'], 'other', $aValid['cslogs'])) {
-        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings/subsection/logs');
+    if (System::valid($url['log'], 'other', $aValid['cslogs'])) {
+        System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings/subsection/logs');
     }
 
     $ssh->set('sudo -u server' . $server['uid'] . ' cat ' . $folder . '/' . $url['log']);
@@ -57,7 +59,7 @@ if (isset($url['log'])) {
     if (isset($url['delall'])) {
         $ssh->set('cd ' . $folder . ' && rm *.log');
 
-        sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings/subsection/logs');
+        System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings/subsection/logs');
     }
 
     $ssh->set('cd ' . $folder . ' && du -ab --time | grep -e .log$ | awk \'{print $2" "$3"\/"$1"\/"$4}\' | sort -Mr');
@@ -81,10 +83,10 @@ if (isset($url['log'])) {
         }
 
         // Дата
-        $date = sys::unidate($aLog[0]);
+        $date = System::unidate($aLog[0]);
 
         // Вес
-        $size = sys::size($aLog[1]);
+        $size = System::size($aLog[1]);
 
         $html->get('list', 'sections/servers/games/settings/logs');
 

@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\User;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -49,7 +52,7 @@ if (isset($url['action']) and in_array($url['action'], ['upload', 'news', 'help'
 
             $sql->query('UPDATE `users` set `notice_news`="' . $notice . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(['s' => 'ok']);
+            System::outjs(['s' => 'ok']);
 
             // no break
         case 'help':
@@ -57,14 +60,14 @@ if (isset($url['action']) and in_array($url['action'], ['upload', 'news', 'help'
 
             $sql->query('UPDATE `users` set `notice_help`="' . $notice . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-            sys::outjs(['s' => 'ok']);
+            System::outjs(['s' => 'ok']);
     }
 }
 
 $html->get('settings', 'sections/user/lk');
 
 $html->set('id', $user['id']);
-$html->set('ava', users::ava($user['id']));
+$html->set('ava', User::ava($user['id']));
 
 if ($user['notice_news']) {
     $html->unit('notice_news', true);

@@ -16,25 +16,28 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Parameters;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 $sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" ORDER BY `id` DESC LIMIT 3');
 if ($sql->num() > 2) {
-    sys::outjs(['e' => 'Для создания новой копии необходимо удалить старые.'], $nmch);
+    System::outjs(['e' => 'Для создания новой копии необходимо удалить старые.'], $nmch);
 }
 
 $sql->query('SELECT `id` FROM `copy` WHERE `server`="' . $id . '" AND `status`="0" LIMIT 1');
 if ($sql->num()) {
-    sys::outjs(['e' => 'Для создания новой копии дождитесь создания предыдущей.'], $nmch);
+    System::outjs(['e' => 'Для создания новой копии дождитесь создания предыдущей.'], $nmch);
 }
 
 $aSel = [];
 
-$aData = $_POST['copy'] ?? sys::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
+$aData = $_POST['copy'] ?? System::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
 
-foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
+foreach (Parameters::$section_copy[$server['game']]['aCopy'] as $name => $info) {
     if (!isset($aData['\'' . $name . '\''])) {
         continue;
     }
@@ -43,7 +46,7 @@ foreach (params::$section_copy[$server['game']]['aCopy'] as $name => $info) {
 }
 
 if (!count($aSel)) {
-    sys::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
+    System::outjs(['e' => 'Для создания копии необходимо выбрать директории/файлы.'], $nmch);
 }
 
 $copy = '';
@@ -51,8 +54,8 @@ $info = '';
 $plugins = '';
 
 foreach ($aSel as $name) {
-    $copy .= isset(params::$section_copy[$server['game']]['aCopyDir'][$name]) ? params::$section_copy[$server['game']]['aCopyDir'][$name] . ' ' : '';
-    $copy .= isset(params::$section_copy[$server['game']]['aCopyFile'][$name]) ? params::$section_copy[$server['game']]['aCopyFile'][$name] . ' ' : '';
+    $copy .= isset(Parameters::$section_copy[$server['game']]['aCopyDir'][$name]) ? Parameters::$section_copy[$server['game']]['aCopyDir'][$name] . ' ' : '';
+    $copy .= isset(Parameters::$section_copy[$server['game']]['aCopyFile'][$name]) ? Parameters::$section_copy[$server['game']]['aCopyFile'][$name] . ' ' : '';
 
     $info .= $name . ', ';
 }
@@ -71,4 +74,4 @@ $sql->query('INSERT INTO `copy` set `user`="' . $server['user'] . '_' . $server[
 // Очистка кеша
 $mcache->delete('server_copy_' . $id);
 
-sys::outjs(['s' => 'ok'], $nmch);
+System::outjs(['s' => 'ok'], $nmch);

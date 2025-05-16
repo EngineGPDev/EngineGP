@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -35,14 +37,14 @@ if ($go) {
     $aData['crmp'] = $_POST['crmp'] ?? 0;
     $aData['mta'] = $_POST['mta'] ?? 0;
     $aData['mc'] = $_POST['mc'] ?? 0;
-    $aData['sort'] = isset($_POST['sort']) ? sys::int($_POST['sort']) : 0;
+    $aData['sort'] = isset($_POST['sort']) ? AdminSystem::int($_POST['sort']) : 0;
 
     foreach ($aGames as $game) {
         $aData[$game] = (string)$aData[$game] == 'on' ? '1' : '0';
     }
 
     if (in_array('', $aData)) {
-        sys::outjs(['e' => 'Необходимо заполнить все поля']);
+        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
     foreach ($aGames as $game) {
@@ -56,7 +58,7 @@ if ($go) {
             . '`sort`="' . $aData['sort'] . '"');
     }
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $html->get('addcat', 'sections/addons');

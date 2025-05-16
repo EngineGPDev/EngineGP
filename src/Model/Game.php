@@ -16,9 +16,7 @@
  * limitations under the License.
  */
 
-if (!defined('EGP')) {
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
-}
+namespace EngineGP\Model;
 
 use EngineGP\System;
 use EngineGP\Infrastructure\GeoIP\SxGeo;
@@ -35,7 +33,7 @@ class Game
             $aText = ['день', 'дня', 'дней'];
         }
 
-        return sys::date_decl($days, $aText);
+        return System::date_decl($days, $aText);
     }
 
     public static function time($time, $days)
@@ -71,10 +69,10 @@ class Game
             'blocked' => 'заблокирован',
         ];
 
-        $msg = sys::updtext(sys::text('servers', 'determine'), ['status' => $aText[$status]]);
+        $msg = System::updtext(System::text('servers', 'determine'), ['status' => $aText[$status]]);
 
         if ($go) {
-            sys::out($msg);
+            System::out($msg);
         }
 
         $html->get('informer');
@@ -265,7 +263,7 @@ class Game
         }
 
         $packs = '';
-        $aPack = sys::b64djs($aTarif['packs'], true);
+        $aPack = System::b64djs($aTarif['packs'], true);
 
         if (is_array($aPack)) {
             foreach ($aPack as $index => $name) {
@@ -281,10 +279,10 @@ class Game
 
         $aTime = explode(':', $aTarif['time']);
 
-        $time = games::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
+        $time = Game::parse_time($aTarif['discount'], $aTarif['id'], $aTime);
 
         if ($aTarif['test'] and $aUnit['test']) {
-            $time .= '<option value="test">Тестовый период ' . games::parse_day($aTarif['test']) . '</option>';
+            $time .= '<option value="test">Тестовый период ' . Game::parse_day($aTarif['test']) . '</option>';
         }
 
         $data = [
@@ -307,30 +305,30 @@ class Game
 
         $time = '';
 
-        $arr = isset(params::$disconunt['service'][$tarif]) ? $tarif : 'time';
+        $arr = isset(Parameters::$disconunt['service'][$tarif]) ? $tarif : 'time';
 
         foreach ($aTime as $value) {
-            if (array_key_exists($value, params::$disconunt['service'][$arr][$type]) and $discount) {
-                $data = explode(':', params::$disconunt['service'][$arr][$type][$value]);
+            if (array_key_exists($value, Parameters::$disconunt['service'][$arr][$type]) and $discount) {
+                $data = explode(':', Parameters::$disconunt['service'][$arr][$type][$value]);
 
                 // Если наценка
                 if ($data[0] == '+') {
                     // Если значение в процентах
                     if (substr($data[1], -1) == '%') {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Наценка ' . $data[1] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Наценка ' . $data[1] . ')</option>';
                     } else {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Наценка ' . sys::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Наценка ' . System::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
                     }
                 } else {
                     // Если значение в процентах
                     if (substr($data[1], -1) == '%') {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Скидка ' . $data[1] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Скидка ' . $data[1] . ')</option>';
                     } else {
-                        $time .= '<option value="' . $value . '">' . games::parse_day($value) . ' (Скидка ' . sys::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
+                        $time .= '<option value="' . $value . '">' . Game::parse_day($value) . ' (Скидка ' . System::int($data[1]) . ' ' . $cfg['currency'] . ')</option>';
                     }
                 }
             } else {
-                $time .= '<option value="' . $value . '">' . games::parse_day($value) . '</option>';
+                $time .= '<option value="' . $value . '">' . Game::parse_day($value) . '</option>';
             }
         }
 
@@ -369,7 +367,7 @@ class Game
             $day = $type == 'extend' ? date('d', $time) : date('d', $start_point);
             $month = $type == 'extend' ? date('n', $time) : date('n', $start_point);
 
-            $period = params::$aDayMonth[$month] + 1 - $day;
+            $period = Parameters::$aDayMonth[$month] + 1 - $day;
 
             $new_month_sum = 0;
 
@@ -377,12 +375,12 @@ class Game
                 $new_month_sum = ceil($price * $slots);
             }
 
-            $sum = params::$aDayMonth[$month] == $period ? $price * $slots : floor($price * $slots / 30 * $period) + $new_month_sum;
+            $sum = Parameters::$aDayMonth[$month] == $period ? $price * $slots : floor($price * $slots / 30 * $period) + $new_month_sum;
         } else {
             $sum = floor($price * $slots / 30 * $time);
 
-            if (array_key_exists($time, params::$disconunt['service']['time'][$type]) and $discount) {
-                $data = explode(':', params::$disconunt['service']['time'][$type][$time]);
+            if (array_key_exists($time, Parameters::$disconunt['service']['time'][$type]) and $discount) {
+                $data = explode(':', Parameters::$disconunt['service']['time'][$type][$time]);
 
                 // Если наценка
                 if ($data[0] == '+') {
@@ -414,7 +412,7 @@ class Game
         }
 
         if ($sum < 0) {
-            sys::outjs(['e' => 'Ошибка: сумма за услугу неверна']);
+            System::outjs(['e' => 'Ошибка: сумма за услугу неверна']);
         }
 
         return $sum;
@@ -425,9 +423,9 @@ class Game
         global $cfg, $sql, $go, $start_point;
 
         // Проверка формата кода
-        if (sys::valid($cod, 'promo')) {
+        if (System::valid($cod, 'promo')) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код имеет неверный формат.']);
+                System::outjs(['e' => 'Промо-код имеет неверный формат.']);
             }
 
             return null;
@@ -438,7 +436,7 @@ class Game
         // Проверка наличия промо-кода
         if (!$sql->num()) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код не найден.']);
+                System::outjs(['e' => 'Промо-код не найден.']);
             }
 
             return null;
@@ -449,7 +447,7 @@ class Game
         // Проверка типа при аренде
         if ($type == 'buy' and $promo['extend']) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код для продления игрового сервера.']);
+                System::outjs(['e' => 'Промо-код для продления игрового сервера.']);
             }
 
             return null;
@@ -458,7 +456,7 @@ class Game
         // Проверка типа при продлении
         if ($type != 'buy' and !$promo['extend']) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код для аренды нового игрового сервера.']);
+                System::outjs(['e' => 'Промо-код для аренды нового игрового сервера.']);
             }
 
             return null;
@@ -467,7 +465,7 @@ class Game
         // Проверка доступности на пользователя
         if ($promo['user'] and $data['user'] != $promo['user']) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код не найден.']);
+                System::outjs(['e' => 'Промо-код не найден.']);
             }
 
             return null;
@@ -476,7 +474,7 @@ class Game
         // Проверка доступности на сервер
         if ($promo['server'] and $data['server'] != $promo['server']) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код не найден.']);
+                System::outjs(['e' => 'Промо-код не найден.']);
             }
 
             return null;
@@ -488,14 +486,14 @@ class Game
         $sql->query('SELECT `id` FROM `promo_use` WHERE `promo`="' . $promo['id'] . '" LIMIT ' . $use);
         if ($sql->num() >= $promo['use']) {
             if (!$go) {
-                sys::outjs(['e' => 'Промо-код использован максимальное количество раз.']);
+                System::outjs(['e' => 'Промо-код использован максимальное количество раз.']);
             }
 
             return null;
         }
 
         // Данные для сравнения
-        $data_promo = sys::b64djs($promo['data'], true);
+        $data_promo = System::b64djs($promo['data'], true);
 
         $check = 0;
 
@@ -536,7 +534,7 @@ class Game
         // Проверка совпадений
         if ($check < $promo['hits']) {
             if (!$go) {
-                sys::outjs(['e' => 'Условия для данного промо-кода не выполнены.']);
+                System::outjs(['e' => 'Условия для данного промо-кода не выполнены.']);
             }
 
             return null;
@@ -546,8 +544,8 @@ class Game
         if ($promo['discount']) {
             // Если не суммировать скидки
             if (!$cfg['promo_discount']) {
-                if (array_key_exists($data['time'], params::$disconunt['service']['time'][$type]) and $discount) {
-                    $data = explode(':', params::$disconunt['service']['time'][$type][$data['time']]);
+                if (array_key_exists($data['time'], Parameters::$disconunt['service']['time'][$type]) and $discount) {
+                    $data = explode(':', Parameters::$disconunt['service']['time'][$type][$data['time']]);
 
                     // Если скидка
                     if ($data[0] == '-') {
@@ -569,7 +567,7 @@ class Game
             }
 
             if (!$go) {
-                sys::outjs(['sum' => $sum, 'discount' => 1, 'cur' => $cfg['currency']]);
+                System::outjs(['sum' => $sum, 'discount' => 1, 'cur' => $cfg['currency']]);
             }
 
             return ['id' => $promo['id'], 'cod' => $cod, 'sum' => $sum];
@@ -580,7 +578,7 @@ class Game
         $days = intval($promo['value']);
 
         if (!$go) {
-            sys::outjs(['days' => games::parse_day($days)]);
+            System::outjs(['days' => Game::parse_day($days)]);
         }
 
         return ['id' => $promo['id'], 'cod' => $cod, 'days' => $days];
@@ -617,10 +615,10 @@ class Game
             $sshClient->connect();
         } catch (\Exception $e) {
             if ($go) {
-                sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
+                System::outjs(['e' => System::text('error', 'ssh')], $mcache);
             }
 
-            sys::outjs(['maps', '<option value="0">unknown</option>']);
+            System::outjs(['maps', '<option value="0">unknown</option>']);
         }
 
         // Генерация списка карт
@@ -637,7 +635,7 @@ class Game
                 $sql->query('UPDATE `servers` set `map_start`="' . $map . '" WHERE `id`="' . $id . '" LIMIT 1');
             }
 
-            sys::outjs(['s' => 'ok'], $mcache);
+            System::outjs(['s' => 'ok'], $mcache);
         }
 
         sort($aMaps);
@@ -655,7 +653,7 @@ class Game
             $maps .= '<option value="' . str_replace('/', '|', $map) . '">' . $map . '</option>';
         }
 
-        sys::outjs(['maps' => $maps]);
+        System::outjs(['maps' => $maps]);
     }
 
     public static function owners($aRights)
@@ -697,8 +695,8 @@ class Game
             $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] + $sum) . '" WHERE `id`="' . $user['part'] . '" LIMIT 1');
         }
 
-        $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . sys::updtext(
-            sys::text('logs', 'part'),
+        $sql->query('INSERT INTO `logs` set `user`="' . $user['part'] . '", `text`="' . System::updtext(
+            System::text('logs', 'part'),
             ['part' => $uid, 'money' => $sum]
         ) . '", `date`="' . $start_point . '", `type`="part", `money`="' . $sum . '"');
 
@@ -731,13 +729,11 @@ class Game
 
     public static function iptables_whois($mcache)
     {
-        $address = isset($_POST['address']) ? trim($_POST['address']) : sys::outjs(['info' => 'Не удалось получить информацию.'], $mcache);
+        $address = isset($_POST['address']) ? trim($_POST['address']) : System::outjs(['info' => 'Не удалось получить информацию.'], $mcache);
 
-        if (sys::valid($address, 'ip')) {
-            sys::outjs(['e' => sys::text('servers', 'firewall')], $mcache);
+        if (System::valid($address, 'ip')) {
+            System::outjs(['e' => System::text('servers', 'firewall')], $mcache);
         }
-
-        include(LIB . 'geo.php');
 
         $SxGeo = new SxGeo(DATA . 'SxGeoCity.dat');
 
@@ -752,13 +748,13 @@ class Game
                 $info .= '<p>Город: ' . $data['city']['name_ru'];
             }
 
-            $info .= '<p>Подсеть: ' . sys::whois($address);
+            $info .= '<p>Подсеть: ' . System::whois($address);
 
         } else {
             $info = 'Не удалось получить информацию.';
         }
 
-        sys::outjs(['info' => $info], $mcache);
+        System::outjs(['info' => $info], $mcache);
     }
 
     public static function iptables($id, $action, $source, $ip, $port, $unit, $snw = false, $ssh = false)
@@ -780,13 +776,13 @@ class Game
 
         switch ($action) {
             case 'block':
-                if (sys::valid($source, 'ip')) {
-                    return ['e' => sys::text('servers', 'firewall')];
+                if (System::valid($source, 'ip')) {
+                    return ['e' => System::text('servers', 'firewall')];
                 }
 
                 // Если подсеть
                 if ($snw) {
-                    $source = sys::whois($source);
+                    $source = System::whois($source);
 
                     if ($source == 'не определена') {
                         return ['e' => 'Не удалось определить подсеть для указанного адреса.'];
@@ -811,8 +807,8 @@ class Game
                 return ['s' => 'ok'];
 
             case 'unblock':
-                if (!is_numeric($source) and sys::valid($source, 'ip')) {
-                    return ['e' => sys::text('servers', 'firewall')];
+                if (!is_numeric($source) and System::valid($source, 'ip')) {
+                    return ['e' => System::text('servers', 'firewall')];
                 }
 
                 if (is_numeric($source)) {
@@ -827,7 +823,7 @@ class Game
 
                     // Если одиночный адрес не найден, проверить на блокировку подсети
                     if (!$sql->num()) {
-                        $source = sys::whois($source);
+                        $source = System::whois($source);
 
                         $sql->query('SELECT `id` FROM `firewall` WHERE `sip`="' . $source . '" AND `server`="' . $id . '" LIMIT 1');
 

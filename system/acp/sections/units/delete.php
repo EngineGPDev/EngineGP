@@ -69,10 +69,10 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 } else {
     $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $id . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(['e' => 'Нельзя удалить локацию с серверами.']);
+        AdminSystem::outjs(['e' => 'Нельзя удалить локацию с серверами.']);
     }
 }
 
 $sql->query('DELETE FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(['s' => 'ok']);
+AdminSystem::outjs(['s' => 'ok']);

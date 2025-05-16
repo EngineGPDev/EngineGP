@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,22 +29,22 @@ include(LIB . 'games/' . $server['game'] . '/scan.php');
 
 // Запрошена информация (статус, онлайн, название)
 if (isset($url['mon'])) {
-    sys::outjs(scan::mon($id));
+    System::outjs(scan::mon($id));
 }
 
 // Запрошена информация (статус, онлайн, название, игроки)
 if (isset($url['fmon'])) {
-    sys::outjs(scan::mon($id, true));
+    System::outjs(scan::mon($id, true));
 }
 
 // Запрошена информация (cpu, ram, hdd)
 if (isset($url['resources'])) {
-    sys::outjs(scan::resources($id));
+    System::outjs(scan::resources($id));
 }
 
 // Запрошена информация (работает, меняется карта, переустанавливается)
 if (isset($url['status'])) {
-    sys::outjs(scan::status($id));
+    System::outjs(scan::status($id));
 }
 
 exit;
