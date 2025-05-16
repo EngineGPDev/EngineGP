@@ -84,8 +84,10 @@ The project uses a branching strategy based on Semantic Versioning.
 ### ✅ Recommendations
 
 * **Code Style**: Follow the project's code style conventions.
+<!--
 * **Testing**: Ensure your code passes all tests and introduces no errors.
 * **Documentation**: Update or add docs if your changes affect project behavior.
+-->
 * **Discussion**: If unsure, open an issue for discussion before starting.
 
 ### 📚 Additional Resources
@@ -190,8 +192,10 @@ If you have questions or need help, don’t hesitate to open an Issue or Pull Re
 ### ✅ Рекомендации
 
 * **Кодстайл**: Соблюдайте стандарты кодирования проекта.
+<!--
 * **Тестирование**: Убедитесь, что код проходит тесты и не вызывает ошибок.
 * **Документация**: Обновите документацию, если поведение проекта изменилось.
+-->
 * **Обсуждение**: При сомнениях начните обсуждение в Issues перед работой.
 
 ### 📚 Дополнительные ресурсы
