@@ -20,7 +20,12 @@ if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-class games
+use EngineGP\System;
+use EngineGP\Infrastructure\GeoIP\SxGeo;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
+use EngineGP\Infrastructure\RemoteAccess\SftpClient;
+
+class Game
 {
     public static function parse_day($days, $lower = false)
     {
@@ -604,11 +609,13 @@ class games
 
     public static function maplist($id, $unit, $folder, $map, $go, $mcache = '')
     {
-        global $user, $sql;
+        global $sql;
 
-        include(LIB . 'ssh.php');
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
             if ($go) {
                 sys::outjs(['e' => sys::text('error', 'ssh')], $mcache);
             }
@@ -617,7 +624,7 @@ class games
         }
 
         // Генерация списка карт
-        $aMaps = array_diff(explode("\n", $ssh->get('cd ' . $folder . ' && du -ah | grep -e "\.bsp$" -e "\.vpk$" | awk \'{print $2}\'')), ['']);
+        $aMaps = array_diff(explode("\n", $sshClient->execute('cd ' . $folder . ' && du -ah | grep -e "\.bsp$" -e "\.vpk$" | awk \'{print $2}\'', false)), ['']);
 
         // Удаление ".bsp" или ".vpk"
         $aMaps = str_ireplace(['./', '.bsp', '.vpk'], '', $aMaps);
@@ -762,10 +769,12 @@ class games
             $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
             $unit = $sql->get();
 
-            include(LIB . 'ssh.php');
+            $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
-            if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-                return ['e' => sys::text('all', 'ssh')];
+            try {
+                $sshClient->connect();
+            } catch (\Exception $e) {
+                return ['e' => System::text('error', 'ssh')];
             }
         }
 
@@ -797,7 +806,7 @@ class games
 
                 $rule = 'iptables -I INPUT -s ' . $source . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;';
 
-                $ssh->set($rule . ' echo -e "#' . $line . ';\n' . $rule . '" >> /root/' . $cfg['iptables']);
+                $sshClient->execute($rule . ' echo -e "#' . $line . ';\n' . $rule . '" >> /root/' . $cfg['iptables'], true);
 
                 return ['s' => 'ok'];
 
@@ -834,8 +843,8 @@ class games
 
                 $firewall = $sql->get();
 
-                $ssh->set('iptables -D INPUT -s ' . $firewall['sip'] . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;'
-                    . 'sed "`nl ' . $cfg['iptables'] . ' | grep \"#' . $firewall['id'] . '\" | awk \'{print $1","$1+1}\'`d" ' . $cfg['iptables'] . ' > ' . $cfg['iptables'] . '_temp; cat ' . $cfg['iptables'] . '_temp > ' . $cfg['iptables'] . '; rm ' . $cfg['iptables'] . '_temp');
+                $sshClient->execute('iptables -D INPUT -s ' . $firewall['sip'] . ' -p udp -d ' . $ip . ' --dport ' . $port . ' -j DROP;'
+                    . 'sed "`nl ' . $cfg['iptables'] . ' | grep \"#' . $firewall['id'] . '\" | awk \'{print $1","$1+1}\'`d" ' . $cfg['iptables'] . ' > ' . $cfg['iptables'] . '_temp; cat ' . $cfg['iptables'] . '_temp > ' . $cfg['iptables'] . '; rm ' . $cfg['iptables'] . '_temp', true);
 
                 $sql->query('DELETE FROM `firewall` WHERE `id`="' . $firewall['id'] . '" LIMIT 1');
 
@@ -864,7 +873,7 @@ class games
                     $cmd .= $rule . 'sed "`nl ' . $cfg['iptables'] . ' | grep "#' . $line . '" | awk \'{print $1","$1+1}\'`d" ' . $cfg['iptables'] . ' > ' . $cfg['iptables'] . '_temp; cat ' . $cfg['iptables'] . '_temp > ' . $cfg['iptables'] . '; rm ' . $cfg['iptables'] . '_temp';
                 }
 
-                $ssh->set($cmd);
+                $sshClient->execute($cmd, true);
 
                 $sql->query('DELETE FROM `firewall` WHERE `server`="' . $id . '" LIMIT ' . $nRule);
 

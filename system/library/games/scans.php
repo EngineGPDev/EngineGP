@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -66,10 +69,12 @@ class scans
         $sql->query('SELECT `address`, `passwd`, `ram` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return $resources;
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
+            System::outjs(['e' => System::text('error', 'ssh')], false);
         }
 
         if (!in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
@@ -79,7 +84,7 @@ class scans
         $resources['usr'] = ceil(100 / $server['slots_start'] * $server['online']);
         $resources['usr'] = $resources['usr'] > 100 ? 100 : $resources['usr'];
 
-        $cr = explode('|', $ssh->get('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\''));
+        $cr = explode('|', $sshClient->execute('top -u ' . $server['uid'] . ' -b -n 1 | grep ' . (scans::$process[$server['game']]) . ' | sort | tail -1 | awk \'{print $9"|"$10}\'', false));
 
         if (isset($cr[0])) {
             $resources['cpu'] = str_replace(',', '.', $cr[0]);
@@ -94,12 +99,15 @@ class scans
 
         $resources['ram'] = $resources['ram'] > 100 ? 100 : round($resources['ram']);
 
-        $resources['hdd'] = ceil(sys::int($ssh->get('cd ' . $tarif['install'] . $server['uid'] . ' && du -ms')) / ($server['hdd'] / 100));
+        $resources['hdd'] = ceil(System::int($sshClient->execute('cd ' . $tarif['install'] . $server['uid'] . ' && du -ms', false)) / ($server['hdd'] / 100));
+
         $resources['hdd'] = $resources['hdd'] > 100 ? 100 : $resources['hdd'];
 
         $sql->query('UPDATE `servers` set `ram_use`="' . $resources['ram'] . '", `cpu_use`="' . $resources['cpu'] . '", `hdd_use`="' . $resources['hdd'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
         $mcache->set($nmch, $resources, false, $cfg['mcache_server_resources']);
+
+        $sshClient->disconnect();
 
         return $resources;
     }
@@ -139,10 +147,12 @@ class scans
         $sql->query('SELECT `address`, `passwd`, `sql_login`, `sql_passwd`, `sql_port`, `sql_ftp` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        include(LIB . 'ssh.php');
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return 'unit error connect';
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
+            System::outjs(['e' => System::text('error', 'ssh')], false);
         }
 
         // Если аренда закончилась, а сервер не просрочен
@@ -150,11 +160,11 @@ class scans
             $server_address = $server['address'] . ':' . $server['port'];
 
             // Убить процессы
-            $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
+            $sshClient->execute('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
                 . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server'  . $server['uid']);
 
             if ($server['ftp']) {
-                $ssh->set("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");
+                $sshClient->execute("mysql -P " . $unit['sql_port'] . " -u" . $unit['sql_login'] . " -p" . $unit['sql_passwd'] . " --database " . $unit['sql_ftp'] . " -e \"DELETE FROM ftp WHERE user='" . $server['uid'] . "'\"");
             }
 
             $sql->query('UPDATE `servers` set `status`="overdue", `online`="0", `players`="", `ftp`="0", `overdue`="' . $start_point . '", `mail`="1" WHERE `id`="' . $id . '" LIMIT 1');
@@ -170,7 +180,7 @@ class scans
             case 'change':
             case 'start':
             case 'restart':
-                if (!sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (!System::int($sshClient->execute('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'', false))) {
                     $sql->query('UPDATE `servers` set `status`="off", `online`="0", `players`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
                     sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
@@ -180,9 +190,8 @@ class scans
                 }
 
                 break;
-
             case 'off':
-                if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (System::int($sshClient->execute('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'', false))) {
                     $sql->query('UPDATE `servers` set `status`="working" WHERE `id`="' . $id . '" LIMIT 1');
 
                     sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'working', 'online' => $server['online'], 'players' => $server['players']]);
@@ -192,9 +201,8 @@ class scans
                 }
 
                 break;
-
             case 'reinstall':
-                if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (!System::int($sshClient->execute('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'', false))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
                     sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
@@ -206,7 +214,7 @@ class scans
                 break;
 
             case 'update':
-                if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (!System::int($sshClient->execute('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'', false))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
                     sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
@@ -218,7 +226,7 @@ class scans
                 break;
 
             case 'install':
-                if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (!System::int($sshClient->execute('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'', false))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
                     sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
@@ -230,7 +238,7 @@ class scans
                 break;
 
             case 'recovery':
-                if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                if (!System::int($sshClient->execute('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\'', false))) {
                     $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
 
                     sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
@@ -251,6 +259,8 @@ class scans
                 sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
                 sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
         }
+
+        $sshClient->disconnect();
 
         return 'server -> no change -> end scan';
     }

@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -30,15 +33,10 @@ if ($go) {
     $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
     $tarif = $sql->get();
 
-    include(LIB . 'ssh.php');
-
     if (isset($server['status']) && $server['status'] == 'off') {
         sys::out(sys::text('servers', 'off'));
     }
-
-    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::out(sys::text('error', 'ssh'));
-    }
+    $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
 
     $dir = $tarif['install'] . $server['uid'] . '/';
 
@@ -46,7 +44,9 @@ if ($go) {
 
     $command = 'sudo -u server' . $server['uid'] . ' tmux capture-pane -t s_' . $server['uid'] . ' \; save-buffer ' . $filecmd . ' && cat ' . $filecmd;
 
-    $output = $ssh->get($command);
+    $output = $sshClient->execute($command, false);
+
+    $sshClient->disconnect();
 
     sys::out(htmlspecialchars($output, ENT_QUOTES | ENT_SUBSTITUTE, ''));
 }

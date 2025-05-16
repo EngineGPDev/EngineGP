@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\AdminSystem;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -55,8 +59,6 @@ if ($go) {
         sys::outjs(['e' => 'Необходимо выбрать игру']);
     }
 
-    include(LIB . 'ssh.php');
-
     $sql->query('SELECT `id`, `passwd`, `address` FROM `units` WHERE `id`="' . $unit . '" LIMIT 1');
     if (!$sql->num()) {
         sys::outjs(['e' => 'Локация не найдена']);
@@ -64,13 +66,18 @@ if ($go) {
 
     $unit = $sql->get();
 
-    if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-        sys::outjs(['e' => 'Не удалось создать связь с локацией']);
+    $System = new System();
+    $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+
+    try {
+        $sshClient->connect();
+    } catch (\Exception $e) {
+        System::outjs(['e' => System::text('error', 'ssh')], false);
     }
 
     $sql->query('DELETE FROM `maps` WHERE `unit`="' . $unit['id'] . '" AND `game`="' . $game . '"');
 
-    $maps = $ssh->get('cd /path/maps/' . $game . ' && ls | grep .bsp | grep -v .bsp.');
+    $maps = $sshClient->execute('cd /path/maps/' . $game . ' && ls | grep .bsp | grep -v .bsp.', false);
 
     $aMaps = explode("\n", $maps);
 

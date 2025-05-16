@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,10 +27,12 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
     $sql->query('SELECT `address`, `passwd` FROM `panel` LIMIT 1');
     $panel = $sql->get();
 
-    include(LIB . 'ssh.php');
+    $sshClient = new SshClient($panel['address'], 'root', $panel['passwd']);
 
-    if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-        sys::outjs(['e' => 'PANEL не удалось создать связь.']);
+    try {
+        $sshClient->connect();
+    } catch (\Exception $e) {
+        AdminSystem::outjs(['e' => 'PANEL не удалось создать связь.'], false);
     }
 
     $servers = $sql->query('SELECT `id`, `user`, `game` FROM `servers` WHERE `unit`="' . $id . '"');
@@ -36,7 +41,7 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
         while ($cron = $sql->get($crons)) {
             $crontab = preg_quote($cron['cron'], '/');
 
-            $ssh->set('crontab -l | grep -v "' . $crontab . '" | crontab -');
+            $sshClient->execute('crontab -l | grep -v "' . $crontab . '" | crontab -', true);
 
             $sql->query('DELETE FROM `crontab` WHERE `id`="' . $cron['id'] . '" LIMIT 1');
         }

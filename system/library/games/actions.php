@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Parameters;
+use EngineGP\Infrastructure\RemoteAccess\SshClient;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,9 +28,7 @@ class actions
 {
     public static function stop($id)
     {
-        global $cfg, $sql, $user;
-
-        include(LIB . 'ssh.php');
+        global $sql;
 
         $sql->query('SELECT `uid`, `unit`, `game`, `address`, `port`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -34,14 +36,17 @@ class actions
         $sql->query('SELECT `address`, `passwd` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
         $unit = $sql->get();
 
-        // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return ['e' => sys::text('error', 'ssh')];
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
+            System::outjs(['e' => System::text('error', 'ssh')], false);
         }
 
         $server_address = $server['address'] . ':' . $server['port'];
 
-        $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
+        $sshClient->execute('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Обновление информации в базе
@@ -53,19 +58,19 @@ class actions
         sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0, 'players' => '']);
         sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'off', 'online' => 0]);
 
+        $sshClient->disconnect();
+
         return ['s' => 'ok'];
     }
 
     public static function change($id, $map = false)
     {
-        global $cfg, $sql, $html, $user, $mcache;
+        global $sql, $html, $mcache;
 
         // Если в кеше есть карты
         if ($mcache->get('server_maps_change_' . $id) != '' && !$map) {
             return ['maps' => $mcache->get('server_maps_change_' . $id)];
         }
-
-        include(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `game`, `tarif`, `online`, `players`, `name` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -76,13 +81,16 @@ class actions
         $sql->query('SELECT `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return ['e' => sys::text('error', 'ssh')];
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
+            System::outjs(['e' => System::text('error', 'ssh')], false);
         }
 
         // Массив карт игрового сервера (папка "maps")
-        $aMaps = explode("\n", $ssh->get('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.'));
+        $aMaps = explode("\n", $sshClient->execute('cd ' . $tarif['install'] . $server['uid'] . '/cstrike/maps/ && ls | grep .bsp | grep -v .bsp.', false));
 
         // Удаление пустого элемента
         unset($aMaps[count($aMaps) - 1]);
@@ -98,7 +106,7 @@ class actions
             }
 
             // Отправка команды changelevel
-            $ssh->set('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "changelevel ' . sys::cmd($map) . '" C-m');
+            $sshClient->execute('sudo -u server' . $server['uid'] . ' tmux send-keys -t s_' . $server['uid'] . ' "changelevel ' . System::cmd($map) . '" C-m');
 
             // Обновление информации в базе
             $sql->query('UPDATE `servers` set `status`="change" WHERE `id`="' . $id . '" LIMIT 1');
@@ -128,14 +136,14 @@ class actions
         // Запись карт в кеш
         $mcache->set('server_maps_change_' . $id, $html->arr['maps'], false, 30);
 
+        $sshClient->disconnect();
+
         return ['maps' => $html->arr['maps']];
     }
 
     public static function reinstall($id)
     {
         global $cfg, $sql, $user, $start_point;
-
-        include(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `port`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `reinstall` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -153,14 +161,17 @@ class actions
         $sql->query('SELECT `path`, `install`, `plugins_install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return ['e' => sys::text('error', 'ssh')];
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
+            System::outjs(['e' => System::text('error', 'ssh')], false);
         }
 
         $server_address = $server['address'] . ':' . $server['port'];
 
-        $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
+        $sshClient->execute('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Директория сборки
@@ -169,7 +180,7 @@ class actions
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        $ssh->set('rm -r ' . $install . ';' // Удаление директории игрового сервера
+        $sshClient->execute('rm -r ' . $install . ';' // Удаление директории игрового сервера
             . 'mkdir ' . $install . ';' // Создание директории
             . 'chown server' . $server['uid'] . ':servers ' . $install . ';' // Изменение владельца и группы директории
             . 'cd ' . $install . ' && sudo -u server' . $server['uid'] . ' tmux new-session -ds r_' . $server['uid'] . ' sh -c "'
@@ -210,14 +221,14 @@ class actions
         sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0, 'players' => '']);
         sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'reinstall', 'online' => 0]);
 
+        $sshClient->disconnect();
+
         return ['s' => 'ok'];
     }
 
     public static function update($id)
     {
         global $cfg, $sql, $user, $start_point;
-
-        include(LIB . 'ssh.php');
 
         $sql->query('SELECT `uid`, `unit`, `tarif`, `address`, `port`, `game`, `name`, `pack`, `plugins_use`, `ftp`, `update` FROM `servers` WHERE `id`="' . $id . '" LIMIT 1');
         $server = $sql->get();
@@ -235,14 +246,17 @@ class actions
         $sql->query('SELECT `update`, `install` FROM `tarifs` WHERE `id`="' . $server['tarif'] . '" LIMIT 1');
         $tarif = $sql->get();
 
-        // Проверка ssh соедниения пу с локацией
-        if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-            return ['e' => sys::text('error', 'ssh')];
+        $sshClient = new SshClient($unit['address'], 'root', $unit['passwd']);
+
+        try {
+            $sshClient->connect();
+        } catch (\Exception $e) {
+            System::outjs(['e' => System::text('error', 'ssh')], false);
         }
 
         $server_address = $server['address'] . ':' . $server['port'];
 
-        $ssh->set('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
+        $sshClient->execute('kill -9 `ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk ' . "'{print $2}'" . ' | xargs;'
             . 'lsof -i@' . $server_address . ' | awk ' . "'{print $2}'" . ' | grep -v PID | xargs`; sudo -u server' . $server['uid'] . ' tmux kill-session -t server' . $server['uid']);
 
         // Директория обновлений сборки
@@ -251,7 +265,7 @@ class actions
         // Директория игрового сервера
         $install = $tarif['install'] . $server['uid'];
 
-        $ssh->set('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' tmux new-session -ds u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
+        $sshClient->execute('cd ' . $install . ' && sudo -u server' . $server['uid'] . ' tmux new-session -ds u_' . $server['uid'] . ' sh -c "cp -rv ' . $path . '/. .;' // Копирование файлов обвновления сборки для сервера
             . 'find . -type d -exec chmod 700 {} \;;'
             . 'find . -type f -exec chmod 600 {} \;;'
             . 'chmod 500 ' . params::$aFileGame[$server['game']] . '"');
@@ -267,6 +281,8 @@ class actions
 
         sys::reset_mcache('server_scan_mon_pl_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0, 'players' => '']);
         sys::reset_mcache('server_scan_mon_' . $id, $id, ['name' => $server['name'], 'game' => $server['game'], 'status' => 'update', 'online' => 0]);
+
+        $sshClient->disconnect();
 
         return ['s' => 'ok'];
     }
