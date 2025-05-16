@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -96,7 +98,7 @@ class privileges extends cron
                 $aMail[] = $privilege['mail'];
             }
 
-            $temp = sys::temp($text);
+            $temp = System::temp($text);
 
             $ssh->setfile($temp, $file);
             $ssh->set('chmod 0500' . ' ' . $file);
@@ -109,7 +111,7 @@ class privileges extends cron
             $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"" . $cmd . "\" C-m");
 
             foreach ($aMail as $mail) {
-                sys::mail('Успешная привилегия', sys::text('mail', 'success_privilege'), $mail);
+                System::mail('Успешная привилегия', System::text('mail', 'success_privilege'), $mail);
             }
 
             echo 'server #' . $id . ' (' . $game . ') -> add privileges ' . PHP_EOL;

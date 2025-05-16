@@ -16,16 +16,19 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\User;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 // Проверка на авторизацию
-sys::noauth();
+System::noauth();
 
 // Генерация пароля
 if (isset($url['passwd'])) {
-    sys::out(sys::passwd(10));
+    System::out(System::passwd(10));
 }
 
 $aTitle = [
@@ -43,9 +46,7 @@ if (in_array($url['subsection'], ['index', 'settings', 'auth', 'logs', 'security
     $title = $aTitle[$url['subsection']] ?? '';
     $html->nav($title);
 
-    include(LIB . 'users.php');
-
-    users::nav($url['subsection']);
+    User::nav($url['subsection']);
 
     include(SEC . 'user/lk/' . $url['subsection'] . '.php');
 } else {

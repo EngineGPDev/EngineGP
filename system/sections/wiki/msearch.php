@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -24,16 +26,16 @@ if (!isset($nmch)) {
     $nmch = false;
 }
 
-$text = $_POST['text'] ?? (isset($url['tag']) ? urldecode($url['tag']) : sys::outjs(['none' => '']));
+$text = $_POST['text'] ?? (isset($url['tag']) ? urldecode($url['tag']) : System::outjs(['none' => '']));
 
 $mkey = md5($text . 'wiki');
 
 if ($mcache->get($mkey) != '' and !isset($url['tag'])) {
-    sys::outjs(['s' => $mcache->get($mkey)]);
+    System::outjs(['s' => $mcache->get($mkey)]);
 }
 
 if (!isset($text[2]) and !isset($url['tag'])) {
-    sys::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
+    System::outjs(['s' => 'Для выполнения поиска, необходимо больше данных', $nmch]);
 }
 
 $aWiki_q = [];
@@ -51,7 +53,7 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
     if (!strpos($text, ' ')) {
         $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-        sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
+        System::outjs(['s' => 'По вашему запросу ничего не найдено']);
     }
 
     // Массив слов
@@ -88,7 +90,7 @@ if (!$sql->num($wiki_q) and !$sql->num($answer_q) and !isset($url['tag'])) {
 if (!count($aWiki_q) and !count($aNswer_q) and !isset($url['tag'])) {
     $mcache->set($mkey, 'По вашему запросу ничего не найдено', false, 15);
 
-    sys::outjs(['s' => 'По вашему запросу ничего не найдено']);
+    System::outjs(['s' => 'По вашему запросу ничего не найдено']);
 }
 
 // Защита от дублирования
@@ -118,9 +120,9 @@ foreach ($aWiki_q as $index => $wiki_q) {
         $html->get('list', 'sections/wiki/question');
 
         $html->set('id', $quest['id']);
-        $html->set('name', sys::find($quest['name'], $text));
+        $html->set('name', System::find($quest['name'], $text));
         $html->set('tags', $tags != '' ? $tags : 'Теги отсутствуют');
-        $html->set('date', sys::today($quest['date']));
+        $html->set('date', System::today($quest['date']));
 
         $html->set('home', $cfg['http']);
 
@@ -154,9 +156,9 @@ foreach ($aNswer_q as $index => $answer_q) {
         $html->get('list', 'sections/wiki/question');
 
         $html->set('id', $quest['id']);
-        $html->set('name', sys::find($quest['name'], $text));
+        $html->set('name', System::find($quest['name'], $text));
         $html->set('tags', $tags != '' ? $tags : 'Теги отсутствуют');
-        $html->set('date', sys::today($quest['date']));
+        $html->set('date', System::today($quest['date']));
 
         $html->set('home', $cfg['http']);
 
@@ -168,4 +170,4 @@ $html->arr['question'] ??= 'По вашему запросу ничего не �
 
 $mcache->set($mkey, $html->arr['question'], false, 15);
 
-sys::outjs(['s' => $html->arr['question']], $nmch);
+System::outjs(['s' => $html->arr['question']], $nmch);

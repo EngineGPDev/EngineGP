@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -98,7 +100,7 @@ class scan_servers extends cron
                 case 'change':
                 case 'start':
                 case 'restart':
-                    if (!sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                    if (!System::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off", `online`="0", `players`="0" WHERE `id`="' . $id . '" LIMIT 1');
 
                         // Запуск сервера (если он был выключен не через панель)
@@ -114,7 +116,7 @@ class scan_servers extends cron
                     break;
 
                 case 'off':
-                    if (sys::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                    if (System::int($ssh->get('ps aux | grep s_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="working" WHERE `id`="' . $id . '" LIMIT 1');
                     } else {
                         // Запуск сервера (если он был выключен не через панель)
@@ -130,28 +132,28 @@ class scan_servers extends cron
                     break;
 
                 case 'reinstall':
-                    if (!sys::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                    if (!System::int($ssh->get('ps aux | grep r_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
                     }
 
                     break;
 
                 case 'update':
-                    if (!sys::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                    if (!System::int($ssh->get('ps aux | grep u_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
                     }
 
                     break;
 
                 case 'install':
-                    if (!sys::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                    if (!System::int($ssh->get('ps aux | grep i_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
                     }
 
                     break;
 
                 case 'recovery':
-                    if (!sys::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
+                    if (!System::int($ssh->get('ps aux | grep rec_' . $server['uid'] . ' | grep -v grep | awk \'{print $2}\''))) {
                         $sql->query('UPDATE `servers` set `status`="off" WHERE `id`="' . $id . '" LIMIT 1');
                     }
 

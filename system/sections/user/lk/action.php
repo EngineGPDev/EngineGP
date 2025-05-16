@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,7 +30,7 @@ if ($go) {
 
     // Проверка сессии
     if ($mcache->get($name_mcache)) {
-        sys::outjs(['e' => $text['mcache']], $name_mcache);
+        System::outjs(['e' => $text['mcache']], $name_mcache);
     }
 
     // Создание сессии
@@ -43,8 +45,8 @@ if ($go) {
             $contacts = $_POST['contacts'] ?? '';
 
             if ($contacts != '') {
-                if (sys::valid($contacts, 'other', $aValid['contacts'])) {
-                    sys::outjs(['e' => sys::text('input', 'contacts_valid')], $name_mcache);
+                if (System::valid($contacts, 'other', $aValid['contacts'])) {
+                    System::outjs(['e' => System::text('input', 'contacts_valid')], $name_mcache);
                 }
             }
 
@@ -54,88 +56,88 @@ if ($go) {
             }
 
             // Выхлоп удачного выполнения операции
-            sys::outjs(['s' => 'ok'], $name_mcache);
+            System::outjs(['s' => 'ok'], $name_mcache);
 
             // no break
         case 'passwd':
             $passwd = $_POST['passwd'] ?? '';
 
-            if (sys::valid($passwd, 'other', $aValid['passwd'])) {
-                sys::outjs(['e' => sys::text('input', 'passwd_valid')], $name_mcache);
+            if (System::valid($passwd, 'other', $aValid['passwd'])) {
+                System::outjs(['e' => System::text('input', 'passwd_valid')], $name_mcache);
             }
 
-            $passwd = sys::passwdkey($passwd);
+            $passwd = System::passwdkey($passwd);
 
             // Обновление пароля в базе
             $sql->query('UPDATE `users` set `passwd`="' . $passwd . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
             // Выхлоп удачного выполнения операции
-            sys::outjs(['s' => 'ok'], $name_mcache);
+            System::outjs(['s' => 'ok'], $name_mcache);
 
             // no break
         case 'mail':
             $mail = $_POST['mail'] ?? '';
 
             // Проверка введенной почты
-            if (sys::valid($mail, 'other', $aValid['mail'])) {
-                sys::outjs(['e' => sys::text('input', 'mail_valid')], $name_mcache);
+            if (System::valid($mail, 'other', $aValid['mail'])) {
+                System::outjs(['e' => System::text('input', 'mail_valid')], $name_mcache);
             }
 
             if ($mail == $user['mail']) {
-                sys::outjs(['e' => sys::text('input', 'similar')], $name_mcache);
+                System::outjs(['e' => System::text('input', 'similar')], $name_mcache);
             }
 
             // Проверка почты на занятость
             $sql->query('SELECT `id` FROM `users` WHERE `mail`="' . $mail . '" LIMIT 1');
             if ($sql->num()) {
-                sys::outjs(['e' => sys::text('input', 'mail_use')], $name_mcache);
+                System::outjs(['e' => System::text('input', 'mail_use')], $name_mcache);
             }
 
             // Генерация кода
-            $key = sys::key('mail_change' . $user['id']);
+            $key = System::key('mail_change' . $user['id']);
 
             // Отправка письма на старую почту
-            if (sys::mail('Смена почты', sys::updtext(sys::text('mail', 'change'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/lk/subsection/action/type/confirm_mail/confirm/' . $key . '/go/1']), $user['mail'])) {
+            if (System::mail('Смена почты', System::updtext(System::text('mail', 'change'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'user/section/lk/subsection/action/type/confirm_mail/confirm/' . $key . '/go/1']), $user['mail'])) {
                 $sql->query('UPDATE `users` set `new_mail`="' . $mail . '", `confirm_mail`="' . $key . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-                sys::outjs(['s' => sys::text('output', 'oldmail'), 'mail' => sys::mail_domain($user['mail'])], $name_mcache);
+                System::outjs(['s' => System::text('output', 'oldmail'), 'mail' => System::mail_domain($user['mail'])], $name_mcache);
             }
 
             // Выхлоп: неудалось отправить письмо
-            sys::outjs(['e' => sys::text('error', 'mail')], $name_mcache);
+            System::outjs(['e' => System::text('error', 'mail')], $name_mcache);
 
             // no break
         case 'confirm_mail':
             $key = $url['confirm'] ?? '';
 
             if ($key != $user['confirm_mail']) {
-                sys::outhtml(sys::text('output', 'confirm_key_error'), 4, $cfg['http'] . 'user/section/lk', $name_mcache);
+                System::outhtml(System::text('output', 'confirm_key_error'), 4, $cfg['http'] . 'user/section/lk', $name_mcache);
             }
 
             // Проверка почты на занятость
             $sql->query('SELECT `id` FROM `users` WHERE `mail`="' . $user['confirm_mail'] . '" LIMIT 1');
             if ($sql->num()) {
-                sys::outhtml(sys::text('input', 'mail_use'), 4, $cfg['http'] . 'user/section/lk', $name_mcache);
+                System::outhtml(System::text('input', 'mail_use'), 4, $cfg['http'] . 'user/section/lk', $name_mcache);
             }
 
             $sql->query('UPDATE `users` set `mail`="' . $user['new_mail'] . '", `new_mail`="", `confirm_mail`="" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
             // Выхлоп удачного выполнения операции
-            sys::outhtml(sys::text('output', 'confirm_mail_done'), 4, $cfg['http'] . 'user/section/lk', $name_mcache);
+            System::outhtml(System::text('output', 'confirm_mail_done'), 4, $cfg['http'] . 'user/section/lk', $name_mcache);
 
             // no break
         case 'phone':
             // Проверка, подтвержден ли номер
             if ($user['confirm_phone'] == '1') {
-                sys::outjs(['e' => sys::text('output', 'confirm_phone')], $name_mcache);
+                System::outjs(['e' => System::text('output', 'confirm_phone')], $name_mcache);
             }
 
             $phone = isset($_POST['phone']) ? str_replace('+', '', trim($_POST['phone'])) : '';
 
             // Проверка введенного номера
             if ($phone != '') {
-                if (sys::valid($phone, 'other', $aValid['phone'])) {
-                    sys::outjs(['e' => sys::text('input', 'phone_valid')], $name_mcache);
+                if (System::valid($phone, 'other', $aValid['phone'])) {
+                    System::outjs(['e' => System::text('input', 'phone_valid')], $name_mcache);
                 }
             }
 
@@ -145,58 +147,58 @@ if ($go) {
             }
 
             // Выхлоп удачного выполнения операции
-            sys::outjs(['s' => 'ok'], $name_mcache);
+            System::outjs(['s' => 'ok'], $name_mcache);
 
             // no break
         case 'confirm_phone':
             // Проверка, подтвержден ли номер
             if ($user['confirm_phone'] == '1') {
-                sys::outjs(['e' => sys::text('output', 'confirm_phone_done')], $name_mcache);
+                System::outjs(['e' => System::text('output', 'confirm_phone_done')], $name_mcache);
             }
 
             if ($user['phone'] == '') {
-                sys::outjs(['e' => sys::text('input', 'phone')], $name_mcache);
+                System::outjs(['e' => System::text('input', 'phone')], $name_mcache);
             }
 
             // Проверка, отправлялось ли сообщение
             if (strlen($user['confirm_phone']) == 6) {
-                sys::outjs(['s' => 'ok'], $name_mcache);
+                System::outjs(['s' => 'ok'], $name_mcache);
             }
 
             // Генерация кода подтверждения
-            $code = sys::smscode();
+            $code = System::smscode();
 
             // Отправка кода подтверждения на номер
-            if (sys::sms('code: ' . $code, $user['phone'])) {
+            if (System::sms('code: ' . $code, $user['phone'])) {
                 $sql->query('UPDATE `users` set `confirm_phone`="' . $code . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-                sys::outjs(['s' => 'ok'], $name_mcache);
+                System::outjs(['s' => 'ok'], $name_mcache);
             }
 
             // Выхлоп: неудалось отправить сообщение
-            sys::outjs(['e' => sys::text('output', 'confirm_phone_error')], $name_mcache);
+            System::outjs(['e' => System::text('output', 'confirm_phone_error')], $name_mcache);
 
             // no break
         case 'confirm_phone_end':
             // Проверка, подтвержден ли номер
             if ($user['confirm_phone'] == '1') {
-                sys::outjs(['e' => sys::text('output', 'confirm_phone_done')], $name_mcache);
+                System::outjs(['e' => System::text('output', 'confirm_phone_done')], $name_mcache);
             }
 
             if ($user['phone'] == '') {
-                sys::outjs(['e' => sys::text('input', 'phone')], $name_mcache);
+                System::outjs(['e' => System::text('input', 'phone')], $name_mcache);
             }
 
-            $code = isset($_POST['smscode']) ? sys::int($_POST['smscode']) : '';
+            $code = isset($_POST['smscode']) ? System::int($_POST['smscode']) : '';
 
             if ($code != $user['confirm_phone']) {
-                sys::outjs(['e' => sys::text('output', 'confirm_key_error')], $name_mcache);
+                System::outjs(['e' => System::text('output', 'confirm_key_error')], $name_mcache);
             }
 
             $sql->query('UPDATE `users` set `confirm_phone`="1" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
             // Выхлоп удачного выполнения операции
-            sys::outjs(['s' => 'ok'], $name_mcache);
+            System::outjs(['s' => 'ok'], $name_mcache);
 
             // no break
         case 'wmr':
@@ -204,17 +206,17 @@ if ($go) {
 
             // Проверка наличия указанного кошелька
             if (isset($user['wmr'][0]) and in_array($user['wmr'][0], ['R', 'Z', 'U'])) {
-                sys::outjs(['e' => sys::text('input', 'wmr_confirm')], $name_mcache);
+                System::outjs(['e' => System::text('input', 'wmr_confirm')], $name_mcache);
             }
 
-            if (sys::valid($wmr, 'wm')) {
-                sys::outjs(['e' => sys::text('input', 'wmr_valid')], $name_mcache);
+            if (System::valid($wmr, 'wm')) {
+                System::outjs(['e' => System::text('input', 'wmr_valid')], $name_mcache);
             }
 
             // Обновление кошелька в базе
             $sql->query('UPDATE `users` set `wmr`="' . $wmr . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
             // Выхлоп удачного выполнения операции
-            sys::outjs(['s' => 'ok'], $name_mcache);
+            System::outjs(['s' => 'ok'], $name_mcache);
     }
 }

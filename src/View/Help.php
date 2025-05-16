@@ -16,11 +16,9 @@
  * limitations under the License.
  */
 
-if (!defined('EGP')) {
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
-}
+namespace EngineGP\View;
 
-class help
+class Help
 {
     public static function text($text)
     {
@@ -106,10 +104,10 @@ class help
         $no = ceil($no);
 
         if ($brackets) {
-            return '(' . $no . ' ' . help::parse_ago($no, $phrase[$i]) . ' назад)';
+            return '(' . $no . ' ' . Help::parse_ago($no, $phrase[$i]) . ' назад)';
         }
 
-        return $no . ' ' . help::parse_ago($no, $phrase[$i]) . ' назад';
+        return $no . ' ' . Help::parse_ago($no, $phrase[$i]) . ' назад';
     }
 
     private static function parse_ago($number, $titles)

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,7 +29,7 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
     include(LIB . 'ssh.php');
 
     if (!$ssh->auth($panel['passwd'], $panel['address'])) {
-        sys::outjs(['e' => 'PANEL не удалось создать связь.']);
+        AdminSystem::outjs(['e' => 'PANEL не удалось создать связь.']);
     }
 
     $servers = $sql->query('SELECT `id`, `user`, `game` FROM `servers` WHERE `unit`="' . $id . '"');
@@ -64,10 +66,10 @@ if (isset($url['delete']) and $url['delete'] == 'all') {
 } else {
     $sql->query('SELECT `id` FROM `servers` WHERE `unit`="' . $id . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(['e' => 'Нельзя удалить локацию с серверами.']);
+        AdminSystem::outjs(['e' => 'Нельзя удалить локацию с серверами.']);
     }
 }
 
 $sql->query('DELETE FROM `units` WHERE `id`="' . $id . '" LIMIT 1');
 
-sys::outjs(['s' => 'ok']);
+AdminSystem::outjs(['s' => 'ok']);

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -38,7 +40,7 @@ class notice_help extends cron
 
             $user = $sql->get();
 
-            if (!sys::mail('Техническая поддержка', sys::updtext(sys::text('mail', 'notice_help'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $user['mail'])) {
+            if (!System::mail('Техническая поддержка', System::updtext(System::text('mail', 'notice_help'), ['site' => $cfg['name'], 'url' => $cfg['http'] . 'help/section/dialog/id/' . $help['id']]), $user['mail'])) {
                 continue;
             }
 

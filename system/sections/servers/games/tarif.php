@@ -16,17 +16,19 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Game;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
-include(LIB . 'games/games.php');
 include(LIB . 'games/tarifs.php');
 include(LIB . 'games/' . $server['game'] . '/tarif.php');
 
 // Выполнение операции
 if (isset($url['subsection']) and in_array($url['subsection'], $aSub)) {
-    $nmch = sys::rep_act('server_tarif_go_' . $id, 10);
+    $nmch = System::rep_act('server_tarif_go_' . $id, 10);
 
     if (file_exists(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php')) {
         include(SEC . 'servers/' . $server['game'] . '/tarif/' . $url['subsection'] . '.php');
@@ -49,7 +51,7 @@ $html->pack('main');
 if ($cfg['settlement_period']) {
     tarif::extend_sp($server, $tarif, $id);
 } else {
-    $options = games::parse_time($tarif['discount'], $server['tarif'], explode(':', $tarif['timext']), 'extend');
+    $options = Game::parse_time($tarif['discount'], $server['tarif'], explode(':', $tarif['timext']), 'extend');
 
     tarif::extend($options, $server, $tarif['name'], $id);
 }

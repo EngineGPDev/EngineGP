@@ -16,11 +16,9 @@
  * limitations under the License.
  */
 
-if (!defined('EGP')) {
-    exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
-}
+namespace EngineGP\View;
 
-class html
+class Html
 {
     public $dir = TPL;
     public $template = null;
@@ -178,5 +176,3 @@ class html
         return null;
     }
 }
-
-$html = new html();

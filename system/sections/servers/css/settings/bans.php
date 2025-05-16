@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -31,7 +33,7 @@ $tarif = $sql->get();
 include(LIB . 'ssh.php');
 
 if (!$ssh->auth($unit['passwd'], $unit['address'])) {
-    sys::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
+    System::back($cfg['http'] . 'servers/id/' . $id . '/section/settings');
 }
 
 // Путь к файлам (banned_user.cfg / banned_ip.cfg)
@@ -41,17 +43,17 @@ $folder = $tarif['install'] . $server['uid'] . '/cstrike';
 if ($go) {
     $aData = [];
 
-    $aData['value'] = isset($_POST['value']) ? trim($_POST['value']) : sys::outjs(['e' => sys::text('servers', 'bans')], $nmch);
-    $aData['userid'] = isset($_POST['userid']) ? sys::int($_POST['userid']) : false;
+    $aData['value'] = isset($_POST['value']) ? trim($_POST['value']) : System::outjs(['e' => System::text('servers', 'bans')], $nmch);
+    $aData['userid'] = isset($_POST['userid']) ? System::int($_POST['userid']) : false;
     $aData['amxbans'] = isset($_POST['amxbans']) ? true : false;
 
     // Проверка входных данных
-    if (sys::valid($aData['value'], 'steamid') and sys::valid($aData['value'], 'steamid3') and sys::valid($aData['value'], 'ip')) {
-        sys::outjs(['e' => sys::text('servers', 'bans')], $nmch);
+    if (System::valid($aData['value'], 'steamid') and System::valid($aData['value'], 'steamid3') and System::valid($aData['value'], 'ip')) {
+        System::outjs(['e' => System::text('servers', 'bans')], $nmch);
     }
 
     // Если указан steamid
-    if (sys::valid($aData['value'], 'ip')) {
+    if (System::valid($aData['value'], 'ip')) {
         // бан
         if (isset($url['action']) and $url['action'] == 'ban') {
             // Если включен sourcebans
@@ -67,7 +69,7 @@ if ($go) {
                 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "echo \"banid 0.0 ' . $aData['value'] . '\" >> ' . $folder . '/banned_user.cfg"');
             }
 
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // разбан
         } elseif (isset($url['action']) and $url['action'] == 'unban') {
@@ -82,16 +84,16 @@ if ($go) {
                 $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"writeid\" C-m");
             }
 
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
             // проверка
         } else {
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' banned_user.cfg | awk \'{print $3}\'');
 
             if ($aData['value'] == trim($ssh->get())) {
-                sys::outjs(['ban' => 'Данный SteamID <u>найден</u> в файле banned_user.cfg'], $nmch);
+                System::outjs(['ban' => 'Данный SteamID <u>найден</u> в файле banned_user.cfg'], $nmch);
             }
 
-            sys::outjs(['unban' => 'Данный SteamID <u>не найден</u> в файле banned_user.cfg'], $nmch);
+            System::outjs(['unban' => 'Данный SteamID <u>не найден</u> в файле banned_user.cfg'], $nmch);
         }
     } else {
         // бан
@@ -109,7 +111,7 @@ if ($go) {
                 $ssh->set('sudo -u server' . $server['uid'] . ' sh -c "echo \"addip 0.0 ' . $aData['value'] . '\" >> ' . $folder . '/banned_ip.cfg"');
             }
 
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
 
             // разбан
         } elseif (isset($url['action']) and $url['action'] == 'unban') {
@@ -124,16 +126,16 @@ if ($go) {
                 $ssh->set("sudo -u server" . $server['uid'] . " tmux send-keys -t s_" . $server['uid'] . " \"writeip\" C-m");
             }
 
-            sys::outjs(['s' => 'ok'], $nmch);
+            System::outjs(['s' => 'ok'], $nmch);
             // проверка
         } else {
             $ssh->set('cd ' . $folder . ' && sudo -u server' . $server['uid'] . ' fgrep ' . $aData['value'] . ' banned_ip.cfg | awk \'{print $3}\'');
 
             if ($aData['value'] == trim($ssh->get())) {
-                sys::outjs(['ban' => 'Данный IP <u>найден</u> в файле banned_ip.cfg'], $nmch);
+                System::outjs(['ban' => 'Данный IP <u>найден</u> в файле banned_ip.cfg'], $nmch);
             }
 
-            sys::outjs(['unban' => 'Данный IP <u>не найден</u> в файле banned_ip.cfg'], $nmch);
+            System::outjs(['unban' => 'Данный IP <u>не найден</u> в файле banned_ip.cfg'], $nmch);
         }
     }
 }

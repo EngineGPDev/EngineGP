@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -26,9 +28,9 @@ if ($go) {
 
     $aData = [];
 
-    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : sys::outjs(['e' => 'Необходимо указать адрес.'], $nmch);
-    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : sys::outjs(['e' => 'Необходимо выбрать домен.'], $nmch);
-    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : sys::outjs(['e' => 'Необходимо выбрать шаблон.'], $nmch);
+    $aData['subdomain'] = isset($_POST['subdomain']) ? strtolower($_POST['subdomain']) : System::outjs(['e' => 'Необходимо указать адрес.'], $nmch);
+    $aData['domain'] = isset($_POST['domain']) ? strtolower($_POST['domain']) : System::outjs(['e' => 'Необходимо выбрать домен.'], $nmch);
+    $aData['desing'] = isset($_POST['desing']) ? strtolower($_POST['desing']) : System::outjs(['e' => 'Необходимо выбрать шаблон.'], $nmch);
 
     $aData['type'] = $url['subsection'];
     $aData['server'] = array_merge($server, ['id' => $id]);

@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Game;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -25,11 +28,11 @@ include(DATA . 'boost.php');
 if ($go) {
     $aData = [];
 
-    $aData['site'] = $url['site'] ?? sys::outjs(['e' => 'Необходимо указать сервис.']);
+    $aData['site'] = $url['site'] ?? System::outjs(['e' => 'Необходимо указать сервис.']);
 
     // Проверка сервиса
     if (!in_array($aData['site'], $aBoost[$server['game']]['boost'])) {
-        sys::outjs(['e' => 'Указанный сервис по раскрутке не найден.']);
+        System::outjs(['e' => 'Указанный сервис по раскрутке не найден.']);
     }
 
     if (isset($url['rating'])) {
@@ -37,7 +40,7 @@ if ($go) {
 
         $sql->query('SELECT `id` FROM `boost_rating` WHERE `boost`="' . $aData['site'] . '" AND `user`="' . $user['id'] . '" AND `rating`="' . $rating . '" LIMIT 1');
         if ($sql->num()) {
-            sys::out('err');
+            System::out('err');
         }
 
         $sql->query('DELETE FROM `boost_rating` WHERE `boost`="' . $aData['site'] . '" AND `user`="' . $user['id'] . '" LIMIT 1');
@@ -48,14 +51,14 @@ if ($go) {
 
         $rating = (int)$sum['SUM(`rating`)'];
 
-        sys::out($rating, 'server_boost_' . $id);
+        System::out($rating, 'server_boost_' . $id);
     }
 
-    $aData['service'] = isset($url['service']) ? sys::int($url['service']) : sys::outjs(['e' => 'Необходимо указать номер услуги.']);
+    $aData['service'] = isset($url['service']) ? System::int($url['service']) : System::outjs(['e' => 'Необходимо указать номер услуги.']);
 
     // Проверка номера услуги
     if (!in_array($aData['service'], $aBoost[$server['game']][$aData['site']]['services'])) {
-        sys::outjs(['e' => 'Неправильно указан номер услуги.']);
+        System::outjs(['e' => 'Неправильно указан номер услуги.']);
     }
 
     // Определение суммы
@@ -63,7 +66,7 @@ if ($go) {
 
     // Проверка баланса
     if ($user['balance'] < $sum) {
-        sys::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $name_mcache);
+        System::outjs(['e' => 'У вас не хватает ' . (round($sum - $user['balance'], 2)) . ' ' . $cfg['currency']], $name_mcache);
     }
 
     include(LIB . 'games/boost.php');
@@ -73,26 +76,24 @@ if ($go) {
     $buy = $boost->$aBoost[$server['game']][$aData['site']]['type'](['period' => $aData['service'], 'address' => $server['address']]);
 
     if (is_array($buy)) {
-        sys::outjs(['e' => $buy['error']]);
+        System::outjs(['e' => $buy['error']]);
     }
 
     // Списание средств с баланса пользователя
     $sql->query('UPDATE `users` set `balance`="' . ($user['balance'] - $sum) . '" WHERE `id`="' . $user['id'] . '" LIMIT 1');
 
-    include(LIB . 'games/games.php');
-
     // Реф. система
-    games::part($user['id'], $sum);
+    Game::part($user['id'], $sum);
 
-    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . sys::updtext(
-        sys::text('logs', 'buy_boost'),
+    $sql->query('INSERT INTO `logs` set `user`="' . $user['id'] . '", `text`="' . System::updtext(
+        System::text('logs', 'buy_boost'),
         ['circles' => $aBoost[$server['game']][$aData['site']]['circles'][$aData['service']],
                 'money' => $sum, 'site' => $aBoost[$server['game']][$aData['site']]['site'], 'id' => $id]
     ) . '", `date`="' . $start_point . '", `type`="boost", `money`="' . $sum . '"');
 
     $sql->query('INSERT INTO `boost` set `user`="' . $user['id'] . '", `server`="' . $id . '", `site`="' . $aData['site'] . '", `circles`="' . $aBoost[$server['game']][$aData['site']]['circles'][$aData['service']] . '", `money`="' . $sum . '", `date`="' . $start_point . '"');
 
-    sys::outjs(['s' => 'ok'], $name_mcache);
+    System::outjs(['s' => 'ok'], $name_mcache);
 }
 
 $html->nav($server['address'], $cfg['http'] . 'servers/id/' . $id);

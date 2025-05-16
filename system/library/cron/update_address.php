@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+use EngineGP\Model\Game;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -40,12 +43,10 @@ class update_address extends cron
                 $sql->query('SELECT `address` FROM `units` WHERE `id`="' . $server['unit'] . '" LIMIT 1');
                 $unit = $sql->get();
 
-                include(LIB . 'games/games.php');
-
                 // Очистка правил FireWall
-                games::iptables($add_buy['server'], 'remove', null, null, null, $server['unit'], false);
+                Game::iptables($add_buy['server'], 'remove', null, null, null, $server['unit'], false);
 
-                $sql->query('UPDATE `servers` set `address`="' . (sys::first(explode(':', $unit['address']))) . ':' . $server['port'] . '" WHERE `id`="' . $add_buy['server'] . '" LIMIT 1');
+                $sql->query('UPDATE `servers` set `address`="' . (System::first(explode(':', $unit['address']))) . ':' . $server['port'] . '" WHERE `id`="' . $add_buy['server'] . '" LIMIT 1');
 
                 if (in_array($server['status'], ['working', 'start', 'restart', 'change'])) {
                     exec('sh -c "cd /var/www/enginegp; php cron.php ' . $cfg['cron_key'] . ' server_action restart ' . $server['game'] . ' ' . $add_buy['server'] . '"');

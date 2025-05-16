@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -28,30 +30,30 @@ if ($go) {
 
     $aData['cod'] = isset($_POST['cod']) ? trim($_POST['cod']) : $promo['cod'];
     $aData['value'] = isset($_POST['value']) ? trim($_POST['value']) : $promo['value'];
-    $aData['discount'] = isset($_POST['discount']) ? sys::int($_POST['discount']) : $promo['discount'];
-    $aData['hits'] = isset($_POST['hits']) ? sys::int($_POST['hits']) : $promo['hits'];
-    $aData['use'] = isset($_POST['use']) ? sys::int($_POST['use']) : $promo['use'];
-    $aData['extend'] = isset($_POST['extend']) ? sys::int($_POST['extend']) : $promo['extend'];
-    $aData['user'] = isset($_POST['user']) ? sys::int($_POST['user']) : $promo['user'];
-    $aData['server'] = isset($_POST['server']) ? sys::int($_POST['server']) : $promo['server'];
+    $aData['discount'] = isset($_POST['discount']) ? AdminSystem::int($_POST['discount']) : $promo['discount'];
+    $aData['hits'] = isset($_POST['hits']) ? AdminSystem::int($_POST['hits']) : $promo['hits'];
+    $aData['use'] = isset($_POST['use']) ? AdminSystem::int($_POST['use']) : $promo['use'];
+    $aData['extend'] = isset($_POST['extend']) ? AdminSystem::int($_POST['extend']) : $promo['extend'];
+    $aData['user'] = isset($_POST['user']) ? AdminSystem::int($_POST['user']) : $promo['user'];
+    $aData['server'] = isset($_POST['server']) ? AdminSystem::int($_POST['server']) : $promo['server'];
     $aData['time'] = isset($_POST['time']) ? trim($_POST['time']) : date('d/m/Y H:i', $promo['time']);
     $aData['data'] = isset($_POST['data']) ? trim($_POST['data']) : $promo['data'];
 
-    $aData['time'] = sys::checkdate($aData['time']);
+    $aData['time'] = AdminSystem::checkdate($aData['time']);
 
-    if (sys::valid($aData['cod'], 'promo')) {
-        sys::outjs(['e' => 'Неправильный формат промо-кода']);
+    if (AdminSystem::valid($aData['cod'], 'promo')) {
+        AdminSystem::outjs(['e' => 'Неправильный формат промо-кода']);
     }
 
     $sql->query('SELECT `id` FROM `promo` WHERE `id`!="' . $id . '" AND `cod`="' . $aData['cod'] . '" AND `tarif`="' . $promo['tarif'] . '" LIMIT 1');
     if ($sql->num()) {
-        sys::outjs(['e' => 'Указанный код используется в другой акции']);
+        AdminSystem::outjs(['e' => 'Указанный код используется в другой акции']);
     }
 
     if ($aData['user']) {
         $sql->query('SELECT `id` FROM `users` WHERE `id`="' . $aData['user'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(['e' => 'Указанный пользователь не найден']);
+            AdminSystem::outjs(['e' => 'Указанный пользователь не найден']);
         }
     } else {
         $aData['user'] = 0;
@@ -60,7 +62,7 @@ if ($go) {
     if ($aData['server']) {
         $sql->query('SELECT `id` FROM `servers` WHERE `id`="' . $aData['server'] . '" LIMIT 1');
         if (!$sql->num()) {
-            sys::outjs(['e' => 'Указанный сервер не найден']);
+            AdminSystem::outjs(['e' => 'Указанный сервер не найден']);
         }
     } else {
         $aData['server'] = 0;
@@ -70,7 +72,7 @@ if ($go) {
         $proc = strpos($aData['value'], '%') ? '%' : '';
     }
 
-    $aData['value'] = sys::int($aData['value']) . $proc;
+    $aData['value'] = AdminSystem::int($aData['value']) . $proc;
 
     $sql->query('UPDATE `promo` set '
         . '`cod`="' . $aData['cod'] . '",'
@@ -84,7 +86,7 @@ if ($go) {
         . '`server`="' . $aData['server'] . '",'
         . '`time`="' . $aData['time'] . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $sql->query('SELECT `id`, `unit`, `name`, `game` FROM `tarifs` WHERE `id`="' . $promo['tarif'] . '" LIMIT 1');

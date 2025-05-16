@@ -16,25 +16,27 @@
  * limitations under the License.
  */
 
+use EngineGP\System;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
 
 if ($user['group'] != 'admin') {
-    sys::outjs(['e' => 'У вас нет доступа к данному действию.']);
+    System::outjs(['e' => 'У вас нет доступа к данному действию.']);
 }
 
 if ($id) {
-    $msg = isset($url['msg']) ? sys::int($url['msg']) : sys::outjs(['s' => 'ok']);
+    $msg = isset($url['msg']) ? System::int($url['msg']) : System::outjs(['s' => 'ok']);
 
     $sql->query('SELECT `img` FROM `help_dialogs` WHERE `id`="' . $msg . '" LIMIT 1');
     if (!$sql->num()) {
-        sys::outjs(['s' => 'ok']);
+        System::outjs(['s' => 'ok']);
     }
 
     $images = $sql->get();
 
-    $aImg = sys::b64djs($images['img']);
+    $aImg = System::b64djs($images['img']);
 
     foreach ($aImg as $img) {
         $sql->query('DELETE FROM `help_upload` WHERE `name`="' . $img . '" LIMIT 1');
@@ -44,7 +46,7 @@ if ($id) {
 
     $sql->query('DELETE FROM `help_dialogs` WHERE `id`="' . $msg . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    System::outjs(['s' => 'ok']);
 }
 
-sys::outjs(['e' => 'Вопрос не найден в базе.']);
+System::outjs(['e' => 'Вопрос не найден в базе.']);

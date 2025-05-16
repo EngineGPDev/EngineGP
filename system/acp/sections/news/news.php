@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+use EngineGP\AdminSystem;
+
 if (!defined('EGP')) {
     exit(header('Refresh: 0; URL=http://' . $_SERVER['HTTP_HOST'] . '/404'));
 }
@@ -27,20 +29,20 @@ if ($go) {
     $aData = [];
 
     $aData['name'] = isset($_POST['name']) ? trim($_POST['name']) : htmlspecialchars_decode($news['name']);
-    $aData['text'] = isset($_POST['text']) ? sys::bbc(trim($_POST['text'])) : htmlspecialchars_decode($news['text']);
-    $aData['full'] = isset($_POST['full']) ? sys::bbc(trim($_POST['full'])) : htmlspecialchars_decode($news['full_text']);
+    $aData['text'] = isset($_POST['text']) ? AdminSystem::bbc(trim($_POST['text'])) : htmlspecialchars_decode($news['text']);
+    $aData['full'] = isset($_POST['full']) ? AdminSystem::bbc(trim($_POST['full'])) : htmlspecialchars_decode($news['full_text']);
     $aData['tags'] = isset($_POST['tags']) ? trim($_POST['tags']) : htmlspecialchars_decode($news['tags']);
 
     if (in_array('', $aData)) {
-        sys::outjs(['e' => 'Необходимо заполнить все поля']);
+        AdminSystem::outjs(['e' => 'Необходимо заполнить все поля']);
     }
 
-    if (sys::strlen($aData['name']) > 50) {
-        sys::outjs(['e' => 'Заголовок не должен превышать 50 символов.']);
+    if (AdminSystem::strlen($aData['name']) > 50) {
+        AdminSystem::outjs(['e' => 'Заголовок не должен превышать 50 символов.']);
     }
 
-    if (sys::strlen($aData['tags']) > 100) {
-        sys::outjs(['e' => 'Теги не должен превышать 100 символов.']);
+    if (AdminSystem::strlen($aData['tags']) > 100) {
+        AdminSystem::outjs(['e' => 'Теги не должен превышать 100 символов.']);
     }
 
     $sql->query('UPDATE `news` set '
@@ -49,7 +51,7 @@ if ($go) {
         . '`full_text`="' . htmlspecialchars($aData['full']) . '",'
         . '`tags`="' . htmlspecialchars($aData['tags']) . '" WHERE `id`="' . $id . '" LIMIT 1');
 
-    sys::outjs(['s' => 'ok']);
+    AdminSystem::outjs(['s' => 'ok']);
 }
 
 $html->get('news', 'sections/news');
