@@ -24,12 +24,12 @@ It allows managing personal game servers or organizing a full-fledged hosting pl
 
 ### ⚙️ Requirements
 
-* **PHP:** 7.4, 8.0, 8.1, 8.2
+* **PHP:** 8.1 and above
 * **PHP Extensions:**
   `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`,
   `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-gmp`, `php-gz2`
-* **Database:** MySQL 5.7+ or MariaDB 10.5+
-* **Web Server:** Apache 2.4 or Nginx
+* **Database:** MySQL or MariaDB
+* **Web Server:** Apache or Nginx
 
 ---
 
@@ -112,12 +112,12 @@ chmod +x ./Autoinstall/install.sh
 
 ### ⚙️ Требования
 
-* **PHP:** 7.4, 8.0, 8.1, 8.2
+* **PHP:** 8.1 и выше
 * **PHP-расширения:**
   `php-common`, `php-cli`, `php-memcache`, `php-mysql`, `php-xml`,
   `php-mbstring`, `php-gd`, `php-imagick`, `php-zip`, `php-curl`, `php-gmp`, `php-gz2`
-* **База данных:** MySQL 5.7+ или MariaDB 10.5+
-* **Веб-сервер:** Apache 2.4 или Nginx
+* **База данных:** MySQL или MariaDB
+* **Веб-сервер:** Apache или Nginx
 
 ---
 
