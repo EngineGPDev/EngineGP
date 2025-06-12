@@ -12,7 +12,8 @@ The project uses a branching strategy based on Semantic Versioning.
 #### 🔹 `main`
 
 * The main branch for developing the next version.
-* All commits and Pull Requests must target it.
+* All commits* and Pull Requests must target it.
+* *All commits must pass the Pull Request.
 
 #### 🔹 `pre-release/vX.X.X`
 
@@ -120,7 +121,8 @@ If you have questions or need help, don’t hesitate to open an Issue or Pull Re
 #### 🔹 `main`
 
 * Основная ветка для разработки новой версии.
-* Все коммиты и Pull Request должны направляться в неё.
+* Все коммиты* и Pull Request должны направляться в неё.
+* *Все коммиты должны проходить Pull Request.
 
 #### 🔹 `pre-release/vX.X.X`
 
